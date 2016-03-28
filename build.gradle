@@ -1,0 +1,145 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2016 oEmbedler Inc. and Contributors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ *  documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+ *  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+ *  persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ * BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+import java.text.SimpleDateFormat
+
+buildscript {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url 'http://repo.spring.io/plugins-release' }
+    }
+    dependencies {
+        classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6"
+    }
+}
+
+subprojects {
+
+    apply plugin: 'idea'
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
+    apply plugin: 'propdeps'
+    apply plugin: 'propdeps-maven'
+    apply plugin: 'propdeps-idea'
+    apply plugin: 'propdeps-eclipse'
+    apply plugin: "com.jfrog.bintray"
+
+    def releaseVersion = System.properties.RELEASE_VERSION
+    version = releaseVersion ? releaseVersion : PROJECT_VERSION + '-' + new SimpleDateFormat('yyyy-MM-dd\'T\'HH-mm-ss').format(new Date())
+    group = PROJECT_GROUP
+
+    repositories {
+        jcenter()
+        maven { url "http://dl.bintray.com/oembedler/maven" }
+    }
+
+    idea {
+        module {
+            downloadJavadoc = true
+            downloadSources = true
+        }
+    }
+
+    compileJava {
+        sourceCompatibility = SOURCE_COMPATIBILITY
+        targetCompatibility = TARGET_COMPATIBILITY
+    }
+
+    jar {
+        from "LICENSE.md"
+    }
+
+    task sourcesJar(type: Jar) {
+        dependsOn classes
+        classifier 'sources'
+        from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+    }
+
+    publishing {
+        publications {
+            mainProjectPublication(MavenPublication) {
+                version version
+                from components.java
+
+                artifact sourcesJar {
+                    classifier "sources"
+                }
+                artifact javadocJar {
+                    classifier "javadoc"
+                }
+                pom.withXml {
+                    asNode().children().last() + {
+                        resolveStrategy = Closure.DELEGATE_FIRST
+                        name PROJECT_NAME
+                        description PROJECT_DESC
+                        url PROJECT_GIT_REPO_URL
+                        scm {
+                            url PROJECT_GIT_REPO_URL
+                            connection PROJECT_GIT_REPO_URL
+                            developerConnection PROJECT_GIT_REPO_URL
+                        }
+                        licenses {
+                            license {
+                                name PROJECT_LICENSE
+                                url PROJECT_LICENSE_URL
+                                distribution 'repo'
+                            }
+                        }
+                        developers {
+                            developer {
+                                id PROJECT_DEV_ID
+                                name PROJECT_DEV_NAME
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    bintray {
+        user = System.env.BINTRAY_USER ?: project["bintray.user"]
+        key = System.env.BINTRAY_API_KEY ?: project["bintray.key"]
+        publications = ['mainProjectPublication']
+        publish = true
+        pkg {
+            repo = 'maven'
+            name = PROJECT_NAME
+            desc = PROJECT_DESC
+            licenses = [PROJECT_LICENSE]
+            vcsUrl = PROJECT_GIT_REPO_URL
+        }
+    }
+
+    task wrapper(type: Wrapper) {
+        gradleVersion = "${GRADLE_WRAPPER_VER}"
+    }
+}
