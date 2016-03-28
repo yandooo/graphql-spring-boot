@@ -13,8 +13,15 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # GraphQL Spring Framework Boot Starter
+[![Build Status](https://travis-ci.org/oembedler/graphql-spring-boot.svg?branch=master)](https://travis-ci.org/oembedler/graphql-spring-boot)
 
+GraphQL Starter 
 
+[ ![Download](https://api.bintray.com/packages/oembedler/maven/graphql-spring-boot-starter/images/download.svg) ](https://bintray.com/oembedler/maven/graphql-spring-boot-starter/_latestVersion)
+
+GraphiQL Starter 
+
+[ ![Download](https://api.bintray.com/packages/oembedler/maven/graphiql-spring-boot-starter/images/download.svg) ](https://bintray.com/oembedler/maven/graphiql-spring-boot-starter/_latestVersion)
 
 # Intro
 
