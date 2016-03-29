@@ -40,6 +40,9 @@ Add repository:
 
 ```gradle
 repositories {
+    // stable build
+    jcenter()
+    // development build
     maven { url  "http://dl.bintray.com/oembedler/maven" }
 }
 ```
