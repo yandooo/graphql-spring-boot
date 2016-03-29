@@ -49,11 +49,11 @@ public class GraphQLWebAutoConfiguration {
     private static final String DEFAULT_UPLOAD_MAX_FILE_SIZE = "128KB";
     private static final String DEFAULT_UPLOAD_MAX_REQUEST_SIZE = "128KB";
 
-    @Value("${spring.graphql.server.mapping:/graphql}")
+    @Value("${graphql.server.mapping:/graphql}")
     private String graphQLServerMapping;
 
     @Bean
-    @ConditionalOnProperty(value = "spring.graphql.server.corsEnabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(value = "graphql.server.corsEnabled", havingValue = "true", matchIfMissing = true)
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurerAdapter() {
             @Override
@@ -71,7 +71,7 @@ public class GraphQLWebAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(GlobalDefaultExceptionHandler.class)
-    @ConditionalOnProperty(value = "spring.graphql.server.suppressSpringResponseCodes", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(value = "graphql.server.suppressSpringResponseCodes", havingValue = "true", matchIfMissing = true)
     public GlobalDefaultExceptionHandler globalDefaultExceptionHandler() {
         return new GlobalDefaultExceptionHandler();
     }

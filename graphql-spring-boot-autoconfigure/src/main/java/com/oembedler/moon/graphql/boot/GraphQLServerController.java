@@ -42,7 +42,7 @@ import java.util.Map;
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
  */
 @RestController
-@RequestMapping("${spring.graphql.server.mapping:/graphql}")
+@RequestMapping("${graphql.server.mapping:/graphql}")
 public class GraphQLServerController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GraphQLServerController.class);

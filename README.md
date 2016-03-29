@@ -142,26 +142,23 @@ Server can host multiple schemas (all are registered at the startup time).
 To run query against particular schema - HTTP header `graphql-schema` parameter passed along with the query should contain graphql schema name of interest.
 
 ```yaml
-spring:
-      application:
-               name: graphql-todo-app
-      graphql:
-               server:
-                      mapping: /graphql
-                      corsEnabled: true
-                      suppressSpringResponseCodes: true
-                      query-key: query
-                      variables-key: variables
-                      uploadMaxFileSize: 128KB
-                      uploadMaxRequestSize: 128KB
-               schema:
-                      clientMutationIdName: clientMutationId
-                      injectClientMutationId: true
-                      allowEmptyClientMutationId: false
-                      mutationInputArgumentName: input
-                      outputObjectNamePrefix: Payload
-                      inputObjectNamePrefix: Input
-                      schemaMutationObjectName: Mutation
+graphql:
+      server:
+               mapping: /graphql
+               corsEnabled: true
+               suppressSpringResponseCodes: true
+               query-key: query
+               variables-key: variables
+               uploadMaxFileSize: 128KB
+               uploadMaxRequestSize: 128KB
+      schema:
+               clientMutationIdName: clientMutationId
+               injectClientMutationId: true
+               allowEmptyClientMutationId: false
+               mutationInputArgumentName: input
+               outputObjectNamePrefix: Payload
+               inputObjectNamePrefix: Input
+               schemaMutationObjectName: Mutation
 ```
 
 To facilitate access from Nodejs frontend to GraphQL backend by default system enables global CORS filter for `/graphql/**` context.

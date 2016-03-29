@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Configuration;
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
  */
 @Configuration
-@ConfigurationProperties(prefix = "spring.graphql")
+@ConfigurationProperties(prefix = "graphql")
 public class GraphQLProperties {
 
     @NestedConfigurationProperty

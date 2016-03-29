@@ -1,22 +1,22 @@
 spring:
       application:
                name: graphql-todo-app
-      graphql:
-               server:
-                      mapping: /graphql
-                      corsEnabled: true
-                      suppressSpringResponseCodes: true
-                      query-key: query
-                      variables-key: variables
-                      uploadMaxFileSize: 128KB
-                      uploadMaxRequestSize: 128KB
-               schema:
-                      clientMutationIdName: clientMutationId
-                      injectClientMutationId: true
-                      allowEmptyClientMutationId: false
-                      mutationInputArgumentName: input
-                      outputObjectNamePrefix: Payload
-                      inputObjectNamePrefix: Input
-                      schemaMutationObjectName: Mutation
 server:
       port: 9000
+graphql:
+      server:
+               mapping: /graphql
+               corsEnabled: true
+               suppressSpringResponseCodes: true
+               query-key: query
+               variables-key: variables
+               uploadMaxFileSize: 128KB
+               uploadMaxRequestSize: 128KB
+      schema:
+               clientMutationIdName: clientMutationId
+               injectClientMutationId: true
+               allowEmptyClientMutationId: false
+               mutationInputArgumentName: input
+               outputObjectNamePrefix: Payload
+               inputObjectNamePrefix: Input
+               schemaMutationObjectName: Mutation
