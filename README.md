@@ -12,7 +12,7 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# GraphQL Spring Framework Boot Starter
+# GraphQL and GraphiQL Spring Framework Boot Starters
 [![Build Status](https://travis-ci.org/oembedler/graphql-spring-boot.svg?branch=master)](https://travis-ci.org/oembedler/graphql-spring-boot)
 
 GraphQL Starter 
