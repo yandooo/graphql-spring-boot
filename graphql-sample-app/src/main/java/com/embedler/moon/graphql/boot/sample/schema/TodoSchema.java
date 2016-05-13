@@ -133,7 +133,7 @@ public class TodoSchema {
         todoEdgeObjectType.setCursor("test-cursor");
         todoEdgeObjectType.setNode(new TodoObjectType());
         todoEdgeObjectType.getNode().setId("id-12345");
-        todoEdgeObjectType.getNode().setText("simple text");
+        todoEdgeObjectType.getNode().setText(addTodoInput.getText());
         todoEdgeObjectType.getNode().setComplete(false);
 
         return todoEdgeObjectType;

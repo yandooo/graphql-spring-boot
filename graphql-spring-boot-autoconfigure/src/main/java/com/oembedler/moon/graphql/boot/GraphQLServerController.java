@@ -96,15 +96,21 @@ public class GraphQLServerController {
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<Map<String, Object>> postJson(@RequestBody Map<String, Object> body,
                                                         @RequestHeader(value = HEADER_SCHEMA_NAME, required = false) String graphQLSchemaName,
-                                                        HttpServletRequest httpServletRequest) {
+                                                        HttpServletRequest httpServletRequest) throws IOException {
 
         final String query = (String) body.get(getQueryKey());
         final String operationName = (String) body.get(DEFAULT_OPERATION_NAME_KEY);
 
         Map<String, Object> variables = null;
         Object variablesObject = body.get(getVariablesKey());
-        if (variablesObject != null && variablesObject instanceof Map)
-            variables = (Map<String, Object>) variablesObject;
+        if (variablesObject != null) {
+            if (variablesObject instanceof Map) {
+                variables = (Map<String, Object>) variablesObject;
+            }
+            else if (variablesObject instanceof String) {
+                variables = decodeIntoMap((String) variablesObject);
+            }
+        }
 
         final GraphQLContext graphQLContext = new GraphQLContext();
         graphQLContext.setHttpRequest(httpServletRequest);
@@ -189,7 +195,7 @@ public class GraphQLServerController {
                 executionResult = graphQLQueryExecutor.execute();
 
             } catch (Exception e) {
-                LOGGER.error("Error occurred evaluating query: {}", query);
+                LOGGER.error("Error {} occurred evaluating query: {}", e.getMessage(), query, e);
                 executionResult = new ExecutionResultImpl(Lists.newArrayList(new ErrorGraphQLQueryEvaluation()));
             }
         }
