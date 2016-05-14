@@ -29,14 +29,12 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -105,6 +103,42 @@ public class GenericTodoSchemaParserTest {
         GraphQLServerResult result = responseEntity.getBody();
         Assert.assertFalse(CollectionUtils.isEmpty(result.getErrors()));
         LOGGER.info(objectMapper.writeValueAsString(result));
+    }
+
+    @Test
+    public void todoMutationPostJson() throws IOException {
+        Map<String, String> map = new HashMap<>();
+        map.put("query", "mutation AddTodoMutationMutation($input: addTodoMutationInput!) {addTodoMutation(input: $input) {clientMutationId todoEdge {node {text}}}}");
+        map.put("variables", "{\"input\": {\"clientMutationId\": \"3-3\",\"addTodoInput\": {\"text\": \"hi\"}}}");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(map, headers);
+
+        ResponseEntity<GraphQLServerResult> responseEntity =
+                restTemplate.exchange("http://localhost:" + port + "/graphql", HttpMethod.POST, requestEntity, GraphQLServerResult.class);
+
+        GraphQLServerResult result = responseEntity.getBody();
+        Assert.assertTrue(CollectionUtils.isEmpty(result.getErrors()));
+        Assert.assertFalse(CollectionUtils.isEmpty(result.getData()));
+        LOGGER.info(objectMapper.writeValueAsString(result.getData()));
+    }
+
+    @Test
+    public void queryWithEmptyVariables() throws IOException {
+        Map<String, String> map = new HashMap<>();
+        map.put("query", "{viewer{ id }}");
+        map.put("variables", "");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(map, headers);
+
+        ResponseEntity<GraphQLServerResult> responseEntity =
+                restTemplate.exchange("http://localhost:" + port + "/graphql", HttpMethod.POST, requestEntity, GraphQLServerResult.class);
+
+        GraphQLServerResult result = responseEntity.getBody();
+        Assert.assertTrue(CollectionUtils.isEmpty(result.getErrors()));
+        Assert.assertFalse(CollectionUtils.isEmpty(result.getData()));
+        LOGGER.info(objectMapper.writeValueAsString(result.getData()));
     }
 
     @Test
