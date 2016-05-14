@@ -34,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -106,8 +107,7 @@ public class GraphQLServerController {
         if (variablesObject != null) {
             if (variablesObject instanceof Map) {
                 variables = (Map<String, Object>) variablesObject;
-            }
-            else if (variablesObject instanceof String) {
+            } else if (variablesObject instanceof String) {
                 variables = decodeIntoMap((String) variablesObject);
             }
         }
@@ -151,7 +151,10 @@ public class GraphQLServerController {
     }
 
     private Map<String, Object> decodeIntoMap(final String variablesParam) throws IOException {
-        return objectMapper.readValue(variablesParam, Map.class);
+        if (variablesParam != null && !variablesParam.isEmpty()) {
+            return objectMapper.readValue(variablesParam, Map.class);
+        }
+        return Collections.emptyMap();
     }
 
     private Map<String, Object> evaluateAndBuildResponseMap(final String query,

@@ -124,6 +124,24 @@ public class GenericTodoSchemaParserTest {
     }
 
     @Test
+    public void queryWithEmptyVariables() throws IOException {
+        Map<String, String> map = new HashMap<>();
+        map.put("query", "{viewer{ id }}");
+        map.put("variables", "");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(map, headers);
+
+        ResponseEntity<GraphQLServerResult> responseEntity =
+                restTemplate.exchange("http://localhost:" + port + "/graphql", HttpMethod.POST, requestEntity, GraphQLServerResult.class);
+
+        GraphQLServerResult result = responseEntity.getBody();
+        Assert.assertTrue(CollectionUtils.isEmpty(result.getErrors()));
+        Assert.assertFalse(CollectionUtils.isEmpty(result.getData()));
+        LOGGER.info(objectMapper.writeValueAsString(result.getData()));
+    }
+
+    @Test
     public void restViewerJsonTest() throws IOException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
