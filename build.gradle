@@ -137,8 +137,8 @@ subprojects {
             vcsUrl = PROJECT_GIT_REPO_URL
         }
     }
+}
 
-    task wrapper(type: Wrapper) {
-        gradleVersion = "${GRADLE_WRAPPER_VER}"
-    }
+task wrapper(type: Wrapper) {
+    gradleVersion = "${GRADLE_WRAPPER_VER}"
 }
