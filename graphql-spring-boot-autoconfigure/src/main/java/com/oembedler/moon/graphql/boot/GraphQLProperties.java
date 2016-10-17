@@ -31,10 +31,10 @@ import org.springframework.context.annotation.Configuration;
 public class GraphQLProperties {
 
     @NestedConfigurationProperty
-    private Server server;
+    private Server server = new Server();
 
     @NestedConfigurationProperty
-    private Schema schema;
+    private Schema schema = new Schema();
 
     public static class Server {
         private String mapping;
