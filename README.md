@@ -2,7 +2,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
 
-- [GraphQL Spring Framework Boot Starter](#graphql-spring-framework-boot-starter)
+- [GraphQL and GraphiQL Spring Framework Boot Starters](#graphql-and-graphiql-spring-framework-boot-starters)
 - [Intro](#intro)
 - [Requires](#requires)
 - [Enable GraphQL Server](#enable-graphql-server)
