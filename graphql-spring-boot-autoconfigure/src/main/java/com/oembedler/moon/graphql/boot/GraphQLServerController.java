@@ -62,6 +62,9 @@ public class GraphQLServerController {
     @Autowired
     private GraphQLSchemaLocator graphQLSchemaLocator;
 
+    @Autowired(required = false)
+    private CustomResultHandler customResultHandler;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     // ---
@@ -77,7 +80,12 @@ public class GraphQLServerController {
         graphQLContext.setHttpRequest(httpServletRequest);
 
         final Map<String, Object> result = evaluateAndBuildResponseMap(query, operationName, graphQLContext, decodeIntoMap(variables), graphQLSchemaName);
-        return ResponseEntity.ok(result);
+        if (customResultHandler !=null){
+            return customResultHandler.handle(result);
+        }else {
+            return ResponseEntity.ok(result);
+        }
+
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/graphql")
@@ -90,7 +98,11 @@ public class GraphQLServerController {
         graphQLContext.setHttpRequest(httpServletRequest);
 
         final Map<String, Object> result = evaluateAndBuildResponseMap(query, operationName, graphQLContext, new HashMap<>(), graphQLSchemaName);
-        return ResponseEntity.ok(result);
+        if (customResultHandler !=null){
+            return customResultHandler.handle(result);
+        }else {
+            return ResponseEntity.ok(result);
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
@@ -111,7 +123,11 @@ public class GraphQLServerController {
 
         final Map<String, Object> result = evaluateAndBuildResponseMap(query, operationName, graphQLContext, variables, graphQLSchemaName);
 
-        return ResponseEntity.ok(result);
+        if (customResultHandler !=null){
+            return customResultHandler.handle(result);
+        }else {
+            return ResponseEntity.ok(result);
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = "multipart/form-data")
@@ -127,7 +143,11 @@ public class GraphQLServerController {
         graphQLContext.setHttpRequest(httpServletRequest);
 
         final Map<String, Object> result = evaluateAndBuildResponseMap(query, operationName, graphQLContext, decodeIntoMap(variables), graphQLSchemaName);
-        return ResponseEntity.ok(result);
+        if (customResultHandler !=null){
+            return customResultHandler.handle(result);
+        }else {
+            return ResponseEntity.ok(result);
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
@@ -141,7 +161,11 @@ public class GraphQLServerController {
         graphQLContext.setHttpRequest(httpServletRequest);
 
         final Map<String, Object> result = evaluateAndBuildResponseMap(query, operationName, graphQLContext, decodeIntoMap(variables), graphQLSchemaName);
-        return ResponseEntity.ok(result);
+        if (customResultHandler !=null){
+            return customResultHandler.handle(result);
+        }else {
+            return ResponseEntity.ok(result);
+        }
     }
 
     private Map<String, Object> decodeIntoMap(final String variablesParam) throws IOException {
