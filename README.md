@@ -14,6 +14,7 @@
 
 # GraphQL and GraphiQL Spring Framework Boot Starters
 [![Build Status](https://travis-ci.org/oembedler/graphql-spring-boot.svg?branch=master)](https://travis-ci.org/oembedler/graphql-spring-boot)
+[![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/graphql-java/graphql-java)
 
 GraphQL Starter 
 
