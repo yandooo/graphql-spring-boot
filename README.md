@@ -13,7 +13,7 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # GraphQL and GraphiQL Spring Framework Boot Starters
-[![Build Status](https://travis-ci.org/oembedler/graphql-spring-boot.svg?branch=master)](https://travis-ci.org/oembedler/graphql-spring-boot)
+[![Build Status](https://travis-ci.org/graphql-java/graphql-spring-boot.svg?branch=master)](https://travis-ci.org/graphql-java/graphql-spring-boot)
 [![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/graphql-java/graphql-java)
 
 GraphQL Starter 
@@ -35,7 +35,7 @@ Repository contains:
 
   * Java 1.8
   * [Spring Framework GraphQL Common Library](https://github.com/oembedler/spring-graphql-common)
-  * Spring Framework Boot 1.3.x (web)  
+  * Spring Framework Boot 1.4.x (web)
 
 Add repository:
 
