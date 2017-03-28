@@ -23,7 +23,6 @@ import graphql.execution.ExecutionStrategy;
 import graphql.execution.SimpleExecutionStrategy;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.GraphQLOperationListener;
-import graphql.servlet.GraphQLServlet;
 import graphql.servlet.GraphQLServletListener;
 import graphql.servlet.SimpleGraphQLServlet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +50,10 @@ import java.util.List;
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnClass({Servlet.class, DispatcherServlet.class, WebMvcConfigurerAdapter.class})
+@ConditionalOnBean(GraphQLSchema.class)
+@ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter({SpringGraphQLCommonAutoConfiguration.class, WebMvcConfigurerAdapter.class})
 @EnableConfigurationProperties(GraphQLServletProperties.class)
-@ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
 public class GraphQLWebAutoConfiguration {
 
     @Autowired
@@ -66,7 +66,6 @@ public class GraphQLWebAutoConfiguration {
     private List<GraphQLServletListener> servletListeners;
 
     @Bean
-    @ConditionalOnBean(GraphQLSchema.class)
     @ConditionalOnProperty(value = "graphql.servlet.corsEnabled", havingValue = "true", matchIfMissing = true)
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurerAdapter() {
@@ -84,15 +83,7 @@ public class GraphQLWebAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnBean(GraphQLSchema.class)
-    @ConditionalOnMissingBean
-    GraphQLServlet graphQLServlet(GraphQLSchema schema, ExecutionStrategy executionStrategy) {
-        return new SimpleGraphQLServlet(schema, executionStrategy, operationListeners, servletListeners);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    ServletRegistrationBean graphQLServletRegistrationBean(GraphQLServlet graphQLServlet) {
-        return new ServletRegistrationBean(graphQLServlet, graphQLServletProperties.getMapping());
+    ServletRegistrationBean graphQLServletRegistrationBean(GraphQLSchema schema, ExecutionStrategy executionStrategy) {
+        return new ServletRegistrationBean(new SimpleGraphQLServlet(schema, executionStrategy, operationListeners, servletListeners), graphQLServletProperties.getMapping());
     }
 }
