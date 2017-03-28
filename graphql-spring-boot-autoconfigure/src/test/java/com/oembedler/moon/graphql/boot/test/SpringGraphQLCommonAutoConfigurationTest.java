@@ -1,8 +1,7 @@
 package com.oembedler.moon.graphql.boot.test;
 
 import com.oembedler.moon.graphql.GraphQLSchemaBeanFactory;
-import com.oembedler.moon.graphql.boot.GraphQLAutoConfiguration;
-import com.oembedler.moon.graphql.boot.GraphQLSchemaLocator;
+import com.oembedler.moon.graphql.boot.SpringGraphQLCommonAutoConfiguration;
 import com.oembedler.moon.graphql.engine.GraphQLSchemaBuilder;
 import com.oembedler.moon.graphql.engine.GraphQLSchemaConfig;
 import org.junit.After;
@@ -16,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
  */
-public class GraphQLAutoConfigurationTest {
+public class SpringGraphQLCommonAutoConfigurationTest {
 
     private static final String BASE_PACKAGE = "com.oembedler.moon.graphql.boot.test";
     private AnnotationConfigApplicationContext context;
@@ -34,20 +33,18 @@ public class GraphQLAutoConfigurationTest {
         GraphQLSchemaBeanFactory graphQLSchemaBeanFactory = this.context.getBean(GraphQLSchemaBeanFactory.class);
         GraphQLSchemaConfig graphQLSchemaConfig = this.context.getBean(GraphQLSchemaConfig.class);
         GraphQLSchemaBuilder graphQLSchemaBuilder = this.context.getBean(GraphQLSchemaBuilder.class);
-        GraphQLSchemaLocator graphQLSchemaLocator = this.context.getBean(GraphQLSchemaLocator.class);
 
         Assert.assertTrue(graphQLSchemaBeanFactory.containsBean(GraphQLSchemaBeanFactory.class));
         Assert.assertEquals(graphQLSchemaBeanFactory, graphQLSchemaBeanFactory.getBeanByType(GraphQLSchemaBeanFactory.class));
         Assert.assertEquals(graphQLSchemaBeanFactory, graphQLSchemaBuilder.getGraphQLSchemaBeanFactory());
         Assert.assertEquals(graphQLSchemaConfig, graphQLSchemaBuilder.getGraphQLSchemaConfig());
-        Assert.assertEquals(1, graphQLSchemaLocator.getTotalNumberOfSchemas());
     }
 
     private void load(Class<?> config, String... environment) {
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
         EnvironmentTestUtils.addEnvironment(applicationContext, environment);
         applicationContext.register(config);
-        applicationContext.register(GraphQLAutoConfiguration.class);
+        applicationContext.register(SpringGraphQLCommonAutoConfiguration.class);
         applicationContext.refresh();
         this.context = applicationContext;
     }

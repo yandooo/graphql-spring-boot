@@ -23,7 +23,6 @@ import com.oembedler.moon.graphql.GraphQLSchemaBeanFactory;
 import com.oembedler.moon.graphql.SpringGraphQLSchemaBeanFactory;
 import com.oembedler.moon.graphql.engine.GraphQLSchemaBuilder;
 import com.oembedler.moon.graphql.engine.GraphQLSchemaConfig;
-import com.oembedler.moon.graphql.engine.GraphQLSchemaHolder;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -33,7 +32,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,11 +40,11 @@ import java.util.stream.Collectors;
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
  */
 @Configuration
-@EnableConfigurationProperties(GraphQLProperties.class)
-public class GraphQLAutoConfiguration {
+@EnableConfigurationProperties(SpringGraphQLCommonProperties.class)
+public class SpringGraphQLCommonAutoConfiguration {
 
     @Autowired
-    private GraphQLProperties graphQLProperties;
+    private SpringGraphQLCommonProperties springGraphQLCommonProperties;
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -62,24 +60,21 @@ public class GraphQLAutoConfiguration {
     public GraphQLSchemaConfig graphQLSchemaConfig() {
         GraphQLSchemaConfig graphQLSchemaConfig = new GraphQLSchemaConfig();
 
-        // --- populate schema config based on boot GraphQL properties
-        GraphQLProperties.Schema schema = graphQLProperties.getSchema();
-        if (schema != null) {
-            if (schema.getAllowEmptyClientMutationId() != null)
-                graphQLSchemaConfig.setAllowEmptyClientMutationId(schema.getAllowEmptyClientMutationId());
-            if (schema.getInjectClientMutationId() != null)
-                graphQLSchemaConfig.setInjectClientMutationId(schema.getInjectClientMutationId());
-            if (StringUtils.hasText(schema.getClientMutationIdName()))
-                graphQLSchemaConfig.setClientMutationIdName(schema.getClientMutationIdName());
-            if (StringUtils.hasText(schema.getInputObjectNamePrefix()))
-                graphQLSchemaConfig.setInputObjectNamePrefix(schema.getInputObjectNamePrefix());
-            if (StringUtils.hasText(schema.getMutationInputArgumentName()))
-                graphQLSchemaConfig.setMutationInputArgumentName(schema.getMutationInputArgumentName());
-            if (StringUtils.hasText(schema.getOutputObjectNamePrefix()))
-                graphQLSchemaConfig.setOutputObjectNamePrefix(schema.getOutputObjectNamePrefix());
-            if (StringUtils.hasText(schema.getSchemaMutationObjectName()))
-                graphQLSchemaConfig.setSchemaMutationObjectName(schema.getSchemaMutationObjectName());
-        }
+        // --- populate graphQLSpringCommonProperties config based on boot GraphQL properties
+        if (springGraphQLCommonProperties.getAllowEmptyClientMutationId() != null)
+            graphQLSchemaConfig.setAllowEmptyClientMutationId(springGraphQLCommonProperties.getAllowEmptyClientMutationId());
+        if (springGraphQLCommonProperties.getInjectClientMutationId() != null)
+            graphQLSchemaConfig.setInjectClientMutationId(springGraphQLCommonProperties.getInjectClientMutationId());
+        if (StringUtils.hasText(springGraphQLCommonProperties.getClientMutationIdName()))
+            graphQLSchemaConfig.setClientMutationIdName(springGraphQLCommonProperties.getClientMutationIdName());
+        if (StringUtils.hasText(springGraphQLCommonProperties.getInputObjectNamePrefix()))
+            graphQLSchemaConfig.setInputObjectNamePrefix(springGraphQLCommonProperties.getInputObjectNamePrefix());
+        if (StringUtils.hasText(springGraphQLCommonProperties.getMutationInputArgumentName()))
+            graphQLSchemaConfig.setMutationInputArgumentName(springGraphQLCommonProperties.getMutationInputArgumentName());
+        if (StringUtils.hasText(springGraphQLCommonProperties.getOutputObjectNamePrefix()))
+            graphQLSchemaConfig.setOutputObjectNamePrefix(springGraphQLCommonProperties.getOutputObjectNamePrefix());
+        if (StringUtils.hasText(springGraphQLCommonProperties.getSchemaMutationObjectName()))
+            graphQLSchemaConfig.setSchemaMutationObjectName(springGraphQLCommonProperties.getSchemaMutationObjectName());
 
         return graphQLSchemaConfig;
     }
@@ -92,23 +87,23 @@ public class GraphQLAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLSchemaLocator graphQLSchemaLocator() throws ClassNotFoundException {
-        Map<String, GraphQLSchemaHolder> graphQLSchemaHolders = new HashMap<>();
-        GraphQLSchemaBuilder graphQLSchemaBuilder = graphQLSchemaBuilder();
-        Set<Class<?>> schemaClasses = initialSchemaClassesSet();
-        if (schemaClasses.size() > 0) {
-            for (Class<?> schema : schemaClasses) {
-                GraphQLSchemaHolder schemaHolder = graphQLSchemaBuilder.buildSchema(schema);
-                graphQLSchemaHolders.put(schemaHolder.getSchemaName(), schemaHolder);
-            }
+    public graphql.schema.GraphQLSchema graphQLSchemaLocator() throws ClassNotFoundException {
+        Set<Class<?>> schemaClasses = findSchemaClasses();
+
+        if (schemaClasses.size() < 1) {
+            throw new IllegalStateException("Could not create GraphQLSchema: No valid beans with @GraphQLSchema annotation found!");
         }
-        return new GraphQLSchemaLocator(graphQLSchemaHolders);
+
+        if(schemaClasses.size() > 1) {
+            throw new IllegalStateException("Could not create GraphQLSchema: More than one bean with @GraphQLSchema annotation found!  This auto-configuration does not support exposing multiple schemas, please create a graphql.java.GraphQLSchema bean manually or exclude this class from auto-configuration.");
+        }
+
+        return graphQLSchemaBuilder().buildSchema(schemaClasses.stream().findFirst().orElse(null)).getGraphQLSchema();
     }
 
-    protected Set<Class<?>> initialSchemaClassesSet() {
+    protected Set<Class<?>> findSchemaClasses() {
         // scans the application context for classes annotated with {@link GraphQLSchema}
         Map<String, Object> potentialCandidates = applicationContext.getBeansWithAnnotation(GraphQLSchema.class);
         return potentialCandidates.values().stream().map(x -> x.getClass()).collect(Collectors.toSet());
     }
-
 }

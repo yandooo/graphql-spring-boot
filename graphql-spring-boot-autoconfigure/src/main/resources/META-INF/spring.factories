@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.oembedler.moon.graphql.boot.GraphQLAutoConfiguration
+com.oembedler.moon.graphql.boot.GraphQLWebAutoConfiguration,\
+com.oembedler.moon.graphql.boot.SpringGraphQLCommonAutoConfiguration
