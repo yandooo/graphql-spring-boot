@@ -27,7 +27,6 @@ import graphql.servlet.GraphQLServlet;
 import graphql.servlet.GraphQLServletListener;
 import graphql.servlet.SimpleGraphQLServlet;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -52,7 +51,7 @@ import java.util.List;
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnClass({Servlet.class, DispatcherServlet.class, WebMvcConfigurerAdapter.class})
-@AutoConfigureAfter({GraphQLSpringCommonAutoConfiguration.class, WebMvcConfigurerAdapter.class})
+@AutoConfigureAfter({SpringGraphQLCommonAutoConfiguration.class, WebMvcConfigurerAdapter.class})
 @EnableConfigurationProperties(GraphQLServletProperties.class)
 @ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
 public class GraphQLWebAutoConfiguration {

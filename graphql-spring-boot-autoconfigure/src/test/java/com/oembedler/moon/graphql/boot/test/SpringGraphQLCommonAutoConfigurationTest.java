@@ -1,7 +1,7 @@
 package com.oembedler.moon.graphql.boot.test;
 
 import com.oembedler.moon.graphql.GraphQLSchemaBeanFactory;
-import com.oembedler.moon.graphql.boot.GraphQLSpringCommonAutoConfiguration;
+import com.oembedler.moon.graphql.boot.SpringGraphQLCommonAutoConfiguration;
 import com.oembedler.moon.graphql.engine.GraphQLSchemaBuilder;
 import com.oembedler.moon.graphql.engine.GraphQLSchemaConfig;
 import org.junit.After;
@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
  */
-public class GraphQLSpringCommonAutoConfigurationTest {
+public class SpringGraphQLCommonAutoConfigurationTest {
 
     private static final String BASE_PACKAGE = "com.oembedler.moon.graphql.boot.test";
     private AnnotationConfigApplicationContext context;
@@ -44,7 +44,7 @@ public class GraphQLSpringCommonAutoConfigurationTest {
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
         EnvironmentTestUtils.addEnvironment(applicationContext, environment);
         applicationContext.register(config);
-        applicationContext.register(GraphQLSpringCommonAutoConfiguration.class);
+        applicationContext.register(SpringGraphQLCommonAutoConfiguration.class);
         applicationContext.refresh();
         this.context = applicationContext;
     }

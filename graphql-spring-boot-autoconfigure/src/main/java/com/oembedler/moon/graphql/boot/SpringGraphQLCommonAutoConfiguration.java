@@ -40,11 +40,11 @@ import java.util.stream.Collectors;
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
  */
 @Configuration
-@EnableConfigurationProperties(GraphQLSpringCommonProperties.class)
-public class GraphQLSpringCommonAutoConfiguration {
+@EnableConfigurationProperties(SpringGraphQLCommonProperties.class)
+public class SpringGraphQLCommonAutoConfiguration {
 
     @Autowired
-    private GraphQLSpringCommonProperties graphQLSpringCommonProperties;
+    private SpringGraphQLCommonProperties springGraphQLCommonProperties;
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -61,20 +61,20 @@ public class GraphQLSpringCommonAutoConfiguration {
         GraphQLSchemaConfig graphQLSchemaConfig = new GraphQLSchemaConfig();
 
         // --- populate graphQLSpringCommonProperties config based on boot GraphQL properties
-        if (graphQLSpringCommonProperties.getAllowEmptyClientMutationId() != null)
-            graphQLSchemaConfig.setAllowEmptyClientMutationId(graphQLSpringCommonProperties.getAllowEmptyClientMutationId());
-        if (graphQLSpringCommonProperties.getInjectClientMutationId() != null)
-            graphQLSchemaConfig.setInjectClientMutationId(graphQLSpringCommonProperties.getInjectClientMutationId());
-        if (StringUtils.hasText(graphQLSpringCommonProperties.getClientMutationIdName()))
-            graphQLSchemaConfig.setClientMutationIdName(graphQLSpringCommonProperties.getClientMutationIdName());
-        if (StringUtils.hasText(graphQLSpringCommonProperties.getInputObjectNamePrefix()))
-            graphQLSchemaConfig.setInputObjectNamePrefix(graphQLSpringCommonProperties.getInputObjectNamePrefix());
-        if (StringUtils.hasText(graphQLSpringCommonProperties.getMutationInputArgumentName()))
-            graphQLSchemaConfig.setMutationInputArgumentName(graphQLSpringCommonProperties.getMutationInputArgumentName());
-        if (StringUtils.hasText(graphQLSpringCommonProperties.getOutputObjectNamePrefix()))
-            graphQLSchemaConfig.setOutputObjectNamePrefix(graphQLSpringCommonProperties.getOutputObjectNamePrefix());
-        if (StringUtils.hasText(graphQLSpringCommonProperties.getSchemaMutationObjectName()))
-            graphQLSchemaConfig.setSchemaMutationObjectName(graphQLSpringCommonProperties.getSchemaMutationObjectName());
+        if (springGraphQLCommonProperties.getAllowEmptyClientMutationId() != null)
+            graphQLSchemaConfig.setAllowEmptyClientMutationId(springGraphQLCommonProperties.getAllowEmptyClientMutationId());
+        if (springGraphQLCommonProperties.getInjectClientMutationId() != null)
+            graphQLSchemaConfig.setInjectClientMutationId(springGraphQLCommonProperties.getInjectClientMutationId());
+        if (StringUtils.hasText(springGraphQLCommonProperties.getClientMutationIdName()))
+            graphQLSchemaConfig.setClientMutationIdName(springGraphQLCommonProperties.getClientMutationIdName());
+        if (StringUtils.hasText(springGraphQLCommonProperties.getInputObjectNamePrefix()))
+            graphQLSchemaConfig.setInputObjectNamePrefix(springGraphQLCommonProperties.getInputObjectNamePrefix());
+        if (StringUtils.hasText(springGraphQLCommonProperties.getMutationInputArgumentName()))
+            graphQLSchemaConfig.setMutationInputArgumentName(springGraphQLCommonProperties.getMutationInputArgumentName());
+        if (StringUtils.hasText(springGraphQLCommonProperties.getOutputObjectNamePrefix()))
+            graphQLSchemaConfig.setOutputObjectNamePrefix(springGraphQLCommonProperties.getOutputObjectNamePrefix());
+        if (StringUtils.hasText(springGraphQLCommonProperties.getSchemaMutationObjectName()))
+            graphQLSchemaConfig.setSchemaMutationObjectName(springGraphQLCommonProperties.getSchemaMutationObjectName());
 
         return graphQLSchemaConfig;
     }

@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
  * @author Andrew Potter
  */
 @Configuration
-@ConfigurationProperties(prefix = "graphql.graphql-spring-common")
-public class GraphQLSpringCommonProperties {
+@ConfigurationProperties(prefix = "graphql.spring-graphql-common")
+public class SpringGraphQLCommonProperties {
     private String clientMutationIdName;
     private Boolean injectClientMutationId;
     private Boolean allowEmptyClientMutationId;

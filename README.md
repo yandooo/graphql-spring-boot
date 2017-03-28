@@ -106,7 +106,7 @@ graphql:
                uploadMaxFileSize: 128KB
                uploadMaxRequestSize: 128KB
 
-      graphql-spring-common:
+      spring-graphql-common:
                clientMutationIdName: clientMutationId
                injectClientMutationId: true
                allowEmptyClientMutationId: false
