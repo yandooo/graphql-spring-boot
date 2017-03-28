@@ -19,43 +19,45 @@
 
 package com.oembedler.moon.graphql.boot;
 
-import com.google.common.collect.Maps;
-import com.oembedler.moon.graphql.engine.GraphQLSchemaHolder;
-import graphql.Assert;
-
-import java.util.Map;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
  */
-public class GraphQLSchemaLocator {
+@Configuration
+@ConfigurationProperties(prefix = "graphql.servlet")
+public class GraphQLServletProperties {
 
-    private final Map<String, GraphQLSchemaHolder> graphQLSchemaHolders;
-    private final int totalNumberOfSchemas;
+    private static final String DEFAULT_UPLOAD_MAX_FILE_SIZE = "128KB";
+    private static final String DEFAULT_UPLOAD_MAX_REQUEST_SIZE = "128KB";
 
-    public GraphQLSchemaLocator(Map<String, GraphQLSchemaHolder> graphQLSchemaHolders) {
-        this.graphQLSchemaHolders = Maps.newHashMap();
-        this.graphQLSchemaHolders.putAll(graphQLSchemaHolders);
-        this.totalNumberOfSchemas = this.graphQLSchemaHolders.size();
+    private String mapping;
+    private String uploadMaxFileSize;
+    private String uploadMaxRequestSize;
+
+    public String getMapping() {
+        return mapping != null ? mapping : "/graphql";
     }
 
-    public GraphQLSchemaHolder getGraphQLSchemaHolder(final String schemaName) {
-        Assert.assertNotNull(schemaName, "Schema name can not be null");
-        return graphQLSchemaHolders.get(schemaName);
+    public void setMapping(String mapping) {
+        this.mapping = mapping;
     }
 
-    public GraphQLSchemaHolder getSingleSchema() {
-        return getTotalNumberOfSchemas() == 1 ?
-                graphQLSchemaHolders.get(graphQLSchemaHolders.keySet().iterator().next()) :
-                null;
+    public String getUploadMaxFileSize() {
+        return uploadMaxFileSize != null ? uploadMaxFileSize : DEFAULT_UPLOAD_MAX_FILE_SIZE;
     }
 
-    public int getTotalNumberOfSchemas() {
-        return totalNumberOfSchemas;
+    public void setUploadMaxFileSize(String uploadMaxFileSize) {
+        this.uploadMaxFileSize = uploadMaxFileSize;
     }
 
-    public boolean containsSchema(final String schemaName) {
-        Assert.assertNotNull(schemaName, "Schema name can not be null");
-        return graphQLSchemaHolders.containsKey(schemaName);
+    public String getUploadMaxRequestSize() {
+        return uploadMaxRequestSize != null ? uploadMaxRequestSize : DEFAULT_UPLOAD_MAX_REQUEST_SIZE;
+    }
+
+    public void setUploadMaxRequestSize(String uploadMaxRequestSize) {
+        this.uploadMaxRequestSize = uploadMaxRequestSize;
     }
 }
