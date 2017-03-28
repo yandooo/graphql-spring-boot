@@ -18,11 +18,13 @@
  */
 
 dependencies {
-    compile "com.embedler.moon.graphql:spring-graphql-common:$LIB_SPRING_GRAPHQL_COMMON_VER"
     compile "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
     compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
+    compile "com.graphql-java:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
+
     provided "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
     provided "commons-fileupload:commons-fileupload:$LIB_COMMON_UPLOAD"
+    provided "com.embedler.moon.graphql:spring-graphql-common:$LIB_SPRING_GRAPHQL_COMMON_VER"
 
     testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
 }

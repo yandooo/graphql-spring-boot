@@ -19,23 +19,30 @@
 
 package com.oembedler.moon.graphql.boot;
 
-import org.springframework.beans.factory.annotation.Value;
+import graphql.execution.ExecutionStrategy;
+import graphql.execution.SimpleExecutionStrategy;
+import graphql.schema.GraphQLSchema;
+import graphql.servlet.GraphQLOperationListener;
+import graphql.servlet.GraphQLServletListener;
+import graphql.servlet.SimpleGraphQLServlet;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.context.embedded.MultipartConfigFactory;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import javax.servlet.MultipartConfigElement;
 import javax.servlet.Servlet;
+import java.util.List;
 
 /**
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
@@ -43,55 +50,40 @@ import javax.servlet.Servlet;
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnClass({Servlet.class, DispatcherServlet.class, WebMvcConfigurerAdapter.class})
-@AutoConfigureAfter({GraphQLAutoConfiguration.class, WebMvcConfigurerAdapter.class})
+@ConditionalOnBean(GraphQLSchema.class)
+@ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
+@AutoConfigureAfter({SpringGraphQLCommonAutoConfiguration.class, WebMvcConfigurerAdapter.class})
+@EnableConfigurationProperties(GraphQLServletProperties.class)
 public class GraphQLWebAutoConfiguration {
 
-    private static final String DEFAULT_UPLOAD_MAX_FILE_SIZE = "128KB";
-    private static final String DEFAULT_UPLOAD_MAX_REQUEST_SIZE = "128KB";
+    @Autowired
+    private GraphQLServletProperties graphQLServletProperties;
 
-    @Value("${graphql.server.mapping:/graphql}")
-    private String graphQLServerMapping;
+    @Autowired(required = false)
+    private List<GraphQLOperationListener> operationListeners;
+
+    @Autowired(required = false)
+    private List<GraphQLServletListener> servletListeners;
 
     @Bean
-    @ConditionalOnProperty(value = "graphql.server.corsEnabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(value = "graphql.servlet.corsEnabled", havingValue = "true", matchIfMissing = true)
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurerAdapter() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping(graphQLServerMapping);
+                registry.addMapping(graphQLServletProperties.getMapping());
             }
         };
     }
 
     @Bean
-    @ConditionalOnMissingBean(GraphQLServerController.class)
-    public GraphQLServerController basicGraphQLController() {
-        return new GraphQLServerController();
+    @ConditionalOnMissingBean
+    public ExecutionStrategy executionStrategy() {
+        return new SimpleExecutionStrategy();
     }
 
     @Bean
-    @ConditionalOnMissingBean(GlobalDefaultExceptionHandler.class)
-    @ConditionalOnProperty(value = "graphql.server.suppressSpringResponseCodes", havingValue = "true", matchIfMissing = true)
-    public GlobalDefaultExceptionHandler globalDefaultExceptionHandler() {
-        return new GlobalDefaultExceptionHandler();
+    ServletRegistrationBean graphQLServletRegistrationBean(GraphQLSchema schema, ExecutionStrategy executionStrategy) {
+        return new ServletRegistrationBean(new SimpleGraphQLServlet(schema, executionStrategy, operationListeners, servletListeners), graphQLServletProperties.getMapping());
     }
-
-    @Bean
-    @ConditionalOnMissingBean(MultipartConfigElement.class)
-    public MultipartConfigElement multipartConfigElement(GraphQLProperties graphQLProperties) {
-        MultipartConfigFactory factory = new MultipartConfigFactory();
-        factory.setMaxFileSize(DEFAULT_UPLOAD_MAX_FILE_SIZE);
-        factory.setMaxRequestSize(DEFAULT_UPLOAD_MAX_REQUEST_SIZE);
-
-        String temp = graphQLProperties.getServer().getUploadMaxFileSize();
-        if (StringUtils.hasText(temp))
-            factory.setMaxFileSize(temp);
-
-        temp = graphQLProperties.getServer().getUploadMaxRequestSize();
-        if (StringUtils.hasText(temp))
-            factory.setMaxRequestSize(temp);
-
-        return factory.createMultipartConfig();
-    }
-
 }
