@@ -38,7 +38,7 @@ public class GraphQLServletProperties {
     private String uploadMaxRequestSize;
 
     public String getMapping() {
-        return mapping != null ? mapping : "/graphql";
+        return mapping != null ? mapping : "/graphql/*";
     }
 
     public void setMapping(String mapping) {
