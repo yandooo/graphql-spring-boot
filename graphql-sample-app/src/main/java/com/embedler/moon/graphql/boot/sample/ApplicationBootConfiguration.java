@@ -19,7 +19,6 @@
 
 package com.embedler.moon.graphql.boot.sample;
 
-import com.oembedler.moon.graphql.boot.EnableGraphQLServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -27,7 +26,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
  */
 @SpringBootApplication
-@EnableGraphQLServer
 public class ApplicationBootConfiguration {
 
     public static void main(String[] args) throws Exception {

@@ -23,9 +23,15 @@ import com.embedler.moon.graphql.boot.sample.TodoSimpleListConnection;
 import com.embedler.moon.graphql.boot.sample.schema.objecttype.RootObjectType;
 import com.embedler.moon.graphql.boot.sample.schema.objecttype.TodoObjectType;
 import com.embedler.moon.graphql.boot.sample.schema.objecttype.UserObjectType;
-import com.oembedler.moon.graphql.boot.GraphQLContext;
-import com.oembedler.moon.graphql.engine.stereotype.*;
+import com.oembedler.moon.graphql.engine.stereotype.GraphQLDescription;
+import com.oembedler.moon.graphql.engine.stereotype.GraphQLIn;
+import com.oembedler.moon.graphql.engine.stereotype.GraphQLMutation;
+import com.oembedler.moon.graphql.engine.stereotype.GraphQLOut;
+import com.oembedler.moon.graphql.engine.stereotype.GraphQLSchema;
+import com.oembedler.moon.graphql.engine.stereotype.GraphQLSchemaQuery;
+import graphql.servlet.GraphQLContext;
 
+import javax.servlet.http.Part;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -143,7 +149,7 @@ public class TodoSchema {
     public
     @GraphQLOut("filename")
     String uploadFile(GraphQLContext graphQLContext) {
-        return graphQLContext.getUploadedFile().getName();
+        return graphQLContext.getParts().orElse(new ArrayList<>()).stream().map(Part::getName).collect(Collectors.joining(","));
     }
 
     @GraphQLMutation

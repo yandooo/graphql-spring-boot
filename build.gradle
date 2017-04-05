@@ -30,6 +30,8 @@ buildscript {
     }
 }
 
+def versionDate = new SimpleDateFormat('yyyy-MM-dd\'T\'HH-mm-ss').format(new Date())
+
 subprojects {
 
     apply plugin: 'idea'
@@ -42,7 +44,7 @@ subprojects {
     apply plugin: 'propdeps-eclipse'
     apply plugin: "com.jfrog.bintray"
 
-    version = System.env.TRAVIS_TAG ? PROJECT_VERSION : PROJECT_VERSION + '-' + new SimpleDateFormat('yyyy-MM-dd\'T\'HH-mm-ss').format(new Date())
+    version = System.env.TRAVIS_TAG ? PROJECT_VERSION : PROJECT_VERSION + '-' + versionDate
     group = PROJECT_GROUP
 
     repositories {
@@ -137,8 +139,8 @@ subprojects {
             vcsUrl = PROJECT_GIT_REPO_URL
         }
     }
+}
 
-    task wrapper(type: Wrapper) {
-        gradleVersion = "${GRADLE_WRAPPER_VER}"
-    }
+task wrapper(type: Wrapper) {
+    gradleVersion = "${GRADLE_WRAPPER_VER}"
 }

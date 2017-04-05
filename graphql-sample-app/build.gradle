@@ -22,7 +22,7 @@ buildscript {
         maven { url 'http://repo.spring.io/plugins-release' }
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.3.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6"
     }
 }
@@ -38,6 +38,8 @@ repositories {
 dependencies{
     compile(project(":graphql-spring-boot-starter"))
     compile(project(":graphiql-spring-boot-starter"))
+
+    compile "com.embedler.moon.graphql:spring-graphql-common:$LIB_SPRING_GRAPHQL_COMMON_VER"
 
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-actuator")
