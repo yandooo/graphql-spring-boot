@@ -2,6 +2,4 @@ language: java
 jdk:
   - oraclejdk8
 before_install:
- - chmod +x gradlew  
-after_success:
-  - ./gradlew bintrayUpload -x check --info
+ - chmod +x gradlew
