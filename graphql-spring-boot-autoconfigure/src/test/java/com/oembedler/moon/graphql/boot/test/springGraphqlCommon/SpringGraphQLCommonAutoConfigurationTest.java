@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
  */
 public class SpringGraphQLCommonAutoConfigurationTest extends AutoConfigurationTest {
 
-    protected SpringGraphQLCommonAutoConfigurationTest() {
+    public SpringGraphQLCommonAutoConfigurationTest() {
         super(SpringGraphQLCommonAutoConfiguration.class);
     }
 
