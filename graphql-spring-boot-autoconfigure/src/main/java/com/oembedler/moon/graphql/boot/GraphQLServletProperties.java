@@ -30,12 +30,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "graphql.servlet")
 public class GraphQLServletProperties {
 
-    private static final String DEFAULT_UPLOAD_MAX_FILE_SIZE = "128KB";
-    private static final String DEFAULT_UPLOAD_MAX_REQUEST_SIZE = "128KB";
-
     private String mapping;
-    private String uploadMaxFileSize;
-    private String uploadMaxRequestSize;
 
     public String getMapping() {
         return mapping != null ? mapping : "/graphql/*";
@@ -43,21 +38,5 @@ public class GraphQLServletProperties {
 
     public void setMapping(String mapping) {
         this.mapping = mapping;
-    }
-
-    public String getUploadMaxFileSize() {
-        return uploadMaxFileSize != null ? uploadMaxFileSize : DEFAULT_UPLOAD_MAX_FILE_SIZE;
-    }
-
-    public void setUploadMaxFileSize(String uploadMaxFileSize) {
-        this.uploadMaxFileSize = uploadMaxFileSize;
-    }
-
-    public String getUploadMaxRequestSize() {
-        return uploadMaxRequestSize != null ? uploadMaxRequestSize : DEFAULT_UPLOAD_MAX_REQUEST_SIZE;
-    }
-
-    public void setUploadMaxRequestSize(String uploadMaxRequestSize) {
-        this.uploadMaxRequestSize = uploadMaxRequestSize;
     }
 }
