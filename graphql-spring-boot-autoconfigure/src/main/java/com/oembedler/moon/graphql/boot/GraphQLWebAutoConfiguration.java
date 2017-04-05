@@ -52,7 +52,7 @@ import java.util.List;
 @ConditionalOnClass({Servlet.class, DispatcherServlet.class, WebMvcConfigurerAdapter.class})
 @ConditionalOnBean(GraphQLSchema.class)
 @ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
-@AutoConfigureAfter({SpringGraphQLCommonAutoConfiguration.class, WebMvcConfigurerAdapter.class})
+@AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class, SpringGraphQLCommonAutoConfiguration.class, WebMvcConfigurerAdapter.class})
 @EnableConfigurationProperties(GraphQLServletProperties.class)
 public class GraphQLWebAutoConfiguration {
 

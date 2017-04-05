@@ -1,4 +1,4 @@
-package com.oembedler.moon.graphql.boot.test.schema;
+package com.oembedler.moon.graphql.boot.test.springGraphqlCommon.schema;
 
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLObject;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLSchema;
