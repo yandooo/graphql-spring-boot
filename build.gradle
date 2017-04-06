@@ -30,10 +30,7 @@ buildscript {
     }
 }
 
-def versionDate = new SimpleDateFormat('yyyy-MM-dd\'T\'HH-mm-ss').format(new Date())
-
 subprojects {
-
     apply plugin: 'idea'
     apply plugin: 'java'
     apply plugin: 'maven'
@@ -44,7 +41,7 @@ subprojects {
     apply plugin: 'propdeps-eclipse'
     apply plugin: "com.jfrog.bintray"
 
-    version = System.env.TRAVIS_TAG ? PROJECT_VERSION : PROJECT_VERSION + '-' + versionDate
+    version = PROJECT_VERSION
     group = PROJECT_GROUP
 
     repositories {
