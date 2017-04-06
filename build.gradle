@@ -17,8 +17,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import java.text.SimpleDateFormat
-
 buildscript {
     repositories {
         maven { url "https://plugins.gradle.org/m2/" }
@@ -124,8 +122,8 @@ subprojects {
     }
 
     bintray {
-        user = System.env.BINTRAY_USER ?: project["bintray.user"]
-        key = System.env.BINTRAY_KEY ?: project["bintray.key"]
+        user = System.env.BINTRAY_USER ?: BINTRAY_USER
+        key = System.env.BINTRAY_KEY ?: BINTRAY_KEY
         publications = ['mainProjectPublication']
         publish = true
         pkg {
@@ -134,6 +132,10 @@ subprojects {
             desc = PROJECT_DESC
             licenses = [PROJECT_LICENSE]
             vcsUrl = PROJECT_GIT_REPO_URL
+            version {
+                println "Uploading version: $project.version"
+                name = project.version
+            }
         }
     }
 }
