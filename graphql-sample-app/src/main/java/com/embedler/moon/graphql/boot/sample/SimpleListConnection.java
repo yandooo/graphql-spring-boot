@@ -5,6 +5,7 @@ import com.oembedler.moon.graphql.engine.relay.EdgeObjectType;
 import com.oembedler.moon.graphql.engine.relay.PageInfoObjectType;
 import graphql.relay.Base64;
 import graphql.relay.ConnectionCursor;
+import graphql.relay.DefaultConnectionCursor;
 import graphql.schema.DataFetchingEnvironment;
 
 import java.util.ArrayList;
@@ -98,7 +99,7 @@ public class SimpleListConnection {
     public ConnectionCursor cursorForObjectInConnection(Object object) {
         int index = data.indexOf(object);
         String cursor = createCursor(index);
-        return new ConnectionCursor(cursor);
+        return new DefaultConnectionCursor(cursor);
     }
 
     private int getOffsetFromCursor(String cursor, int defaultValue) {
