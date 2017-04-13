@@ -97,25 +97,27 @@ GraphiQL becomes accessible at the root `/` if `graphiql-spring-boot-starter` ad
 
 Note that GraphQL server must be available at `/graphql/*` context to be discovered by GraphiQL.
 
+# Supported GraphQL-Java Libraries
+
+The following libraries have auto-configuration classes for creating a `GraphQLSchema`.
+
+### GraphQL Java Tools
+###### https://github.com/graphql-java/graphql-java-tools
+
+All `GraphQLResolver` and `GraphQLScalar` beans, along with a bean of type `SchemaParserDictionary` (to provide all other classes), will be used to create a GraphQLSchema.  Any files on the classpath named `*.graphqls` will be used to provide the schema definition.  See the [Readme](https://github.com/graphql-java/graphql-java-tools#usage) for more info.
+
+### GraphQL Spring Common
+###### https://github.com/oembedler/spring-graphql-common
+
+See the [Readme](https://github.com/oembedler/spring-graphql-common#usage) for usage instructions.
+
+
 # Contributions
 
-Contributions are welcome.
+Contributions are welcome.  Please respect the [Code of Conduct](http://contributor-covenant.org/version/1/3/0/).
 
-Tips:
 
-- Respect the [Code of Conduct](http://contributor-covenant.org/version/1/3/0/).
-- Before opening an Issue to report a bug, please try the latest development version. 
-It might happen that the problem is already solved.
-- Please use  Markdown to format your comments properly. 
-If you are not familiar with that: [Getting started with writing and formatting on GitHub](https://help.github.com/articles/getting-started-with-writing-and-formatting-on-github/)
-- For Pull Requests:
-  - Here are some [general tips](https://github.com/blog/1943-how-to-write-the-perfect-pull-request)
-  - Please be a as focused and clear as possible and don't mix concerns. 
-    This includes refactorings mixed with bug-fixes/features, see [Open Source Contribution Etiquette](http://tirania.org/blog/archive/2010/Dec-31.html) 
-  - It would be good to add an automatic test(s). 
-  
-
-# License
+# Licenses
 
 `graphql-spring-boot-starter` and `graphiql-spring-boot-starter` are licensed under the MIT License. See [LICENSE](LICENSE.md) for details.
 
