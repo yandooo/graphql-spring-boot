@@ -14,16 +14,15 @@
 
 # GraphQL and GraphiQL Spring Framework Boot Starters
 [![Build Status](https://travis-ci.org/graphql-java/graphql-spring-boot.svg?branch=master)](https://travis-ci.org/graphql-java/graphql-spring-boot)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot)
 [![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/graphql-java/graphql-java)
 
 GraphQL Starter 
 
-[ ![Download](https://api.bintray.com/packages/graphql-java/maven/graphql-spring-boot-starter/images/download.svg) ](https://bintray.com/graphql-java/maven/graphql-spring-boot-starter/_latestVersion)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot-starter)
 
 GraphiQL Starter 
 
-[ ![Download](https://api.bintray.com/packages/graphql-java/maven/graphiql-spring-boot-starter/images/download.svg) ](https://bintray.com/graphql-java/maven/graphiql-spring-boot-starter/_latestVersion)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphiql-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphiql-spring-boot-starter)
 
 # Intro
 
