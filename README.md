@@ -9,7 +9,7 @@
 
 - [Intro](#intro)
 - [Requirements and Downloads](#requirements-and-downloads)
-- [Enable GraphQL Server](#enable-graphql-server)
+- [Enable GraphQL Servlet](#enable-graphql-servlet)
 - [Enable GraphiQL](#enable-graphiql)
 - [Supported GraphQL-Java Libraries](#supported-graphql-java-libraries)
     - [GraphQL Java Tools](#graphql-java-tools) - [https://github.com/graphql-java/graphql-java-tools](https://github.com/graphql-java/graphql-java-tools)
@@ -64,7 +64,7 @@ Maven:
 ```
 
 
-# Enable GraphQL Server
+# Enable GraphQL Servlet
 
 The servlet becomes accessible at `/graphql` if `graphql-spring-boot-starter` added as a dependency to a boot application.
 A GraphQL schema is automatically discovered based on which graphql-java schema libraries are currently on the classpath.
