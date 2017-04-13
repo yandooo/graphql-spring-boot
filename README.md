@@ -28,65 +28,44 @@ Repository contains:
 # Requires
 
   * Java 1.8
-  * Spring Framework Boot > 1.3.x (web)  
+  * Spring Framework Boot > 1.3.x (web)
 
-Add repository:
+Gradle:
 
 ```gradle
 repositories {
-    // stable build
-    jcenter()
-    // development build
-    maven { url  "http://dl.bintray.com/oembedler/maven" }
+    mavenCentral()
 }
-```
 
-Dependency:
-
-```gradle
 dependencies {
-  compile 'com.embedler.moon.graphql.boot:graphql-spring-boot-starter:INSERT_LATEST_VERSION_HERE'
+  compile 'com.graphql-java:graphql-spring-boot-starter:3.0.6'
   
   // to embed GraphiQL tool
-  compile 'com.embedler.moon.graphql.boot:graphiql-spring-boot-starter:INSERT_LATEST_VERSION_HERE'
+  compile 'com.graphql-java:graphiql-spring-boot-starter:3.0.6'
 }
 ```
 
-How to use the latest build with Maven:
-
-```xml
-<repository>
-    <snapshots>
-        <enabled>false</enabled>
-    </snapshots>
-    <id>bintray-oembedler-maven</id>
-    <name>bintray</name>
-    <url>http://dl.bintray.com/oembedler/maven</url>
-</repository>
-```
-
-Dependency:
-
+Maven:
 ```xml
 <dependency>
-    <groupId>com.embedler.moon.graphql.boot.starter</groupId>
+    <groupId>com.graphql-java</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>INSERT_LATEST_VERSION_HERE</version>
+    <version>3.0.6</version>
 </dependency>
 
 <!-- to embed GraphiQL tool -->
 <dependency>
-    <groupId>com.embedler.moon.graphql.boot.starter</groupId>
+    <groupId>com.graphql-java</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>INSERT_LATEST_VERSION_HERE</version>
+    <version>3.0.6</version>
 </dependency>
 ```
 
 
 # Enable GraphQL Server
 
-Server becomes accessible at `/graphql` if `graphql-spring-boot-starter` added as a dependency to a boot application.
-A GraphQL schema is automatically discovered extracting classes from Spring context marked as `@GraphQLSchema`.
+The servlet becomes accessible at `/graphql` if `graphql-spring-boot-starter` added as a dependency to a boot application.
+A GraphQL schema is automatically discovered based on which graphql-java schema libraries are currently on the classpath.
 
 See the [graphql-java-servlet usage docs](https://github.com/graphql-java/graphql-java-servlet#usage) for the avaiable endpoints exposed.
 
@@ -95,11 +74,9 @@ Available Spring Boot configuration parameters (either `application.yml` or `app
 ```yaml
 graphql:
       servlet:
-               mapping: /graphql
+               mapping: /graphql/*
                enabled: true
                corsEnabled: true
-               uploadMaxFileSize: 128KB
-               uploadMaxRequestSize: 128KB
 
       spring-graphql-common:
                clientMutationIdName: clientMutationId
@@ -111,14 +88,14 @@ graphql:
                schemaMutationObjectName: Mutation
 ```
 
-By default system enables global CORS filter for `/graphql/**` context.
+By default a global CORS filter is enabled for `/graphql/**` context.
 The `corsEnabled` can be set to `false` to disable it.
 
-# Enable GraphiQL Tool
+# Enable GraphiQL
 
 GraphiQL becomes accessible at the root `/` if `graphiql-spring-boot-starter` added as a dependency to a boot application.
 
-Note that GraphQL server must be available at `/graphql` context to be discovered by GraphiQL.
+Note that GraphQL server must be available at `/graphql/*` context to be discovered by GraphiQL.
 
 # Contributions
 
