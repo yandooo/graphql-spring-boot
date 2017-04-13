@@ -1,26 +1,23 @@
+# GraphQL and GraphiQL Spring Framework Boot Starters
+[![Build Status](https://travis-ci.org/graphql-java/graphql-spring-boot.svg?branch=master)](https://travis-ci.org/graphql-java/graphql-spring-boot)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot-starter)
+[![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/graphql-java/graphql-java)
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
 
-- [GraphQL and GraphiQL Spring Framework Boot Starters](#graphql-and-graphiql-spring-framework-boot-starters)
 - [Intro](#intro)
 - [Requirements and Downloads](#requirements-and-downloads)
 - [Enable GraphQL Server](#enable-graphql-server)
 - [Enable GraphiQL](#enable-graphiql)
 - [Supported GraphQL-Java Libraries](#supported-graphql-java-libraries)
-    - [GraphQL Java Tools](#graphql-java-tools)
-          - [https://github.com/graphql-java/graphql-java-tools](https://github.com/graphql-java/graphql-java-tools)
-    - [GraphQL Spring Common](#graphql-spring-common)
-          - [https://github.com/oembedler/spring-graphql-common](https://github.com/oembedler/spring-graphql-common)
+    - [GraphQL Java Tools](#graphql-java-tools) - [https://github.com/graphql-java/graphql-java-tools](https://github.com/graphql-java/graphql-java-tools)
+    - [GraphQL Spring Common](#graphql-spring-common) - [https://github.com/oembedler/spring-graphql-common](https://github.com/oembedler/spring-graphql-common)
 - [Contributions](#contributions)
 - [Licenses](#licenses)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# GraphQL and GraphiQL Spring Framework Boot Starters
-[![Build Status](https://travis-ci.org/graphql-java/graphql-spring-boot.svg?branch=master)](https://travis-ci.org/graphql-java/graphql-spring-boot)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot-starter)
-[![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/graphql-java/graphql-java)
 
 
 # Intro
