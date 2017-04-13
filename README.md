@@ -4,11 +4,16 @@
 
 - [GraphQL and GraphiQL Spring Framework Boot Starters](#graphql-and-graphiql-spring-framework-boot-starters)
 - [Intro](#intro)
-- [Requires](#requires)
+- [Requirements and Downloads](#requirements-and-downloads)
 - [Enable GraphQL Server](#enable-graphql-server)
-- [Enable GraphiQL Tool](#enable-graphiql-tool)
+- [Enable GraphiQL](#enable-graphiql)
+- [Supported GraphQL-Java Libraries](#supported-graphql-java-libraries)
+    - [GraphQL Java Tools](#graphql-java-tools)
+          - [https://github.com/graphql-java/graphql-java-tools](#httpsgithubcomgraphql-javagraphql-java-tools)
+    - [GraphQL Spring Common](#graphql-spring-common)
+          - [https://github.com/oembedler/spring-graphql-common](#httpsgithubcomoembedlerspring-graphql-common)
 - [Contributions](#contributions)
-- [License](#license)
+- [Licenses](#licenses)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
