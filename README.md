@@ -9,9 +9,9 @@
 - [Enable GraphiQL](#enable-graphiql)
 - [Supported GraphQL-Java Libraries](#supported-graphql-java-libraries)
     - [GraphQL Java Tools](#graphql-java-tools)
-          - [https://github.com/graphql-java/graphql-java-tools](#httpsgithubcomgraphql-javagraphql-java-tools)
+          - [https://github.com/graphql-java/graphql-java-tools](https://github.com/graphql-java/graphql-java-tools)
     - [GraphQL Spring Common](#graphql-spring-common)
-          - [https://github.com/oembedler/spring-graphql-common](#httpsgithubcomoembedlerspring-graphql-common)
+          - [https://github.com/oembedler/spring-graphql-common](https://github.com/oembedler/spring-graphql-common)
 - [Contributions](#contributions)
 - [Licenses](#licenses)
 
