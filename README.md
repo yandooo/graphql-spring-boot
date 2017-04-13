@@ -25,7 +25,7 @@ Repository contains:
 * `graphql-spring-boot-starter` to turn your boot application into GraphQL server (see [graphql-java-servlet](https://github.com/graphql-java/graphql-java-servlet))
 * `graphiql-spring-boot-starter`to embed `GraphiQL` tool for schema introspection and query debugging (see [graphiql](https://github.com/graphql/graphiql))
 
-# Requires
+# Requirements and Downloads
 
   * Java 1.8
   * Spring Framework Boot > 1.3.x (web)
