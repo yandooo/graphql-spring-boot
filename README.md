@@ -14,15 +14,9 @@
 
 # GraphQL and GraphiQL Spring Framework Boot Starters
 [![Build Status](https://travis-ci.org/graphql-java/graphql-spring-boot.svg?branch=master)](https://travis-ci.org/graphql-java/graphql-spring-boot)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot-starter)
 [![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/graphql-java/graphql-java)
 
-GraphQL Starter 
-
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot-starter)
-
-GraphiQL Starter 
-
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphiql-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphiql-spring-boot-starter)
 
 # Intro
 
