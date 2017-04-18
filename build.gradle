@@ -143,7 +143,6 @@ subprojects {
             licenses = [PROJECT_LICENSE]
             vcsUrl = PROJECT_GIT_REPO_URL
             version {
-                println "Uploading version: $project.version"
                 name = project.version
             }
         }
