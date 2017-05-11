@@ -23,7 +23,6 @@ dependencies {
     compile "com.graphql-java:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
 
     provided "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
-    provided "commons-fileupload:commons-fileupload:$LIB_COMMON_UPLOAD"
     provided "com.embedler.moon.graphql:spring-graphql-common:$LIB_SPRING_GRAPHQL_COMMON_VER"
     provided "com.graphql-java:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
 

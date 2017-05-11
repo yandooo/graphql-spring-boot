@@ -21,6 +21,7 @@ package com.oembedler.moon.graphql.boot;
 
 import graphql.execution.ExecutionStrategy;
 import graphql.execution.SimpleExecutionStrategy;
+import graphql.execution.instrumentation.Instrumentation;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.GraphQLOperationListener;
 import graphql.servlet.GraphQLServletListener;
@@ -65,6 +66,9 @@ public class GraphQLWebAutoConfiguration {
     @Autowired(required = false)
     private List<GraphQLServletListener> servletListeners;
 
+    @Autowired(required = false)
+    private Instrumentation instrumentation;
+
     @Bean
     @ConditionalOnProperty(value = "graphql.servlet.corsEnabled", havingValue = "true", matchIfMissing = true)
     public WebMvcConfigurer corsConfigurer() {
@@ -84,6 +88,6 @@ public class GraphQLWebAutoConfiguration {
 
     @Bean
     ServletRegistrationBean graphQLServletRegistrationBean(GraphQLSchema schema, ExecutionStrategy executionStrategy) {
-        return new ServletRegistrationBean(new SimpleGraphQLServlet(schema, executionStrategy, operationListeners, servletListeners), graphQLServletProperties.getMapping());
+        return new ServletRegistrationBean(new SimpleGraphQLServlet(schema, executionStrategy, operationListeners, servletListeners, instrumentation), graphQLServletProperties.getMapping());
     }
 }
