@@ -20,10 +20,12 @@
 package com.oembedler.moon.graphql.boot;
 
 import graphql.execution.ExecutionStrategy;
-import graphql.execution.SimpleExecutionStrategy;
 import graphql.execution.instrumentation.Instrumentation;
 import graphql.schema.GraphQLSchema;
-import graphql.servlet.GraphQLOperationListener;
+import graphql.servlet.DefaultExecutionStrategyProvider;
+import graphql.servlet.DefaultGraphQLSchemaProvider;
+import graphql.servlet.ExecutionStrategyProvider;
+import graphql.servlet.GraphQLSchemaProvider;
 import graphql.servlet.GraphQLServlet;
 import graphql.servlet.GraphQLServletListener;
 import graphql.servlet.SimpleGraphQLServlet;
@@ -42,34 +44,37 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.CorsRegistryWorkaround;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import javax.servlet.Servlet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
  */
 @Configuration
 @ConditionalOnWebApplication
-@ConditionalOnClass({Servlet.class, DispatcherServlet.class})
-@ConditionalOnBean(GraphQLSchema.class)
+@ConditionalOnClass(DispatcherServlet.class)
+@ConditionalOnBean({GraphQLSchema.class, GraphQLSchemaProvider.class})
 @ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
-@AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class, SpringGraphQLCommonAutoConfiguration.class, WebMvcConfigurerAdapter.class})
+@AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class, SpringGraphQLCommonAutoConfiguration.class})
 @EnableConfigurationProperties(GraphQLServletProperties.class)
 public class GraphQLWebAutoConfiguration {
+
+    public static final String QUERY_EXECUTION_STRATEGY = "queryExecutionStrategy";
+    public static final String MUTATION_EXECUTION_STRATEGY = "mutationExecutionStrategy";
+    public static final String SUBSCRIPTION_EXECUTION_STRATEGY = "subscriptionExecutionStrategy";
 
     @Autowired
     private GraphQLServletProperties graphQLServletProperties;
 
     @Autowired(required = false)
-    private List<GraphQLOperationListener> operationListeners;
-
-    @Autowired(required = false)
-    private List<GraphQLServletListener> servletListeners;
+    private List<GraphQLServletListener> listeners;
 
     @Autowired(required = false)
     private Instrumentation instrumentation;
+
+    @Autowired(required = false)
+    private Map<String, ExecutionStrategy> executionStrategies;
 
     @Bean
     @ConditionalOnClass(CorsFilter.class)
@@ -84,14 +89,47 @@ public class GraphQLWebAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ExecutionStrategy executionStrategy() {
-        return new SimpleExecutionStrategy();
+    public GraphQLSchemaProvider graphQLSchemaProvider(GraphQLSchema schema) {
+        return new DefaultGraphQLSchemaProvider(schema);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLServlet graphQLServlet(GraphQLSchema schema, ExecutionStrategy executionStrategy) {
-        return new SimpleGraphQLServlet(schema, executionStrategy, operationListeners, servletListeners, instrumentation);
+    public ExecutionStrategyProvider executionStrategyProvider() {
+        if(executionStrategies == null || executionStrategies.isEmpty()) {
+            return new DefaultExecutionStrategyProvider();
+        } else if(executionStrategies.entrySet().size() == 1) {
+            return new DefaultExecutionStrategyProvider(executionStrategies.entrySet().stream().findFirst().get().getValue());
+        } else {
+
+            if(!executionStrategies.containsKey(QUERY_EXECUTION_STRATEGY)) {
+                throwIncorrectExecutionStrategyNameException();
+            }
+
+            if(executionStrategies.size() == 2 && !(executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY) || executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
+                throwIncorrectExecutionStrategyNameException();
+            }
+
+            if(executionStrategies.size() >= 3 && !(executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY) && executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
+                throwIncorrectExecutionStrategyNameException();
+            }
+
+            return new DefaultExecutionStrategyProvider(
+                executionStrategies.get(QUERY_EXECUTION_STRATEGY),
+                executionStrategies.get(MUTATION_EXECUTION_STRATEGY),
+                executionStrategies.get(SUBSCRIPTION_EXECUTION_STRATEGY)
+            );
+        }
+    }
+
+    private void throwIncorrectExecutionStrategyNameException() {
+        throw new IllegalStateException(String.format("When defining more than one execution strategy, they must be named %s, %s, or %s", QUERY_EXECUTION_STRATEGY, MUTATION_EXECUTION_STRATEGY, SUBSCRIPTION_EXECUTION_STRATEGY));
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public GraphQLServlet graphQLServlet(GraphQLSchemaProvider schemaProvider, ExecutionStrategyProvider executionStrategyProvider) {
+        return new SimpleGraphQLServlet(schemaProvider, executionStrategyProvider, listeners, instrumentation);
     }
 
     @Bean

@@ -4,6 +4,7 @@ import com.coxautodev.graphql.tools.GraphQLResolver;
 import com.coxautodev.graphql.tools.SchemaParser;
 import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
+import graphql.servlet.GraphQLSchemaProvider;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -67,7 +68,7 @@ public class GraphQLJavaToolsAutoConfiguration {
 
     @Bean
     @ConditionalOnBean(SchemaParser.class)
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean({GraphQLSchema.class, GraphQLSchemaProvider.class})
     public GraphQLSchema graphQLSchema(SchemaParser schemaParser) {
         return schemaParser.makeExecutableSchema();
     }

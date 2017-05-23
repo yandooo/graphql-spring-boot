@@ -24,6 +24,7 @@ import com.oembedler.moon.graphql.SpringGraphQLSchemaBeanFactory;
 import com.oembedler.moon.graphql.engine.GraphQLSchemaBuilder;
 import com.oembedler.moon.graphql.engine.GraphQLSchemaConfig;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLSchema;
+import graphql.servlet.GraphQLSchemaProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -88,7 +89,7 @@ public class SpringGraphQLCommonAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean({graphql.schema.GraphQLSchema.class, GraphQLSchemaProvider.class})
     public graphql.schema.GraphQLSchema graphQLSchemaLocator() throws ClassNotFoundException {
         Set<Class<?>> schemaClasses = findSchemaClasses();
 

@@ -1,7 +1,7 @@
 package com.oembedler.moon.graphql.boot.test.graphqlJavaTools;
 
 import com.oembedler.moon.graphql.boot.GraphQLJavaToolsAutoConfiguration;
-import com.oembedler.moon.graphql.boot.test.AutoConfigurationTest;
+import com.oembedler.moon.graphql.boot.test.AbstractAutoConfigurationTest;
 import graphql.schema.GraphQLSchema;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
  */
-public class GraphQLJavaToolsAutoConfigurationTest extends AutoConfigurationTest {
+public class GraphQLJavaToolsAutoConfigurationTest extends AbstractAutoConfigurationTest {
 
     public GraphQLJavaToolsAutoConfigurationTest() {
         super(GraphQLJavaToolsAutoConfiguration.class);
@@ -26,6 +26,6 @@ public class GraphQLJavaToolsAutoConfigurationTest extends AutoConfigurationTest
     public void appContextLoads() {
         load(BaseConfiguration.class);
 
-        Assert.assertNotNull(this.context.getBean(GraphQLSchema.class));
+        Assert.assertNotNull(this.getContext().getBean(GraphQLSchema.class));
     }
 }
