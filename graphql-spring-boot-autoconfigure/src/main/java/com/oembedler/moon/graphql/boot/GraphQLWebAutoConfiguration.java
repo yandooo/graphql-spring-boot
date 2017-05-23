@@ -24,6 +24,7 @@ import graphql.execution.SimpleExecutionStrategy;
 import graphql.execution.instrumentation.Instrumentation;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.GraphQLOperationListener;
+import graphql.servlet.GraphQLServlet;
 import graphql.servlet.GraphQLServletListener;
 import graphql.servlet.SimpleGraphQLServlet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,10 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.CorsRegistryWorkaround;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.servlet.Servlet;
@@ -50,7 +52,7 @@ import java.util.List;
  */
 @Configuration
 @ConditionalOnWebApplication
-@ConditionalOnClass({Servlet.class, DispatcherServlet.class, WebMvcConfigurerAdapter.class})
+@ConditionalOnClass({Servlet.class, DispatcherServlet.class})
 @ConditionalOnBean(GraphQLSchema.class)
 @ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class, SpringGraphQLCommonAutoConfiguration.class, WebMvcConfigurerAdapter.class})
@@ -70,14 +72,14 @@ public class GraphQLWebAutoConfiguration {
     private Instrumentation instrumentation;
 
     @Bean
+    @ConditionalOnClass(CorsFilter.class)
     @ConditionalOnProperty(value = "graphql.servlet.corsEnabled", havingValue = "true", matchIfMissing = true)
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping(graphQLServletProperties.getMapping());
-            }
-        };
+    public CorsFilter corsConfigurer() {
+        UrlBasedCorsConfigurationSource configurationSource = new UrlBasedCorsConfigurationSource();
+        configurationSource.setCorsConfigurations(CorsRegistryWorkaround.getCorsConfiguration(graphQLServletProperties.getCorsMapping()));
+        configurationSource.setAlwaysUseFullPath(true);
+
+        return new CorsFilter(configurationSource);
     }
 
     @Bean
@@ -87,7 +89,13 @@ public class GraphQLWebAutoConfiguration {
     }
 
     @Bean
-    ServletRegistrationBean graphQLServletRegistrationBean(GraphQLSchema schema, ExecutionStrategy executionStrategy) {
-        return new ServletRegistrationBean(new SimpleGraphQLServlet(schema, executionStrategy, operationListeners, servletListeners, instrumentation), graphQLServletProperties.getMapping());
+    @ConditionalOnMissingBean
+    public GraphQLServlet graphQLServlet(GraphQLSchema schema, ExecutionStrategy executionStrategy) {
+        return new SimpleGraphQLServlet(schema, executionStrategy, operationListeners, servletListeners, instrumentation);
+    }
+
+    @Bean
+    ServletRegistrationBean graphQLServletRegistrationBean(GraphQLServlet servlet) {
+        return new ServletRegistrationBean(servlet, graphQLServletProperties.getServletMapping());
     }
 }

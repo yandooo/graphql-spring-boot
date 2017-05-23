@@ -76,7 +76,7 @@ Available Spring Boot configuration parameters (either `application.yml` or `app
 ```yaml
 graphql:
       servlet:
-               mapping: /graphql/*
+               mapping: /graphql
                enabled: true
                corsEnabled: true
 

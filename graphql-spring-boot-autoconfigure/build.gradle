@@ -22,9 +22,11 @@ dependencies {
     compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
     compile "com.graphql-java:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
 
-    provided "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
-    provided "com.embedler.moon.graphql:spring-graphql-common:$LIB_SPRING_GRAPHQL_COMMON_VER"
-    provided "com.graphql-java:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
+    compileOnly "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
+    compileOnly "com.embedler.moon.graphql:spring-graphql-common:$LIB_SPRING_GRAPHQL_COMMON_VER"
+    compileOnly "com.graphql-java:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
 
     testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
+    testCompile "com.embedler.moon.graphql:spring-graphql-common:$LIB_SPRING_GRAPHQL_COMMON_VER"
+    testCompile "com.graphql-java:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
 }

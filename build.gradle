@@ -23,7 +23,6 @@ buildscript {
         maven { url 'http://repo.spring.io/plugins-release' }
     }
     dependencies {
-        classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6"
     }
 }
@@ -33,10 +32,6 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
-    apply plugin: 'propdeps'
-    apply plugin: 'propdeps-maven'
-    apply plugin: 'propdeps-idea'
-    apply plugin: 'propdeps-eclipse'
     apply plugin: "com.jfrog.bintray"
 
     version = PROJECT_VERSION

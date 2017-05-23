@@ -33,7 +33,43 @@ public class GraphQLServletProperties {
     private String mapping;
 
     public String getMapping() {
-        return mapping != null ? mapping : "/graphql/*";
+        return mapping != null ? mapping : "/graphql";
+    }
+
+    private boolean mappingIsServletWildcard() {
+        return getMapping().endsWith("/*");
+    }
+
+    private boolean mappingIsAntWildcard() {
+        return getMapping().endsWith("/**");
+    }
+
+    /**
+     * @return the servlet mapping, coercing into an appropriate wildcard for servlets (ending in /*)
+     */
+    public String getServletMapping() {
+        final String mapping = getMapping();
+        if(mappingIsAntWildcard()) {
+            return mapping.replaceAll("\\*$", "");
+        } else if(mappingIsServletWildcard()) {
+            return mapping;
+        } else {
+            return mapping.endsWith("/") ? mapping + "*" : mapping + "/*";
+        }
+    }
+
+    /**
+     * @return the servlet mapping, coercing into an appropriate wildcard for CORS, which uses ant matchers (ending in /**)
+     */
+    public String getCorsMapping() {
+        final String mapping = getMapping();
+        if(mappingIsAntWildcard()) {
+            return mapping;
+        } else if(mappingIsServletWildcard()) {
+            return mapping + "*";
+        } else {
+            return mapping.endsWith("/") ? mapping + "**" : mapping + "/**";
+        }
     }
 
     public void setMapping(String mapping) {

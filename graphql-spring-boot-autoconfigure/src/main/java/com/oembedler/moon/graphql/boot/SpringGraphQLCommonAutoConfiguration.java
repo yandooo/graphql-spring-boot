@@ -25,6 +25,7 @@ import com.oembedler.moon.graphql.engine.GraphQLSchemaBuilder;
 import com.oembedler.moon.graphql.engine.GraphQLSchemaConfig;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLSchema;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
@@ -40,6 +41,7 @@ import java.util.stream.Collectors;
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
  */
 @Configuration
+@ConditionalOnClass(GraphQLSchemaConfig.class)
 @EnableConfigurationProperties(SpringGraphQLCommonProperties.class)
 public class SpringGraphQLCommonAutoConfiguration {
 
