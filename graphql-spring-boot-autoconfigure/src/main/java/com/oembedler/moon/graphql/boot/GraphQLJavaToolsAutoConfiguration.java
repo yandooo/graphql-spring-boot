@@ -41,7 +41,7 @@ public class GraphQLJavaToolsAutoConfiguration {
 
         SchemaParser.Builder builder = new SchemaParser.Builder();
 
-        Resource[] resources = applicationContext.getResources("classpath*:*.graphqls");
+        Resource[] resources = applicationContext.getResources("classpath*:**/*.graphqls");
         if(resources.length <= 0) {
             throw new IllegalStateException("No .graphqls files found on classpath.  Please add a graphql schema to the classpath or add a SchemaParser bean to your application context.");
         }
