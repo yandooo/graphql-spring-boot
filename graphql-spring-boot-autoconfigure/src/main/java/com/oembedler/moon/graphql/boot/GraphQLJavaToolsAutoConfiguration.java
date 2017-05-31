@@ -2,6 +2,8 @@ package com.oembedler.moon.graphql.boot;
 
 import com.coxautodev.graphql.tools.GraphQLResolver;
 import com.coxautodev.graphql.tools.SchemaParser;
+import com.coxautodev.graphql.tools.SchemaParserBuilder;
+import com.coxautodev.graphql.tools.SchemaParserDictionary;
 import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.GraphQLSchemaProvider;
@@ -36,15 +38,15 @@ public class GraphQLJavaToolsAutoConfiguration {
     private ApplicationContext applicationContext;
 
     @Bean
-    @ConditionalOnBean({SchemaParserDictionary.class, GraphQLResolver.class})
+    @ConditionalOnBean({GraphQLResolver.class})
     @ConditionalOnMissingBean
     public SchemaParser schemaParser(List<GraphQLResolver<?>> resolvers) throws IOException {
 
-        SchemaParser.Builder builder = new SchemaParser.Builder();
+        SchemaParserBuilder builder = dictionary != null ? new SchemaParserBuilder(dictionary) : new SchemaParserBuilder();
 
         Resource[] resources = applicationContext.getResources("classpath*:**/*.graphqls");
         if(resources.length <= 0) {
-            throw new IllegalStateException("No .graphqls files found on classpath.  Please add a graphql schema to the classpath or add a SchemaParser bean to your application context.");
+            throw new IllegalStateException("No *.graphqls files found on classpath.  Please add a graphql schema to the classpath or add a SchemaParser bean to your application context.");
         }
 
         for(Resource resource : resources) {
@@ -55,10 +57,6 @@ public class GraphQLJavaToolsAutoConfiguration {
 
         if(scalars != null) {
             builder.scalars(scalars);
-        }
-
-        if(dictionary != null) {
-            builder.dictionary(dictionary.getDictionary());
         }
 
         return builder.resolvers(resolvers)
