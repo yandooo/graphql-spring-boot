@@ -47,5 +47,6 @@ dependencies{
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
+jar.enabled = false
 uploadArchives.enabled = false
 bintrayUpload.enabled = false
