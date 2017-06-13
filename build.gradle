@@ -54,91 +54,94 @@ subprojects {
         targetCompatibility = TARGET_COMPATIBILITY
     }
 
-    jar {
-        from "LICENSE.md"
-    }
+    if (it.name != 'graphql-sample-app') {
 
-    task sourcesJar(type: Jar) {
-        dependsOn classes
-        classifier 'sources'
-        from sourceSets.main.allSource
-    }
+        jar {
+            from "LICENSE.md"
+        }
 
-    task javadocJar(type: Jar, dependsOn: javadoc) {
-        classifier = 'javadoc'
-        from javadoc.destinationDir
-    }
+        task sourcesJar(type: Jar) {
+            dependsOn classes
+            classifier 'sources'
+            from sourceSets.main.allSource
+        }
 
-    artifacts {
-        archives sourcesJar
-        archives javadocJar
-    }
+        task javadocJar(type: Jar, dependsOn: javadoc) {
+            classifier = 'javadoc'
+            from javadoc.destinationDir
+        }
 
-    publishing {
-        publications {
-            mainProjectPublication(MavenPublication) {
-                version version
-                from components.java
+        artifacts {
+            archives sourcesJar
+            archives javadocJar
+        }
 
-                artifact sourcesJar {
-                    classifier "sources"
-                }
-                artifact javadocJar {
-                    classifier "javadoc"
-                }
+        publishing {
+            publications {
+                mainProjectPublication(MavenPublication) {
+                    version version
+                    from components.java
 
-                pom.withXml {
-                    // Fix dependency scoping.
-                    asNode().dependencies.'*'.findAll() {
-                        it.scope.text() == 'runtime' && project.configurations.compile.allDependencies.find { dep ->
-                            dep.name == it.artifactId.text()
-                        }
-                    }.each() {
-                        it.scope*.value = 'compile'
+                    artifact sourcesJar {
+                        classifier "sources"
+                    }
+                    artifact javadocJar {
+                        classifier "javadoc"
                     }
 
-                    asNode().children().last() + {
-                        resolveStrategy = Closure.DELEGATE_FIRST
-                        name PROJECT_NAME
-                        description PROJECT_DESC
-                        url PROJECT_GIT_REPO_URL
-                        scm {
-                            url PROJECT_GIT_REPO_URL
-                            connection PROJECT_GIT_REPO_URL
-                            developerConnection PROJECT_GIT_REPO_URL
-                        }
-                        licenses {
-                            license {
-                                name PROJECT_LICENSE
-                                url PROJECT_LICENSE_URL
-                                distribution 'repo'
+                    pom.withXml {
+                        // Fix dependency scoping.
+                        asNode().dependencies.'*'.findAll() {
+                            it.scope.text() == 'runtime' && project.configurations.compile.allDependencies.find { dep ->
+                                dep.name == it.artifactId.text()
                             }
+                        }.each() {
+                            it.scope*.value = 'compile'
                         }
-                        developers {
-                            developer {
-                                id PROJECT_DEV_ID
-                                name PROJECT_DEV_NAME
+
+                        asNode().children().last() + {
+                            resolveStrategy = Closure.DELEGATE_FIRST
+                            name PROJECT_NAME
+                            description PROJECT_DESC
+                            url PROJECT_GIT_REPO_URL
+                            scm {
+                                url PROJECT_GIT_REPO_URL
+                                connection PROJECT_GIT_REPO_URL
+                                developerConnection PROJECT_GIT_REPO_URL
+                            }
+                            licenses {
+                                license {
+                                    name PROJECT_LICENSE
+                                    url PROJECT_LICENSE_URL
+                                    distribution 'repo'
+                                }
+                            }
+                            developers {
+                                developer {
+                                    id PROJECT_DEV_ID
+                                    name PROJECT_DEV_NAME
+                                }
                             }
                         }
                     }
                 }
             }
         }
-    }
 
-    bintray {
-        user = System.env.BINTRAY_USER ?: project.findProperty('BINTRAY_USER') ?: ''
-        key = System.env.BINTRAY_KEY ?: project.findProperty('BINTRAY_KEY') ?: ''
-        publications = ['mainProjectPublication']
-        publish = true
-        pkg {
-            repo = 'maven'
-            name = PROJECT_NAME
-            desc = PROJECT_DESC
-            licenses = [PROJECT_LICENSE]
-            vcsUrl = PROJECT_GIT_REPO_URL
-            version {
-                name = project.version
+        bintray {
+            user = System.env.BINTRAY_USER ?: project.findProperty('BINTRAY_USER') ?: ''
+            key = System.env.BINTRAY_KEY ?: project.findProperty('BINTRAY_KEY') ?: ''
+            publications = ['mainProjectPublication']
+            publish = true
+            pkg {
+                repo = 'maven'
+                name = PROJECT_NAME
+                desc = PROJECT_DESC
+                licenses = [PROJECT_LICENSE]
+                vcsUrl = PROJECT_GIT_REPO_URL
+                version {
+                    name = project.version
+                }
             }
         }
     }
