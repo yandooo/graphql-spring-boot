@@ -6,6 +6,7 @@
 
 /.gradle
 build
+bin
 
 ## Directory-based project format:
 .idea/
@@ -39,6 +40,12 @@ build
 
 # IntelliJ
 /out/
+
+# VSC
+.settings
+.classpath
+.project
+.vscode
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/

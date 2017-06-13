@@ -29,7 +29,7 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'war'
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 
 repositories {
     jcenter()

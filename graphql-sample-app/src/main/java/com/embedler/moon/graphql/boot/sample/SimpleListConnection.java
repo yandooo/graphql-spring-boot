@@ -3,10 +3,10 @@ package com.embedler.moon.graphql.boot.sample;
 import com.oembedler.moon.graphql.engine.relay.ConnectionObjectType;
 import com.oembedler.moon.graphql.engine.relay.EdgeObjectType;
 import com.oembedler.moon.graphql.engine.relay.PageInfoObjectType;
-import graphql.relay.Base64;
 import graphql.relay.ConnectionCursor;
 import graphql.relay.DefaultConnectionCursor;
 import graphql.schema.DataFetchingEnvironment;
+import java.nio.charset.StandardCharsets;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,12 +104,13 @@ public class SimpleListConnection {
 
     private int getOffsetFromCursor(String cursor, int defaultValue) {
         if (cursor == null) return defaultValue;
-        String string = Base64.fromBase64(cursor);
+        String string = new String(java.util.Base64.getDecoder().decode(cursor), StandardCharsets.UTF_8);
         return Integer.parseInt(string.substring(DUMMY_CURSOR_PREFIX.length()));
     }
 
     private String createCursor(int offset) {
-        String string = Base64.toBase64(DUMMY_CURSOR_PREFIX + Integer.toString(offset));
+        byte[] lala = (DUMMY_CURSOR_PREFIX + Integer.toString(offset)).getBytes(StandardCharsets.UTF_8);
+        String string = java.util.Base64.getEncoder().encodeToString(lala);
         return string;
     }
 
