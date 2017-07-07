@@ -41,10 +41,10 @@ repositories {
 }
 
 dependencies {
-  compile 'com.graphql-java:graphql-spring-boot-starter:3.3.0'
+  compile 'com.graphql-java:graphql-spring-boot-starter:3.5.0'
   
   // to embed GraphiQL tool
-  compile 'com.graphql-java:graphiql-spring-boot-starter:3.3.0'
+  compile 'com.graphql-java:graphiql-spring-boot-starter:3.5.0'
 }
 ```
 
@@ -53,14 +53,14 @@ Maven:
 <dependency>
     <groupId>com.graphql-java</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>3.3.0</version>
+    <version>3.5.0</version>
 </dependency>
 
 <!-- to embed GraphiQL tool -->
 <dependency>
     <groupId>com.graphql-java</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>3.3.0</version>
+    <version>3.5.0</version>
 </dependency>
 ```
 
