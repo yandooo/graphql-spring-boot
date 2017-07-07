@@ -25,6 +25,7 @@ import graphql.schema.GraphQLSchema;
 import graphql.servlet.DefaultExecutionStrategyProvider;
 import graphql.servlet.DefaultGraphQLSchemaProvider;
 import graphql.servlet.ExecutionStrategyProvider;
+import graphql.servlet.GraphQLErrorHandler;
 import graphql.servlet.GraphQLSchemaProvider;
 import graphql.servlet.GraphQLServlet;
 import graphql.servlet.GraphQLServletListener;
@@ -72,6 +73,9 @@ public class GraphQLWebAutoConfiguration {
 
     @Autowired(required = false)
     private Instrumentation instrumentation;
+
+    @Autowired(required = false)
+    private GraphQLErrorHandler errorHandler;
 
     @Autowired(required = false)
     private Map<String, ExecutionStrategy> executionStrategies;
@@ -129,7 +133,7 @@ public class GraphQLWebAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public GraphQLServlet graphQLServlet(GraphQLSchemaProvider schemaProvider, ExecutionStrategyProvider executionStrategyProvider) {
-        return new SimpleGraphQLServlet(schemaProvider, executionStrategyProvider, listeners, instrumentation);
+        return new SimpleGraphQLServlet(schemaProvider, executionStrategyProvider, listeners, instrumentation, errorHandler);
     }
 
     @Bean
