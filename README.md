@@ -80,15 +80,6 @@ graphql:
                mapping: /graphql
                enabled: true
                corsEnabled: true
-
-      spring-graphql-common:
-               clientMutationIdName: clientMutationId
-               injectClientMutationId: true
-               allowEmptyClientMutationId: false
-               mutationInputArgumentName: input
-               outputObjectNamePrefix: Payload
-               inputObjectNamePrefix: Input
-               schemaMutationObjectName: Mutation
 ```
 
 By default a global CORS filter is enabled for `/graphql/**` context.
@@ -104,15 +95,28 @@ Note that GraphQL server must be available at `/graphql/*` context to be discove
 
 The following libraries have auto-configuration classes for creating a `GraphQLSchema`.
 
-### GraphQL Java Tools
-###### https://github.com/graphql-java/graphql-java-tools
+## GraphQL Java Tools
+**https://github.com/graphql-java/graphql-java-tools**
 
 All `GraphQLResolver` and `GraphQLScalar` beans, along with a bean of type `SchemaParserDictionary` (to provide all other classes), will be used to create a GraphQLSchema.  Any files on the classpath named `*.graphqls` will be used to provide the schema definition.  See the [Readme](https://github.com/graphql-java/graphql-java-tools#usage) for more info.
 
-### GraphQL Spring Common [LATEST SUPPORTED VERSION: 3.1.1]
-###### https://github.com/oembedler/spring-graphql-common
+## GraphQL Spring Common [LATEST SUPPORTED VERSION: 3.1.1]
+**https://github.com/oembedler/spring-graphql-common**
 
 See the [Readme](https://github.com/oembedler/spring-graphql-common#usage) for usage instructions.
+
+#### Application Properties
+```
+graphql:
+      spring-graphql-common:
+               clientMutationIdName: clientMutationId
+               injectClientMutationId: true
+               allowEmptyClientMutationId: false
+               mutationInputArgumentName: input
+               outputObjectNamePrefix: Payload
+               inputObjectNamePrefix: Input
+               schemaMutationObjectName: Mutation
+```
 
 
 # Contributions
