@@ -1,4 +1,4 @@
-# GraphQL and GraphiQL Spring Framework Boot Starters
+# GraphQL and Graph*i*QL Spring Framework Boot Starters
 [![Build Status](https://travis-ci.org/graphql-java/graphql-spring-boot.svg?branch=master)](https://travis-ci.org/graphql-java/graphql-spring-boot)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot-starter)
 [![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/graphql-java/graphql-java)
@@ -85,11 +85,11 @@ graphql:
 By default a global CORS filter is enabled for `/graphql/**` context.
 The `corsEnabled` can be set to `false` to disable it.
 
-# Enable GraphiQL
+# Enable Graph*i*QL
 
 Graph*i*QL becomes accessible at the root `/graphiql` if `graphiql-spring-boot-starter` is added as a dependency to a boot application.
 
-Note that GraphQL server must be available at `/graphql/*` context to be discovered by GraphiQL.
+Note that GraphQL server must be available at `/graphql/*` context to be discovered by Graph*i*QL.
 
 Available Spring Boot configuration parameters (either `application.yml` or `application.properties`):
 ```yaml
