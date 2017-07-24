@@ -41,10 +41,10 @@ repositories {
 }
 
 dependencies {
-  compile 'com.graphql-java:graphql-spring-boot-starter:3.5.0'
+  compile 'com.graphql-java:graphql-spring-boot-starter:3.6.0'
   
   // to embed GraphiQL tool
-  compile 'com.graphql-java:graphiql-spring-boot-starter:3.5.0'
+  compile 'com.graphql-java:graphiql-spring-boot-starter:3.6.0'
 }
 ```
 
@@ -53,14 +53,14 @@ Maven:
 <dependency>
     <groupId>com.graphql-java</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>3.5.0</version>
+    <version>3.6.0</version>
 </dependency>
 
 <!-- to embed GraphiQL tool -->
 <dependency>
     <groupId>com.graphql-java</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>3.5.0</version>
+    <version>3.6.0</version>
 </dependency>
 ```
 
@@ -87,9 +87,16 @@ The `corsEnabled` can be set to `false` to disable it.
 
 # Enable GraphiQL
 
-GraphiQL becomes accessible at the root `/` if `graphiql-spring-boot-starter` added as a dependency to a boot application.
+Graph*i*QL becomes accessible at the root `/graphiql` if `graphiql-spring-boot-starter` is added as a dependency to a boot application.
 
 Note that GraphQL server must be available at `/graphql/*` context to be discovered by GraphiQL.
+
+Available Spring Boot configuration parameters (either `application.yml` or `application.properties`):
+```yaml
+graphiql:
+    mapping: /graphiql
+    enabled: true
+```
 
 # Supported GraphQL-Java Libraries
 
