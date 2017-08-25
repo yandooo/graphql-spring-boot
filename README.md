@@ -111,7 +111,7 @@ All `GraphQLResolver` and `GraphQLScalar` beans, along with a bean of type `Sche
 ## GraphQL Spring Common [LATEST SUPPORTED VERSION: 3.1.1]
 **https://github.com/oembedler/spring-graphql-common**
 
-See the [Readme](https://github.com/oembedler/spring-graphql-common#usage) for usage instructions.
+See the [Readme](https://github.com/oembedler/spring-graphql-common#usage) and the [example](https://github.com/graphql-java/graphql-spring-boot/tree/master/example-spring-common) for usage instructions.
 
 #### Application Properties
 ```
