@@ -67,7 +67,7 @@ Maven:
 
 # Enable GraphQL Servlet
 
-The servlet becomes accessible at `/graphql` if `graphql-spring-boot-starter` added as a dependency to a boot application and a `GraphQLSchema` bean is present in the application.
+The servlet becomes accessible at `/graphql` if `graphql-spring-boot-starter` added as a dependency to a boot application and a `GraphQLSchema` bean is present in the application.  Check out the [simple example](https://github.com/graphql-java/graphql-spring-boot/tree/master/example) for the bare minimum required.
 
 A GraphQL schema can also be automatically created when a [supported graphql-java schema library](https://github.com/graphql-java/graphql-spring-boot/blob/master/README.md#supported-graphql-java-libraries) is found on the classpath.
 
