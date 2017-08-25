@@ -25,5 +25,4 @@ include ":graphiql-spring-boot-autoconfigure"
 include ":graphiql-spring-boot-starter"
 
 include ":example"
-include ":example-java-tools"
 include ":example-spring-common"
