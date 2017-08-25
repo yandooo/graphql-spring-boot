@@ -4,6 +4,7 @@ import com.coxautodev.graphql.tools.GraphQLResolver;
 import com.coxautodev.graphql.tools.SchemaParser;
 import com.coxautodev.graphql.tools.SchemaParserBuilder;
 import com.coxautodev.graphql.tools.SchemaParserDictionary;
+import com.coxautodev.graphql.tools.SchemaParserOptions;
 import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.GraphQLSchemaProvider;
@@ -34,6 +35,9 @@ public class GraphQLJavaToolsAutoConfiguration {
     @Autowired(required = false)
     private GraphQLScalarType[] scalars;
 
+    @Autowired(required = false)
+    private SchemaParserOptions options;
+
     @Autowired
     private ApplicationContext applicationContext;
 
@@ -57,6 +61,10 @@ public class GraphQLJavaToolsAutoConfiguration {
 
         if(scalars != null) {
             builder.scalars(scalars);
+        }
+
+        if(options != null) {
+            builder.options(options);
         }
 
         return builder.resolvers(resolvers)
