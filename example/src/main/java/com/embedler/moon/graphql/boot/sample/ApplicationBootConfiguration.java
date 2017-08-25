@@ -17,13 +17,36 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-rootProject.name = PROJECT_NAME
+package com.embedler.moon.graphql.boot.sample;
 
-include ":graphql-spring-boot-autoconfigure"
-include ":graphql-spring-boot-starter"
-include ":graphiql-spring-boot-autoconfigure"
-include ":graphiql-spring-boot-starter"
+import graphql.Scalars;
+import graphql.schema.GraphQLObjectType;
+import graphql.schema.GraphQLSchema;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
-include ":example"
-include ":example-java-tools"
-include ":example-spring-common"
+/**
+ * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
+ */
+@SpringBootApplication
+public class ApplicationBootConfiguration {
+
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(ApplicationBootConfiguration.class, args);
+    }
+
+    @Bean
+    GraphQLSchema schema() {
+        return GraphQLSchema.newSchema()
+            .query(GraphQLObjectType.newObject()
+                .name("query")
+                .field(field -> field
+                    .name("test")
+                    .type(Scalars.GraphQLString)
+                    .dataFetcher(environment -> "response")
+                )
+                .build())
+            .build();
+    }
+}

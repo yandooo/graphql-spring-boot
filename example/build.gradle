@@ -16,14 +16,33 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+buildscript {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url 'http://repo.spring.io/plugins-release' }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6"
+    }
+}
 
-rootProject.name = PROJECT_NAME
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'org.springframework.boot'
 
-include ":graphql-spring-boot-autoconfigure"
-include ":graphql-spring-boot-starter"
-include ":graphiql-spring-boot-autoconfigure"
-include ":graphiql-spring-boot-starter"
+repositories {
+    jcenter()
+}
 
-include ":example"
-include ":example-java-tools"
-include ":example-spring-common"
+dependencies{
+    compile(project(":graphql-spring-boot-starter"))
+    compile(project(":graphiql-spring-boot-starter"))
+
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+}
+
+jar.enabled = false
+uploadArchives.enabled = false
+bintrayUpload.enabled = false
