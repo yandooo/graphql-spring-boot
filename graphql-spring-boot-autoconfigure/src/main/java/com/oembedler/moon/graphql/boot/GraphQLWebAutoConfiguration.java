@@ -27,6 +27,7 @@ import graphql.servlet.DefaultGraphQLSchemaProvider;
 import graphql.servlet.ExecutionStrategyProvider;
 import graphql.servlet.GraphQLContextBuilder;
 import graphql.servlet.GraphQLErrorHandler;
+import graphql.servlet.GraphQLRootObjectBuilder;
 import graphql.servlet.GraphQLSchemaProvider;
 import graphql.servlet.GraphQLServlet;
 import graphql.servlet.GraphQLServletListener;
@@ -49,6 +50,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistryWorkaround;
 
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
@@ -83,6 +85,9 @@ public class GraphQLWebAutoConfiguration {
 
     @Autowired(required = false)
     private GraphQLContextBuilder contextBuilder;
+
+    @Autowired(required = false)
+    private GraphQLRootObjectBuilder graphQLRootObjectBuilder;
 
     @Bean
     @ConditionalOnClass(CorsFilter.class)
@@ -137,7 +142,7 @@ public class GraphQLWebAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public GraphQLServlet graphQLServlet(GraphQLSchemaProvider schemaProvider, ExecutionStrategyProvider executionStrategyProvider) {
-        return new SimpleGraphQLServlet(schemaProvider, executionStrategyProvider, listeners, instrumentation, errorHandler, contextBuilder);
+        return new SimpleGraphQLServlet(schemaProvider, executionStrategyProvider, listeners, instrumentation, errorHandler, contextBuilder, graphQLRootObjectBuilder);
     }
 
     @Bean
