@@ -60,7 +60,7 @@ import java.util.Map;
 @ConditionalOnClass(DispatcherServlet.class)
 @ConditionalOnBean({GraphQLSchema.class, GraphQLSchemaProvider.class})
 @ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
-@AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class, SpringGraphQLCommonAutoConfiguration.class})
+@AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class})
 @EnableConfigurationProperties(GraphQLServletProperties.class)
 public class GraphQLWebAutoConfiguration {
 
