@@ -31,6 +31,7 @@ import graphql.servlet.GraphQLRootObjectBuilder;
 import graphql.servlet.GraphQLSchemaProvider;
 import graphql.servlet.GraphQLServlet;
 import graphql.servlet.GraphQLServletListener;
+import graphql.servlet.ObjectMapperConfigurer;
 import graphql.servlet.SimpleGraphQLServlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -89,6 +90,9 @@ public class GraphQLWebAutoConfiguration {
     @Autowired(required = false)
     private GraphQLRootObjectBuilder graphQLRootObjectBuilder;
 
+    @Autowired(required = false)
+    private ObjectMapperConfigurer objectMapperConfigurer;
+
     @Bean
     @ConditionalOnClass(CorsFilter.class)
     @ConditionalOnProperty(value = "graphql.servlet.corsEnabled", havingValue = "true", matchIfMissing = true)
@@ -142,7 +146,7 @@ public class GraphQLWebAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public GraphQLServlet graphQLServlet(GraphQLSchemaProvider schemaProvider, ExecutionStrategyProvider executionStrategyProvider) {
-        return new SimpleGraphQLServlet(schemaProvider, executionStrategyProvider, listeners, instrumentation, errorHandler, contextBuilder, graphQLRootObjectBuilder);
+        return new SimpleGraphQLServlet(schemaProvider, executionStrategyProvider, objectMapperConfigurer, listeners, instrumentation, errorHandler, contextBuilder, graphQLRootObjectBuilder);
     }
 
     @Bean

@@ -39,7 +39,7 @@ dependencies{
     compile(project(":graphql-spring-boot-starter"))
     compile(project(":graphiql-spring-boot-starter"))
 
-    compile "com.embedler.moon.graphql:spring-graphql-common:$LIB_SPRING_GRAPHQL_COMMON_VER"
+    compile "com.embedler.moon.graphql:spring-graphql-common:2.1.0-2016-05-22T16-50-32"
 
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-actuator")
