@@ -14,6 +14,11 @@
       "name": "graphiql.mapping",
       "defaultValue": "/graphiql",
       "type": "java.lang.String"
+    },
+    {
+      "name": "graphiql.endpoint",
+      "defaultValue": "/graphql",
+      "type": "java.lang.String"
     }
   ]
 }

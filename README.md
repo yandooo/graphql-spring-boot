@@ -96,6 +96,7 @@ Available Spring Boot configuration parameters (either `application.yml` or `app
 ```yaml
 graphiql:
     mapping: /graphiql
+    endpoint: /graphql
     enabled: true
 ```
 
