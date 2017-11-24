@@ -21,6 +21,7 @@ package com.oembedler.moon.graphql.boot;
 
 import graphql.execution.ExecutionStrategy;
 import graphql.execution.instrumentation.Instrumentation;
+import graphql.execution.preparsed.PreparsedDocumentProvider;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.DefaultExecutionStrategyProvider;
 import graphql.servlet.DefaultGraphQLSchemaProvider;
@@ -93,6 +94,9 @@ public class GraphQLWebAutoConfiguration {
     @Autowired(required = false)
     private ObjectMapperConfigurer objectMapperConfigurer;
 
+    @Autowired(required = false)
+    private PreparsedDocumentProvider preparsedDocumentProvider;
+
     @Bean
     @ConditionalOnClass(CorsFilter.class)
     @ConditionalOnProperty(value = "graphql.servlet.corsEnabled", havingValue = "true", matchIfMissing = true)
@@ -146,7 +150,7 @@ public class GraphQLWebAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public GraphQLServlet graphQLServlet(GraphQLSchemaProvider schemaProvider, ExecutionStrategyProvider executionStrategyProvider) {
-        return new SimpleGraphQLServlet(schemaProvider, executionStrategyProvider, objectMapperConfigurer, listeners, instrumentation, errorHandler, contextBuilder, graphQLRootObjectBuilder);
+        return new SimpleGraphQLServlet(schemaProvider, executionStrategyProvider, objectMapperConfigurer, listeners, instrumentation, errorHandler, contextBuilder, graphQLRootObjectBuilder, preparsedDocumentProvider);
     }
 
     @Bean
