@@ -54,7 +54,7 @@ subprojects {
         targetCompatibility = TARGET_COMPATIBILITY
     }
 
-    if (it.name != 'graphql-sample-app') {
+    if (!it.name.startsWith('example')) {
 
         jar {
             from "LICENSE.md"

@@ -1,0 +1,24 @@
+{
+  "groups": [
+    {
+      "name": "graphiql"
+    }
+  ],
+  "properties": [
+    {
+      "name": "graphiql.enabled",
+      "defaultValue": true,
+      "type": "java.lang.Boolean"
+    },
+    {
+      "name": "graphiql.mapping",
+      "defaultValue": "/graphiql",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "graphiql.endpoint",
+      "defaultValue": "/graphql",
+      "type": "java.lang.String"
+    }
+  ]
+}

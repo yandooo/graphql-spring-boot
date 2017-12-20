@@ -21,11 +21,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react-dom.min.js"></script>
 
-    <!--
-        Don't update to v0.10.2 or higher yet, since that will break the error tooltips and highlighting
-    -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/graphiql/0.10.1/graphiql.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/graphiql/0.10.1/graphiql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/graphiql/0.11.3/graphiql.min.js"></script>
 
 </head>
 <body>
@@ -87,7 +84,7 @@
     function graphQLFetcher(graphQLParams) {
         // This example expects a GraphQL server at the path /graphql.
         // Change this to point wherever you host your GraphQL server.
-        return fetch('/graphql', {
+        return fetch('${graphqlEndpoint}', {
             method: 'post',
             headers: {
                 'Accept': 'application/json',

@@ -41,10 +41,10 @@ repositories {
 }
 
 dependencies {
-  compile 'com.graphql-java:graphql-spring-boot-starter:3.6.0'
+  compile 'com.graphql-java:graphql-spring-boot-starter:3.9.2'
   
   // to embed GraphiQL tool
-  compile 'com.graphql-java:graphiql-spring-boot-starter:3.6.0'
+  compile 'com.graphql-java:graphiql-spring-boot-starter:3.9.2'
 }
 ```
 
@@ -53,22 +53,23 @@ Maven:
 <dependency>
     <groupId>com.graphql-java</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>3.6.0</version>
+    <version>3.9.2</version>
 </dependency>
 
 <!-- to embed GraphiQL tool -->
 <dependency>
     <groupId>com.graphql-java</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>3.6.0</version>
+    <version>3.9.2</version>
 </dependency>
 ```
 
 
 # Enable GraphQL Servlet
 
-The servlet becomes accessible at `/graphql` if `graphql-spring-boot-starter` added as a dependency to a boot application.
-A GraphQL schema is automatically discovered based on which graphql-java schema libraries are currently on the classpath.
+The servlet becomes accessible at `/graphql` if `graphql-spring-boot-starter` added as a dependency to a boot application and a `GraphQLSchema` bean is present in the application.  Check out the [simple example](https://github.com/graphql-java/graphql-spring-boot/tree/master/example) for the bare minimum required.
+
+A GraphQL schema can also be automatically created when a [supported graphql-java schema library](https://github.com/graphql-java/graphql-spring-boot/blob/master/README.md#supported-graphql-java-libraries) is found on the classpath.
 
 See the [graphql-java-servlet usage docs](https://github.com/graphql-java/graphql-java-servlet#usage) for the avaiable endpoints exposed.
 
@@ -95,6 +96,7 @@ Available Spring Boot configuration parameters (either `application.yml` or `app
 ```yaml
 graphiql:
     mapping: /graphiql
+    endpoint: /graphql
     enabled: true
 ```
 
@@ -110,7 +112,7 @@ All `GraphQLResolver` and `GraphQLScalar` beans, along with a bean of type `Sche
 ## GraphQL Spring Common [LATEST SUPPORTED VERSION: 3.1.1]
 **https://github.com/oembedler/spring-graphql-common**
 
-See the [Readme](https://github.com/oembedler/spring-graphql-common#usage) for usage instructions.
+See the [Readme](https://github.com/oembedler/spring-graphql-common#usage) and the [example](https://github.com/graphql-java/graphql-spring-boot/tree/master/example-spring-common) for usage instructions.
 
 #### Application Properties
 ```
