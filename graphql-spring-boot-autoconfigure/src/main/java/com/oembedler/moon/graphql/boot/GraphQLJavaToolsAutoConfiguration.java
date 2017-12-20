@@ -42,22 +42,19 @@ public class GraphQLJavaToolsAutoConfiguration {
     private ApplicationContext applicationContext;
 
     @Bean
+    @ConditionalOnMissingBean
+    public SchemaStringProvider schemaStringProvider() {
+        return new ClasspathResourceSchemaStringProvider();
+    }
+
+    @Bean
     @ConditionalOnBean({GraphQLResolver.class})
     @ConditionalOnMissingBean
-    public SchemaParser schemaParser(List<GraphQLResolver<?>> resolvers) throws IOException {
-
+    public SchemaParser schemaParser(List<GraphQLResolver<?>> resolvers, SchemaStringProvider schemaStringProvider) throws IOException {
         SchemaParserBuilder builder = dictionary != null ? new SchemaParserBuilder(dictionary) : new SchemaParserBuilder();
 
-        Resource[] resources = applicationContext.getResources("classpath*:**/*.graphqls");
-        if(resources.length <= 0) {
-            throw new IllegalStateException("No *.graphqls files found on classpath.  Please add a graphql schema to the classpath or add a SchemaParser bean to your application context.");
-        }
-
-        for(Resource resource : resources) {
-            StringWriter writer = new StringWriter();
-            IOUtils.copy(resource.getInputStream(), writer);
-            builder.schemaString(writer.toString());
-        }
+        List<String> schemaStrings = schemaStringProvider.schemaStrings();
+        schemaStrings.forEach(builder::schemaString);
 
         if(scalars != null) {
             builder.scalars(scalars);
@@ -70,7 +67,6 @@ public class GraphQLJavaToolsAutoConfiguration {
         return builder.resolvers(resolvers)
             .build();
     }
-
 
     @Bean
     @ConditionalOnBean(SchemaParser.class)
