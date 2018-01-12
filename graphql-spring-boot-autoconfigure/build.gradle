@@ -20,6 +20,7 @@
 dependencies {
     compile "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
     compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
+    compile "org.springframework.boot:spring-boot-starter-websocket:$LIB_SPRING_BOOT_VER"
     compile "com.graphql-java:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
 
     compileOnly "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"

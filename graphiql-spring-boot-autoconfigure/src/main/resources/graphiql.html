@@ -23,6 +23,8 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/graphiql/0.10.1/graphiql.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/graphiql/0.11.3/graphiql.min.js"></script>
+    <script src="//unpkg.com/subscriptions-transport-ws@0.9.1/browser/client.js"></script>
+    <script src="//unpkg.com/graphiql-subscriptions-fetcher@0.0.2/browser/client.js"></script>
 
 </head>
 <body>
@@ -103,10 +105,24 @@
         });
     }
 
+    var loc = window.location,
+        newUri;
+
+    if (loc.protocol === "https:") {
+        newUri = "wss:";
+    } else {
+        newUri = "ws:";
+    }
+    newUri += "//" + loc.host;
+    newUri += "/subscriptions";
+
+    var subscriptionsClient = new window.SubscriptionsTransportWs.SubscriptionClient(newUri, { reconnect: true });
+    var subscriptionsFetcher = window.GraphiQLSubscriptionsFetcher.graphQLFetcher(subscriptionsClient, graphQLFetcher);
+
     // Render <GraphiQL /> into the body.
     ReactDOM.render(
         React.createElement(GraphiQL, {
-            fetcher: graphQLFetcher,
+            fetcher: subscriptionsFetcher,
             query: parameters.query,
             variables: parameters.variables,
             operationName: parameters.operationName,
