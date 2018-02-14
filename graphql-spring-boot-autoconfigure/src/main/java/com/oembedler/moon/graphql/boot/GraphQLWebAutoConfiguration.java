@@ -219,10 +219,7 @@ public class GraphQLWebAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public GraphQLWebsocketServlet graphQLWebsocketServlet(GraphQLInvocationInputFactory invocationInputFactory, GraphQLQueryInvoker queryInvoker, GraphQLObjectMapper graphQLObjectMapper) {
-        return GraphQLWebsocketServlet.newBuilder(invocationInputFactory)
-            .withQueryInvoker(queryInvoker)
-            .withObjectMapper(graphQLObjectMapper)
-            .build();
+        return new GraphQLWebsocketServlet(queryInvoker, invocationInputFactory, graphQLObjectMapper);
     }
 
     @Bean
