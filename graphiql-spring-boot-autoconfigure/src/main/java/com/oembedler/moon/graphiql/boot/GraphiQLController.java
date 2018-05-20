@@ -25,6 +25,9 @@ public class GraphiQLController {
     @Value("${graphiql.pageTitle:GraphiQL}")
     private String pageTitle;
 
+    @Value("${graphiql.version:0.11.11}")
+    private String graphiqlVersion;
+
     @RequestMapping(value = "${graphiql.mapping:/graphiql}")
     public void graphiql(HttpServletResponse response) throws IOException {
         response.setContentType("text/html; charset=UTF-8");
@@ -33,6 +36,7 @@ public class GraphiQLController {
         Map<String, String> replacements = new HashMap<>();
         replacements.put("graphqlEndpoint", graphqlEndpoint);
         replacements.put("pageTitle", pageTitle);
+        replacements.put("graphiqlVersion", graphiqlVersion);
 
         response.getOutputStream().write(StrSubstitutor.replace(template, replacements).getBytes(Charset.defaultCharset()));
     }

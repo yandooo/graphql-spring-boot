@@ -19,6 +19,11 @@
       "name": "graphiql.endpoint",
       "defaultValue": "/graphql",
       "type": "java.lang.String"
+    },
+    {
+      "name": "graphiql.version",
+      "defaultValue": "0.11.11",
+      "type": "java.lang.String"
     }
   ]
 }
