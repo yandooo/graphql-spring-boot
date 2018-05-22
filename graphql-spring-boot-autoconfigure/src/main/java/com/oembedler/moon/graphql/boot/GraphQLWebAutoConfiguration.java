@@ -152,16 +152,18 @@ public class GraphQLWebAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public GraphQLServlet graphQLServlet(GraphQLSchemaProvider schemaProvider, ExecutionStrategyProvider executionStrategyProvider) {
-        return SimpleGraphQLServlet.builder(schemaProvider)
-                .withExecutionStrategyProvider(executionStrategyProvider)
-                .withObjectMapperConfigurer(objectMapperConfigurer)
-                .withListeners(listeners)
-                .withInstrumentation(instrumentation)
-                .withGraphQLErrorHandler(errorHandler)
-                .withGraphQLContextBuilder(contextBuilder)
-                .withGraphQLRootObjectBuilder(graphQLRootObjectBuilder)
-                .withPreparsedDocumentProvider(preparsedDocumentProvider)
-                .build();
+        SimpleGraphQLServlet.Builder builder = SimpleGraphQLServlet.builder(schemaProvider)
+            .withExecutionStrategyProvider(executionStrategyProvider);
+
+        if(objectMapperConfigurer != null) builder.withObjectMapperConfigurer(objectMapperConfigurer);
+        if(listeners != null) builder.withListeners(listeners);
+        if(instrumentation != null) builder.withInstrumentation(instrumentation);
+        if(errorHandler != null) builder.withGraphQLErrorHandler(errorHandler);
+        if(contextBuilder != null) builder.withGraphQLContextBuilder(contextBuilder);
+        if(graphQLRootObjectBuilder != null) builder.withGraphQLRootObjectBuilder(graphQLRootObjectBuilder);
+        if(preparsedDocumentProvider != null) builder.withPreparsedDocumentProvider(preparsedDocumentProvider);
+
+        return builder.build();
     }
 
     @Bean

@@ -26,7 +26,7 @@ public class VoyagerController
     private String pageTitle;
 
     @RequestMapping(value = "${voyager.mapping:/voyager}")
-    public void graphiql(HttpServletResponse response) throws IOException
+    public void voyager(HttpServletResponse response) throws IOException
     {
         response.setContentType("text/html; charset=UTF-8");
 
