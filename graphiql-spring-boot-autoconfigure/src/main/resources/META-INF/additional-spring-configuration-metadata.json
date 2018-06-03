@@ -21,7 +21,12 @@
       "type": "java.lang.String"
     },
     {
-      "name": "graphiql.version",
+      "name": "graphiql.cdn.enabled",
+      "defaultValue": false,
+      "type": "java.lang.Boolean"
+    },
+    {
+      "name": "graphiql.cdn.version",
       "defaultValue": "0.11.11",
       "type": "java.lang.String"
     }
