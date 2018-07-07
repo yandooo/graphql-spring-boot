@@ -31,7 +31,7 @@ Repository contains:
 
 Requirements:
   * Java 1.8
-  * Spring Framework Boot > 1.3.x (web)
+  * Spring Framework Boot > 2.x.x (web)
 
 Gradle:
 
@@ -41,10 +41,13 @@ repositories {
 }
 
 dependencies {
-  compile 'com.graphql-java:graphql-spring-boot-starter:3.9.2'
+  compile 'com.graphql-java:graphql-spring-boot-starter:4.2.0'
   
   // to embed GraphiQL tool
-  compile 'com.graphql-java:graphiql-spring-boot-starter:3.9.2'
+  compile 'com.graphql-java:graphiql-spring-boot-starter:4.2.0'
+
+  // to embed Voyager tool
+  compile 'com.graphql-java:voyager-spring-boot-starter:4.2.0'
 }
 ```
 
@@ -53,14 +56,21 @@ Maven:
 <dependency>
     <groupId>com.graphql-java</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>3.9.2</version>
+    <version>4.2.0</version>
 </dependency>
 
 <!-- to embed GraphiQL tool -->
 <dependency>
     <groupId>com.graphql-java</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>3.9.2</version>
+    <version>4.2.0</version>
+</dependency>
+
+<!-- to embed Voyager tool -->
+<dependency>
+    <groupId>com.graphql-java</groupId>
+    <artifactId>voyager-spring-boot-starter</artifactId>
+    <version>4.2.0</version>
 </dependency>
 ```
 
@@ -98,6 +108,7 @@ graphiql:
     mapping: /graphiql
     endpoint: /graphql
     enabled: true
+    pageTitle: GraphiQL
 ```
 
 # Supported GraphQL-Java Libraries

@@ -1,7 +1,7 @@
-package com.oembedler.moon.graphql.boot.test;
+package com.oembedler.moon.voyager.boot.test;
 
 import org.junit.After;
-import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.boot.test.util.EnvironmentTestUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigRegistry;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -38,11 +38,11 @@ public abstract class AbstractAutoConfigurationTest {
         try {
             this.context = contextClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException("Failed to instantiate testing context", e);
+            throw new RuntimeException(e);
         }
 
         if (environment != null && environment.length > 0) {
-            TestPropertyValues.of(environment).applyTo(context);
+            EnvironmentTestUtils.addEnvironment(getContext(), environment);
         }
 
         getRegistry().register(config);
