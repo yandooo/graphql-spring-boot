@@ -2,10 +2,12 @@ package com.oembedler.moon.graphql.boot;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 
@@ -13,24 +15,31 @@ public class ClasspathResourceSchemaStringProvider implements SchemaStringProvid
 
   @Autowired
   private ApplicationContext applicationContext;
+  @Value("${graphql.tools.schemaLocationPattern:**/*.graphqls}")
+  private String schemaLocationPattern;
 
   @Override
   public List<String> schemaStrings() throws IOException {
-    Resource[] resources = applicationContext.getResources("classpath*:**/*.graphqls");
-    if(resources.length <= 0) {
-      throw new IllegalStateException("No *.graphqls files found on classpath.  Please add a graphql schema to the classpath or add a SchemaParser bean to your application context.");
+    Resource[] resources = applicationContext.getResources("classpath*:" + schemaLocationPattern);
+    if (resources.length <= 0) {
+      throw new IllegalStateException(
+          "No graphql schema files found on classpath with location pattern '"
+              + schemaLocationPattern
+              + "'.  Please add a graphql schema to the classpath or add a SchemaParser bean to your application context.");
     }
 
-    List<String> schemaStrings = new ArrayList<>(resources.length);
-    for(Resource resource : resources) {
-      schemaStrings.add(readSchema(resource));
-    }
-    return schemaStrings;
+    return Arrays.stream(resources)
+        .map(this::readSchema)
+        .collect(Collectors.toList());
   }
 
-  private String readSchema(Resource resource) throws IOException {
+  private String readSchema(Resource resource) {
     StringWriter writer = new StringWriter();
-    IOUtils.copy(resource.getInputStream(), writer);
+    try {
+      IOUtils.copy(resource.getInputStream(), writer);
+    } catch (IOException e) {
+      throw new IllegalStateException("Cannot read graphql schema from resource " + resource, e);
+    }
     return writer.toString();
   }
 
