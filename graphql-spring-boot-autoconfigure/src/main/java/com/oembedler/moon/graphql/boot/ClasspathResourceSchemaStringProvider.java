@@ -1,6 +1,7 @@
 package com.oembedler.moon.graphql.boot;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
@@ -35,8 +36,8 @@ public class ClasspathResourceSchemaStringProvider implements SchemaStringProvid
 
   private String readSchema(Resource resource) {
     StringWriter writer = new StringWriter();
-    try {
-      IOUtils.copy(resource.getInputStream(), writer);
+    try (InputStream inputStream = resource.getInputStream()) {
+      IOUtils.copy(inputStream, writer);
     } catch (IOException e) {
       throw new IllegalStateException("Cannot read graphql schema from resource " + resource, e);
     }
