@@ -120,6 +120,17 @@ The following libraries have auto-configuration classes for creating a `GraphQLS
 
 All `GraphQLResolver` and `GraphQLScalar` beans, along with a bean of type `SchemaParserDictionary` (to provide all other classes), will be used to create a GraphQLSchema.  Any files on the classpath named `*.graphqls` will be used to provide the schema definition.  See the [Readme](https://github.com/graphql-java/graphql-java-tools#usage) for more info.
 
+Available Spring Boot configuration parameters (either `application.yml` or `application.properties`):
+
+```yaml
+graphql:
+    tools:
+        schemaLocationPattern: **/*.graphqls
+```
+By default GraphQL tools uses the location pattern `**/*.graphqls` to scan for GraphQL schemas on the classpath. 
+Use the `schemaLocationPattern` property to customize this pattern. 
+
+
 ## GraphQL Spring Common [LATEST SUPPORTED VERSION: 3.1.1]
 **https://github.com/oembedler/spring-graphql-common**
 
