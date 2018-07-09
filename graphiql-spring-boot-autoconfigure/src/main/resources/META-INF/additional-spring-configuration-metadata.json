@@ -19,6 +19,16 @@
       "name": "graphiql.endpoint",
       "defaultValue": "/graphql",
       "type": "java.lang.String"
+    },
+    {
+      "name": "graphiql.cdn.enabled",
+      "defaultValue": false,
+      "type": "java.lang.Boolean"
+    },
+    {
+      "name": "graphiql.cdn.version",
+      "defaultValue": "0.11.11",
+      "type": "java.lang.String"
     }
   ]
 }
