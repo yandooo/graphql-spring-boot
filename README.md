@@ -109,7 +109,12 @@ graphiql:
     endpoint: /graphql
     enabled: true
     pageTitle: GraphiQL
+    cdn:
+        enabled: false
+        version: 0.11.11
 ```
+By default GraphiQL is served from within the package. This can be configured to be served from CDN instead,
+by setting the property `graphiql.cdn.enabled` to `true`.
 
 # Supported GraphQL-Java Libraries
 
@@ -137,7 +142,7 @@ Use the `schemaLocationPattern` property to customize this pattern.
 See the [Readme](https://github.com/oembedler/spring-graphql-common#usage) and the [example](https://github.com/graphql-java/graphql-spring-boot/tree/master/example-spring-common) for usage instructions.
 
 #### Application Properties
-```
+```yaml
 graphql:
       spring-graphql-common:
                clientMutationIdName: clientMutationId

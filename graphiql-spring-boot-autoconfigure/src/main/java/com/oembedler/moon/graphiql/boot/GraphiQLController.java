@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,15 +36,23 @@ public class GraphiQLController {
     @Value("${graphiql.cdn.version:0.11.11}")
     private String graphiqlCdnVersion;
 
+    private String template;
+
+    @PostConstruct
+    public void loadTemplate() throws IOException {
+        try (InputStream inputStream = new ClassPathResource("graphiql.html").getInputStream()) {
+            template = StreamUtils.copyToString(inputStream, Charset.defaultCharset());
+        }
+    }
+
     @RequestMapping(value = "${graphiql.mapping:/graphiql}")
     public void graphiql(HttpServletResponse response, @PathVariable Map<String, String> params) throws IOException {
         response.setContentType("text/html; charset=UTF-8");
 
-        String template = StreamUtils.copyToString(new ClassPathResource("graphiql.html").getInputStream(), Charset.defaultCharset());
         Map<String, String> replacements = new HashMap<>();
 
-        String graphiqlCssUrl = "./vendor/graphiql.min.css";
-        String graphiqlJsUrl = "./vendor/graphiql.min.js";
+        String graphiqlCssUrl = "/vendor/graphiql.min.css";
+        String graphiqlJsUrl = "/vendor/graphiql.min.js";
 
         if (graphiqlCdnEnabled && !StringUtils.isEmpty(graphiqlCdnVersion)) {
             graphiqlCssUrl = "//cdnjs.cloudflare.com/ajax/libs/graphiql/" + graphiqlCdnVersion + "/graphiql.min.css";
