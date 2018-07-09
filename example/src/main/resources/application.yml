@@ -1,5 +1,5 @@
 spring:
-      application:
-               name: graphql-todo-app
+  application:
+    name: graphql-todo-app
 server:
-      port: 9000
+  port: 9000
