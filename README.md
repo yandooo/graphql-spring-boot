@@ -130,7 +130,7 @@ Available Spring Boot configuration parameters (either `application.yml` or `app
 ```yaml
 graphql:
     tools:
-        schemaLocationPattern: **/*.graphqls
+        schemaLocationPattern: "**/*.graphqls"
 ```
 By default GraphQL tools uses the location pattern `**/*.graphqls` to scan for GraphQL schemas on the classpath. 
 Use the `schemaLocationPattern` property to customize this pattern. 
