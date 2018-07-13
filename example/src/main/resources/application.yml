@@ -1,5 +1,9 @@
 spring:
   application:
     name: graphql-todo-app
+  servlet:
+    multipart:
+      enabled: true
+      location: /tmp
 server:
   port: 9000

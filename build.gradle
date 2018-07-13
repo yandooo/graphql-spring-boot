@@ -38,6 +38,7 @@ subprojects {
     group = PROJECT_GROUP
 
     repositories {
+        mavenLocal()
         jcenter()
         maven { url "http://dl.bintray.com/oembedler/maven" }
         maven { url "http://repo.spring.io/libs-milestone" }

@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: graphql-java-tools-app
+server:
+  port: 9000
