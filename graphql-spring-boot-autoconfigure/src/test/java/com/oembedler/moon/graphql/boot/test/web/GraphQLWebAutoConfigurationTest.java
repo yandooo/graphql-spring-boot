@@ -6,7 +6,7 @@ import graphql.execution.AsyncExecutionStrategy;
 import graphql.execution.ExecutionStrategy;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
-import graphql.servlet.GraphQLServlet;
+import graphql.servlet.AbstractGraphQLHttpServlet;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.context.annotation.Bean;
@@ -73,27 +73,27 @@ public class GraphQLWebAutoConfigurationTest extends AbstractAutoConfigurationTe
     public void appContextLoadsWithNoExecutionStrategy() {
         load(SimpleConfiguration.class);
 
-        Assert.assertNotNull(this.getContext().getBean(GraphQLServlet.class));
+        Assert.assertNotNull(this.getContext().getBean(AbstractGraphQLHttpServlet.class));
     }
 
     @Test
     public void appContextLoadsWithOneExecutionStrategy() {
         load(OneExecutionStrategy.class);
 
-        Assert.assertNotNull(this.getContext().getBean(GraphQLServlet.class));
+        Assert.assertNotNull(this.getContext().getBean(AbstractGraphQLHttpServlet.class));
     }
 
     @Test
     public void appContextLoadsWithTwoExecutionStrategies() {
         load(TwoExecutionStrategies.class);
 
-        Assert.assertNotNull(this.getContext().getBean(GraphQLServlet.class));
+        Assert.assertNotNull(this.getContext().getBean(AbstractGraphQLHttpServlet.class));
     }
 
     @Test
     public void appContextLoadsWithThreeExecutionStrategies() {
         load(ThreeExecutionStrategies.class);
 
-        Assert.assertNotNull(this.getContext().getBean(GraphQLServlet.class));
+        Assert.assertNotNull(this.getContext().getBean(AbstractGraphQLHttpServlet.class));
     }
 }

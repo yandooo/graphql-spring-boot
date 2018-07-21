@@ -63,7 +63,7 @@
 
         function subscribeToStocks() {
 
-            var exampleSocket = new WebSocket("ws://localhost:3000/stockticker");
+            var exampleSocket = new WebSocket("ws://localhost:9000/subscriptions", "graphql-ws");
             networkBlip();
 
             exampleSocket.onopen = function () {
