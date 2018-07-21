@@ -24,10 +24,12 @@ public class GraphQLWebAutoConfigurationTest extends AbstractAutoConfigurationTe
 
     @Configuration
     static class SimpleConfiguration {
+
         @Bean
         GraphQLSchema schema() {
             return GraphQLSchema.newSchema().query(GraphQLObjectType.newObject().name("Query").build()).build();
         }
+
     }
 
     @Configuration
