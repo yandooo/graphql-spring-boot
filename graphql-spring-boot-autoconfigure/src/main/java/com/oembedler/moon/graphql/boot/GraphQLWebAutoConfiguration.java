@@ -27,6 +27,7 @@ import graphql.execution.preparsed.PreparsedDocumentProvider;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -62,6 +63,9 @@ public class GraphQLWebAutoConfiguration {
 
     @Autowired
     private GraphQLServletProperties graphQLServletProperties;
+
+    @Value("${graphql.servlet.subscriptions.websocket.path:/subscriptions}")
+    private String websocketPath;
 
     @Autowired(required = false)
     private List<GraphQLServletListener> listeners;
@@ -209,7 +213,7 @@ public class GraphQLWebAutoConfiguration {
 
     @Bean
     public ServerEndpointRegistration serverEndpointRegistration(GraphQLWebsocketServlet servlet) {
-        return new GraphQLWsServerEndpointRegistration("/subscriptions", servlet);
+        return new GraphQLWsServerEndpointRegistration(websocketPath, servlet);
     }
 
     @Bean
