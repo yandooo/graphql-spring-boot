@@ -19,7 +19,9 @@
 
 package com.oembedler.moon.graphql.boot;
 
+import graphql.execution.AsyncExecutionStrategy;
 import graphql.execution.ExecutionStrategy;
+import graphql.execution.SubscriptionExecutionStrategy;
 import graphql.execution.instrumentation.Instrumentation;
 import graphql.execution.preparsed.PreparsedDocumentProvider;
 import graphql.schema.GraphQLSchema;
@@ -106,7 +108,7 @@ public class GraphQLWebAutoConfiguration {
     @ConditionalOnMissingBean
     public ExecutionStrategyProvider executionStrategyProvider() {
         if (executionStrategies == null || executionStrategies.isEmpty()) {
-            return new DefaultExecutionStrategyProvider();
+            return new DefaultExecutionStrategyProvider(new AsyncExecutionStrategy(), null, new SubscriptionExecutionStrategy());
         } else if (executionStrategies.entrySet().size() == 1) {
             return new DefaultExecutionStrategyProvider(executionStrategies.entrySet().stream().findFirst().get().getValue());
         } else {
