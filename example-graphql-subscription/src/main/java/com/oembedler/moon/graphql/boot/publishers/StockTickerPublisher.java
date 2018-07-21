@@ -6,6 +6,8 @@ import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.observables.ConnectableObservable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -22,6 +24,8 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class StockTickerPublisher {
+
+    private static final Logger LOG = LoggerFactory.getLogger(StockTickerPublisher.class);
 
     private final Flowable<StockPriceUpdate> publisher;
 
@@ -52,8 +56,8 @@ public class StockTickerPublisher {
         for (StockPriceUpdate stockPriceUpdate : stockPriceUpdates) {
             try {
                 emitter.onNext(stockPriceUpdate);
-            } catch (RuntimeException rte) {
-                rte.printStackTrace();
+            } catch (RuntimeException e) {
+                LOG.error("Cannot send StockUpdate", e);
             }
         }
     }
@@ -63,7 +67,10 @@ public class StockTickerPublisher {
     }
 
     public Flowable<StockPriceUpdate> getPublisher(List<String> stockCodes) {
-        return publisher.filter(stockPriceUpdate -> stockCodes.contains(stockPriceUpdate.getStockCode()));
+        if (stockCodes != null) {
+            return publisher.filter(stockPriceUpdate -> stockCodes.contains(stockPriceUpdate.getStockCode()));
+        }
+        return publisher;
     }
 
     private List<StockPriceUpdate> getUpdates(int number) {

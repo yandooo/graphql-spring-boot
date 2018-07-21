@@ -62,8 +62,7 @@
         }
 
         function subscribeToStocks() {
-
-            var exampleSocket = new WebSocket("ws://localhost:9000/subscriptions", "graphql-ws");
+            var exampleSocket = new WebSocket("ws://localhost:9000/subscriptions");
             networkBlip();
 
             exampleSocket.onopen = function () {
@@ -90,9 +89,8 @@
             exampleSocket.onmessage = function (event) {
                 networkBlip();
 
-                var data = event.data;
-                var msg = JSON.parse(data);
-                console.log(data);
+                var data = JSON.parse(event.data);
+                var msg = data.data.stockQuotes;
                 var stockCode = msg.stockCode;
                 var stockList = STOCK_CODES_UPDATES[stockCode];
                 if (stockList) {
@@ -132,7 +130,7 @@
 
 <div class="jumbotron text-center">
     <h2>graphql-java Subscriptions</h2>
-    <p>An example of graphql-java subscriptions sending the continous updates over websockets</p>
+    <p>An example of graphql-java subscriptions sending continuous updates over websockets</p>
 </div>
 
 
