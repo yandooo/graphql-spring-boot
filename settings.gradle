@@ -29,4 +29,5 @@ include ":voyager-spring-boot-starter"
 include ":example"
 include ":example-spring-common"
 include ':example-graphql-tools'
+include ':example-graphql-subscription'
 

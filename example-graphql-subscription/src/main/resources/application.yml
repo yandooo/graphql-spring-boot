@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: graphql-subscription-example
+server:
+  port: 9000
