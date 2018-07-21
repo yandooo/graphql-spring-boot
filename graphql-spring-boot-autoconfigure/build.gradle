@@ -22,6 +22,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
     compile "org.springframework.boot:spring-boot-starter-websocket:$LIB_SPRING_BOOT_VER"
     compile "com.graphql-java:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
+    compile "commons-io:commons-io:$LIB_COMMONS_IO_VER"
 
     compileOnly "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
     compileOnly "com.graphql-java:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"

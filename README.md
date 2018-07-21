@@ -31,7 +31,7 @@ Repository contains:
 
 Requirements:
   * Java 1.8
-  * Spring Framework Boot > 1.3.x (web)
+  * Spring Framework Boot > 2.x.x (web)
 
 Gradle:
 
@@ -41,10 +41,13 @@ repositories {
 }
 
 dependencies {
-  compile 'com.graphql-java:graphql-spring-boot-starter:3.9.2'
+  compile 'com.graphql-java:graphql-spring-boot-starter:4.2.0'
   
   // to embed GraphiQL tool
-  compile 'com.graphql-java:graphiql-spring-boot-starter:3.9.2'
+  compile 'com.graphql-java:graphiql-spring-boot-starter:4.2.0'
+
+  // to embed Voyager tool
+  compile 'com.graphql-java:voyager-spring-boot-starter:4.2.0'
 }
 ```
 
@@ -53,14 +56,21 @@ Maven:
 <dependency>
     <groupId>com.graphql-java</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>3.9.2</version>
+    <version>4.2.0</version>
 </dependency>
 
 <!-- to embed GraphiQL tool -->
 <dependency>
     <groupId>com.graphql-java</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>3.9.2</version>
+    <version>4.2.0</version>
+</dependency>
+
+<!-- to embed Voyager tool -->
+<dependency>
+    <groupId>com.graphql-java</groupId>
+    <artifactId>voyager-spring-boot-starter</artifactId>
+    <version>4.2.0</version>
 </dependency>
 ```
 
@@ -98,7 +108,13 @@ graphiql:
     mapping: /graphiql
     endpoint: /graphql
     enabled: true
+    pageTitle: GraphiQL
+    cdn:
+        enabled: false
+        version: 0.11.11
 ```
+By default GraphiQL is served from within the package. This can be configured to be served from CDN instead,
+by setting the property `graphiql.cdn.enabled` to `true`.
 
 # Supported GraphQL-Java Libraries
 
@@ -109,13 +125,24 @@ The following libraries have auto-configuration classes for creating a `GraphQLS
 
 All `GraphQLResolver` and `GraphQLScalar` beans, along with a bean of type `SchemaParserDictionary` (to provide all other classes), will be used to create a GraphQLSchema.  Any files on the classpath named `*.graphqls` will be used to provide the schema definition.  See the [Readme](https://github.com/graphql-java/graphql-java-tools#usage) for more info.
 
+Available Spring Boot configuration parameters (either `application.yml` or `application.properties`):
+
+```yaml
+graphql:
+    tools:
+        schemaLocationPattern: "**/*.graphqls"
+```
+By default GraphQL tools uses the location pattern `**/*.graphqls` to scan for GraphQL schemas on the classpath. 
+Use the `schemaLocationPattern` property to customize this pattern. 
+
+
 ## GraphQL Spring Common [LATEST SUPPORTED VERSION: 3.1.1]
 **https://github.com/oembedler/spring-graphql-common**
 
 See the [Readme](https://github.com/oembedler/spring-graphql-common#usage) and the [example](https://github.com/graphql-java/graphql-spring-boot/tree/master/example-spring-common) for usage instructions.
 
 #### Application Properties
-```
+```yaml
 graphql:
       spring-graphql-common:
                clientMutationIdName: clientMutationId

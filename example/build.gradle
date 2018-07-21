@@ -22,7 +22,7 @@ buildscript {
         maven { url 'http://repo.spring.io/plugins-release' }
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$LIB_SPRING_BOOT_VER")
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6"
     }
 }
@@ -32,6 +32,7 @@ apply plugin: 'war'
 apply plugin: 'org.springframework.boot'
 
 repositories {
+    mavenLocal()
     jcenter()
 }
 
@@ -39,8 +40,8 @@ dependencies{
     compile(project(":graphql-spring-boot-starter"))
     compile(project(":graphiql-spring-boot-starter"))
 
-    compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER")
+    compile("org.springframework.boot:spring-boot-starter-actuator:$LIB_SPRING_BOOT_VER")
 }
 
 jar.enabled = false

@@ -1,36 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>GraphiQL</title>
-    <meta name="robots" content="noindex" />
+    <meta charset="utf-8"/>
+    <meta name="robots" content="noindex"/>
+    <meta name="referrer" content="origin"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>${pageTitle}</title>
     <style>
         body {
-            height: 100%;
+            height: 100vh;
             margin: 0;
-            width: 100%;
             overflow: hidden;
         }
-        #graphiql {
+
+        #splash {
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            font-family: system, -apple-system, "San Francisco", ".SFNSDisplay-Regular", "Segoe UI", Segoe, "Segoe WP", "Helvetica Neue", helvetica, "Lucida Grande", arial, sans-serif;
             height: 100vh;
+            justify-content: center;
+            text-align: center;
         }
     </style>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react-dom.min.js"></script>
+    <script src="/vendor/es6-promise.auto.min.js"></script>
+    <script src="/vendor/fetch.min.js"></script>
+    <script src="/vendor/react.min.js"></script>
+    <script src="/vendor/react-dom.min.js"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/graphiql/0.11.11/graphiql.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/graphiql/0.11.11/graphiql.min.js"></script>
+    <link rel="stylesheet" href="${graphiqlCssUrl}"/>
+    <script src="${graphiqlJsUrl}"></script>
     <script src="//unpkg.com/subscriptions-transport-ws@0.8.3/browser/client.js"></script>
     <script src="//unpkg.com/graphiql-subscriptions-fetcher@0.0.2/browser/client.js"></script>
-
 </head>
 <body>
-<div id="graphiql">Loading...</div>
+<div id="splash">
+    Loading&hellip;
+</div>
 <script>
-
     // Parse the search string to get url parameters.
     var search = window.location.search;
     var parameters = {};
@@ -72,11 +80,11 @@
 
     function updateURL() {
         var newSearch = '?' + Object.keys(parameters).filter(function (key) {
-                return Boolean(parameters[key]);
-            }).map(function (key) {
-                return encodeURIComponent(key) + '=' +
-                    encodeURIComponent(parameters[key]);
-            }).join('&');
+            return Boolean(parameters[key]);
+        }).map(function (key) {
+            return encodeURIComponent(key) + '=' +
+                encodeURIComponent(parameters[key]);
+        }).join('&');
         history.replaceState(null, null, newSearch);
     }
 
@@ -90,10 +98,10 @@
             method: 'post',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(graphQLParams),
-            credentials: 'include',
+            credentials: 'include'
         }).then(function (response) {
             return response.text();
         }).then(function (responseBody) {
@@ -130,7 +138,7 @@
             onEditVariables: onEditVariables,
             onEditOperationName: onEditOperationName
         }),
-        document.getElementById('graphiql')
+        document.body
     );
 </script>
 </body>

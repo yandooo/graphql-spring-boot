@@ -23,31 +23,14 @@ import graphql.execution.ExecutionStrategy;
 import graphql.execution.instrumentation.Instrumentation;
 import graphql.execution.preparsed.PreparsedDocumentProvider;
 import graphql.schema.GraphQLSchema;
-import graphql.servlet.AbstractGraphQLHttpServlet;
-import graphql.servlet.DefaultExecutionStrategyProvider;
-import graphql.servlet.DefaultGraphQLSchemaProvider;
-import graphql.servlet.ExecutionStrategyProvider;
-import graphql.servlet.GraphQLContextBuilder;
-import graphql.servlet.GraphQLErrorHandler;
-import graphql.servlet.GraphQLInvocationInputFactory;
-import graphql.servlet.GraphQLObjectMapper;
-import graphql.servlet.GraphQLQueryInvoker;
-import graphql.servlet.GraphQLRootObjectBuilder;
-import graphql.servlet.GraphQLSchemaProvider;
-import graphql.servlet.GraphQLServletListener;
-import graphql.servlet.GraphQLWebsocketServlet;
-import graphql.servlet.ObjectMapperConfigurer;
-import graphql.servlet.SimpleGraphQLHttpServlet;
+import graphql.servlet.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -66,10 +49,10 @@ import java.util.Map;
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnClass(DispatcherServlet.class)
-@ConditionalOnBean({GraphQLSchema.class, GraphQLSchemaProvider.class})
+@Conditional(GraphQLWebAutoConfiguration.OnSchemaOrSchemaProvider.class)
 @ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class})
-@EnableConfigurationProperties(GraphQLServletProperties.class)
+@EnableConfigurationProperties({GraphQLServletProperties.class})
 public class GraphQLWebAutoConfiguration {
 
     public static final String QUERY_EXECUTION_STRATEGY = "queryExecutionStrategy";
@@ -123,28 +106,28 @@ public class GraphQLWebAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public ExecutionStrategyProvider executionStrategyProvider() {
-        if(executionStrategies == null || executionStrategies.isEmpty()) {
+        if (executionStrategies == null || executionStrategies.isEmpty()) {
             return new DefaultExecutionStrategyProvider();
-        } else if(executionStrategies.entrySet().size() == 1) {
+        } else if (executionStrategies.entrySet().size() == 1) {
             return new DefaultExecutionStrategyProvider(executionStrategies.entrySet().stream().findFirst().get().getValue());
         } else {
 
-            if(!executionStrategies.containsKey(QUERY_EXECUTION_STRATEGY)) {
+            if (!executionStrategies.containsKey(QUERY_EXECUTION_STRATEGY)) {
                 throwIncorrectExecutionStrategyNameException();
             }
 
-            if(executionStrategies.size() == 2 && !(executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY) || executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
+            if (executionStrategies.size() == 2 && !(executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY) || executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
                 throwIncorrectExecutionStrategyNameException();
             }
 
-            if(executionStrategies.size() >= 3 && !(executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY) && executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
+            if (executionStrategies.size() >= 3 && !(executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY) && executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
                 throwIncorrectExecutionStrategyNameException();
             }
 
             return new DefaultExecutionStrategyProvider(
-                executionStrategies.get(QUERY_EXECUTION_STRATEGY),
-                executionStrategies.get(MUTATION_EXECUTION_STRATEGY),
-                executionStrategies.get(SUBSCRIPTION_EXECUTION_STRATEGY)
+                    executionStrategies.get(QUERY_EXECUTION_STRATEGY),
+                    executionStrategies.get(MUTATION_EXECUTION_STRATEGY),
+                    executionStrategies.get(SUBSCRIPTION_EXECUTION_STRATEGY)
             );
         }
     }
@@ -173,7 +156,7 @@ public class GraphQLWebAutoConfiguration {
     @ConditionalOnMissingBean
     public GraphQLQueryInvoker queryInvoker(ExecutionStrategyProvider executionStrategyProvider) {
         GraphQLQueryInvoker.Builder builder = GraphQLQueryInvoker.newBuilder()
-            .withExecutionStrategyProvider(executionStrategyProvider);
+                .withExecutionStrategyProvider(executionStrategyProvider);
 
         if(instrumentation != null) {
             builder.withInstrumentation(instrumentation);
@@ -204,16 +187,40 @@ public class GraphQLWebAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public SimpleGraphQLHttpServlet graphQLHttpServlet(GraphQLInvocationInputFactory invocationInputFactory, GraphQLQueryInvoker queryInvoker, GraphQLObjectMapper graphQLObjectMapper) {
-        return SimpleGraphQLHttpServlet.newBuilder(invocationInputFactory)
-            .withQueryInvoker(queryInvoker)
-            .withObjectMapper(graphQLObjectMapper)
-            .build();
+    public GraphQLServlet graphQLServlet(GraphQLSchemaProvider schemaProvider, ExecutionStrategyProvider executionStrategyProvider) {
+        SimpleGraphQLServlet.Builder builder = SimpleGraphQLServlet.builder(schemaProvider)
+                .withExecutionStrategyProvider(executionStrategyProvider);
+
+        if (objectMapperConfigurer != null) builder.withObjectMapperConfigurer(objectMapperConfigurer);
+        if (listeners != null) builder.withListeners(listeners);
+        if (instrumentation != null) builder.withInstrumentation(instrumentation);
+        if (errorHandler != null) builder.withGraphQLErrorHandler(errorHandler);
+        if (contextBuilder != null) builder.withGraphQLContextBuilder(contextBuilder);
+        if (graphQLRootObjectBuilder != null) builder.withGraphQLRootObjectBuilder(graphQLRootObjectBuilder);
+        if (preparsedDocumentProvider != null) builder.withPreparsedDocumentProvider(preparsedDocumentProvider);
+
+        return builder.build();
     }
 
     @Bean
-    public ServletRegistrationBean graphQLServletRegistrationBean(AbstractGraphQLHttpServlet servlet) {
-        return new ServletRegistrationBean(servlet, graphQLServletProperties.getServletMapping());
+    ServletRegistrationBean<GraphQLServlet> graphQLServletRegistrationBean(GraphQLServlet servlet) {
+        return new ServletRegistrationBean<>(servlet, graphQLServletProperties.getServletMapping());
+    }
+
+    static class OnSchemaOrSchemaProvider extends AnyNestedCondition {
+
+        public OnSchemaOrSchemaProvider() {
+            super(ConfigurationPhase.REGISTER_BEAN);
+        }
+
+        @ConditionalOnBean(GraphQLSchema.class)
+        static class OnSchema {
+        }
+
+        @ConditionalOnBean(GraphQLSchemaProvider.class)
+        static class OnSchemaProvider {
+        }
+
     }
 
     @Bean

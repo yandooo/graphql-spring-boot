@@ -153,7 +153,7 @@ public class TodoSchema {
     public
     @GraphQLOut("filename")
     String uploadFile(GraphQLContext graphQLContext) {
-        return graphQLContext.getFiles().orElse(new HashMap<>()).values().stream().flatMap(Collection::stream).map(FileItem::getName).collect(Collectors.joining(", "));
+        return graphQLContext.getFiles().orElse(new HashMap<>()).values().stream().flatMap(Collection::stream).map(Part::getName).collect(Collectors.joining(", "));
     }
 
     @GraphQLMutation

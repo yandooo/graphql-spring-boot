@@ -1,0 +1,9 @@
+query {
+    post(id: "1") {
+        id
+        comments {
+            id
+            description
+        }
+    }
+}

@@ -23,6 +23,10 @@ include ":graphql-spring-boot-autoconfigure"
 include ":graphql-spring-boot-starter"
 include ":graphiql-spring-boot-autoconfigure"
 include ":graphiql-spring-boot-starter"
+include ":voyager-spring-boot-autoconfigure"
+include ":voyager-spring-boot-starter"
 
 include ":example"
 include ":example-spring-common"
+include ':example-graphql-tools'
+
