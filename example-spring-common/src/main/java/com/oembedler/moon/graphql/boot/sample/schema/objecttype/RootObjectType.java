@@ -19,7 +19,7 @@
 
 package com.oembedler.moon.graphql.boot.sample.schema.objecttype;
 
-import com.embedler.moon.graphql.boot.sample.schema.TodoSchema;
+import com.oembedler.moon.graphql.boot.sample.schema.TodoSchema;
 import com.oembedler.moon.graphql.engine.relay.RelayNode;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLDescription;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLField;

@@ -1,6 +1,6 @@
 package com.oembedler.moon.graphql.boot.sample;
 
-import com.embedler.moon.graphql.boot.sample.schema.objecttype.TodoObjectType;
+import com.oembedler.moon.graphql.boot.sample.schema.objecttype.TodoObjectType;
 import com.oembedler.moon.graphql.boot.sample.schema.objecttype.TodoObjectType;
 import com.oembedler.moon.graphql.engine.relay.ConnectionObjectType;
 import com.oembedler.moon.graphql.engine.relay.EdgeObjectType;

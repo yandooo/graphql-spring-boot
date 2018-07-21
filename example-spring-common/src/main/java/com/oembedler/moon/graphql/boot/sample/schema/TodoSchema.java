@@ -19,10 +19,10 @@
 
 package com.oembedler.moon.graphql.boot.sample.schema;
 
-import com.embedler.moon.graphql.boot.sample.TodoSimpleListConnection;
-import com.embedler.moon.graphql.boot.sample.schema.objecttype.RootObjectType;
-import com.embedler.moon.graphql.boot.sample.schema.objecttype.TodoObjectType;
-import com.embedler.moon.graphql.boot.sample.schema.objecttype.UserObjectType;
+import com.oembedler.moon.graphql.boot.sample.TodoSimpleListConnection;
+import com.oembedler.moon.graphql.boot.sample.schema.objecttype.RootObjectType;
+import com.oembedler.moon.graphql.boot.sample.schema.objecttype.TodoObjectType;
+import com.oembedler.moon.graphql.boot.sample.schema.objecttype.UserObjectType;
 import com.oembedler.moon.graphql.boot.sample.schema.objecttype.RootObjectType;
 import com.oembedler.moon.graphql.boot.sample.schema.objecttype.TodoObjectType;
 import com.oembedler.moon.graphql.boot.sample.schema.objecttype.UserObjectType;
