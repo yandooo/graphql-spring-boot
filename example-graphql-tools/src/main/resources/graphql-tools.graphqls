@@ -4,10 +4,17 @@ type Query {
 
 type Post {
     id: ID!
+    date: String
     comments: [Comment!]!
 }
 
 type Comment {
     id: ID!
     description: String!
+}
+input PostInput {
+    date: String
+}
+type Mutation {
+    createPost(post:PostInput!):Post!
 }

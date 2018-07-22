@@ -1,8 +1,10 @@
 package com.embedler.moon.graphql.boot;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.util.BufferRecyclers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -33,8 +35,13 @@ public class GraphQLTestUtils {
         queryWrapper = loadResource(queryWrapperFile);
     }
 
-    private String createJsonQuery(String graphql) {
-        return queryWrapper.replace("__payload__", escapeQuery(graphql));
+    private String createJsonQuery(String graphql, ObjectNode variables)
+        throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode wrapper = objectMapper.createObjectNode();
+        wrapper.put("query",graphql);
+        wrapper.set("variables", variables);
+        return objectMapper.writeValueAsString(wrapper);
     }
 
     private String escapeQuery(String graphql) {
@@ -58,9 +65,12 @@ public class GraphQLTestUtils {
         }
     }
 
-    public JsonNode perform(String graphqlResource) throws IOException {
+    public JsonNode perform(String graphqlResource) throws Exception {
+     return perform(graphqlResource,null);
+    }
+    public JsonNode perform(String graphqlResource, ObjectNode variables) throws Exception {
         String graphql = loadQuery(graphqlResource);
-        String payload = createJsonQuery(graphql);
+        String payload = createJsonQuery(graphql,variables);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
