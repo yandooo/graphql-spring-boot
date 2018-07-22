@@ -1,20 +1,16 @@
 type Query {
     post(id: ID!): Post
 }
-
+type Mutation {
+    createPost(text:String):Post
+}
 type Post {
     id: ID!
-    date: String
+    text: String
     comments: [Comment!]!
 }
 
 type Comment {
     id: ID!
     description: String!
-}
-input PostInput {
-    date: String
-}
-type Mutation {
-    createPost(post:PostInput!):Post!
 }

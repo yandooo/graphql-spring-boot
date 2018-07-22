@@ -1,5 +1,5 @@
-mutation CreatePost($post:PostInput!) {
-    createPost(post:$post) {
+mutation CreatePost($text:String){
+    createPost(text:$text){
         id
     }
 }

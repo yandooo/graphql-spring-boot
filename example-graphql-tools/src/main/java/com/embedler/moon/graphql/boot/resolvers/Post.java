@@ -1,22 +1,19 @@
 package com.embedler.moon.graphql.boot.resolvers;
 
-import java.time.LocalDateTime;
-
 class Post {
 
     private Long id;
-
-    private LocalDateTime date;
+    private String text;
 
     Post(Long id) {
         this.id = id;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public String getText() {
+      return text;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setText(String text) {
+      this.text = text;
     }
 }

@@ -1,7 +1,7 @@
-package com.embedler.moon.graphql.boot;
+package com.embedler.moon.graphql.testing;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.util.BufferRecyclers;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -19,39 +19,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-@Component
 public class GraphQLTestUtils {
 
-    @Value("classpath:graphql/query-wrapper.json")
-    private Resource queryWrapperFile;
     @Autowired
     private ResourceLoader resourceLoader;
     @Autowired
     private TestRestTemplate restTemplate;
-    private String queryWrapper;
 
-    @PostConstruct
-    public void initQueryWrapper() throws IOException {
-        queryWrapper = loadResource(queryWrapperFile);
-    }
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     private String createJsonQuery(String graphql, ObjectNode variables)
         throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
+
         ObjectNode wrapper = objectMapper.createObjectNode();
-        wrapper.put("query",graphql);
+        wrapper.put("query", graphql);
         wrapper.set("variables", variables);
         return objectMapper.writeValueAsString(wrapper);
     }
 
-    private String escapeQuery(String graphql) {
-        StringBuilder result = new StringBuilder();
-        BufferRecyclers.getJsonStringEncoder().quoteAsString(graphql, result);
-        return result.toString();
-    }
-
     private JsonNode parse(String payload) throws IOException {
-        return new ObjectMapper().readTree(payload);
+        return objectMapper.readTree(payload);
     }
 
     private String loadQuery(String location) throws IOException {
@@ -65,10 +52,11 @@ public class GraphQLTestUtils {
         }
     }
 
-    public JsonNode perform(String graphqlResource) throws Exception {
-     return perform(graphqlResource,null);
+    public JsonNode perform(String graphqlResource) throws IOException {
+        return perform(graphqlResource,null);
     }
-    public JsonNode perform(String graphqlResource, ObjectNode variables) throws Exception {
+
+    public JsonNode perform(String graphqlResource, ObjectNode variables) throws IOException {
         String graphql = loadQuery(graphqlResource);
         String payload = createJsonQuery(graphql,variables);
 
