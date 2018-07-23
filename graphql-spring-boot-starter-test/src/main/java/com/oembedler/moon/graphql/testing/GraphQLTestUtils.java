@@ -37,10 +37,6 @@ public class GraphQLTestUtils {
         return objectMapper.writeValueAsString(wrapper);
     }
 
-    private JsonNode parse(String payload) throws IOException {
-        return objectMapper.readTree(payload);
-    }
-
     private String loadQuery(String location) throws IOException {
         Resource resource = resourceLoader.getResource("classpath:" + location);
         return loadResource(resource);
@@ -52,11 +48,11 @@ public class GraphQLTestUtils {
         }
     }
 
-    public JsonNode perform(String graphqlResource) throws IOException {
+    public GraphQLResponse perform(String graphqlResource) throws IOException {
         return perform(graphqlResource,null);
     }
 
-    public JsonNode perform(String graphqlResource, ObjectNode variables) throws IOException {
+    public GraphQLResponse perform(String graphqlResource, ObjectNode variables) throws IOException {
         String graphql = loadQuery(graphqlResource);
         String payload = createJsonQuery(graphql,variables);
 
@@ -66,7 +62,7 @@ public class GraphQLTestUtils {
         HttpEntity<String> httpEntity = new HttpEntity<>(payload, headers);
         ResponseEntity<String> response = restTemplate.exchange("/graphql", HttpMethod.POST, httpEntity, String.class);
 
-        return parse(response.getBody());
+        return new GraphQLResponse(response);
     }
 
 }
