@@ -1,9 +1,12 @@
 type Query {
     post(id: ID!): Post
 }
-
+type Mutation {
+    createPost(text:String):Post
+}
 type Post {
     id: ID!
+    text: String
     comments: [Comment!]!
 }
 
