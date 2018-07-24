@@ -17,20 +17,43 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-dependencies {
-    compile "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
-    compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
-    compile "org.springframework.boot:spring-boot-starter-websocket:$LIB_SPRING_BOOT_VER"
-    compile "com.graphql-java:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
-    compile "commons-io:commons-io:$LIB_COMMONS_IO_VER"
+package com.oembedler.moon.graphql.boot.sample.schema.objecttype;
 
-    compileOnly "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
-    compileOnly "com.graphql-java:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
+import com.oembedler.moon.graphql.engine.relay.ConnectionObjectType;
+import com.oembedler.moon.graphql.engine.relay.EdgeObjectType;
+import com.oembedler.moon.graphql.engine.relay.PageInfoObjectType;
+import com.oembedler.moon.graphql.engine.stereotype.GraphQLObject;
 
-    testCompile "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
-    testCompile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
-    testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
-    testCompile "com.graphql-java:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
+/**
+ * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
+ */
+@GraphQLObject("Todo")
+public class TodoObjectType extends BaseObjectType {
+    private String text;
+    private boolean complete;
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public boolean isComplete() {
+        return complete;
+    }
+
+    public void setComplete(boolean complete) {
+        this.complete = complete;
+    }
+
+    @GraphQLObject
+    public static class TodoConnectionObjectType extends ConnectionObjectType<TodoEdgeObjectType, PageInfoObjectType> {
+    }
+
+    @GraphQLObject
+    public static class TodoEdgeObjectType extends EdgeObjectType<TodoObjectType> {
+    }
+
 }
-
-compileJava.dependsOn(processResources)

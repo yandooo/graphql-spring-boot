@@ -5,6 +5,14 @@ import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigRegistry;
 import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.mock.web.MockServletContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+
+import javax.servlet.ServletContext;
+import javax.websocket.server.ServerContainer;
+
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Andrew Potter
@@ -47,7 +55,18 @@ public abstract class AbstractAutoConfigurationTest {
 
         getRegistry().register(config);
         getRegistry().register(autoConfiguration);
+
+        loadServletContext();
         getContext().refresh();
+    }
+
+    private void loadServletContext() {
+        if (context instanceof AnnotationConfigWebApplicationContext) {
+            ServerContainer serverContainer = mock(ServerContainer.class);
+            ServletContext servletContext = new MockServletContext();
+            servletContext.setAttribute("javax.websocket.server.ServerContainer", serverContainer);
+            ((AnnotationConfigWebApplicationContext) context).setServletContext(servletContext);
+        }
     }
 
     public AnnotationConfigRegistry getRegistry() {

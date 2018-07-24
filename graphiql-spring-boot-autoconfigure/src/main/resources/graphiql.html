@@ -31,6 +31,8 @@
 
     <link rel="stylesheet" href="${graphiqlCssUrl}"/>
     <script src="${graphiqlJsUrl}"></script>
+    <script src="//unpkg.com/subscriptions-transport-ws@0.8.3/browser/client.js"></script>
+    <script src="//unpkg.com/graphiql-subscriptions-fetcher@0.0.2/browser/client.js"></script>
 </head>
 <body>
 <div id="splash">
@@ -111,10 +113,24 @@
         });
     }
 
+    var loc = window.location,
+        newUri;
+
+    if (loc.protocol === "https:") {
+        newUri = "wss:";
+    } else {
+        newUri = "ws:";
+    }
+    newUri += "//" + loc.host;
+    newUri += "/subscriptions";
+
+    var subscriptionsClient = new window.SubscriptionsTransportWs.SubscriptionClient(newUri, { reconnect: true });
+    var subscriptionsFetcher = window.GraphiQLSubscriptionsFetcher.graphQLFetcher(subscriptionsClient, graphQLFetcher);
+
     // Render <GraphiQL /> into the body.
     ReactDOM.render(
         React.createElement(GraphiQL, {
-            fetcher: graphQLFetcher,
+            fetcher: subscriptionsFetcher,
             query: parameters.query,
             variables: parameters.variables,
             operationName: parameters.operationName,

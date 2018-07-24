@@ -17,20 +17,29 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-dependencies {
-    compile "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
-    compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
-    compile "org.springframework.boot:spring-boot-starter-websocket:$LIB_SPRING_BOOT_VER"
-    compile "com.graphql-java:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
-    compile "commons-io:commons-io:$LIB_COMMONS_IO_VER"
+package com.oembedler.moon.graphql.boot.sample.schema.objecttype;
 
-    compileOnly "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
-    compileOnly "com.graphql-java:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
+import com.oembedler.moon.graphql.engine.relay.RelayNode;
+import com.oembedler.moon.graphql.engine.stereotype.GraphQLDescription;
+import com.oembedler.moon.graphql.engine.stereotype.GraphQLID;
+import com.oembedler.moon.graphql.engine.stereotype.GraphQLIgnore;
+import com.oembedler.moon.graphql.engine.stereotype.GraphQLNonNull;
+import graphql.relay.Relay;
 
-    testCompile "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
-    testCompile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
-    testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
-    testCompile "com.graphql-java:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
+/**
+ * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
+ */
+public class BaseObjectType implements RelayNode {
+
+    @GraphQLIgnore
+    private String id;
+
+    public String getId(RelayNode relayNode) {
+        BaseObjectType baseObjectType = (BaseObjectType) relayNode;
+        return new Relay().toGlobalId(relayNode.getClass().getSimpleName(), baseObjectType.id);
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }
-
-compileJava.dependsOn(processResources)
