@@ -20,4 +20,6 @@ dependencies {
     compile("org.springframework:spring-web:$LIB_SPRING_CORE_VER")
     compile("org.springframework.boot:spring-boot-test:$LIB_SPRING_BOOT_VER")
     compile("com.fasterxml.jackson.core:jackson-databind:2.5.4")
+    compile("com.jayway.jsonpath:json-path:2.3.0")
+
 }

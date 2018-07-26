@@ -1,6 +1,6 @@
 # GraphQL and Graph*i*QL Spring Framework Boot Starters
 [![Build Status](https://travis-ci.org/graphql-java/graphql-spring-boot.svg?branch=master)](https://travis-ci.org/graphql-java/graphql-spring-boot)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot-starter)
+[![Maven Central](https://img.shields.io/maven-central/v/com.graphql-java/graphql-spring-boot-starter.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot-starter)
 [![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/graphql-java/graphql-java)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -41,13 +41,13 @@ repositories {
 }
 
 dependencies {
-  compile 'com.graphql-java:graphql-spring-boot-starter:4.2.0'
+  compile 'com.graphql-java:graphql-spring-boot-starter:5.0.1'
   
   // to embed GraphiQL tool
-  compile 'com.graphql-java:graphiql-spring-boot-starter:4.2.0'
+  compile 'com.graphql-java:graphiql-spring-boot-starter:5.0.1'
 
   // to embed Voyager tool
-  compile 'com.graphql-java:voyager-spring-boot-starter:4.2.0'
+  compile 'com.graphql-java:voyager-spring-boot-starter:5.0.1'
 }
 ```
 
@@ -56,21 +56,21 @@ Maven:
 <dependency>
     <groupId>com.graphql-java</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>4.2.0</version>
+    <version>5.0.1</version>
 </dependency>
 
 <!-- to embed GraphiQL tool -->
 <dependency>
     <groupId>com.graphql-java</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>4.2.0</version>
+    <version>5.0.1</version>
 </dependency>
 
 <!-- to embed Voyager tool -->
 <dependency>
     <groupId>com.graphql-java</groupId>
     <artifactId>voyager-spring-boot-starter</artifactId>
-    <version>4.2.0</version>
+    <version>5.0.1</version>
 </dependency>
 ```
 

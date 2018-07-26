@@ -1,9 +1,7 @@
 package com.oembedler.moon.graphql.boot;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.oembedler.moon.graphql.boot.resolvers.Post;
 import com.oembedler.moon.graphql.testing.GraphQLResponse;
 import com.oembedler.moon.graphql.testing.GraphQLTestUtils;
 import org.junit.Test;
@@ -28,11 +26,7 @@ public class GraphQLToolsSampleApplicationTest {
     public void get_comments() throws IOException {
         GraphQLResponse response = graphQLTestUtils.perform("graphql/post-get-comments.graphql");
         assertNotNull(response);
-        JsonNode parsedResponse = response.readTree();
-        assertNotNull(parsedResponse);
-        assertNotNull(parsedResponse.get("data"));
-        assertNotNull(parsedResponse.get("data").get("post"));
-        assertEquals("1", parsedResponse.get("data").get("post").get("id").asText());
+        assertEquals("1", response.get("$.data.post.id"));
     }
 
     @Test
@@ -41,11 +35,7 @@ public class GraphQLToolsSampleApplicationTest {
         variables.put("text", "lorem ipsum dolor sit amet");
         GraphQLResponse response = graphQLTestUtils.perform("graphql/create-post.graphql", variables);
         assertNotNull(response);
-        JsonNode parsedResponse = response.readTree();
-        assertNotNull(parsedResponse);
-        assertNotNull(parsedResponse.get("data"));
-        assertNotNull(parsedResponse.get("data").get("createPost"));
-        assertNotNull(parsedResponse.get("data").get("createPost").get("id"));
+        assertNotNull(response.get("$.data.createPost.id"));
     }
 
 }
