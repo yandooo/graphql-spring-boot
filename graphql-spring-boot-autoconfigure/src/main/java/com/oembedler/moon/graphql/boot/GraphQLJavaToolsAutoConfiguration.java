@@ -1,10 +1,6 @@
 package com.oembedler.moon.graphql.boot;
 
-import com.coxautodev.graphql.tools.GraphQLResolver;
-import com.coxautodev.graphql.tools.SchemaParser;
-import com.coxautodev.graphql.tools.SchemaParserBuilder;
-import com.coxautodev.graphql.tools.SchemaParserDictionary;
-import com.coxautodev.graphql.tools.SchemaParserOptions;
+import com.coxautodev.graphql.tools.*;
 import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.GraphQLSchemaProvider;
@@ -35,9 +31,6 @@ public class GraphQLJavaToolsAutoConfiguration {
     @Autowired(required = false)
     private SchemaParserOptions options;
 
-    @Autowired
-    private ApplicationContext applicationContext;
-
     @Bean
     @ConditionalOnMissingBean
     public SchemaStringProvider schemaStringProvider() {
@@ -53,16 +46,16 @@ public class GraphQLJavaToolsAutoConfiguration {
         List<String> schemaStrings = schemaStringProvider.schemaStrings();
         schemaStrings.forEach(builder::schemaString);
 
-        if(scalars != null) {
+        if (scalars != null) {
             builder.scalars(scalars);
         }
 
-        if(options != null) {
+        if (options != null) {
             builder.options(options);
         }
 
         return builder.resolvers(resolvers)
-            .build();
+                .build();
     }
 
 

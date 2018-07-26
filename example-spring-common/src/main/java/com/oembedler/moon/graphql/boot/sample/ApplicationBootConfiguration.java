@@ -17,20 +17,18 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-dependencies {
-    compile "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
-    compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
-    compile "org.springframework.boot:spring-boot-starter-websocket:$LIB_SPRING_BOOT_VER"
-    compile "com.graphql-java:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
-    compile "commons-io:commons-io:$LIB_COMMONS_IO_VER"
+package com.oembedler.moon.graphql.boot.sample;
 
-    compileOnly "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
-    compileOnly "com.graphql-java:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-    testCompile "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
-    testCompile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
-    testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
-    testCompile "com.graphql-java:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
+/**
+ * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
+ */
+@SpringBootApplication
+public class ApplicationBootConfiguration {
+
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(ApplicationBootConfiguration.class, args);
+    }
 }
-
-compileJava.dependsOn(processResources)

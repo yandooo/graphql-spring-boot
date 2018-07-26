@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile(project(":graphql-spring-boot-starter"))
+    compile(project(":graphiql-spring-boot-starter"))
+    compile "com.graphql-java:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
+
+    compile "io.reactivex.rxjava2:rxjava:2.1.5"
+
+    compile("org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER")
+
+    testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
+}
+
+jar.enabled = false
+uploadArchives.enabled = false
+bintrayUpload.enabled = false

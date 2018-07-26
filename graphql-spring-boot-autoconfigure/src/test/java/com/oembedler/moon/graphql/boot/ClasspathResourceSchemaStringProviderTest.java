@@ -33,7 +33,6 @@ public class ClasspathResourceSchemaStringProviderTest extends AbstractAutoConfi
   static class BaseConfiguration {
 
     public class Query implements GraphQLQueryResolver {
-
       String schemaLocationTest(String id) {
         return id;
       }

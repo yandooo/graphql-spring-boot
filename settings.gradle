@@ -31,4 +31,5 @@ include ":graphql-spring-boot-starter-test"
 include ":example"
 include ":example-spring-common"
 include ':example-graphql-tools'
+include ':example-graphql-subscription'
 
