@@ -19,6 +19,16 @@
       "name": "voyager.endpoint",
       "defaultValue": "/graphql",
       "type": "java.lang.String"
+    },
+    {
+      "name": "voyager.cdn.enabled",
+      "defaultValue": false,
+      "type": "java.lang.Boolean"
+    },
+    {
+      "name": "voyager.cdn.version",
+      "defaultValue": "v1.x",
+      "type": "java.lang.String"
     }
   ]
 }
