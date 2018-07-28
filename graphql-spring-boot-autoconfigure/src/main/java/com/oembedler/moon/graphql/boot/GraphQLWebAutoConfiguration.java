@@ -242,4 +242,10 @@ public class GraphQLWebAutoConfiguration {
     public ServerEndpointExporter serverEndpointExporter() {
         return new ServerEndpointExporter();
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public MultipartConfigElement multipartConfigElement() {
+        return new MultipartConfigElement("");
+    }
 }
