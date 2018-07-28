@@ -19,6 +19,7 @@
 
 buildscript {
     repositories {
+        mavenLocal()
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url 'http://repo.spring.io/plugins-release' }
     }

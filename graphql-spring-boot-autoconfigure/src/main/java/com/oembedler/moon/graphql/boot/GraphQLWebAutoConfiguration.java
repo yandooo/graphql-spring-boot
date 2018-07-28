@@ -59,6 +59,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistryWorkaround;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 import org.springframework.web.socket.server.standard.ServerEndpointRegistration;
 
+import javax.servlet.MultipartConfigElement;
 import java.util.List;
 import java.util.Map;
 
@@ -219,8 +220,10 @@ public class GraphQLWebAutoConfiguration {
     }
 
     @Bean
-    ServletRegistrationBean<AbstractGraphQLHttpServlet> graphQLServletRegistrationBean(AbstractGraphQLHttpServlet servlet) {
-        return new ServletRegistrationBean<>(servlet, graphQLServletProperties.getServletMapping());
+    public ServletRegistrationBean<AbstractGraphQLHttpServlet> graphQLServletRegistrationBean(AbstractGraphQLHttpServlet servlet, MultipartConfigElement multipartConfig) {
+        ServletRegistrationBean<AbstractGraphQLHttpServlet> registration = new ServletRegistrationBean<>(servlet, graphQLServletProperties.getServletMapping());
+        registration.setMultipartConfig(multipartConfig);
+        return registration;
     }
 
     @Bean
