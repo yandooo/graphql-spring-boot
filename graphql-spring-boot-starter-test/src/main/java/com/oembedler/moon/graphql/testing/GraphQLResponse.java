@@ -29,4 +29,8 @@ public class GraphQLResponse {
         return context.read(path);
     }
 
+    public ReadContext context() {
+        return context;
+    }
+
 }

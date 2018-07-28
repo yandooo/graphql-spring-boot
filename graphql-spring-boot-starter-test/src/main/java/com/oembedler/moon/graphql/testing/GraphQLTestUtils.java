@@ -25,6 +25,8 @@ public class GraphQLTestUtils {
     private ResourceLoader resourceLoader;
     @Autowired
     private TestRestTemplate restTemplate;
+    @Value("${graphql.servlet.mapping:/graphql}")
+    private String graphqlMapping;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -55,12 +57,15 @@ public class GraphQLTestUtils {
     public GraphQLResponse perform(String graphqlResource, ObjectNode variables) throws IOException {
         String graphql = loadQuery(graphqlResource);
         String payload = createJsonQuery(graphql,variables);
+        return post(payload);
+    }
 
+    private GraphQLResponse post(String payload) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<String> httpEntity = new HttpEntity<>(payload, headers);
-        ResponseEntity<String> response = restTemplate.exchange("/graphql", HttpMethod.POST, httpEntity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(graphqlMapping, HttpMethod.POST, httpEntity, String.class);
 
         return new GraphQLResponse(response);
     }

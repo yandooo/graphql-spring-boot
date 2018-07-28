@@ -11,6 +11,11 @@
       "type": "java.lang.Boolean"
     },
     {
+      "name": "graphql.servlet.mapping",
+      "defaultValue": "/graphql",
+      "type": "java.lang.String"
+    },
+    {
       "name": "graphql.servlet.corsEnabled",
       "defaultValue": true,
       "type": "java.lang.Boolean"
