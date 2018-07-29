@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ReadContext;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
@@ -33,4 +34,15 @@ public class GraphQLResponse {
         return context;
     }
 
+    public boolean isOk() {
+        return getStatusCode() == HttpStatus.OK;
+    }
+
+    public HttpStatus getStatusCode() {
+        return responseEntity.getStatusCode();
+    }
+
+    public ResponseEntity<String> getRawResponse() {
+        return responseEntity;
+    }
 }

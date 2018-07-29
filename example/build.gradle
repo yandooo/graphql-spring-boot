@@ -28,7 +28,6 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'war'
 apply plugin: 'org.springframework.boot'
 
 repositories {
@@ -47,3 +46,4 @@ dependencies{
 jar.enabled = false
 uploadArchives.enabled = false
 bintrayUpload.enabled = false
+install.enabled = false

@@ -1,18 +1,20 @@
 package com.graphql.spring.boot.test;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.DispatcherServlet;
 
 @Configuration
-//@Profile("test")
-//@ConditionalOnClass(TestRestTemplate.class)
+@ConditionalOnWebApplication
+@ConditionalOnClass(DispatcherServlet.class)
+@ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
 public class GraphQLTestAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLTestUtils graphQLTestUtils() {
-        return new GraphQLTestUtils();
+    public GraphQLTestTemplate graphQLTestUtils() {
+        return new GraphQLTestTemplate();
     }
 
 }

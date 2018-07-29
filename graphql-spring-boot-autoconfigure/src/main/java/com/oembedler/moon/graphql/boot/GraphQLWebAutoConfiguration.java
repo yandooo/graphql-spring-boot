@@ -62,6 +62,7 @@ import org.springframework.web.socket.server.standard.ServerEndpointRegistration
 import javax.servlet.MultipartConfigElement;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 /**
@@ -109,6 +110,9 @@ public class GraphQLWebAutoConfiguration {
 
     @Autowired(required = false)
     private PreparsedDocumentProvider preparsedDocumentProvider;
+
+    @Autowired(required = false)
+    private MultipartConfigElement multipartConfigElement;
 
     @Bean
     @ConditionalOnClass(CorsFilter.class)
@@ -220,9 +224,9 @@ public class GraphQLWebAutoConfiguration {
     }
 
     @Bean
-    public ServletRegistrationBean<AbstractGraphQLHttpServlet> graphQLServletRegistrationBean(AbstractGraphQLHttpServlet servlet, MultipartConfigElement multipartConfig) {
+    public ServletRegistrationBean<AbstractGraphQLHttpServlet> graphQLServletRegistrationBean(AbstractGraphQLHttpServlet servlet) {
         ServletRegistrationBean<AbstractGraphQLHttpServlet> registration = new ServletRegistrationBean<>(servlet, graphQLServletProperties.getServletMapping());
-        registration.setMultipartConfig(multipartConfig);
+        registration.setMultipartConfig(multipartConfigElement());
         return registration;
     }
 
@@ -243,9 +247,7 @@ public class GraphQLWebAutoConfiguration {
         return new ServerEndpointExporter();
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public MultipartConfigElement multipartConfigElement() {
-        return new MultipartConfigElement("");
+    private MultipartConfigElement multipartConfigElement() {
+        return Optional.ofNullable(multipartConfigElement).orElse(new MultipartConfigElement(""));
     }
 }
