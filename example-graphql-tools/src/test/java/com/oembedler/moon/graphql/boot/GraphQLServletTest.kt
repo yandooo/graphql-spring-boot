@@ -20,7 +20,7 @@ class GraphQLServletTest {
 
     @Test
     fun `query over HTTP POST multipart with variables returns data requires multipartconfig`() {
-        val response = graphQLTestTemplate.postMultipart("query echo(\$string: String!)", "{\"string\":\"echo\"}")
+        val response = graphQLTestTemplate.postMultipart("query echo(\$string: String!)", """{"string":"echo"}""")
         assertNotNull(response)
         assertEquals(HttpStatus.OK, response.statusCode)
     }
