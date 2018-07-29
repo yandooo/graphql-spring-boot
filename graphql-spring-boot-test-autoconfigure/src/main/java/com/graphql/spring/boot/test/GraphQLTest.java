@@ -1,4 +1,4 @@
-package com.graphql.spring.boot.test.context;
+package com.graphql.spring.boot.test;
 
 import com.coxautodev.graphql.tools.GraphQLResolver;
 import com.coxautodev.graphql.tools.SchemaParserDictionary;

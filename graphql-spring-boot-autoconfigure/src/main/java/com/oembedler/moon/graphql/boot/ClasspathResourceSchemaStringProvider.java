@@ -9,6 +9,7 @@ import org.springframework.core.io.Resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,7 +39,7 @@ public class ClasspathResourceSchemaStringProvider implements SchemaStringProvid
   private String readSchema(Resource resource) {
     StringWriter writer = new StringWriter();
     try (InputStream inputStream = resource.getInputStream()) {
-      IOUtils.copy(inputStream, writer);
+      IOUtils.copy(inputStream, writer, StandardCharsets.UTF_8);
     } catch (IOException e) {
       throw new IllegalStateException("Cannot read graphql schema from resource " + resource, e);
     }

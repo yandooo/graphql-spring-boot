@@ -2,7 +2,7 @@ package com.oembedler.moon.graphql.boot
 
 
 import com.graphql.spring.boot.test.GraphQLTestTemplate
-import com.graphql.spring.boot.test.context.GraphQLTest
+import com.graphql.spring.boot.test.GraphQLTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
