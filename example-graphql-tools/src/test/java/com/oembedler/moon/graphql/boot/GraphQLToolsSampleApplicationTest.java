@@ -2,8 +2,8 @@ package com.oembedler.moon.graphql.boot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.oembedler.moon.graphql.testing.GraphQLResponse;
-import com.oembedler.moon.graphql.testing.GraphQLTestUtils;
+import com.graphql.spring.boot.test.GraphQLResponse;
+import com.graphql.spring.boot.test.GraphQLTestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

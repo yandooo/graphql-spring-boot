@@ -1,6 +1,5 @@
 package com.oembedler.moon.graphql.boot;
 
-import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import graphql.servlet.ObjectMapperConfigurer;
 import org.springframework.boot.SpringApplication;
@@ -15,7 +14,7 @@ public class GraphQLToolsSampleApplication {
     }
 
     @Bean
-    public ObjectMapperConfigurer objectMapperConfigurer(){
+    public ObjectMapperConfigurer objectMapperConfigurer() {
         return (mapper -> mapper.registerModule(new JavaTimeModule()));
     }
 }

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.oembedler.moon.graphql.testing.TestingConfiguration
+com.graphql.spring.boot.test.GraphQLTestAutoConfiguration
