@@ -88,6 +88,8 @@
         history.replaceState(null, null, newSearch);
     }
 
+    var headers = ${headers};
+
     // Defines a GraphQL fetcher using the fetch API. You're not required to
     // use fetch, and could instead implement graphQLFetcher however you like,
     // as long as it returns a Promise or Observable.
@@ -96,10 +98,7 @@
         // Change this to point wherever you host your GraphQL server.
         return fetch('${graphqlEndpoint}', {
             method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
+            headers: headers,
             body: JSON.stringify(graphQLParams),
             credentials: 'include'
         }).then(function (response) {

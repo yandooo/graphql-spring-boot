@@ -9,3 +9,6 @@ graphiql:
       query: defaultQuery.graphql
       defaultQuery: defaultQuery.graphql
       variables: defaultQuery.graphql
+  headers:
+    Authorization: "Bearer asdfasdf"
+    Content-Type: "application/json;charset=UTF-8"

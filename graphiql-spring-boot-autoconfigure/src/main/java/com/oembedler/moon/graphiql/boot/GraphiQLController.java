@@ -1,11 +1,14 @@
 package com.oembedler.moon.graphiql.boot;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +23,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author Andrew Potter
@@ -44,21 +48,43 @@ public class GraphiQLController {
 
     private String template;
     private String props;
+    private String headers;
 
     @PostConstruct
-    public void loadTemplate() throws IOException {
+    public void onceConstructed() throws IOException {
+        loadTemplate();
+        loadProps();
+        loadHeaders();
+    }
+
+    private void loadTemplate() throws IOException {
         try (InputStream inputStream = new ClassPathResource("graphiql.html").getInputStream()) {
             template = StreamUtils.copyToString(inputStream, Charset.defaultCharset());
         }
+    }
 
+    private void loadProps() throws IOException {
         props = new PropsLoader(environment).load();
+    }
+
+    private void loadHeaders() throws JsonProcessingException {
+        PropertyGroupReader propertyReader = new PropertyGroupReader(environment, "graphiql.headers.");
+        Properties headerProperties = propertyReader.load();
+        addIfAbsent(headerProperties, "Accept");
+        addIfAbsent(headerProperties, "Content-Type");
+        this.headers = new ObjectMapper().writeValueAsString(headerProperties);
+    }
+
+    private void addIfAbsent(Properties headerProperties, String header) {
+        if (!headerProperties.containsKey(header)) {
+            headerProperties.setProperty(header, MediaType.APPLICATION_JSON_VALUE);
+        }
     }
 
     @RequestMapping(value = "${graphiql.mapping:/graphiql}")
     public void graphiql(HttpServletRequest request, HttpServletResponse response, @PathVariable Map<String, String> params) throws IOException {
         response.setContentType("text/html; charset=UTF-8");
 
-        Map<String, String> replacements = new HashMap<>();
 
         String graphiqlCssUrl = "/vendor/graphiql.min.css";
         String graphiqlJsUrl = "/vendor/graphiql.min.js";
@@ -73,11 +99,13 @@ public class GraphiQLController {
             endpoint = request.getContextPath() + endpoint;
         }
 
+        Map<String, String> replacements = new HashMap<>();
         replacements.put("graphqlEndpoint", endpoint);
         replacements.put("pageTitle", pageTitle);
         replacements.put("graphiqlCssUrl", graphiqlCssUrl);
         replacements.put("graphiqlJsUrl", graphiqlJsUrl);
         replacements.put("props", props);
+        replacements.put("headers", headers);
 
         String populatedTemplate = StrSubstitutor.replace(template, replacements);
 
