@@ -2,7 +2,9 @@ package com.oembedler.moon.graphiql.boot;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
@@ -37,13 +39,19 @@ public class GraphiQLController {
     @Value("${graphiql.cdn.version:0.11.11}")
     private String graphiqlCdnVersion;
 
+    @Autowired
+    private Environment environment;
+
     private String template;
+    private String props;
 
     @PostConstruct
     public void loadTemplate() throws IOException {
         try (InputStream inputStream = new ClassPathResource("graphiql.html").getInputStream()) {
             template = StreamUtils.copyToString(inputStream, Charset.defaultCharset());
         }
+
+        props = new PropsLoader(environment).load();
     }
 
     @RequestMapping(value = "${graphiql.mapping:/graphiql}")
@@ -69,6 +77,7 @@ public class GraphiQLController {
         replacements.put("pageTitle", pageTitle);
         replacements.put("graphiqlCssUrl", graphiqlCssUrl);
         replacements.put("graphiqlJsUrl", graphiqlJsUrl);
+        replacements.put("props", props);
 
         String populatedTemplate = StrSubstitutor.replace(template, replacements);
 
@@ -89,4 +98,5 @@ public class GraphiQLController {
         }
         return endpoint;
     }
+
 }

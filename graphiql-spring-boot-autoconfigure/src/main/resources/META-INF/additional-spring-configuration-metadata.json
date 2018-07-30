@@ -29,6 +29,21 @@
       "name": "graphiql.cdn.version",
       "defaultValue": "0.11.11",
       "type": "java.lang.String"
+    },
+    {
+      "name": "graphiql.props.resources.query",
+      "defaultValue": null,
+      "type": "java.lang.String"
+    },
+    {
+      "name": "graphiql.props.resources.defaultQuery",
+      "defaultValue": null,
+      "type": "java.lang.String"
+    },
+    {
+      "name": "graphiql.props.resources.variables",
+      "defaultValue": null,
+      "type": "java.lang.String"
     }
   ]
 }
