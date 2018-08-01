@@ -112,9 +112,25 @@ graphiql:
     cdn:
         enabled: false
         version: 0.11.11
+    props:
+        resources:
+            query: query.graphql
+            defaultQuery: defaultQuery.graphql
+            variables: variables.graphql
+        variables:
+            editorTheme: "solarized light"
+    headers:
+        Authorization: "Bearer <your-token>"
 ```
 By default GraphiQL is served from within the package. This can be configured to be served from CDN instead,
 by setting the property `graphiql.cdn.enabled` to `true`.
+
+You are able to set the GraphiQL props as well. The `graphiql.props.variables` group can contain any of the props
+as defined at [GraphiQL Usage](https://github.com/graphql/graphiql#usage). Since setting (large) queries in the 
+properties like this isn't very readable, you can use the properties in the `graphiql.props.resources` group
+to set the classpath resources that should be loaded.
+
+Headers that are used when sending the GraphiQL queries can be set by defining them in the `graphiql.headers` group.
 
 # Supported GraphQL-Java Libraries
 

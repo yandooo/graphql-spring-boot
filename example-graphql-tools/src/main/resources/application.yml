@@ -3,3 +3,12 @@ spring:
     name: graphql-java-tools-app
 server:
   port: 9000
+graphiql:
+  props:
+    resources:
+      query: defaultQuery.graphql
+      defaultQuery: defaultQuery.graphql
+      variables: defaultQuery.graphql
+  headers:
+    Authorization: "Bearer asdfasdf"
+    Content-Type: "application/json;charset=UTF-8"

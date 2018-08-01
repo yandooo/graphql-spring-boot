@@ -88,6 +88,8 @@
         history.replaceState(null, null, newSearch);
     }
 
+    var headers = ${headers};
+
     // Defines a GraphQL fetcher using the fetch API. You're not required to
     // use fetch, and could instead implement graphQLFetcher however you like,
     // as long as it returns a Promise or Observable.
@@ -96,10 +98,7 @@
         // Change this to point wherever you host your GraphQL server.
         return fetch('${graphqlEndpoint}', {
             method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
+            headers: headers,
             body: JSON.stringify(graphQLParams),
             credentials: 'include'
         }).then(function (response) {
@@ -127,17 +126,24 @@
     var subscriptionsClient = new window.SubscriptionsTransportWs.SubscriptionClient(newUri, { reconnect: true });
     var subscriptionsFetcher = window.GraphiQLSubscriptionsFetcher.graphQLFetcher(subscriptionsClient, graphQLFetcher);
 
+    var props = ${props};
+    if (parameters.query) {
+        props.query = parameters.query;
+    }
+    if (parameters.variables) {
+        props.variables = parameters.variables;
+    }
+    if (parameters.operationName) {
+        props.operationName = parameters.operationName;
+    }
+    props.fetcher = subscriptionsFetcher;
+    props.onEditQuery = onEditQuery;
+    props.onEditVariables = onEditVariables;
+    props.onEditOperationName = onEditOperationName;
+
     // Render <GraphiQL /> into the body.
     ReactDOM.render(
-        React.createElement(GraphiQL, {
-            fetcher: subscriptionsFetcher,
-            query: parameters.query,
-            variables: parameters.variables,
-            operationName: parameters.operationName,
-            onEditQuery: onEditQuery,
-            onEditVariables: onEditVariables,
-            onEditOperationName: onEditOperationName
-        }),
+        React.createElement(GraphiQL, props),
         document.body
     );
 </script>
