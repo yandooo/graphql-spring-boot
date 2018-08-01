@@ -2,8 +2,11 @@ package com.oembedler.moon.graphql.boot.test.web;
 
 import com.oembedler.moon.graphql.boot.GraphQLWebAutoConfiguration;
 import com.oembedler.moon.graphql.boot.test.AbstractAutoConfigurationTest;
+import graphql.analysis.MaxQueryComplexityInstrumentation;
+import graphql.analysis.MaxQueryDepthInstrumentation;
 import graphql.execution.AsyncExecutionStrategy;
 import graphql.execution.ExecutionStrategy;
+import graphql.execution.instrumentation.tracing.TracingInstrumentation;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.AbstractGraphQLHttpServlet;
@@ -95,6 +98,48 @@ public class GraphQLWebAutoConfigurationTest extends AbstractAutoConfigurationTe
     @Test
     public void appContextLoadsWithThreeExecutionStrategies() {
         load(ThreeExecutionStrategies.class);
+
+        Assert.assertNotNull(this.getContext().getBean(AbstractGraphQLHttpServlet.class));
+    }
+
+    @Configuration
+    static class OneInstrumentationConfiguration extends SimpleConfiguration {
+        @Bean
+        public TracingInstrumentation tracingInstrumentation() {
+            return new TracingInstrumentation();
+        }
+    }
+
+    @Configuration
+    static class MultipleInstrumentationsConfiguration extends OneInstrumentationConfiguration {
+        @Bean
+        public MaxQueryComplexityInstrumentation maxQueryComplexityInstrumentation() {
+            return new MaxQueryComplexityInstrumentation(10);
+        }
+
+        @Bean
+        public MaxQueryDepthInstrumentation maxQueryDepthInstrumentation() {
+            return new MaxQueryDepthInstrumentation(10);
+        }
+    }
+
+    @Test
+    public void appContextLoadsWithNoInstrumentation() {
+        load(SimpleConfiguration.class);
+
+        Assert.assertNotNull(this.getContext().getBean(AbstractGraphQLHttpServlet.class));
+    }
+
+    @Test
+    public void appContextLoadsWithOneInstrumentation() {
+        load(OneInstrumentationConfiguration.class);
+
+        Assert.assertNotNull(this.getContext().getBean(AbstractGraphQLHttpServlet.class));
+    }
+
+    @Test
+    public void appContextLoadsWithMultipleInstrumentations() {
+        load(MultipleInstrumentationsConfiguration.class);
 
         Assert.assertNotNull(this.getContext().getBean(AbstractGraphQLHttpServlet.class));
     }
