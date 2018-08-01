@@ -22,6 +22,7 @@ package com.oembedler.moon.graphql.boot;
 import graphql.execution.AsyncExecutionStrategy;
 import graphql.execution.ExecutionStrategy;
 import graphql.execution.SubscriptionExecutionStrategy;
+import graphql.execution.instrumentation.ChainedInstrumentation;
 import graphql.execution.instrumentation.Instrumentation;
 import graphql.execution.preparsed.PreparsedDocumentProvider;
 import graphql.schema.GraphQLSchema;
@@ -91,7 +92,7 @@ public class GraphQLWebAutoConfiguration {
     private List<GraphQLServletListener> listeners;
 
     @Autowired(required = false)
-    private Instrumentation instrumentation;
+    private List<Instrumentation> instrumentations;
 
     @Autowired(required = false)
     private GraphQLErrorHandler errorHandler;
@@ -186,8 +187,13 @@ public class GraphQLWebAutoConfiguration {
         GraphQLQueryInvoker.Builder builder = GraphQLQueryInvoker.newBuilder()
                 .withExecutionStrategyProvider(executionStrategyProvider);
 
-        if (instrumentation != null) {
-            builder.withInstrumentation(instrumentation);
+        if (instrumentations != null && !instrumentations.isEmpty()) {
+            if (instrumentations.size() == 1) {
+                builder.withInstrumentation(instrumentations.get(0));
+            } else {
+                Instrumentation instrumentation = new ChainedInstrumentation(instrumentations);
+                builder.withInstrumentation(instrumentation);
+            }
         }
 
         if (preparsedDocumentProvider != null) {

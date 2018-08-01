@@ -24,6 +24,21 @@
       "name": "graphql.servlet.subscriptions.websocket.path",
       "defaultValue": "/subscriptions",
       "type": "java.lang.String"
+    },
+    {
+      "name": "graphql.servlet.tracingEnabled",
+      "defaultValue": false,
+      "type": "java.lang.Boolean"
+    },
+    {
+      "name": "graphql.servlet.maxQueryComplexity",
+      "defaultValue": null,
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "graphql.servlet.maxQueryDepth",
+      "defaultValue": null,
+      "type": "java.lang.Integer"
     }
   ]
 }
