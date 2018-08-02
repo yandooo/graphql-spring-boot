@@ -31,6 +31,7 @@ import java.util.Properties;
 @Controller
 public class GraphiQLController {
 
+    private static final String CDNJS_CLOUDFLARE_COM_AJAX_LIBS_GRAPHIQL = "//cdnjs.cloudflare.com/ajax/libs/graphiql/";
     @Value("${graphiql.endpoint:/graphql}")
     private String graphqlEndpoint;
 
@@ -85,44 +86,49 @@ public class GraphiQLController {
     public void graphiql(HttpServletRequest request, HttpServletResponse response, @PathVariable Map<String, String> params) throws IOException {
         response.setContentType("text/html; charset=UTF-8");
 
+        String endpoint = constructGraphQlEndpoint(request, params);
+        Map<String, String> replacements = getReplacements(endpoint);
 
-        String graphiqlCssUrl = "/vendor/graphiql.min.css";
-        String graphiqlJsUrl = "/vendor/graphiql.min.js";
+        String populatedTemplate = StrSubstitutor.replace(template, replacements);
+        populatedTemplate = addContextPathIfEnabled(request, populatedTemplate);
+        response.getOutputStream().write(populatedTemplate.getBytes(Charset.defaultCharset()));
+    }
 
-        if (graphiqlCdnEnabled && StringUtils.isNotBlank(graphiqlCdnVersion)) {
-            graphiqlCssUrl = "//cdnjs.cloudflare.com/ajax/libs/graphiql/" + graphiqlCdnVersion + "/graphiql.min.css";
-            graphiqlJsUrl = "//cdnjs.cloudflare.com/ajax/libs/graphiql/" + graphiqlCdnVersion + "/graphiql.min.js";
-        }
-
-        String endpoint = constructGraphQlEndpoint(params);
-        if (StringUtils.isNotBlank(request.getContextPath()) && !endpoint.startsWith(request.getContextPath())) {
-            endpoint = request.getContextPath() + endpoint;
-        }
-
+    private Map<String, String> getReplacements(String endpoint) {
         Map<String, String> replacements = new HashMap<>();
         replacements.put("graphqlEndpoint", endpoint);
         replacements.put("pageTitle", pageTitle);
-        replacements.put("graphiqlCssUrl", graphiqlCssUrl);
-        replacements.put("graphiqlJsUrl", graphiqlJsUrl);
+        replacements.put("graphiqlCssUrl", graphiqlUrl("graphiql.min.css"));
+        replacements.put("graphiqlJsUrl", graphiqlUrl("graphiql.min.js"));
         replacements.put("props", props);
         replacements.put("headers", headers);
+        return replacements;
+    }
 
-        String populatedTemplate = StrSubstitutor.replace(template, replacements);
+    private String graphiqlUrl(String filename) {
+        if (graphiqlCdnEnabled && StringUtils.isNotBlank(graphiqlCdnVersion)) {
+            return CDNJS_CLOUDFLARE_COM_AJAX_LIBS_GRAPHIQL + graphiqlCdnVersion + "/" + filename;
+        }
+        return "/vendor/" + filename;
+    }
 
+    private String addContextPathIfEnabled(HttpServletRequest request, String populatedTemplate) {
         if (StringUtils.isNotBlank(request.getContextPath())) {
             String vendorPathWithContext = String.format("%s/vendor", request.getContextPath());
             populatedTemplate = populatedTemplate
                     .replaceAll("src=\"/vendor", "src=\"" + vendorPathWithContext)
                     .replaceAll("href=\"/vendor", "href=\"" + vendorPathWithContext);
         }
-
-        response.getOutputStream().write(populatedTemplate.getBytes(Charset.defaultCharset()));
+        return populatedTemplate;
     }
 
-    private String constructGraphQlEndpoint(@RequestParam Map<String, String> params) {
+    private String constructGraphQlEndpoint(HttpServletRequest request, @RequestParam Map<String, String> params) {
         String endpoint = graphqlEndpoint;
         for (Map.Entry<String, String> param : params.entrySet()) {
             endpoint = endpoint.replaceAll("\\{" + param.getKey() + "}", param.getValue());
+        }
+        if (StringUtils.isNotBlank(request.getContextPath()) && !endpoint.startsWith(request.getContextPath())) {
+            return request.getContextPath() + endpoint;
         }
         return endpoint;
     }
