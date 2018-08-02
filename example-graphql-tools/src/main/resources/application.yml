@@ -3,7 +3,11 @@ spring:
     name: graphql-java-tools-app
 server:
   port: 9000
+graphql:
+  servlet:
+    mapping: /test
 graphiql:
+  endpoint: /test
   props:
     resources:
       query: defaultQuery.graphql
