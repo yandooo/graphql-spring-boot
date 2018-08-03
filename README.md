@@ -41,13 +41,13 @@ repositories {
 }
 
 dependencies {
-  compile 'com.graphql-java:graphql-spring-boot-starter:5.0.1'
-  
+  compile 'com.graphql-java:graphql-spring-boot-starter:5.0.2'
+
   // to embed GraphiQL tool
-  compile 'com.graphql-java:graphiql-spring-boot-starter:5.0.1'
+  compile 'com.graphql-java:graphiql-spring-boot-starter:5.0.2'
 
   // to embed Voyager tool
-  compile 'com.graphql-java:voyager-spring-boot-starter:5.0.1'
+  compile 'com.graphql-java:voyager-spring-boot-starter:5.0.2'
 }
 ```
 
@@ -56,21 +56,21 @@ Maven:
 <dependency>
     <groupId>com.graphql-java</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>5.0.1</version>
+    <version>5.0.2</version>
 </dependency>
 
 <!-- to embed GraphiQL tool -->
 <dependency>
     <groupId>com.graphql-java</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>5.0.1</version>
+    <version>5.0.2</version>
 </dependency>
 
 <!-- to embed Voyager tool -->
 <dependency>
     <groupId>com.graphql-java</groupId>
     <artifactId>voyager-spring-boot-starter</artifactId>
-    <version>5.0.1</version>
+    <version>5.0.2</version>
 </dependency>
 ```
 
@@ -126,7 +126,7 @@ By default GraphiQL is served from within the package. This can be configured to
 by setting the property `graphiql.cdn.enabled` to `true`.
 
 You are able to set the GraphiQL props as well. The `graphiql.props.variables` group can contain any of the props
-as defined at [GraphiQL Usage](https://github.com/graphql/graphiql#usage). Since setting (large) queries in the 
+as defined at [GraphiQL Usage](https://github.com/graphql/graphiql#usage). Since setting (large) queries in the
 properties like this isn't very readable, you can use the properties in the `graphiql.props.resources` group
 to set the classpath resources that should be loaded.
 
@@ -148,8 +148,8 @@ graphql:
     tools:
         schemaLocationPattern: "**/*.graphqls"
 ```
-By default GraphQL tools uses the location pattern `**/*.graphqls` to scan for GraphQL schemas on the classpath. 
-Use the `schemaLocationPattern` property to customize this pattern. 
+By default GraphQL tools uses the location pattern `**/*.graphqls` to scan for GraphQL schemas on the classpath.
+Use the `schemaLocationPattern` property to customize this pattern.
 
 
 ## GraphQL Spring Common [LATEST SUPPORTED VERSION: 3.1.1]
