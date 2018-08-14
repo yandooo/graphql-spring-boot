@@ -19,6 +19,9 @@
 
 package com.oembedler.moon.graphql.boot;
 
+import com.coxautodev.graphql.tools.PerFieldObjectMapperProvider;
+import com.fasterxml.jackson.databind.InjectableValues;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.execution.AsyncExecutionStrategy;
 import graphql.execution.ExecutionStrategy;
 import graphql.execution.SubscriptionExecutionStrategy;
@@ -40,6 +43,7 @@ import graphql.servlet.GraphQLSchemaProvider;
 import graphql.servlet.GraphQLServletListener;
 import graphql.servlet.GraphQLWebsocketServlet;
 import graphql.servlet.ObjectMapperConfigurer;
+import graphql.servlet.ObjectMapperProvider;
 import graphql.servlet.SimpleGraphQLHttpServlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -64,6 +68,8 @@ import javax.servlet.MultipartConfigElement;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static graphql.servlet.GraphQLObjectMapper.newBuilder;
 
 
 /**
@@ -205,19 +211,34 @@ public class GraphQLWebAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLObjectMapper graphQLObjectMapper() {
-        GraphQLObjectMapper.Builder builder = GraphQLObjectMapper.newBuilder();
+    public GraphQLObjectMapper graphQLObjectMapper(Optional<ObjectMapperProvider> objectMapperProvider) {
+        GraphQLObjectMapper.Builder builder = newBuilder();
 
         if (errorHandler != null) {
             builder.withGraphQLErrorHandler(errorHandler);
         }
 
-        if (objectMapperConfigurer != null) {
+        if(objectMapperProvider.isPresent()){
+            builder.withObjectMapperProvider(objectMapperProvider.get());
+        } else if (objectMapperConfigurer != null) {
             builder.withObjectMapperConfigurer(objectMapperConfigurer);
         }
 
         return builder.build();
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value="graphql.servlet.use-default-objectmapper", havingValue = "true",
+            matchIfMissing = true)
+    public ObjectMapperProvider objectMapperProvider(ObjectMapper objectMapper) {
+
+        InjectableValues.Std injectableValues = new InjectableValues.Std();
+        injectableValues.addValue(ObjectMapper.class, objectMapper);
+        objectMapper.setInjectableValues(injectableValues);
+        return () -> objectMapper;
+    }
+
 
 
     @Bean
