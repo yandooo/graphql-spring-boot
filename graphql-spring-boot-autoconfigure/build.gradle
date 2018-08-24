@@ -17,22 +17,20 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-buildscript {
-    repositories {
-        maven { url "https://plugins.gradle.org/m2/" }
-    }
-    dependencies {
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6"
-    }
-}
-
-
 dependencies {
-    compile "com.embedler.moon.graphql:spring-graphql-common:$LIB_SPRING_GRAPHQL_COMMON_VER"
     compile "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
     compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
-    provided "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
-    provided "commons-fileupload:commons-fileupload:$LIB_COMMON_UPLOAD"
+    compile "org.springframework.boot:spring-boot-starter-websocket:$LIB_SPRING_BOOT_VER"
+    compile "com.graphql-java:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
+    compile "commons-io:commons-io:$LIB_COMMONS_IO_VER"
 
+    compileOnly "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
+    compileOnly "com.graphql-java:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
+
+    testCompile "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
+    testCompile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
     testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
+    testCompile "com.graphql-java:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
 }
+
+compileJava.dependsOn(processResources)

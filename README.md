@@ -1,160 +1,166 @@
+# GraphQL and Graph*i*QL Spring Framework Boot Starters
+[![Build Status](https://travis-ci.org/graphql-java/graphql-spring-boot.svg?branch=master)](https://travis-ci.org/graphql-java/graphql-spring-boot)
+[![Maven Central](https://img.shields.io/maven-central/v/com.graphql-java/graphql-spring-boot-starter.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot-starter)
+[![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/graphql-java/graphql-java)
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
 
-- [GraphQL Spring Framework Boot Starter](#graphql-spring-framework-boot-starter)
 - [Intro](#intro)
-- [Requires](#requires)
-- [Enable GraphQL Server](#enable-graphql-server)
-- [Enable GraphiQL Tool](#enable-graphiql-tool)
+- [Requirements and Downloads](#requirements-and-downloads)
+- [Enable GraphQL Servlet](#enable-graphql-servlet)
+- [Enable GraphiQL](#enable-graphiql)
+- [Supported GraphQL-Java Libraries](#supported-graphql-java-libraries)
+    - [GraphQL Java Tools](#graphql-java-tools) - [https://github.com/graphql-java/graphql-java-tools](https://github.com/graphql-java/graphql-java-tools)
+    - [GraphQL Spring Common](#graphql-spring-common) - [https://github.com/oembedler/spring-graphql-common](https://github.com/oembedler/spring-graphql-common)
 - [Contributions](#contributions)
-- [License](#license)
+- [Licenses](#licenses)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# GraphQL and GraphiQL Spring Framework Boot Starters
-[![Build Status](https://travis-ci.org/oembedler/graphql-spring-boot.svg?branch=master)](https://travis-ci.org/oembedler/graphql-spring-boot)
-
-GraphQL Starter 
-
-[ ![Download](https://api.bintray.com/packages/oembedler/maven/graphql-spring-boot-starter/images/download.svg) ](https://bintray.com/oembedler/maven/graphql-spring-boot-starter/_latestVersion)
-
-GraphiQL Starter 
-
-[ ![Download](https://api.bintray.com/packages/oembedler/maven/graphiql-spring-boot-starter/images/download.svg) ](https://bintray.com/oembedler/maven/graphiql-spring-boot-starter/_latestVersion)
 
 # Intro
 
 Repository contains:
 
-* `graphql-spring-boot-starter` to turn your boot application into GraphQL server (see [express-graphql](https://github.com/graphql/express-graphql))
+* `graphql-spring-boot-starter` to turn your boot application into GraphQL server (see [graphql-java-servlet](https://github.com/graphql-java/graphql-java-servlet))
 * `graphiql-spring-boot-starter`to embed `GraphiQL` tool for schema introspection and query debugging (see [graphiql](https://github.com/graphql/graphiql))
 
-# Requires
+# Requirements and Downloads
 
+Requirements:
   * Java 1.8
-  * [Spring Framework GraphQL Common Library](https://github.com/oembedler/spring-graphql-common)
-  * Spring Framework Boot 1.3.x (web)  
+  * Spring Framework Boot > 2.x.x (web)
 
-Add repository:
+Gradle:
 
 ```gradle
 repositories {
-    // stable build
-    jcenter()
-    // development build
-    maven { url  "http://dl.bintray.com/oembedler/maven" }
+    mavenCentral()
 }
-```
 
-Dependency:
-
-```gradle
 dependencies {
-  compile 'com.embedler.moon.graphql.boot:graphql-spring-boot-starter:INSERT_LATEST_VERSION_HERE'
+  compile 'com.graphql-java:graphql-spring-boot-starter:5.0.3'
   
   // to embed GraphiQL tool
-  compile 'com.embedler.moon.graphql.boot:graphiql-spring-boot-starter:INSERT_LATEST_VERSION_HERE'
+  compile 'com.graphql-java:graphiql-spring-boot-starter:5.0.3'
+
+  // to embed Voyager tool
+  compile 'com.graphql-java:voyager-spring-boot-starter:5.0.3'
 }
 ```
 
-How to use the latest build with Maven:
-
-```xml
-<repository>
-    <snapshots>
-        <enabled>false</enabled>
-    </snapshots>
-    <id>bintray-oembedler-maven</id>
-    <name>bintray</name>
-    <url>http://dl.bintray.com/oembedler/maven</url>
-</repository>
-```
-
-Dependency:
-
+Maven:
 ```xml
 <dependency>
-    <groupId>com.embedler.moon.graphql.boot</groupId>
+    <groupId>com.graphql-java</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>INSERT_LATEST_VERSION_HERE</version>
+    <version>5.0.3</version>
 </dependency>
 
 <!-- to embed GraphiQL tool -->
 <dependency>
-    <groupId>com.embedler.moon.graphql.boot</groupId>
+    <groupId>com.graphql-java</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>INSERT_LATEST_VERSION_HERE</version>
+    <version>5.0.3</version>
+</dependency>
+
+<!-- to embed Voyager tool -->
+<dependency>
+    <groupId>com.graphql-java</groupId>
+    <artifactId>voyager-spring-boot-starter</artifactId>
+    <version>5.0.3</version>
 </dependency>
 ```
 
 
-# Enable GraphQL Server
+# Enable GraphQL Servlet
 
-Server becomes accessible at `/graphql` if `graphql-spring-boot-starter` added as a dependency to a boot application
-and `@EnableGraphQLServer` annotation is set at the main java configuration class.
-GraphQL schemas are automatically discovered extracting all classes from Spring context marked as `@GraphQLSchema`.
+The servlet becomes accessible at `/graphql` if `graphql-spring-boot-starter` added as a dependency to a boot application and a `GraphQLSchema` bean is present in the application.  Check out the [simple example](https://github.com/graphql-java/graphql-spring-boot/tree/master/example) for the bare minimum required.
 
-Request parameters:
+A GraphQL schema can also be automatically created when a [supported graphql-java schema library](https://github.com/graphql-java/graphql-spring-boot/blob/master/README.md#supported-graphql-java-libraries) is found on the classpath.
 
-  * **`query`**: A string GraphQL document to be executed.
-
-  * **`variables`**: The runtime values to use for any GraphQL query variables
-    as a JSON object.
-
-  * **`operationName`**: If the provided `query` contains multiple named
-    operations, this specifies which operation should be executed. If not
-    provided, an error will be returned if the `query` contains multiple
-    named operations.
-
-GraphQL will first look for each parameter in the URL's query-string:
-
-```
-/graphql?query=query+getUser($id:ID){user(id:$id){name}}&variables={"id":"4"}
-```
-
-If not found in the query-string, it will look in the POST request body.
-
-Server uses [`commons-fileupload`][] middleware to add support
-for `multipart/form-data` content, which may be useful for GraphQL mutations
-involving uploading files (see test application for more details).
- `GraphQLContext` is a map of objects (context) for the current query execution.
-In order to get access to uploaded file 
-`com.oembedler.moon.graphql.boot.GraphQLContext` should be passed as input parameter to datafetcher or mutation (don't need to be annotated).
-Calling method `GraphQLContext.getUploadedFile()` returns instance of [MultipartFile](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/multipart/MultipartFile.html).
-
-If the POST body has not yet been parsed, graphql-express will interpret it
-depending on the provided *Content-Type* header.
-
-  * **`application/json`**: the POST body will be parsed as a JSON
-    object of parameters.
-
-  * **`application/x-www-form-urlencoded`**: this POST body will be
-    parsed as a url-encoded string of key-value pairs.
-    
-  * **`multipart/form-data`**: this POST body will be
-    parsed as a string of key-value pairs and it supports file upload (see above).    
-
-  * **`application/graphql`**: The POST body will be parsed as GraphQL
-    query string, which provides the `query` parameter.
+See the [graphql-java-servlet usage docs](https://github.com/graphql-java/graphql-java-servlet#usage) for the avaiable endpoints exposed.
 
 Available Spring Boot configuration parameters (either `application.yml` or `application.properties`):
 
-Server can host multiple schemas (all are registered at the startup time). 
+```yaml
+graphql:
+      servlet:
+               mapping: /graphql
+               enabled: true
+               corsEnabled: true
+```
 
-To run query against particular schema - HTTP header `graphql-schema` parameter passed along with the query should contain graphql schema name of interest.
+By default a global CORS filter is enabled for `/graphql/**` context.
+The `corsEnabled` can be set to `false` to disable it.
+
+# Enable Graph*i*QL
+
+Graph*i*QL becomes accessible at the root `/graphiql` if `graphiql-spring-boot-starter` is added as a dependency to a boot application.
+
+Note that GraphQL server must be available at `/graphql/*` context to be discovered by Graph*i*QL.
+
+Available Spring Boot configuration parameters (either `application.yml` or `application.properties`):
+```yaml
+graphiql:
+    mapping: /graphiql
+    endpoint: /graphql
+    enabled: true
+    pageTitle: GraphiQL
+    cdn:
+        enabled: false
+        version: 0.11.11
+    props:
+        resources:
+            query: query.graphql
+            defaultQuery: defaultQuery.graphql
+            variables: variables.graphql
+        variables:
+            editorTheme: "solarized light"
+    headers:
+        Authorization: "Bearer <your-token>"
+```
+By default GraphiQL is served from within the package. This can be configured to be served from CDN instead,
+by setting the property `graphiql.cdn.enabled` to `true`.
+
+You are able to set the GraphiQL props as well. The `graphiql.props.variables` group can contain any of the props
+as defined at [GraphiQL Usage](https://github.com/graphql/graphiql#usage). Since setting (large) queries in the 
+properties like this isn't very readable, you can use the properties in the `graphiql.props.resources` group
+to set the classpath resources that should be loaded.
+
+Headers that are used when sending the GraphiQL queries can be set by defining them in the `graphiql.headers` group.
+
+# Supported GraphQL-Java Libraries
+
+The following libraries have auto-configuration classes for creating a `GraphQLSchema`.
+
+## GraphQL Java Tools
+**https://github.com/graphql-java/graphql-java-tools**
+
+All `GraphQLResolver` and `GraphQLScalar` beans, along with a bean of type `SchemaParserDictionary` (to provide all other classes), will be used to create a GraphQLSchema.  Any files on the classpath named `*.graphqls` will be used to provide the schema definition.  See the [Readme](https://github.com/graphql-java/graphql-java-tools#usage) for more info.
+
+Available Spring Boot configuration parameters (either `application.yml` or `application.properties`):
 
 ```yaml
 graphql:
-      server:
-               mapping: /graphql
-               corsEnabled: true
-               suppressSpringResponseCodes: true
-               query-key: query
-               variables-key: variables
-               uploadMaxFileSize: 128KB
-               uploadMaxRequestSize: 128KB
-      schema:
+    tools:
+        schemaLocationPattern: "**/*.graphqls"
+```
+By default GraphQL tools uses the location pattern `**/*.graphqls` to scan for GraphQL schemas on the classpath. 
+Use the `schemaLocationPattern` property to customize this pattern. 
+
+
+## GraphQL Spring Common [LATEST SUPPORTED VERSION: 3.1.1]
+**https://github.com/oembedler/spring-graphql-common**
+
+See the [Readme](https://github.com/oembedler/spring-graphql-common#usage) and the [example](https://github.com/graphql-java/graphql-spring-boot/tree/master/example-spring-common) for usage instructions.
+
+#### Application Properties
+```yaml
+graphql:
+      spring-graphql-common:
                clientMutationIdName: clientMutationId
                injectClientMutationId: true
                allowEmptyClientMutationId: false
@@ -164,37 +170,13 @@ graphql:
                schemaMutationObjectName: Mutation
 ```
 
-To facilitate access from Nodejs frontend to GraphQL backend by default system enables global CORS filter for `/graphql/**` context.
-The `corsEnabled` can be set to `false` to disable it.
-
-By default system register `GlobalDefaultExceptionHandler` which suppresses Spring framework error responses and responds with standard GraphQL server error.
-Application configuration `suppressSpringResponseCodes` property can be set to `false` to disable that handler.
-
-# Enable GraphiQL Tool
-
-Tool becomes accessible at the root `/` if `graphiql-spring-boot-starter` added as a dependency to a boot application.
-
-Note that GraphQL server must be available at `/graphql` context to be discovered by GraphiQL.
 
 # Contributions
 
-Contributions are welcome.
+Contributions are welcome.  Please respect the [Code of Conduct](http://contributor-covenant.org/version/1/3/0/).
 
-Tips:
 
-- Respect the [Code of Conduct](http://contributor-covenant.org/version/1/3/0/).
-- Before opening an Issue to report a bug, please try the latest development version. 
-It might happen that the problem is already solved.
-- Please use  Markdown to format your comments properly. 
-If you are not familiar with that: [Getting started with writing and formatting on GitHub](https://help.github.com/articles/getting-started-with-writing-and-formatting-on-github/)
-- For Pull Requests:
-  - Here are some [general tips](https://github.com/blog/1943-how-to-write-the-perfect-pull-request)
-  - Please be a as focused and clear as possible and don't mix concerns. 
-    This includes refactorings mixed with bug-fixes/features, see [Open Source Contribution Etiquette](http://tirania.org/blog/archive/2010/Dec-31.html) 
-  - It would be good to add an automatic test(s). 
-  
-
-# License
+# Licenses
 
 `graphql-spring-boot-starter` and `graphiql-spring-boot-starter` are licensed under the MIT License. See [LICENSE](LICENSE.md) for details.
 

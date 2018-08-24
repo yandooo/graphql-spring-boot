@@ -2,6 +2,12 @@
 
 *.iml
 
+# Gradle outputs
+
+/.gradle
+build
+bin
+
 ## Directory-based project format:
 .idea/
 # if you remove the above rule, at least ignore the following:
@@ -34,6 +40,13 @@
 
 # IntelliJ
 /out/
+/*/out/
+
+# VSC
+.settings
+.classpath
+.project
+.vscode
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/

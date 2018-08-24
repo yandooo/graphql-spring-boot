@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: graphql-subscription-example
+server:
+  port: 9000
+
+graphql:
+  servlet:
+    subscriptions:
+      websocket:
+        path: /subscriptions

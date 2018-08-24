@@ -1,0 +1,49 @@
+{
+  "groups": [
+    {
+      "name": "graphiql"
+    }
+  ],
+  "properties": [
+    {
+      "name": "graphiql.enabled",
+      "defaultValue": true,
+      "type": "java.lang.Boolean"
+    },
+    {
+      "name": "graphiql.mapping",
+      "defaultValue": "/graphiql",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "graphiql.endpoint",
+      "defaultValue": "/graphql",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "graphiql.cdn.enabled",
+      "defaultValue": false,
+      "type": "java.lang.Boolean"
+    },
+    {
+      "name": "graphiql.cdn.version",
+      "defaultValue": "0.11.11",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "graphiql.props.resources.query",
+      "defaultValue": null,
+      "type": "java.lang.String"
+    },
+    {
+      "name": "graphiql.props.resources.defaultQuery",
+      "defaultValue": null,
+      "type": "java.lang.String"
+    },
+    {
+      "name": "graphiql.props.resources.variables",
+      "defaultValue": null,
+      "type": "java.lang.String"
+    }
+  ]
+}

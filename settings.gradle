@@ -19,6 +19,19 @@
 
 rootProject.name = PROJECT_NAME
 
-include ":graphql-spring-boot-autoconfigure", ":graphql-spring-boot-starter"
-include ":graphiql-spring-boot-autoconfigure", ":graphiql-spring-boot-starter"
-include ":graphql-sample-app"
+include ":graphql-spring-boot-autoconfigure"
+include ":graphql-spring-boot-starter"
+include ":graphiql-spring-boot-autoconfigure"
+include ":graphiql-spring-boot-starter"
+include ":voyager-spring-boot-autoconfigure"
+include ":voyager-spring-boot-starter"
+
+include ":graphql-spring-boot-starter-test"
+
+include ":example"
+include ":example-spring-common"
+include ':example-graphql-tools'
+include ':example-graphql-subscription'
+include ':graphql-spring-boot-test'
+include ':graphql-spring-boot-test-autoconfigure'
+
