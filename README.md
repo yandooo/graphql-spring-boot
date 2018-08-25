@@ -126,7 +126,7 @@ By default GraphiQL is served from within the package. This can be configured to
 by setting the property `graphiql.cdn.enabled` to `true`.
 
 You are able to set the GraphiQL props as well. The `graphiql.props.variables` group can contain any of the props
-as defined at [GraphiQL Usage](https://github.com/graphql/graphiql#usage). Since setting (large) queries in the 
+as defined at [GraphiQL Usage](https://github.com/graphql/graphiql#usage). Since setting (large) queries in the
 properties like this isn't very readable, you can use the properties in the `graphiql.props.resources` group
 to set the classpath resources that should be loaded.
 
@@ -148,8 +148,8 @@ graphql:
     tools:
         schemaLocationPattern: "**/*.graphqls"
 ```
-By default GraphQL tools uses the location pattern `**/*.graphqls` to scan for GraphQL schemas on the classpath. 
-Use the `schemaLocationPattern` property to customize this pattern. 
+By default GraphQL tools uses the location pattern `**/*.graphqls` to scan for GraphQL schemas on the classpath.
+Use the `schemaLocationPattern` property to customize this pattern.
 
 
 ## GraphQL Spring Common [LATEST SUPPORTED VERSION: 3.1.1]
