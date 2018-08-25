@@ -32,6 +32,7 @@ import java.util.Properties;
 public class GraphiQLController {
 
     private static final String CDNJS_CLOUDFLARE_COM_AJAX_LIBS_GRAPHIQL = "//cdnjs.cloudflare.com/ajax/libs/graphiql/";
+
     @Value("${graphiql.endpoint:/graphql}")
     private String graphqlEndpoint;
 
