@@ -61,8 +61,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.CorsRegistryWorkaround;
-import org.springframework.web.socket.server.standard.ServerEndpointExporter;
-import org.springframework.web.socket.server.standard.ServerEndpointRegistration;
 
 import javax.servlet.MultipartConfigElement;
 import java.util.List;
@@ -90,9 +88,6 @@ public class GraphQLWebAutoConfiguration {
 
     @Autowired
     private GraphQLServletProperties graphQLServletProperties;
-
-    @Value("${graphql.servlet.subscriptions.websocket.path:/subscriptions}")
-    private String websocketPath;
 
     @Autowired(required = false)
     private List<GraphQLServletListener> listeners;
@@ -255,23 +250,6 @@ public class GraphQLWebAutoConfiguration {
         ServletRegistrationBean<AbstractGraphQLHttpServlet> registration = new ServletRegistrationBean<>(servlet, graphQLServletProperties.getServletMapping());
         registration.setMultipartConfig(multipartConfigElement());
         return registration;
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public GraphQLWebsocketServlet graphQLWebsocketServlet(GraphQLInvocationInputFactory invocationInputFactory, GraphQLQueryInvoker queryInvoker, GraphQLObjectMapper graphQLObjectMapper) {
-        return new GraphQLWebsocketServlet(queryInvoker, invocationInputFactory, graphQLObjectMapper);
-    }
-
-    @Bean
-    public ServerEndpointRegistration serverEndpointRegistration(GraphQLWebsocketServlet servlet) {
-        return new GraphQLWsServerEndpointRegistration(websocketPath, servlet);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public ServerEndpointExporter serverEndpointExporter() {
-        return new ServerEndpointExporter();
     }
 
     private MultipartConfigElement multipartConfigElement() {
