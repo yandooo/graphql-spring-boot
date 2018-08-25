@@ -26,29 +26,11 @@ import graphql.execution.instrumentation.ChainedInstrumentation;
 import graphql.execution.instrumentation.Instrumentation;
 import graphql.execution.preparsed.PreparsedDocumentProvider;
 import graphql.schema.GraphQLSchema;
-import graphql.servlet.AbstractGraphQLHttpServlet;
-import graphql.servlet.DefaultExecutionStrategyProvider;
-import graphql.servlet.DefaultGraphQLSchemaProvider;
-import graphql.servlet.ExecutionStrategyProvider;
-import graphql.servlet.GraphQLContextBuilder;
-import graphql.servlet.GraphQLErrorHandler;
-import graphql.servlet.GraphQLInvocationInputFactory;
-import graphql.servlet.GraphQLObjectMapper;
-import graphql.servlet.GraphQLQueryInvoker;
-import graphql.servlet.GraphQLRootObjectBuilder;
-import graphql.servlet.GraphQLSchemaProvider;
-import graphql.servlet.GraphQLServletListener;
-import graphql.servlet.GraphQLWebsocketServlet;
-import graphql.servlet.ObjectMapperConfigurer;
-import graphql.servlet.SimpleGraphQLHttpServlet;
+import graphql.servlet.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -57,8 +39,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.CorsRegistryWorkaround;
-import org.springframework.web.socket.server.standard.ServerEndpointExporter;
-import org.springframework.web.socket.server.standard.ServerEndpointRegistration;
 
 import javax.servlet.MultipartConfigElement;
 import java.util.List;
@@ -84,9 +64,6 @@ public class GraphQLWebAutoConfiguration {
 
     @Autowired
     private GraphQLServletProperties graphQLServletProperties;
-
-    @Value("${graphql.servlet.subscriptions.websocket.path:/subscriptions}")
-    private String websocketPath;
 
     @Autowired(required = false)
     private List<GraphQLServletListener> listeners;
@@ -234,23 +211,6 @@ public class GraphQLWebAutoConfiguration {
         ServletRegistrationBean<AbstractGraphQLHttpServlet> registration = new ServletRegistrationBean<>(servlet, graphQLServletProperties.getServletMapping());
         registration.setMultipartConfig(multipartConfigElement());
         return registration;
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public GraphQLWebsocketServlet graphQLWebsocketServlet(GraphQLInvocationInputFactory invocationInputFactory, GraphQLQueryInvoker queryInvoker, GraphQLObjectMapper graphQLObjectMapper) {
-        return new GraphQLWebsocketServlet(queryInvoker, invocationInputFactory, graphQLObjectMapper);
-    }
-
-    @Bean
-    public ServerEndpointRegistration serverEndpointRegistration(GraphQLWebsocketServlet servlet) {
-        return new GraphQLWsServerEndpointRegistration(websocketPath, servlet);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public ServerEndpointExporter serverEndpointExporter() {
-        return new ServerEndpointExporter();
     }
 
     private MultipartConfigElement multipartConfigElement() {

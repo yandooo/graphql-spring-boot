@@ -42,7 +42,7 @@ repositories {
 
 dependencies {
   compile 'com.graphql-java:graphql-spring-boot-starter:5.0.2'
-
+  
   // to embed GraphiQL tool
   compile 'com.graphql-java:graphiql-spring-boot-starter:5.0.2'
 
