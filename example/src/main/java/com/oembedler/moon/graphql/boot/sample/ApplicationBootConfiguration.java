@@ -32,7 +32,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class ApplicationBootConfiguration {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         SpringApplication.run(ApplicationBootConfiguration.class, args);
     }
 
