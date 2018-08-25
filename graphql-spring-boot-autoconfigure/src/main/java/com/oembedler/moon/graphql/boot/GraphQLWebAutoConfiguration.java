@@ -41,12 +41,10 @@ import graphql.servlet.GraphQLQueryInvoker;
 import graphql.servlet.GraphQLRootObjectBuilder;
 import graphql.servlet.GraphQLSchemaProvider;
 import graphql.servlet.GraphQLServletListener;
-import graphql.servlet.GraphQLWebsocketServlet;
 import graphql.servlet.ObjectMapperConfigurer;
 import graphql.servlet.ObjectMapperProvider;
 import graphql.servlet.SimpleGraphQLHttpServlet;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -213,7 +211,7 @@ public class GraphQLWebAutoConfiguration {
             builder.withGraphQLErrorHandler(errorHandler);
         }
 
-        if(objectMapperProvider.isPresent()){
+        if (objectMapperProvider.isPresent()){
             builder.withObjectMapperProvider(objectMapperProvider.get());
         } else if (objectMapperConfigurer != null) {
             builder.withObjectMapperConfigurer(objectMapperConfigurer);
