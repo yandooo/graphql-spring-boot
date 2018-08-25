@@ -203,6 +203,7 @@ public class GraphQLWebAutoConfiguration {
         return SimpleGraphQLHttpServlet.newBuilder(invocationInputFactory)
                 .withQueryInvoker(queryInvoker)
                 .withObjectMapper(graphQLObjectMapper)
+                .withListeners(listeners)
                 .build();
     }
 
