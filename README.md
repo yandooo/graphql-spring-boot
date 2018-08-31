@@ -106,7 +106,11 @@ Available Spring Boot configuration parameters (either `application.yml` or `app
 ```yaml
 graphiql:
     mapping: /graphiql
-    endpoint: /graphql
+    endpoint:
+      graphql: /graphql
+      subscriptions: /subscriptions
+    static:
+      basePath: /
     enabled: true
     pageTitle: GraphiQL
     cdn:
