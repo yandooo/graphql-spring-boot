@@ -24,10 +24,10 @@
         }
     </style>
 
-    <script src="/vendor/es6-promise.auto.min.js"></script>
-    <script src="/vendor/fetch.min.js"></script>
-    <script src="/vendor/react.min.js"></script>
-    <script src="/vendor/react-dom.min.js"></script>
+    <script src="${staticBasePath}vendor/es6-promise.auto.min.js"></script>
+    <script src="${staticBasePath}vendor/fetch.min.js"></script>
+    <script src="${staticBasePath}vendor/react.min.js"></script>
+    <script src="${staticBasePath}vendor/react-dom.min.js"></script>
 
     <link rel="stylesheet" href="${graphiqlCssUrl}"/>
     <script src="${graphiqlJsUrl}"></script>
@@ -121,7 +121,7 @@
         newUri = "ws:";
     }
     newUri += "//" + loc.host;
-    newUri += "/subscriptions";
+    newUri += "${subscriptionsEndpoint}";
 
     var subscriptionsClient = new window.SubscriptionsTransportWs.SubscriptionClient(newUri, { reconnect: true });
     var subscriptionsFetcher = window.GraphiQLSubscriptionsFetcher.graphQLFetcher(subscriptionsClient, graphQLFetcher);
