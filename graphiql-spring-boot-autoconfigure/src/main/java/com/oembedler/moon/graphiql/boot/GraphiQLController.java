@@ -33,8 +33,14 @@ public class GraphiQLController {
 
     private static final String CDNJS_CLOUDFLARE_COM_AJAX_LIBS_GRAPHIQL = "//cdnjs.cloudflare.com/ajax/libs/graphiql/";
 
-    @Value("${graphiql.endpoint:/graphql}")
+    @Value("${graphiql.endpoint.graphql:/graphql}")
     private String graphqlEndpoint;
+
+    @Value("${graphiql.endpoint.subscriptions:/subscriptions}")
+    private String subscriptionsEndpoint;
+
+    @Value("${graphiql.static.basePath:/}")
+    private String staticBasePath;
 
     @Value("${graphiql.pageTitle:GraphiQL}")
     private String pageTitle;
@@ -87,17 +93,21 @@ public class GraphiQLController {
     public void graphiql(HttpServletRequest request, HttpServletResponse response, @PathVariable Map<String, String> params) throws IOException {
         response.setContentType("text/html; charset=UTF-8");
 
-        String endpoint = constructGraphQlEndpoint(request, params);
-        Map<String, String> replacements = getReplacements(endpoint);
+        Map<String, String> replacements = getReplacements(
+                constructGraphQlEndpoint(request, params),
+                request.getContextPath() + subscriptionsEndpoint,
+                request.getContextPath() + staticBasePath
+        );
 
         String populatedTemplate = StrSubstitutor.replace(template, replacements);
-        populatedTemplate = addContextPathIfEnabled(request, populatedTemplate);
         response.getOutputStream().write(populatedTemplate.getBytes(Charset.defaultCharset()));
     }
 
-    private Map<String, String> getReplacements(String endpoint) {
+    private Map<String, String> getReplacements(String graphqlEndpoint, String subscriptionsEndpoint, String staticBasePath) {
         Map<String, String> replacements = new HashMap<>();
-        replacements.put("graphqlEndpoint", endpoint);
+        replacements.put("graphqlEndpoint", graphqlEndpoint);
+        replacements.put("subscriptionsEndpoint", subscriptionsEndpoint);
+        replacements.put("staticBasePath", staticBasePath);
         replacements.put("pageTitle", pageTitle);
         replacements.put("graphiqlCssUrl", graphiqlUrl("graphiql.min.css"));
         replacements.put("graphiqlJsUrl", graphiqlUrl("graphiql.min.js"));
@@ -110,17 +120,7 @@ public class GraphiQLController {
         if (graphiqlCdnEnabled && StringUtils.isNotBlank(graphiqlCdnVersion)) {
             return CDNJS_CLOUDFLARE_COM_AJAX_LIBS_GRAPHIQL + graphiqlCdnVersion + "/" + filename;
         }
-        return "/vendor/" + filename;
-    }
-
-    private String addContextPathIfEnabled(HttpServletRequest request, String populatedTemplate) {
-        if (StringUtils.isNotBlank(request.getContextPath())) {
-            String vendorPathWithContext = String.format("%s/vendor", request.getContextPath());
-            populatedTemplate = populatedTemplate
-                    .replaceAll("src=\"/vendor", "src=\"" + vendorPathWithContext)
-                    .replaceAll("href=\"/vendor", "href=\"" + vendorPathWithContext);
-        }
-        return populatedTemplate;
+        return staticBasePath + "vendor/" + filename;
     }
 
     private String constructGraphQlEndpoint(HttpServletRequest request, @RequestParam Map<String, String> params) {
