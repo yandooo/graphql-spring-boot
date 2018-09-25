@@ -30,6 +30,10 @@ public class GraphQLResponse {
         return context.read(path);
     }
 
+    public <T> T get(String path, Class<T> type) {
+        return context.read(path, type);
+    }
+
     public ReadContext context() {
         return context;
     }
