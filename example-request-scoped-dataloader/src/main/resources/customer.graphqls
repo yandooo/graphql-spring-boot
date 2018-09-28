@@ -1,0 +1,8 @@
+type Customer {
+    customerId: Int!
+    name: String!
+}
+
+type Query {
+    walmartCustomers(storeNumber: Int): [Customer]
+}
