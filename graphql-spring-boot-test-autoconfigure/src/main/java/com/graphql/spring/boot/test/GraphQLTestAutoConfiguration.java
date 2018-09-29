@@ -1,7 +1,9 @@
 package com.graphql.spring.boot.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.boot.autoconfigure.condition.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -16,11 +18,6 @@ public class GraphQLTestAutoConfiguration {
     @ConditionalOnMissingBean
     public GraphQLTestTemplate graphQLTestUtils() {
         return new GraphQLTestTemplate();
-    }
-
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
     }
 
 }

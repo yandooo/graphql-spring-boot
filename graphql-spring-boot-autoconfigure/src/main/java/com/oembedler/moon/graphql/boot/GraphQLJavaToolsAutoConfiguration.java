@@ -44,6 +44,12 @@ public class GraphQLJavaToolsAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
+
+    @Bean
     @ConditionalOnBean({GraphQLResolver.class})
     @ConditionalOnMissingBean
     public SchemaParser schemaParser(
