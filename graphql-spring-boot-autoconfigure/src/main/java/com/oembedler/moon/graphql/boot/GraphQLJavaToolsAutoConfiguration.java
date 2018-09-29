@@ -4,7 +4,6 @@ import com.coxautodev.graphql.tools.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
-import graphql.language.FieldDefinition;
 import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.GraphQLSchemaProvider;
@@ -63,19 +62,20 @@ public class GraphQLJavaToolsAutoConfiguration {
 
         if (options != null) {
             builder.options(options);
-        }else if(perFieldObjectMapperProvider.isPresent()) {
+        } else if (perFieldObjectMapperProvider.isPresent()) {
             final SchemaParserOptions.Builder optionsBuilder =
                     newOptions().objectMapperProvider(perFieldObjectMapperProvider.get());
             builder.options(optionsBuilder.build());
         }
 
-        return builder.resolvers(resolvers)
+        return builder
+                .resolvers(resolvers)
                 .build();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value="graphql.tools.use-default-objectmapper", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(value = "graphql.tools.use-default-objectmapper", havingValue = "true", matchIfMissing = true)
     public PerFieldObjectMapperProvider perFieldObjectMapperProvider(ObjectMapper objectMapper) {
         objectMapper
                 .registerModule(new Jdk8Module())

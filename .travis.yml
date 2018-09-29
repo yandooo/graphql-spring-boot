@@ -3,6 +3,6 @@ dist: trusty # https://stackoverflow.com/questions/38912714/travis-failing-junit
 jdk:
   - oraclejdk8
 before_install:
- - chmod +x gradlew
+ - chmod +x travis-build.sh
 script:
-  - ./gradlew check;
+  - ./travis-build.sh

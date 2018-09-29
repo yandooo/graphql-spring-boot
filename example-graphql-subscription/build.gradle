@@ -11,7 +11,7 @@ repositories {
 dependencies {
     compile(project(":graphql-spring-boot-starter"))
     compile(project(":graphiql-spring-boot-starter"))
-    compile "com.graphql-java:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
+    compile "com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
 
     compile "io.reactivex.rxjava2:rxjava:2.1.5"
 
