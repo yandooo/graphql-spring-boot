@@ -1,7 +1,7 @@
 # GraphQL and Graph*i*QL Spring Framework Boot Starters
-[![Build Status](https://travis-ci.org/graphql-java/graphql-spring-boot.svg?branch=master)](https://travis-ci.org/graphql-java/graphql-spring-boot)
+[![Build Status](https://travis-ci.org/graphql-java-kickstart/graphql-spring-boot.svg?branch=master)](https://travis-ci.org/graphql-java-kickstart/graphql-spring-boot)
 [![Maven Central](https://img.shields.io/maven-central/v/com.graphql-java/graphql-spring-boot-starter.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot-starter)
-[![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/graphql-java/graphql-java)
+[![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/graphql-java-kickstart/Lobby)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -12,7 +12,7 @@
 - [Enable GraphQL Servlet](#enable-graphql-servlet)
 - [Enable GraphiQL](#enable-graphiql)
 - [Supported GraphQL-Java Libraries](#supported-graphql-java-libraries)
-    - [GraphQL Java Tools](#graphql-java-tools) - [https://github.com/graphql-java/graphql-java-tools](https://github.com/graphql-java/graphql-java-tools)
+    - [GraphQL Java Tools](#graphql-java-tools) - [https://github.com/graphql-java-kickstart/graphql-java-tools](https://github.com/graphql-java-kickstart/graphql-java-tools)
     - [GraphQL Spring Common](#graphql-spring-common) - [https://github.com/oembedler/spring-graphql-common](https://github.com/oembedler/spring-graphql-common)
 - [Contributions](#contributions)
 - [Licenses](#licenses)
@@ -24,7 +24,7 @@
 
 Repository contains:
 
-* `graphql-spring-boot-starter` to turn your boot application into GraphQL server (see [graphql-java-servlet](https://github.com/graphql-java/graphql-java-servlet))
+* `graphql-spring-boot-starter` to turn your boot application into GraphQL server (see [graphql-java-servlet](https://github.com/graphql-java-kickstart/graphql-java-servlet))
 * `graphiql-spring-boot-starter`to embed `GraphiQL` tool for schema introspection and query debugging (see [graphiql](https://github.com/graphql/graphiql))
 
 # Requirements and Downloads
@@ -77,11 +77,11 @@ Maven:
 
 # Enable GraphQL Servlet
 
-The servlet becomes accessible at `/graphql` if `graphql-spring-boot-starter` added as a dependency to a boot application and a `GraphQLSchema` bean is present in the application.  Check out the [simple example](https://github.com/graphql-java/graphql-spring-boot/tree/master/example) for the bare minimum required.
+The servlet becomes accessible at `/graphql` if `graphql-spring-boot-starter` added as a dependency to a boot application and a `GraphQLSchema` bean is present in the application.  Check out the [simple example](https://github.com/graphql-java-kickstart/graphql-spring-boot/tree/master/example) for the bare minimum required.
 
-A GraphQL schema can also be automatically created when a [supported graphql-java schema library](https://github.com/graphql-java/graphql-spring-boot/blob/master/README.md#supported-graphql-java-libraries) is found on the classpath.
+A GraphQL schema can also be automatically created when a [supported graphql-java schema library](https://github.com/graphql-java-kickstart/graphql-spring-boot/blob/master/README.md#supported-graphql-java-libraries) is found on the classpath.
 
-See the [graphql-java-servlet usage docs](https://github.com/graphql-java/graphql-java-servlet#usage) for the avaiable endpoints exposed.
+See the [graphql-java-servlet usage docs](https://github.com/graphql-java-kickstart/graphql-java-servlet#usage) for the avaiable endpoints exposed.
 
 Available Spring Boot configuration parameters (either `application.yml` or `application.properties`):
 
@@ -141,9 +141,9 @@ Headers that are used when sending the GraphiQL queries can be set by defining t
 The following libraries have auto-configuration classes for creating a `GraphQLSchema`.
 
 ## GraphQL Java Tools
-**https://github.com/graphql-java/graphql-java-tools**
+**https://github.com/graphql-java-kickstart/graphql-java-tools**
 
-All `GraphQLResolver` and `GraphQLScalar` beans, along with a bean of type `SchemaParserDictionary` (to provide all other classes), will be used to create a GraphQLSchema.  Any files on the classpath named `*.graphqls` will be used to provide the schema definition.  See the [Readme](https://github.com/graphql-java/graphql-java-tools#usage) for more info.
+All `GraphQLResolver` and `GraphQLScalar` beans, along with a bean of type `SchemaParserDictionary` (to provide all other classes), will be used to create a GraphQLSchema.  Any files on the classpath named `*.graphqls` will be used to provide the schema definition.  See the [Readme](https://github.com/graphql-java-kickstart/graphql-java-tools#usage) for more info.
 
 Available Spring Boot configuration parameters (either `application.yml` or `application.properties`):
 
@@ -159,7 +159,7 @@ Use the `schemaLocationPattern` property to customize this pattern.
 ## GraphQL Spring Common [LATEST SUPPORTED VERSION: 3.1.1]
 **https://github.com/oembedler/spring-graphql-common**
 
-See the [Readme](https://github.com/oembedler/spring-graphql-common#usage) and the [example](https://github.com/graphql-java/graphql-spring-boot/tree/master/example-spring-common) for usage instructions.
+See the [Readme](https://github.com/oembedler/spring-graphql-common#usage) and the [example](https://github.com/graphql-java-kickstart/graphql-spring-boot/tree/master/example-spring-common) for usage instructions.
 
 #### Application Properties
 ```yaml
