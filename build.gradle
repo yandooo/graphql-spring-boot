@@ -24,7 +24,7 @@ buildscript {
         maven { url 'http://repo.spring.io/plugins-release' }
     }
     dependencies {
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
     }
 }
 
@@ -142,6 +142,7 @@ subprojects {
                 desc = PROJECT_DESC
                 licenses = [PROJECT_LICENSE]
                 vcsUrl = PROJECT_GIT_REPO_URL
+                userOrg = 'graphql-java-kickstart'
                 version {
                     name = project.version
                 }
