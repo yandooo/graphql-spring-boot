@@ -254,4 +254,10 @@ public class GraphQLWebAutoConfiguration {
     private MultipartConfigElement multipartConfigElement() {
         return Optional.ofNullable(multipartConfigElement).orElse(new MultipartConfigElement(""));
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
 }
