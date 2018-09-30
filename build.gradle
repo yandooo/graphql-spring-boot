@@ -134,24 +134,6 @@ subprojects {
             }
         }
 
-        release {
-            tagTemplate = 'v${version}'
-            failOnPublishNeeded = false
-            ignoredSnapshotDependencies = [
-                    'com.graphql-java-kickstart:graphiql-spring-boot-autoconfigure',
-                    'com.graphql-java-kickstart:graphiql-spring-boot-starter',
-                    'com.graphql-java-kickstart:graphql-spring-boot-autoconfigure',
-                    'com.graphql-java-kickstart:graphql-spring-boot-starter',
-                    'com.graphql-java-kickstart:graphql-spring-boot-starter-test',
-                    'com.graphql-java-kickstart:graphql-spring-boot-test',
-                    'com.graphql-java-kickstart:graphql-spring-boot-test-autoconfigure',
-                    'com.graphql-java-kickstart:voyager-spring-boot-autoconfigure',
-                    'com.graphql-java-kickstart:voyager-spring-boot-starter'
-            ]
-        }
-
-        afterReleaseBuild.dependsOn bintrayUpload
-
         bintray {
             user = System.env.BINTRAY_USER ?: project.findProperty('BINTRAY_USER') ?: ''
             key = System.env.BINTRAY_PASS ?: project.findProperty('BINTRAY_PASS') ?: ''
@@ -171,6 +153,24 @@ subprojects {
         }
     }
 }
+
+release {
+    tagTemplate = 'v${version}'
+    failOnPublishNeeded = false
+    ignoredSnapshotDependencies = [
+            'com.graphql-java-kickstart:graphiql-spring-boot-autoconfigure',
+            'com.graphql-java-kickstart:graphiql-spring-boot-starter',
+            'com.graphql-java-kickstart:graphql-spring-boot-autoconfigure',
+            'com.graphql-java-kickstart:graphql-spring-boot-starter',
+            'com.graphql-java-kickstart:graphql-spring-boot-starter-test',
+            'com.graphql-java-kickstart:graphql-spring-boot-test',
+            'com.graphql-java-kickstart:graphql-spring-boot-test-autoconfigure',
+            'com.graphql-java-kickstart:voyager-spring-boot-autoconfigure',
+            'com.graphql-java-kickstart:voyager-spring-boot-starter'
+    ]
+}
+
+afterReleaseBuild.dependsOn bintrayUpload
 
 task wrapper(type: Wrapper) {
     gradleVersion = "${GRADLE_WRAPPER_VER}"
