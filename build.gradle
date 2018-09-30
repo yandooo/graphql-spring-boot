@@ -26,12 +26,7 @@ buildscript {
     }
     dependencies {
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
-        classpath 'net.researchgate:gradle-release:2.7.0'
     }
-}
-
-plugins {
-    id 'net.researchgate.release' version '2.7.0'
 }
 
 subprojects {
@@ -154,26 +149,6 @@ subprojects {
             }
         }
     }
-}
-
-release {
-    tagTemplate = 'v${version}'
-    failOnPublishNeeded = false
-    ignoredSnapshotDependencies = [
-            'com.graphql-java-kickstart:graphiql-spring-boot-autoconfigure',
-            'com.graphql-java-kickstart:graphiql-spring-boot-starter',
-            'com.graphql-java-kickstart:graphql-spring-boot-autoconfigure',
-            'com.graphql-java-kickstart:graphql-spring-boot-starter',
-            'com.graphql-java-kickstart:graphql-spring-boot-starter-test',
-            'com.graphql-java-kickstart:graphql-spring-boot-test',
-            'com.graphql-java-kickstart:graphql-spring-boot-test-autoconfigure',
-            'com.graphql-java-kickstart:voyager-spring-boot-autoconfigure',
-            'com.graphql-java-kickstart:voyager-spring-boot-starter'
-    ]
-}
-
-task build {
-    dependsOn subprojects.findResults { it.tasks.findByName('bintrayUpload') }
 }
 
 task wrapper(type: Wrapper) {

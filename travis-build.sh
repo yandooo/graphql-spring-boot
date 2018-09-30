@@ -18,7 +18,7 @@ if [ "${TRAVIS_PULL_REQUEST}" = "false" ] && [ "${TRAVIS_BRANCH}" = "master" ] &
     echo "Deploying release to Bintray"
     saveGitCredentials
     git checkout -f ${TRAVIS_BRANCH}
-    ./gradlew clean assemble -Prelease.useAutomaticVersion=true && ./gradlew check --info
+    ./gradlew clean assemble && ./gradlew check --info && ./gradlew bintrayUpload -x check --info
 else
     echo "Verify"
     ./gradlew clean assemble && ./gradlew check --info
