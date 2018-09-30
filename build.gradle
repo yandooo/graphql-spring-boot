@@ -175,7 +175,7 @@ release {
 afterReleaseBuild.dependsOn bintrayUpload
 
 task build {
-    dependsOn subprojects.findResults { it.tasks.findByName('build') }
+    dependsOn subprojects.findResults { it.tasks.findByName('assemble') }
 }
 
 task wrapper(type: Wrapper) {
