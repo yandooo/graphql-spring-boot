@@ -137,7 +137,17 @@ subprojects {
         release {
             tagTemplate = 'v${version}'
             failOnPublishNeeded = false
-            ignoredSnapshotDependencies = ['com.graphql-java-kickstart:graphql-spring-boot']
+            ignoredSnapshotDependencies = [
+                    'com.graphql-java-kickstart:graphiql-spring-boot-autoconfigure',
+                    'com.graphql-java-kickstart:graphiql-spring-boot-starter',
+                    'com.graphql-java-kickstart:graphql-spring-boot-autoconfigure',
+                    'com.graphql-java-kickstart:graphql-spring-boot-starter',
+                    'com.graphql-java-kickstart:graphql-spring-boot-starter-test',
+                    'com.graphql-java-kickstart:graphql-spring-boot-test',
+                    'com.graphql-java-kickstart:graphql-spring-boot-test-autoconfigure',
+                    'com.graphql-java-kickstart:voyager-spring-boot-autoconfigure',
+                    'com.graphql-java-kickstart:voyager-spring-boot-starter'
+            ]
         }
 
         afterReleaseBuild.dependsOn bintrayUpload
