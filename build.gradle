@@ -175,7 +175,7 @@ release {
 task build {
     dependsOn subprojects.findResults { it.tasks.findByName('assemble') }
     dependsOn subprojects.findResults { it.tasks.findByName('check') }
-    dependsOn subprojects.findResults { it.tasks.findByName('bintrayUpload') }
+    dependsOn subprojects.findResults { it.tasks.findByName('bintray') }
 }
 
 task wrapper(type: Wrapper) {
