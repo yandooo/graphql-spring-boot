@@ -36,6 +36,7 @@ subprojects {
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
     apply plugin: "com.jfrog.bintray"
+    apply plugin: 'net.researchgate.release'
 
     version = PROJECT_VERSION
     group = PROJECT_GROUP
