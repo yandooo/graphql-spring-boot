@@ -41,7 +41,6 @@ subprojects {
     apply plugin: 'maven-publish'
     apply plugin: "com.jfrog.bintray"
 
-    version = PROJECT_VERSION
     group = PROJECT_GROUP
 
     repositories {
