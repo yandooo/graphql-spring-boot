@@ -26,6 +26,7 @@ buildscript {
     }
     dependencies {
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
+        classpath 'net.researchgate:gradle-release:2.7.0'
     }
 }
 
@@ -131,6 +132,14 @@ subprojects {
                 }
             }
         }
+
+        release {
+            tagTemplate = 'v${version}'
+            failOnPublishNeeded = false
+            ignoredSnapshotDependencies = ['com.graphql-java-kickstart:graphql-spring-boot']
+        }
+
+        afterReleaseBuild.dependsOn bintrayUpload
 
         bintray {
             user = System.env.BINTRAY_USER ?: project.findProperty('BINTRAY_USER') ?: ''
