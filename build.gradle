@@ -172,10 +172,8 @@ release {
     ]
 }
 
-afterReleaseBuild.dependsOn bintrayUpload
-
 task build {
-    dependsOn subprojects.findResults { it.tasks.findByName('assemble') }
+    dependsOn subprojects.findResults { it.tasks.findByName('bintrayUpload') }
 }
 
 task wrapper(type: Wrapper) {
