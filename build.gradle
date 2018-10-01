@@ -150,6 +150,9 @@ subprojects {
                 userOrg = 'graphql-java-kickstart'
                 version {
                     name = project.version
+                    mavenCentralSync {
+                        close = '1'
+                    }
                 }
             }
         }
