@@ -37,43 +37,59 @@ Gradle:
 
 ```gradle
 repositories {
+    jcenter()
     mavenCentral()
 }
 
 dependencies {
-  compile 'com.graphql-java:graphql-spring-boot-starter:5.0.2'
+  compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.0.3'
   
   // to embed GraphiQL tool
-  compile 'com.graphql-java:graphiql-spring-boot-starter:5.0.2'
+  compile 'com.graphql-java-kickstart:graphiql-spring-boot-starter:5.0.3'
 
   // to embed Voyager tool
-  compile 'com.graphql-java:voyager-spring-boot-starter:5.0.2'
+  compile 'com.graphql-java-kickstart:voyager-spring-boot-starter:5.0.3'
 }
 ```
 
 Maven:
 ```xml
 <dependency>
-    <groupId>com.graphql-java</groupId>
+    <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>5.0.2</version>
+    <version>5.0.3</version>
 </dependency>
 
 <!-- to embed GraphiQL tool -->
 <dependency>
-    <groupId>com.graphql-java</groupId>
+    <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>5.0.2</version>
+    <version>5.0.3</version>
 </dependency>
 
 <!-- to embed Voyager tool -->
 <dependency>
-    <groupId>com.graphql-java</groupId>
+    <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>voyager-spring-boot-starter</artifactId>
-    <version>5.0.2</version>
+    <version>5.0.3</version>
 </dependency>
 ```
 
+New releases will be available faster in the JCenter repository than in Maven Central. Add the following to use for Maven
+```xml
+<repositories>
+    <repository>
+      <id>jcenter</id>
+      <url>https://jcenter.bintray.com/</url>
+    </repository>
+</repositories>
+```
+For Gradle:
+```groovy
+repositories {
+    jcenter()
+}
+```
 
 # Enable GraphQL Servlet
 
