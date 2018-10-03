@@ -51,6 +51,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -76,7 +77,7 @@ import static graphql.servlet.GraphQLObjectMapper.newBuilder;
 @ConditionalOnClass(DispatcherServlet.class)
 @ConditionalOnBean({GraphQLSchema.class})
 @ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
-@AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class})
+@AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class, JacksonAutoConfiguration.class})
 @EnableConfigurationProperties({GraphQLServletProperties.class})
 public class GraphQLWebAutoConfiguration {
 
