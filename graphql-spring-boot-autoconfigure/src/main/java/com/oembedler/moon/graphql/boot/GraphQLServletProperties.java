@@ -32,6 +32,8 @@ public class GraphQLServletProperties {
 
     private String mapping;
 
+    private boolean asyncModeEnabled = false;
+
     public String getMapping() {
         return mapping != null ? mapping : "/graphql";
     }
@@ -74,5 +76,9 @@ public class GraphQLServletProperties {
 
     public void setMapping(String mapping) {
         this.mapping = mapping;
+    }
+
+    public boolean isAsyncModeEnabled() {
+        return asyncModeEnabled;
     }
 }
