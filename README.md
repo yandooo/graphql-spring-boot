@@ -1,6 +1,6 @@
 # GraphQL and Graph*i*QL Spring Framework Boot Starters
 [![Build Status](https://travis-ci.org/graphql-java-kickstart/graphql-spring-boot.svg?branch=master)](https://travis-ci.org/graphql-java-kickstart/graphql-spring-boot)
-[![Maven Central](https://img.shields.io/maven-central/v/com.graphql-java/graphql-spring-boot-starter.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java/graphql-spring-boot-starter)
+[![Maven Central](https://img.shields.io/maven-central/v/com.graphql-java/graphql-spring-boot-starter.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java-kickstart/graphql-spring-boot-starter)
 [![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/graphql-java-kickstart/Lobby)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -42,13 +42,13 @@ repositories {
 }
 
 dependencies {
-  compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.0.3'
+  compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.0.4'
   
   // to embed GraphiQL tool
-  compile 'com.graphql-java-kickstart:graphiql-spring-boot-starter:5.0.3'
+  compile 'com.graphql-java-kickstart:graphiql-spring-boot-starter:5.0.4'
 
   // to embed Voyager tool
-  compile 'com.graphql-java-kickstart:voyager-spring-boot-starter:5.0.3'
+  compile 'com.graphql-java-kickstart:voyager-spring-boot-starter:5.0.4'
 }
 ```
 
@@ -57,21 +57,21 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>5.0.3</version>
+    <version>5.0.4</version>
 </dependency>
 
 <!-- to embed GraphiQL tool -->
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>5.0.3</version>
+    <version>5.0.4</version>
 </dependency>
 
 <!-- to embed Voyager tool -->
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>voyager-spring-boot-starter</artifactId>
-    <version>5.0.3</version>
+    <version>5.0.4</version>
 </dependency>
 ```
 
