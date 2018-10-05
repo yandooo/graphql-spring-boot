@@ -16,8 +16,23 @@
       "type": "java.lang.String"
     },
     {
-      "name": "graphiql.endpoint",
+      "name": "graphiql.endpoint.graphql",
       "defaultValue": "/graphql",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "graphiql.endpoint.subscriptions",
+      "defaultValue": "/subscriptions",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "graphiql.static.basePath",
+      "defaultValue": "/",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "graphiql.pageTitle",
+      "defaultValue": "GraphiQL",
       "type": "java.lang.String"
     },
     {
@@ -42,6 +57,16 @@
     },
     {
       "name": "graphiql.props.resources.variables",
+      "defaultValue": null,
+      "type": "java.lang.String"
+    },
+    {
+      "name": "graphiql.props.variables.editorTheme",
+      "defaultValue": null,
+      "type": "java.lang.String"
+    },
+    {
+      "name": "graphiql.headers.Authorization",
       "defaultValue": null,
       "type": "java.lang.String"
     }
