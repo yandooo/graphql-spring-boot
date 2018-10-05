@@ -21,6 +21,11 @@
       "type": "java.lang.Boolean"
     },
     {
+      "name": "graphql.servlet.asyncModeEnabled",
+      "defaultValue": false,
+      "type": "java.lang.Boolean"
+    },
+    {
       "name": "graphql.servlet.subscriptions.websocket.path",
       "defaultValue": "/subscriptions",
       "type": "java.lang.String"

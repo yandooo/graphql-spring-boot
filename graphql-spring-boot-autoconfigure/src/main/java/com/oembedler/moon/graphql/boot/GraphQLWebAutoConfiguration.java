@@ -226,7 +226,6 @@ public class GraphQLWebAutoConfiguration {
     @ConditionalOnProperty(value="graphql.servlet.use-default-objectmapper", havingValue = "true",
             matchIfMissing = true)
     public ObjectMapperProvider objectMapperProvider(ObjectMapper objectMapper) {
-
         InjectableValues.Std injectableValues = new InjectableValues.Std();
         injectableValues.addValue(ObjectMapper.class, objectMapper);
         objectMapper.setInjectableValues(injectableValues);
@@ -242,6 +241,7 @@ public class GraphQLWebAutoConfiguration {
                 .withQueryInvoker(queryInvoker)
                 .withObjectMapper(graphQLObjectMapper)
                 .withListeners(listeners)
+                .withAsyncServletMode(graphQLServletProperties.isAsyncModeEnabled())
                 .build();
     }
 
