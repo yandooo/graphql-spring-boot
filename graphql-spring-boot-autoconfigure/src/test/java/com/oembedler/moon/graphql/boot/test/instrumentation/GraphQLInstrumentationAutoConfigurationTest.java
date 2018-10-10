@@ -1,17 +1,16 @@
 package com.oembedler.moon.graphql.boot.test.instrumentation;
 
 import com.oembedler.moon.graphql.boot.GraphQLInstrumentationAutoConfiguration;
-import com.oembedler.moon.graphql.boot.GraphQLWebAutoConfiguration;
+import com.oembedler.moon.graphql.boot.MetricsInstrumentation;
 import com.oembedler.moon.graphql.boot.test.AbstractAutoConfigurationTest;
 import graphql.analysis.MaxQueryComplexityInstrumentation;
 import graphql.analysis.MaxQueryDepthInstrumentation;
-import graphql.execution.AsyncExecutionStrategy;
-import graphql.execution.ExecutionStrategy;
 import graphql.execution.instrumentation.Instrumentation;
 import graphql.execution.instrumentation.tracing.TracingInstrumentation;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
-import graphql.servlet.AbstractGraphQLHttpServlet;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -34,6 +33,11 @@ public class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoCon
         @Bean
         GraphQLSchema schema() {
             return GraphQLSchema.newSchema().query(GraphQLObjectType.newObject().name("Query").build()).build();
+        }
+
+        @Bean
+        MeterRegistry meterRegistry() {
+            return new SimpleMeterRegistry();
         }
 
     }
@@ -71,5 +75,19 @@ public class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoCon
         load(DefaultConfiguration.class, "graphql.servlet.maxQueryDepth=10");
 
         Assert.assertNotNull(this.getContext().getBean(MaxQueryDepthInstrumentation.class));
+    }
+
+    @Test
+    public void actuatorMetricsEnabled() {
+        load(DefaultConfiguration.class, "graphql.servlet.actuator-metrics=true");
+
+        Assert.assertNotNull(this.getContext().getBean(MetricsInstrumentation.class));
+    }
+
+    @Test(expected = NoSuchBeanDefinitionException.class)
+    public void actuatorMetricsDisabled() {
+        load(DefaultConfiguration.class, "graphql.servlet.actuator-metrics=false");
+
+        this.getContext().getBean(MetricsInstrumentation.class);
     }
 }

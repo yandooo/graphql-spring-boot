@@ -3,6 +3,7 @@ package com.oembedler.moon.graphql.boot;
 import graphql.analysis.MaxQueryComplexityInstrumentation;
 import graphql.analysis.MaxQueryDepthInstrumentation;
 import graphql.execution.instrumentation.tracing.TracingInstrumentation;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -44,4 +45,12 @@ public class GraphQLInstrumentationAutoConfiguration {
     public MaxQueryDepthInstrumentation maxQueryDepthInstrumentation() {
         return new MaxQueryDepthInstrumentation(maxQueryDepth);
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "graphql.servlet.actuator-metrics", havingValue = "true")
+    public MetricsInstrumentation metricsInstrumentation(MeterRegistry meterRegistry) {
+        return new MetricsInstrumentation(meterRegistry);
+    }
+
 }

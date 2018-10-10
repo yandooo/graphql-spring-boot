@@ -44,6 +44,11 @@
       "name": "graphql.servlet.maxQueryDepth",
       "defaultValue": null,
       "type": "java.lang.Integer"
+    },
+    {
+      "name": "graphql.servlet.actuator-metrics",
+      "defaultValue": false,
+      "type": "java.lang.Boolean"
     }
   ]
 }
