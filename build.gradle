@@ -20,7 +20,9 @@
 buildscript {
     repositories {
         mavenLocal()
-        maven { url "http://dl.bintray.com/graphql-java-kickstart/releases" }
+        mavenCentral()
+        jcenter()
+        maven { url "https://dl.bintray.com/graphql-java-kickstart/releases" }
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url 'http://repo.spring.io/plugins-release' }
     }
@@ -45,8 +47,9 @@ subprojects {
 
     repositories {
         mavenLocal()
+        mavenCentral()
         jcenter()
-        maven { url "http://dl.bintray.com/graphql-java-kickstart/releases" }
+        maven { url "http://oss.jfrog.org/artifactory/oss-snapshot-local" }
         maven { url "http://repo.spring.io/libs-milestone" }
     }
 
