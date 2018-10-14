@@ -13,6 +13,7 @@ import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.SchemaParser;
 import graphql.servlet.*;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration;
 import org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.OverrideAutoConfiguration;
@@ -92,7 +93,8 @@ public @interface GraphQLTest {
             GraphQLWebAutoConfiguration.class,
             GraphQLTestAutoConfiguration.class,
             PropertySourcesPlaceholderConfigurer.class,
-            WebSocketServletAutoConfiguration.class
+            WebSocketServletAutoConfiguration.class,
+            JacksonAutoConfiguration.class
     };
 
     @AliasFor(
