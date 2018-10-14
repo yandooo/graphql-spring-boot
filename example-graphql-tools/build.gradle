@@ -29,6 +29,7 @@ repositories {
 dependencies {
     compile(project(":graphql-spring-boot-starter"))
     compile(project(":graphiql-spring-boot-starter"))
+    compile(project(":voyager-spring-boot-starter"))
     compile "com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
 
     compile("org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER")

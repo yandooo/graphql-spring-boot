@@ -1,6 +1,7 @@
 package com.oembedler.moon.graphql.boot.test;
 
 import org.junit.After;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigRegistry;
@@ -55,6 +56,7 @@ public abstract class AbstractAutoConfigurationTest {
 
         getRegistry().register(config);
         getRegistry().register(autoConfiguration);
+        getRegistry().register(JacksonAutoConfiguration.class);
 
         loadServletContext();
         getContext().refresh();
