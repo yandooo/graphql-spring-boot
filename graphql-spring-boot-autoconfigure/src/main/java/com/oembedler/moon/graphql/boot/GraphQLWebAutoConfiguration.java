@@ -19,7 +19,6 @@
 
 package com.oembedler.moon.graphql.boot;
 
-import com.coxautodev.graphql.tools.PerFieldObjectMapperProvider;
 import com.fasterxml.jackson.databind.InjectableValues;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.execution.AsyncExecutionStrategy;
@@ -29,28 +28,10 @@ import graphql.execution.instrumentation.ChainedInstrumentation;
 import graphql.execution.instrumentation.Instrumentation;
 import graphql.execution.preparsed.PreparsedDocumentProvider;
 import graphql.schema.GraphQLSchema;
-import graphql.servlet.AbstractGraphQLHttpServlet;
-import graphql.servlet.DefaultExecutionStrategyProvider;
-import graphql.servlet.DefaultGraphQLSchemaProvider;
-import graphql.servlet.ExecutionStrategyProvider;
-import graphql.servlet.GraphQLContextBuilder;
-import graphql.servlet.GraphQLErrorHandler;
-import graphql.servlet.GraphQLInvocationInputFactory;
-import graphql.servlet.GraphQLObjectMapper;
-import graphql.servlet.GraphQLQueryInvoker;
-import graphql.servlet.GraphQLRootObjectBuilder;
-import graphql.servlet.GraphQLSchemaProvider;
-import graphql.servlet.GraphQLServletListener;
-import graphql.servlet.ObjectMapperConfigurer;
-import graphql.servlet.ObjectMapperProvider;
-import graphql.servlet.SimpleGraphQLHttpServlet;
+import graphql.servlet.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -205,15 +186,15 @@ public class GraphQLWebAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLObjectMapper graphQLObjectMapper(Optional<ObjectMapperProvider> objectMapperProvider) {
+    public GraphQLObjectMapper graphQLObjectMapper(ObjectMapperProvider objectMapperProvider) {
         GraphQLObjectMapper.Builder builder = newBuilder();
 
         if (errorHandler != null) {
             builder.withGraphQLErrorHandler(errorHandler);
         }
 
-        if (objectMapperProvider.isPresent()){
-            builder.withObjectMapperProvider(objectMapperProvider.get());
+        if (objectMapperProvider != null){
+            builder.withObjectMapperProvider(objectMapperProvider);
         } else if (objectMapperConfigurer != null) {
             builder.withObjectMapperConfigurer(objectMapperConfigurer);
         }
@@ -256,9 +237,4 @@ public class GraphQLWebAutoConfiguration {
         return Optional.ofNullable(multipartConfigElement).orElse(new MultipartConfigElement(""));
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
-    }
 }

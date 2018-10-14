@@ -8,16 +8,17 @@ import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.GraphQLSchemaProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import static com.coxautodev.graphql.tools.SchemaParserOptions.newOptions;
 
@@ -26,6 +27,7 @@ import static com.coxautodev.graphql.tools.SchemaParserOptions.newOptions;
  */
 @Configuration
 @ConditionalOnClass(SchemaParser.class)
+@AutoConfigureAfter({JacksonAutoConfiguration.class})
 public class GraphQLJavaToolsAutoConfiguration {
 
     @Autowired(required = false)
@@ -44,18 +46,12 @@ public class GraphQLJavaToolsAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
-    }
-
-    @Bean
     @ConditionalOnBean({GraphQLResolver.class})
     @ConditionalOnMissingBean
     public SchemaParser schemaParser(
             List<GraphQLResolver<?>> resolvers,
             SchemaStringProvider schemaStringProvider,
-            Optional<PerFieldObjectMapperProvider> perFieldObjectMapperProvider
+            PerFieldObjectMapperProvider perFieldObjectMapperProvider
     ) throws IOException {
         SchemaParserBuilder builder = dictionary != null ? new SchemaParserBuilder(dictionary) : new SchemaParserBuilder();
 
@@ -68,9 +64,9 @@ public class GraphQLJavaToolsAutoConfiguration {
 
         if (options != null) {
             builder.options(options);
-        } else if (perFieldObjectMapperProvider.isPresent()) {
+        } else if (perFieldObjectMapperProvider != null) {
             final SchemaParserOptions.Builder optionsBuilder =
-                    newOptions().objectMapperProvider(perFieldObjectMapperProvider.get());
+                    newOptions().objectMapperProvider(perFieldObjectMapperProvider);
             builder.options(optionsBuilder.build());
         }
 

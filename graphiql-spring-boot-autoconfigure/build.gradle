@@ -17,7 +17,8 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 dependencies{
-    compile "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
+    
     compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
     compile "org.apache.commons:commons-text:1.1"
     compileOnly "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"

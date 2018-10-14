@@ -3,6 +3,8 @@ spring:
     name: graphql-java-tools-app
 server:
   port: 9000
+  servlet:
+    context-path: /abc
 graphiql:
   headers:
     Authorization: "Bearer 05bd9a5f3fe0408f89520946b0fe1b06"
