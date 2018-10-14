@@ -167,6 +167,9 @@ Available Spring Boot configuration parameters (either `application.yml` or `app
 graphql:
     tools:
         schemaLocationPattern: "**/*.graphqls"
+        # Enable or disable the introspection query. Disabling it puts your server in contravention of the GraphQL
+        # specification and expectations of most clients, so use this option with caution
+        introspectionEnabled: true
 ```
 By default GraphQL tools uses the location pattern `**/*.graphqls` to scan for GraphQL schemas on the classpath.
 Use the `schemaLocationPattern` property to customize this pattern.

@@ -44,6 +44,16 @@
       "name": "graphql.servlet.maxQueryDepth",
       "defaultValue": null,
       "type": "java.lang.Integer"
+    },
+    {
+      "name": "graphql.tools.schemaLocationPattern",
+      "defaultValue": "**/*.graphqls",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "graphql.tools.introspectionEnabled",
+      "defaultValue": true,
+      "type": "java.lang.Boolean"
     }
   ]
 }
