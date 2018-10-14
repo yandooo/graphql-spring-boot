@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -33,12 +34,13 @@ public class VoyagerController
     private String voyagerCdnVersion;
 
     @RequestMapping(value = "${voyager.mapping:/voyager}")
-    public void voyager(HttpServletResponse response) throws IOException
+    public void voyager(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        String contextPath = request.getContextPath();
         response.setContentType("text/html; charset=UTF-8");
 
-        String voyagerCssUrl = "/vendor/voyager.css";
-        String voyagerJsUrl = "/vendor/voyager.min.js";
+        String voyagerCssUrl = contextPath + "/vendor/voyager.css";
+        String voyagerJsUrl = contextPath + "/vendor/voyager.min.js";
 
         if (voyagerCdnEnabled && StringUtils.isNotBlank(voyagerCdnVersion)) {
             voyagerCssUrl = "//apis.guru/graphql-voyager/releases/" + voyagerCdnVersion + "/voyager.css";
@@ -47,10 +49,11 @@ public class VoyagerController
 
         String template = StreamUtils.copyToString(new ClassPathResource("voyager.html").getInputStream(), Charset.defaultCharset());
         Map<String, String> replacements = new HashMap<>();
-        replacements.put("graphqlEndpoint", graphqlEndpoint);
+        replacements.put("graphqlEndpoint", contextPath + graphqlEndpoint);
         replacements.put("pageTitle", pageTitle);
         replacements.put("voyagerCssUrl", voyagerCssUrl);
         replacements.put("voyagerJsUrl", voyagerJsUrl);
+        replacements.put("contextPath", contextPath);
 
         response.getOutputStream().write(StrSubstitutor.replace(template, replacements).getBytes(Charset.defaultCharset()));
     }
