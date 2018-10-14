@@ -56,6 +56,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -205,15 +206,15 @@ public class GraphQLWebAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLObjectMapper graphQLObjectMapper(Optional<ObjectMapperProvider> objectMapperProvider) {
+    public GraphQLObjectMapper graphQLObjectMapper(ObjectMapperProvider objectMapperProvider) {
         GraphQLObjectMapper.Builder builder = newBuilder();
 
         if (errorHandler != null) {
             builder.withGraphQLErrorHandler(errorHandler);
         }
 
-        if (objectMapperProvider.isPresent()){
-            builder.withObjectMapperProvider(objectMapperProvider.get());
+        if (objectMapperProvider != null){
+            builder.withObjectMapperProvider(objectMapperProvider);
         } else if (objectMapperConfigurer != null) {
             builder.withObjectMapperConfigurer(objectMapperConfigurer);
         }
@@ -256,9 +257,4 @@ public class GraphQLWebAutoConfiguration {
         return Optional.ofNullable(multipartConfigElement).orElse(new MultipartConfigElement(""));
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
-    }
 }

@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import static com.coxautodev.graphql.tools.SchemaParserOptions.newOptions;
 
@@ -44,18 +43,12 @@ public class GraphQLJavaToolsAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
-    }
-
-    @Bean
     @ConditionalOnBean({GraphQLResolver.class})
     @ConditionalOnMissingBean
     public SchemaParser schemaParser(
             List<GraphQLResolver<?>> resolvers,
             SchemaStringProvider schemaStringProvider,
-            Optional<PerFieldObjectMapperProvider> perFieldObjectMapperProvider
+            PerFieldObjectMapperProvider perFieldObjectMapperProvider
     ) throws IOException {
         SchemaParserBuilder builder = dictionary != null ? new SchemaParserBuilder(dictionary) : new SchemaParserBuilder();
 
@@ -68,9 +61,9 @@ public class GraphQLJavaToolsAutoConfiguration {
 
         if (options != null) {
             builder.options(options);
-        } else if (perFieldObjectMapperProvider.isPresent()) {
+        } else if (perFieldObjectMapperProvider != null) {
             final SchemaParserOptions.Builder optionsBuilder =
-                    newOptions().objectMapperProvider(perFieldObjectMapperProvider.get());
+                    newOptions().objectMapperProvider(perFieldObjectMapperProvider);
             builder.options(optionsBuilder.build());
         }
 
