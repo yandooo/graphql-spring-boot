@@ -41,7 +41,7 @@ public class GraphQLWebsocketAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnClass(ServerContainer.class)
+    @ConditionalOnBean(ServerContainer.class)
     public ServerEndpointExporter serverEndpointExporter() {
         return new ServerEndpointExporter();
     }
