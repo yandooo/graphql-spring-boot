@@ -8,8 +8,6 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 @Configuration
 @ConditionalOnWebApplication
-@ConditionalOnBean(TestRestTemplate.class)
-@ConditionalOnClass({DispatcherServlet.class})
 @ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
 public class GraphQLTestAutoConfiguration {
 

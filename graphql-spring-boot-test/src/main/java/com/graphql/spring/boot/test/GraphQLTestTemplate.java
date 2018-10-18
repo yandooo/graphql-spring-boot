@@ -21,7 +21,7 @@ public class GraphQLTestTemplate {
 
     @Autowired
     private ResourceLoader resourceLoader;
-    @Autowired
+    @Autowired(required = false)
     private TestRestTemplate restTemplate;
     @Value("${graphql.servlet.mapping:/graphql}")
     private String graphqlMapping;
