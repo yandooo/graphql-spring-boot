@@ -81,4 +81,8 @@ public class GraphQLServletProperties {
     public boolean isAsyncModeEnabled() {
         return asyncModeEnabled;
     }
+
+    public void setAsyncModeEnabled(boolean asyncModeEnabled) {
+        this.asyncModeEnabled = asyncModeEnabled;
+    }
 }
