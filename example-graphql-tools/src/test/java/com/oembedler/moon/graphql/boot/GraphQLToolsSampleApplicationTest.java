@@ -28,7 +28,6 @@ public class GraphQLToolsSampleApplicationTest {
         GraphQLResponse response = graphQLTestTemplate.postForResource("graphql/post-get-comments.graphql");
         assertNotNull(response);
         assertTrue(response.isOk());
-        System.out.println(response.getRawResponse().getBody());
         assertEquals("1", response.get("$.data.post.id"));
     }
 

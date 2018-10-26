@@ -14,6 +14,8 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 import org.springframework.web.socket.server.standard.ServerEndpointRegistration;
 
+import javax.websocket.ContainerProvider;
+import javax.websocket.WebSocketContainer;
 import javax.websocket.server.ServerContainer;
 
 @Configuration
@@ -41,7 +43,7 @@ public class GraphQLWebsocketAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(ServerContainer.class)
+    @ConditionalOnClass(ServerContainer.class)
     public ServerEndpointExporter serverEndpointExporter() {
         return new ServerEndpointExporter();
     }
