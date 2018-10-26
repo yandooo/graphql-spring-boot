@@ -3,6 +3,7 @@ package com.oembedler.moon.graphql.boot.test;
 import com.oembedler.moon.graphql.boot.GraphQLServletProperties;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -30,13 +31,13 @@ public class GraphQLServletPropertiesTest {
         GraphQLServletProperties servletProperties = new GraphQLServletProperties();
         servletProperties.setMapping(mapping);
 
-        assertTrue(String.format("Expected mapping '%s' to return cors mapping '%s'", mapping, expected), servletProperties.getCorsMapping().equals(expected));
+        assertEquals(String.format("Expected mapping '%s' to return cors mapping '%s'", mapping, expected), servletProperties.getCorsMapping(), expected);
     }
 
     private void verifyServletMapping(String mapping, String expected) {
         GraphQLServletProperties servletProperties = new GraphQLServletProperties();
         servletProperties.setMapping(mapping);
 
-        assertTrue(String.format("Expected mapping '%s' to return servlet mapping '%s'", mapping, expected), servletProperties.getServletMapping().equals(expected));
+        assertEquals(String.format("Expected mapping '%s' to return servlet mapping '%s'", mapping, expected), servletProperties.getServletMapping(), expected);
     }
 }
