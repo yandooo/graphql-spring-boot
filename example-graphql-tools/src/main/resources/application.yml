@@ -2,7 +2,7 @@ spring:
   application:
     name: graphql-java-tools-app
 server:
-  port: 9000
+  port: 9001
 graphiql:
   headers:
     Authorization: "Bearer 05bd9a5f3fe0408f89520946b0fe1b06"
