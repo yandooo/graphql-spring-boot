@@ -42,13 +42,13 @@ repositories {
 }
 
 dependencies {
-  compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.0.4'
+  compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.0.5'
   
   // to embed GraphiQL tool
-  compile 'com.graphql-java-kickstart:graphiql-spring-boot-starter:5.0.4'
+  compile 'com.graphql-java-kickstart:graphiql-spring-boot-starter:5.0.5'
 
   // to embed Voyager tool
-  compile 'com.graphql-java-kickstart:voyager-spring-boot-starter:5.0.4'
+  compile 'com.graphql-java-kickstart:voyager-spring-boot-starter:5.0.5'
 }
 ```
 
@@ -57,21 +57,21 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>5.0.4</version>
+    <version>5.0.5</version>
 </dependency>
 
 <!-- to embed GraphiQL tool -->
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>5.0.4</version>
+    <version>5.0.5</version>
 </dependency>
 
 <!-- to embed Voyager tool -->
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>voyager-spring-boot-starter</artifactId>
-    <version>5.0.4</version>
+    <version>5.0.5</version>
 </dependency>
 ```
 
@@ -167,6 +167,9 @@ Available Spring Boot configuration parameters (either `application.yml` or `app
 graphql:
     tools:
         schemaLocationPattern: "**/*.graphqls"
+        # Enable or disable the introspection query. Disabling it puts your server in contravention of the GraphQL
+        # specification and expectations of most clients, so use this option with caution
+        introspectionEnabled: true
 ```
 By default GraphQL tools uses the location pattern `**/*.graphqls` to scan for GraphQL schemas on the classpath.
 Use the `schemaLocationPattern` property to customize this pattern.

@@ -16,6 +16,7 @@ import graphql.servlet.*;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleMetricsExportAutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration;
 import org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.OverrideAutoConfiguration;
@@ -96,7 +97,8 @@ public @interface GraphQLTest {
             PropertySourcesPlaceholderConfigurer.class,
             WebSocketServletAutoConfiguration.class,
             MetricsAutoConfiguration.class,
-            SimpleMetricsExportAutoConfiguration.class
+            SimpleMetricsExportAutoConfiguration.class,
+            JacksonAutoConfiguration.class
     };
 
     @AliasFor(

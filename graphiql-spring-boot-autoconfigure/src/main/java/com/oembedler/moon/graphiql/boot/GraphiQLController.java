@@ -109,14 +109,14 @@ public class GraphiQLController {
         replacements.put("subscriptionsEndpoint", subscriptionsEndpoint);
         replacements.put("staticBasePath", staticBasePath);
         replacements.put("pageTitle", pageTitle);
-        replacements.put("graphiqlCssUrl", graphiqlUrl("graphiql.min.css"));
-        replacements.put("graphiqlJsUrl", graphiqlUrl("graphiql.min.js"));
+        replacements.put("graphiqlCssUrl", graphiqlUrl(staticBasePath, "graphiql.min.css"));
+        replacements.put("graphiqlJsUrl", graphiqlUrl(staticBasePath, "graphiql.min.js"));
         replacements.put("props", props);
         replacements.put("headers", headers);
         return replacements;
     }
 
-    private String graphiqlUrl(String filename) {
+    private String graphiqlUrl(String staticBasePath, String filename) {
         if (graphiqlCdnEnabled && StringUtils.isNotBlank(graphiqlCdnVersion)) {
             return CDNJS_CLOUDFLARE_COM_AJAX_LIBS_GRAPHIQL + graphiqlCdnVersion + "/" + filename;
         }
