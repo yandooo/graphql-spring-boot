@@ -17,10 +17,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class MetricsInstrumentation extends SimpleInstrumentation {
 
-    public InstrumentationState createState() {
-        return new MetricsSupport();
-    }
-
     private MeterRegistry meterRegistry;
 
     private static final String OPERATION_TIME_METRIC_NAME = "graphql.timer.operation";
@@ -34,6 +30,13 @@ public class MetricsInstrumentation extends SimpleInstrumentation {
         this.meterRegistry = meterRegistry;
     }
 
+    //This create a custom instrumentation state that stores any needed value.
+    //In this case, it stores the begin time of the query
+    @Override
+    public InstrumentationState createState() {
+        return new MetricsSupport();
+    }
+
     @Override
     public InstrumentationContext<ExecutionResult> beginExecution(InstrumentationExecutionParameters parameters) {
 
@@ -41,14 +44,14 @@ public class MetricsInstrumentation extends SimpleInstrumentation {
             @Override
             public void onCompleted(ExecutionResult result, Throwable t) {
 
-            GraphQLContext graphQLContext = parameters.getContext();
-            MetricsSupport metricsSupport = parameters.getInstrumentationState();
-            if (graphQLContext.getHttpServletRequest().isPresent()) {
+                GraphQLContext graphQLContext = parameters.getContext();
+                MetricsSupport metricsSupport = parameters.getInstrumentationState();
+                if (graphQLContext.getHttpServletRequest().isPresent()) {
 
-                Timer timer = buildTimer(parameters.getOperation(), t);
-                timer.record(metricsSupport.getTotalTime(), TimeUnit.NANOSECONDS);
+                    Timer timer = buildTimer(parameters.getOperation(), t);
+                    timer.record(metricsSupport.getTotalTime(), TimeUnit.NANOSECONDS);
 
-            }
+                }
 
             }
 

@@ -3,8 +3,9 @@ package com.graphql.spring.boot.test;
 import com.coxautodev.graphql.tools.GraphQLResolver;
 import com.coxautodev.graphql.tools.SchemaParserDictionary;
 import com.coxautodev.graphql.tools.SchemaParserOptions;
-import com.graphql.spring.boot.test.GraphQLTestAutoConfiguration;
-import com.oembedler.moon.graphql.boot.*;
+import com.oembedler.moon.graphql.boot.GraphQLInstrumentationAutoConfiguration;
+import com.oembedler.moon.graphql.boot.GraphQLJavaToolsAutoConfiguration;
+import com.oembedler.moon.graphql.boot.GraphQLWebAutoConfiguration;
 import graphql.execution.ExecutionStrategy;
 import graphql.execution.instrumentation.Instrumentation;
 import graphql.execution.preparsed.PreparsedDocumentProvider;
@@ -12,17 +13,17 @@ import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.SchemaParser;
 import graphql.servlet.*;
+import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleMetricsExportAutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration;
 import org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.OverrideAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
@@ -87,12 +88,15 @@ public @interface GraphQLTest {
             annotation = ImportAutoConfiguration.class
     )
     Class<?>[] classes() default {
+            GraphQLInstrumentationAutoConfiguration.class,
             ServletWebServerFactoryAutoConfiguration.class,
             GraphQLJavaToolsAutoConfiguration.class,
             GraphQLWebAutoConfiguration.class,
             GraphQLTestAutoConfiguration.class,
             PropertySourcesPlaceholderConfigurer.class,
-            WebSocketServletAutoConfiguration.class
+            WebSocketServletAutoConfiguration.class,
+            MetricsAutoConfiguration.class,
+            SimpleMetricsExportAutoConfiguration.class
     };
 
     @AliasFor(
