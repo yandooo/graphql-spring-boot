@@ -17,16 +17,19 @@ public class ClasspathResourceSchemaStringProvider implements SchemaStringProvid
 
     @Autowired
     private ApplicationContext applicationContext;
-    @Autowired
-    private GraphQLToolsProperties props;
+    private String schemaLocationPattern;
+
+    public ClasspathResourceSchemaStringProvider(String schemaLocationPattern) {
+        this.schemaLocationPattern = schemaLocationPattern;
+    }
 
     @Override
     public List<String> schemaStrings() throws IOException {
-        Resource[] resources = applicationContext.getResources("classpath*:" + props.getSchemaLocationPattern());
+        Resource[] resources = applicationContext.getResources("classpath*:" + schemaLocationPattern);
         if (resources.length <= 0) {
             throw new IllegalStateException(
                     "No graphql schema files found on classpath with location pattern '"
-                            + props.getSchemaLocationPattern()
+                            + schemaLocationPattern
                             + "'.  Please add a graphql schema to the classpath or add a SchemaParser bean to your application context.");
         }
 
