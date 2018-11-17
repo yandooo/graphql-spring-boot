@@ -85,4 +85,6 @@ public class GraphQLJavaToolsAutoConfigurationTest extends AbstractAutoConfigura
 
         Assert.assertNotNull(this.getContext().getBean(GraphQLSchema.class));
     }
+
+
 }
