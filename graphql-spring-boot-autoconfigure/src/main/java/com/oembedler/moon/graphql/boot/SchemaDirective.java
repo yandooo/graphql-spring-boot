@@ -2,14 +2,22 @@ package com.oembedler.moon.graphql.boot;
 
 import graphql.schema.idl.SchemaDirectiveWiring;
 
-public interface SchemaDirective {
+public class SchemaDirective {
 
-    String getName();
+    private final String name;
+    private final SchemaDirectiveWiring directive;
 
-    SchemaDirectiveWiring getDirective();
+    public SchemaDirective(String name, SchemaDirectiveWiring directive) {
+        this.name = name;
+        this.directive = directive;
+    }
 
-    static SchemaDirective create(String name, SchemaDirectiveWiring directive) {
-        return new SchemaDirectiveImpl(name, directive);
+    public String getName() {
+        return name;
+    }
+
+    public SchemaDirectiveWiring getDirective() {
+        return directive;
     }
 
 }

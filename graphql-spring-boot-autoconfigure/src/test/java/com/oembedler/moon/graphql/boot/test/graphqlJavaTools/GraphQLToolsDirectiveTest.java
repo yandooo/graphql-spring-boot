@@ -7,13 +7,10 @@ import com.oembedler.moon.graphql.boot.test.AbstractAutoConfigurationTest;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.idl.SchemaDirectiveWiring;
 import graphql.schema.idl.SchemaDirectiveWiringEnvironment;
-import graphql.schema.idl.SchemaParser;
 import org.junit.Test;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-
-import static org.junit.Assert.assertNotNull;
 
 public class GraphQLToolsDirectiveTest extends AbstractAutoConfigurationTest {
 
@@ -39,7 +36,7 @@ public class GraphQLToolsDirectiveTest extends AbstractAutoConfigurationTest {
 
         @Bean
         public SchemaDirective uppercaseDirective() {
-            return SchemaDirective.create("uppercase", new SchemaDirectiveWiring() {
+            return new SchemaDirective("uppercase", new SchemaDirectiveWiring() {
                 @Override
                 public GraphQLObjectType onObject(SchemaDirectiveWiringEnvironment<GraphQLObjectType> environment) {
                     return null;
