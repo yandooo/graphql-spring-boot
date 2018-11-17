@@ -20,7 +20,9 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
-# Intro
+# Documentation
+
+See our new [Documentation](https://www.graphql-java-kickstart.com/spring-boot/).
 
 Repository contains:
 
@@ -42,13 +44,16 @@ repositories {
 }
 
 dependencies {
-  compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.1'
+  compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.2'
   
   // to embed GraphiQL tool
-  compile 'com.graphql-java-kickstart:graphiql-spring-boot-starter:5.1'
+  compile 'com.graphql-java-kickstart:graphiql-spring-boot-starter:5.2'
 
   // to embed Voyager tool
-  compile 'com.graphql-java-kickstart:voyager-spring-boot-starter:5.1'
+  compile 'com.graphql-java-kickstart:voyager-spring-boot-starter:5.2'
+  
+  // testing facilities
+  testCompile 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:5.2'
 }
 ```
 
@@ -57,22 +62,31 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>5.1</version>
+    <version>5.2</version>
 </dependency>
 
 <!-- to embed GraphiQL tool -->
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>5.1</version>
+    <version>5.2</version>
 </dependency>
 
 <!-- to embed Voyager tool -->
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>voyager-spring-boot-starter</artifactId>
-    <version>5.1</version>
+    <version>5.2</version>
 </dependency>
+
+<!-- testing facilities -->
+<dependency>
+    <groupId>com.graphql-java-kickstart</groupId>
+    <artifactId>graphql-spring-boot-starter-test</artifactId>
+    <version>5.2</version>
+    <scope>test</scope>
+</dependency>
+
 ```
 
 New releases will be available faster in the JCenter repository than in Maven Central. Add the following to use for Maven
