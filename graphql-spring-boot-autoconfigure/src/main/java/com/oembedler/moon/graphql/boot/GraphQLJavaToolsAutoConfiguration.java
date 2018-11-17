@@ -29,6 +29,7 @@ import static com.coxautodev.graphql.tools.SchemaParserOptions.newOptions;
 @Configuration
 @ConditionalOnClass(SchemaParser.class)
 @AutoConfigureAfter({JacksonAutoConfiguration.class})
+@EnableConfigurationProperties(GraphQLToolsProperties.class)
 public class GraphQLJavaToolsAutoConfiguration {
 
     @Autowired(required = false)
