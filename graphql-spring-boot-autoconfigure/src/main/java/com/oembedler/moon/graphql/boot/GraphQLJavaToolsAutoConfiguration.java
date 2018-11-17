@@ -8,13 +8,13 @@ import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.GraphQLSchemaProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,6 +29,7 @@ import static com.coxautodev.graphql.tools.SchemaParserOptions.newOptions;
 @Configuration
 @ConditionalOnClass(SchemaParser.class)
 @AutoConfigureAfter({JacksonAutoConfiguration.class})
+@EnableConfigurationProperties(GraphQLToolsProperties.class)
 public class GraphQLJavaToolsAutoConfiguration {
 
     @Autowired(required = false)
@@ -40,13 +41,13 @@ public class GraphQLJavaToolsAutoConfiguration {
     @Autowired(required = false)
     private SchemaParserOptions options;
 
-    @Value("${graphql.tools.introspectionEnabled:true}")
-    private boolean introspectionEnabled;
+    @Autowired
+    private GraphQLToolsProperties props;
 
     @Bean
     @ConditionalOnMissingBean
     public SchemaStringProvider schemaStringProvider() {
-        return new ClasspathResourceSchemaStringProvider();
+        return new ClasspathResourceSchemaStringProvider(props.getSchemaLocationPattern());
     }
 
     @Bean
@@ -71,7 +72,7 @@ public class GraphQLJavaToolsAutoConfiguration {
         } else if (perFieldObjectMapperProvider != null) {
             final SchemaParserOptions.Builder optionsBuilder =
                     newOptions().objectMapperProvider(perFieldObjectMapperProvider);
-            optionsBuilder.introspectionEnabled(introspectionEnabled);
+            optionsBuilder.introspectionEnabled(props.isIntrospectionEnabled());
             builder.options(optionsBuilder.build());
         }
 

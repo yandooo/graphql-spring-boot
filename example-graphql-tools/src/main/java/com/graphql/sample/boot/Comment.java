@@ -1,4 +1,4 @@
-package com.oembedler.moon.graphql.boot.resolvers;
+package com.graphql.sample.boot;
 
 class Comment {
 
