@@ -25,8 +25,6 @@ public class GraphQLToolsDirectiveTest extends AbstractAutoConfigurationTest {
     public void directiveIsLoaded() {
         System.setProperty("graphql.tools.schemaLocationPattern", "graphql/schema-directive-test.graphql");
         load(BaseConfiguration.class);
-        SchemaParser schemaParser = getContext().getBean(SchemaParser.class);
-        assertNotNull(schemaParser);
     }
 
     @Configuration
