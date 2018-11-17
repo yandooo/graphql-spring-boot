@@ -166,32 +166,13 @@ Available Spring Boot configuration parameters (either `application.yml` or `app
 ```yaml
 graphql:
     tools:
-        schemaLocationPattern: "**/*.graphqls"
+        schema-location-pattern: "**/*.graphqls"
         # Enable or disable the introspection query. Disabling it puts your server in contravention of the GraphQL
         # specification and expectations of most clients, so use this option with caution
-        introspectionEnabled: true
+        introspection-enabled: true
 ```
 By default GraphQL tools uses the location pattern `**/*.graphqls` to scan for GraphQL schemas on the classpath.
 Use the `schemaLocationPattern` property to customize this pattern.
-
-
-## GraphQL Spring Common [LATEST SUPPORTED VERSION: 3.1.1]
-**https://github.com/oembedler/spring-graphql-common**
-
-See the [Readme](https://github.com/oembedler/spring-graphql-common#usage) and the [example](https://github.com/graphql-java-kickstart/graphql-spring-boot/tree/master/example-spring-common) for usage instructions.
-
-#### Application Properties
-```yaml
-graphql:
-      spring-graphql-common:
-               clientMutationIdName: clientMutationId
-               injectClientMutationId: true
-               allowEmptyClientMutationId: false
-               mutationInputArgumentName: input
-               outputObjectNamePrefix: Payload
-               inputObjectNamePrefix: Input
-               schemaMutationObjectName: Mutation
-```
 
 
 # Contributions
@@ -202,8 +183,6 @@ Contributions are welcome.  Please respect the [Code of Conduct](http://contribu
 # Licenses
 
 `graphql-spring-boot-starter` and `graphiql-spring-boot-starter` are licensed under the MIT License. See [LICENSE](LICENSE.md) for details.
-
-[spring-graphql-common License](https://github.com/oembedler/spring-graphql-common/blob/master/LICENSE.md)
 
 [graphql-java License](https://github.com/andimarek/graphql-java/blob/master/LICENSE.md)
 

@@ -2,7 +2,6 @@ package com.oembedler.moon.graphql.boot;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 
@@ -16,34 +15,34 @@ import java.util.stream.Collectors;
 
 public class ClasspathResourceSchemaStringProvider implements SchemaStringProvider {
 
-  @Autowired
-  private ApplicationContext applicationContext;
-  @Value("${graphql.tools.schemaLocationPattern:**/*.graphqls}")
-  private String schemaLocationPattern;
+    @Autowired
+    private ApplicationContext applicationContext;
+    @Autowired
+    private GraphQLToolsProperties props;
 
-  @Override
-  public List<String> schemaStrings() throws IOException {
-    Resource[] resources = applicationContext.getResources("classpath*:" + schemaLocationPattern);
-    if (resources.length <= 0) {
-      throw new IllegalStateException(
-          "No graphql schema files found on classpath with location pattern '"
-              + schemaLocationPattern
-              + "'.  Please add a graphql schema to the classpath or add a SchemaParser bean to your application context.");
+    @Override
+    public List<String> schemaStrings() throws IOException {
+        Resource[] resources = applicationContext.getResources("classpath*:" + props.getSchemaLocationPattern());
+        if (resources.length <= 0) {
+            throw new IllegalStateException(
+                    "No graphql schema files found on classpath with location pattern '"
+                            + props.getSchemaLocationPattern()
+                            + "'.  Please add a graphql schema to the classpath or add a SchemaParser bean to your application context.");
+        }
+
+        return Arrays.stream(resources)
+                .map(this::readSchema)
+                .collect(Collectors.toList());
     }
 
-    return Arrays.stream(resources)
-        .map(this::readSchema)
-        .collect(Collectors.toList());
-  }
-
-  private String readSchema(Resource resource) {
-    StringWriter writer = new StringWriter();
-    try (InputStream inputStream = resource.getInputStream()) {
-      IOUtils.copy(inputStream, writer, StandardCharsets.UTF_8);
-    } catch (IOException e) {
-      throw new IllegalStateException("Cannot read graphql schema from resource " + resource, e);
+    private String readSchema(Resource resource) {
+        StringWriter writer = new StringWriter();
+        try (InputStream inputStream = resource.getInputStream()) {
+            IOUtils.copy(inputStream, writer, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new IllegalStateException("Cannot read graphql schema from resource " + resource, e);
+        }
+        return writer.toString();
     }
-    return writer.toString();
-  }
 
 }
