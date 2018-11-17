@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
+import graphql.schema.idl.SchemaDirectiveWiring;
 import graphql.servlet.GraphQLSchemaProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -41,6 +42,12 @@ public class GraphQLJavaToolsAutoConfiguration {
     @Autowired(required = false)
     private SchemaParserOptions options;
 
+    @Autowired(required = false)
+    private List<SchemaDirective> directives;
+
+    @Autowired(required = false)
+    private List<TypeDefinitionFactory> typeDefinitionFactories;
+
     @Autowired
     private GraphQLToolsProperties props;
 
@@ -67,13 +74,26 @@ public class GraphQLJavaToolsAutoConfiguration {
             builder.scalars(scalars);
         }
 
+        // fixme: should we even support options directly like this? the combination with the builder makes it complex
         if (options != null) {
             builder.options(options);
-        } else if (perFieldObjectMapperProvider != null) {
-            final SchemaParserOptions.Builder optionsBuilder =
-                    newOptions().objectMapperProvider(perFieldObjectMapperProvider);
+        } else {
+            SchemaParserOptions.Builder optionsBuilder = SchemaParserOptions.newOptions();
+
+            if (perFieldObjectMapperProvider != null) {
+                optionsBuilder.objectMapperProvider(perFieldObjectMapperProvider);
+            }
             optionsBuilder.introspectionEnabled(props.isIntrospectionEnabled());
+
+            if (typeDefinitionFactories != null) {
+                typeDefinitionFactories.forEach(optionsBuilder::typeDefinitionFactory);
+            }
+
             builder.options(optionsBuilder.build());
+        }
+
+        if (directives != null) {
+            directives.forEach(it -> builder.directive(it.getName(), it.getDirective()));
         }
 
         return builder
