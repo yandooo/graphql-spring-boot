@@ -19,7 +19,7 @@
 
 dependencies {
     compileOnly "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
-    
+
     compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
     compile "org.springframework.boot:spring-boot-starter-websocket:$LIB_SPRING_BOOT_VER"
     compile "com.graphql-java-kickstart:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
@@ -31,6 +31,7 @@ dependencies {
     testCompile "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
     testCompile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
     testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
+    testCompile(project(":graphql-spring-boot-test"))
 }
 
 compileJava.dependsOn(processResources)

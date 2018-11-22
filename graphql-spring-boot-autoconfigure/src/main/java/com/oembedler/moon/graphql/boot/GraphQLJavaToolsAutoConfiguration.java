@@ -4,9 +4,10 @@ import com.coxautodev.graphql.tools.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
+import com.oembedler.moon.graphql.boot.error.GraphQLErrorHandlerFactory;
 import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
-import graphql.schema.idl.SchemaDirectiveWiring;
+import graphql.servlet.GraphQLErrorHandler;
 import graphql.servlet.GraphQLSchemaProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -21,8 +22,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.util.List;
-
-import static com.coxautodev.graphql.tools.SchemaParserOptions.newOptions;
 
 /**
  * @author Andrew Potter

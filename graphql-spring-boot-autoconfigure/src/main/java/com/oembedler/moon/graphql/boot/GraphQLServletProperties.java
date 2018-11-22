@@ -34,6 +34,8 @@ public class GraphQLServletProperties {
 
     private boolean asyncModeEnabled = false;
 
+    private boolean exceptionHandlersEnabled = false;
+
     public String getMapping() {
         return mapping != null ? mapping : "/graphql";
     }
@@ -84,5 +86,13 @@ public class GraphQLServletProperties {
 
     public void setAsyncModeEnabled(boolean asyncModeEnabled) {
         this.asyncModeEnabled = asyncModeEnabled;
+    }
+
+    public boolean isExceptionHandlersEnabled() {
+        return exceptionHandlersEnabled;
+    }
+
+    public void setExceptionHandlersEnabled(boolean exceptionHandlersEnabled) {
+        this.exceptionHandlersEnabled = exceptionHandlersEnabled;
     }
 }

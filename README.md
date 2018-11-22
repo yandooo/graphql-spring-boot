@@ -118,9 +118,11 @@ Available Spring Boot configuration parameters (either `application.yml` or `app
 ```yaml
 graphql:
       servlet:
-               mapping: /graphql
-               enabled: true
-               corsEnabled: true
+           mapping: /graphql
+           enabled: true
+           corsEnabled: true
+           # if you want to @ExceptionHandler annotation for custom GraphQLErrors
+           exception-handlers-enabled: true
 ```
 
 By default a global CORS filter is enabled for `/graphql/**` context.
