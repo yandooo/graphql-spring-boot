@@ -1,5 +1,6 @@
 package com.oembedler.moon.graphql.boot.error;
 
+import graphql.GraphQLError;
 import graphql.servlet.DefaultGraphQLErrorHandler;
 import graphql.servlet.GraphQLErrorHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +23,7 @@ public class GraphQLErrorHandlerFactory {
     public GraphQLErrorHandler create(ConfigurableApplicationContext applicationContext, boolean exceptionHandlersEnabled) {
         ConfigurableListableBeanFactory beanFactory = applicationContext.getBeanFactory();
         List<GraphQLErrorFactory> factories = Arrays.stream(beanFactory.getBeanDefinitionNames())
+                .filter(applicationContext::containsBean)
                 .map(beanFactory::getBeanDefinition)
                 .map(BeanDefinition::getBeanClassName)
                 .filter(Objects::nonNull)
@@ -38,15 +41,18 @@ public class GraphQLErrorHandlerFactory {
     private List<GraphQLErrorFactory> scanForExceptionHandlers(ApplicationContext context, ConfigurableListableBeanFactory beanFactory, String className) {
         try {
             Class<?> objClz = beanFactory.getBeanClassLoader().loadClass(className);
-            // todo: need to handle proxies?
             return Arrays.stream(objClz.getDeclaredMethods())
-                    .filter(method -> method.isAnnotationPresent(ExceptionHandler.class))
+                    .filter(this::isGraphQLExceptionHandlerMethod)
                     .map(method -> GraphQLErrorFactory.withReflection(context.getBean(className), method))
                     .collect(Collectors.toList());
         } catch (ClassNotFoundException e) {
             log.error("Cannot load class " + className + ". " + e.getMessage());
             return Collections.emptyList();
         }
+    }
+
+    private boolean isGraphQLExceptionHandlerMethod(Method method) {
+        return method.isAnnotationPresent(ExceptionHandler.class) && GraphQLError.class.isAssignableFrom(method.getReturnType());
     }
 
 }

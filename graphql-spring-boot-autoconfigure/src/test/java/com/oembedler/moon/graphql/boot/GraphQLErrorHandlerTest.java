@@ -72,7 +72,7 @@ public class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
       }
 
       @ExceptionHandler(IllegalArgumentException.class)
-      GraphQLError handle(IllegalArgumentException e) {
+      ThrowableGraphQLError handle(IllegalArgumentException e) {
         return new ThrowableGraphQLError(e, "Illegal argument");
       }
 
