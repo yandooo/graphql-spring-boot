@@ -93,7 +93,6 @@ public class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
                 .resolvers(queryResolver())
                 .build();
         return schemaParser.makeExecutableSchema();
-//        return GraphQLSchema.newSchema().query(GraphQLObjectType.newObject().name("Query").build()).build();
       }
     }
 
