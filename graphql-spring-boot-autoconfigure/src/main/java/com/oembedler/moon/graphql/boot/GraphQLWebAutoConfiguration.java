@@ -21,20 +21,24 @@ package com.oembedler.moon.graphql.boot;
 
 import com.fasterxml.jackson.databind.InjectableValues;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oembedler.moon.graphql.boot.error.GraphQLErrorHandlerFactory;
 import graphql.execution.AsyncExecutionStrategy;
 import graphql.execution.ExecutionStrategy;
 import graphql.execution.SubscriptionExecutionStrategy;
-import graphql.execution.instrumentation.ChainedInstrumentation;
 import graphql.execution.instrumentation.Instrumentation;
 import graphql.execution.preparsed.PreparsedDocumentProvider;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.*;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -60,7 +64,7 @@ import static graphql.servlet.GraphQLObjectMapper.newBuilder;
 @ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class, JacksonAutoConfiguration.class})
 @EnableConfigurationProperties({GraphQLServletProperties.class})
-public class GraphQLWebAutoConfiguration {
+public class GraphQLWebAutoConfiguration implements ApplicationContextAware {
 
     public static final String QUERY_EXECUTION_STRATEGY = "queryExecutionStrategy";
     public static final String MUTATION_EXECUTION_STRATEGY = "mutationExecutionStrategy";
@@ -95,6 +99,15 @@ public class GraphQLWebAutoConfiguration {
 
     @Autowired(required = false)
     private MultipartConfigElement multipartConfigElement;
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        if (!applicationContext.containsBean(GraphQLErrorHandler.class.getSimpleName())) {
+            ConfigurableApplicationContext context = (ConfigurableApplicationContext) applicationContext;
+            errorHandler = new GraphQLErrorHandlerFactory().create(context, graphQLServletProperties.isExceptionHandlersEnabled());
+            context.getBeanFactory().registerSingleton(errorHandler.getClass().getCanonicalName(), errorHandler);
+        }
+    }
 
     @Bean
     @ConditionalOnClass(CorsFilter.class)
@@ -168,13 +181,8 @@ public class GraphQLWebAutoConfiguration {
         GraphQLQueryInvoker.Builder builder = GraphQLQueryInvoker.newBuilder()
                 .withExecutionStrategyProvider(executionStrategyProvider);
 
-        if (instrumentations != null && !instrumentations.isEmpty()) {
-            if (instrumentations.size() == 1) {
-                builder.withInstrumentation(instrumentations.get(0));
-            } else {
-                Instrumentation instrumentation = new ChainedInstrumentation(instrumentations);
-                builder.withInstrumentation(instrumentation);
-            }
+        if (instrumentations != null) {
+            builder.with(instrumentations);
         }
 
         if (preparsedDocumentProvider != null) {
@@ -193,7 +201,7 @@ public class GraphQLWebAutoConfiguration {
             builder.withGraphQLErrorHandler(errorHandler);
         }
 
-        if (objectMapperProvider != null){
+        if (objectMapperProvider != null) {
             builder.withObjectMapperProvider(objectMapperProvider);
         } else if (objectMapperConfigurer != null) {
             builder.withObjectMapperConfigurer(objectMapperConfigurer);
@@ -204,7 +212,7 @@ public class GraphQLWebAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value="graphql.servlet.use-default-objectmapper", havingValue = "true",
+    @ConditionalOnProperty(value = "graphql.servlet.use-default-objectmapper", havingValue = "true",
             matchIfMissing = true)
     public ObjectMapperProvider objectMapperProvider(ObjectMapper objectMapper) {
         InjectableValues.Std injectableValues = new InjectableValues.Std();
@@ -214,16 +222,16 @@ public class GraphQLWebAutoConfiguration {
     }
 
 
-
     @Bean
     @ConditionalOnMissingBean
-    public SimpleGraphQLHttpServlet graphQLHttpServlet(GraphQLInvocationInputFactory invocationInputFactory, GraphQLQueryInvoker queryInvoker, GraphQLObjectMapper graphQLObjectMapper) {
-        return SimpleGraphQLHttpServlet.newBuilder(invocationInputFactory)
-                .withQueryInvoker(queryInvoker)
-                .withObjectMapper(graphQLObjectMapper)
-                .withListeners(listeners)
-                .withAsyncServletMode(graphQLServletProperties.isAsyncModeEnabled())
+    public GraphQLHttpServlet graphQLHttpServlet(GraphQLInvocationInputFactory invocationInputFactory, GraphQLQueryInvoker queryInvoker, GraphQLObjectMapper graphQLObjectMapper) {
+        GraphQLConfiguration configuration = GraphQLConfiguration.with(invocationInputFactory)
+                .with(queryInvoker)
+                .with(graphQLObjectMapper)
+                .with(listeners)
+                .with(graphQLServletProperties.isAsyncModeEnabled())
                 .build();
+        return GraphQLHttpServlet.with(configuration);
     }
 
     @Bean
@@ -236,5 +244,4 @@ public class GraphQLWebAutoConfiguration {
     private MultipartConfigElement multipartConfigElement() {
         return Optional.ofNullable(multipartConfigElement).orElse(new MultipartConfigElement(""));
     }
-
 }

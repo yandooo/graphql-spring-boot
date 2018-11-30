@@ -1,4 +1,4 @@
-package com.oembedler.moon.graphql.boot.resolvers;
+package com.graphql.sample.boot;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import java.util.Random;

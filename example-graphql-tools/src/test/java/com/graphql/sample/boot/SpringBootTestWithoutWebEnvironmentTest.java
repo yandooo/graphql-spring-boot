@@ -1,4 +1,4 @@
-package com.oembedler.moon.graphql.boot;
+package com.graphql.sample.boot;
 
 import org.junit.Ignore;
 import org.junit.Test;

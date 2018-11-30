@@ -19,8 +19,32 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## WARNING: NoClassDefFoundError when using GraphQL Java Tools 5.4.x
 
-# Intro
+If you're using `graphl-java-tools` you need to set the `kotlin.version` in your Spring Boot project explicitly to 
+version 1.3.10, because Spring Boot Starter parent currently overrides it with a 1.2.* version of Kotlin. 
+`graphql-java-tools` requires 1.3.* however because of its coroutine support. If you don't override this version
+you will run into a `NoClassDefFoundError`.
+
+Spring Boot team has indicated the Kotlin version will be upgraded to 1.3 in Spring Boot 2.2.
+
+### Using Gradle
+Set the Kotlin version in your `gradle.properties`
+```
+kotlin.version=1.3.10
+```
+
+### Using Maven
+Set the Kotlin version in your `<properties>` section
+```xml
+<properties>
+  <kotlin.version>1.3.10</kotlin.version>
+</properties>
+```
+
+# Documentation
+
+See our new [Documentation](https://www.graphql-java-kickstart.com/spring-boot/).
 
 Repository contains:
 
@@ -42,13 +66,16 @@ repositories {
 }
 
 dependencies {
-  compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.0.5'
+  compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.3.1'
   
   // to embed GraphiQL tool
-  compile 'com.graphql-java-kickstart:graphiql-spring-boot-starter:5.0.5'
+  compile 'com.graphql-java-kickstart:graphiql-spring-boot-starter:5.3.1'
 
   // to embed Voyager tool
-  compile 'com.graphql-java-kickstart:voyager-spring-boot-starter:5.0.5'
+  compile 'com.graphql-java-kickstart:voyager-spring-boot-starter:5.3.1'
+  
+  // testing facilities
+  testCompile 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:5.3.1'
 }
 ```
 
@@ -57,22 +84,31 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>5.0.5</version>
+    <version>5.3.1</version>
 </dependency>
 
 <!-- to embed GraphiQL tool -->
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>5.0.5</version>
+    <version>5.3.1</version>
 </dependency>
 
 <!-- to embed Voyager tool -->
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>voyager-spring-boot-starter</artifactId>
-    <version>5.0.5</version>
+    <version>5.3.1</version>
 </dependency>
+
+<!-- testing facilities -->
+<dependency>
+    <groupId>com.graphql-java-kickstart</groupId>
+    <artifactId>graphql-spring-boot-starter-test</artifactId>
+    <version>5.3.1</version>
+    <scope>test</scope>
+</dependency>
+
 ```
 
 New releases will be available faster in the JCenter repository than in Maven Central. Add the following to use for Maven
@@ -104,9 +140,11 @@ Available Spring Boot configuration parameters (either `application.yml` or `app
 ```yaml
 graphql:
       servlet:
-               mapping: /graphql
-               enabled: true
-               corsEnabled: true
+           mapping: /graphql
+           enabled: true
+           corsEnabled: true
+           # if you want to @ExceptionHandler annotation for custom GraphQLErrors
+           exception-handlers-enabled: true
 ```
 
 By default a global CORS filter is enabled for `/graphql/**` context.
@@ -166,32 +204,13 @@ Available Spring Boot configuration parameters (either `application.yml` or `app
 ```yaml
 graphql:
     tools:
-        schemaLocationPattern: "**/*.graphqls"
+        schema-location-pattern: "**/*.graphqls"
         # Enable or disable the introspection query. Disabling it puts your server in contravention of the GraphQL
         # specification and expectations of most clients, so use this option with caution
-        introspectionEnabled: true
+        introspection-enabled: true
 ```
 By default GraphQL tools uses the location pattern `**/*.graphqls` to scan for GraphQL schemas on the classpath.
 Use the `schemaLocationPattern` property to customize this pattern.
-
-
-## GraphQL Spring Common [LATEST SUPPORTED VERSION: 3.1.1]
-**https://github.com/oembedler/spring-graphql-common**
-
-See the [Readme](https://github.com/oembedler/spring-graphql-common#usage) and the [example](https://github.com/graphql-java-kickstart/graphql-spring-boot/tree/master/example-spring-common) for usage instructions.
-
-#### Application Properties
-```yaml
-graphql:
-      spring-graphql-common:
-               clientMutationIdName: clientMutationId
-               injectClientMutationId: true
-               allowEmptyClientMutationId: false
-               mutationInputArgumentName: input
-               outputObjectNamePrefix: Payload
-               inputObjectNamePrefix: Input
-               schemaMutationObjectName: Mutation
-```
 
 
 # Contributions
@@ -202,8 +221,6 @@ Contributions are welcome.  Please respect the [Code of Conduct](http://contribu
 # Licenses
 
 `graphql-spring-boot-starter` and `graphiql-spring-boot-starter` are licensed under the MIT License. See [LICENSE](LICENSE.md) for details.
-
-[spring-graphql-common License](https://github.com/oembedler/spring-graphql-common/blob/master/LICENSE.md)
 
 [graphql-java License](https://github.com/andimarek/graphql-java/blob/master/LICENSE.md)
 

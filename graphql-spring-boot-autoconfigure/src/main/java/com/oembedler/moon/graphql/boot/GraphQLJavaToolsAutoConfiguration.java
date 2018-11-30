@@ -8,20 +8,18 @@ import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.GraphQLSchemaProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.util.List;
-
-import static com.coxautodev.graphql.tools.SchemaParserOptions.newOptions;
 
 /**
  * @author Andrew Potter
@@ -29,6 +27,7 @@ import static com.coxautodev.graphql.tools.SchemaParserOptions.newOptions;
 @Configuration
 @ConditionalOnClass(SchemaParser.class)
 @AutoConfigureAfter({JacksonAutoConfiguration.class})
+@EnableConfigurationProperties(GraphQLToolsProperties.class)
 public class GraphQLJavaToolsAutoConfiguration {
 
     @Autowired(required = false)
@@ -40,13 +39,19 @@ public class GraphQLJavaToolsAutoConfiguration {
     @Autowired(required = false)
     private SchemaParserOptions options;
 
-    @Value("${graphql.tools.introspectionEnabled:true}")
-    private boolean introspectionEnabled;
+    @Autowired(required = false)
+    private List<SchemaDirective> directives;
+
+    @Autowired(required = false)
+    private List<TypeDefinitionFactory> typeDefinitionFactories;
+
+    @Autowired
+    private GraphQLToolsProperties props;
 
     @Bean
     @ConditionalOnMissingBean
     public SchemaStringProvider schemaStringProvider() {
-        return new ClasspathResourceSchemaStringProvider();
+        return new ClasspathResourceSchemaStringProvider(props.getSchemaLocationPattern());
     }
 
     @Bean
@@ -66,13 +71,26 @@ public class GraphQLJavaToolsAutoConfiguration {
             builder.scalars(scalars);
         }
 
+        // fixme: should we even support options directly like this? the combination with the builder makes it complex
         if (options != null) {
             builder.options(options);
-        } else if (perFieldObjectMapperProvider != null) {
-            final SchemaParserOptions.Builder optionsBuilder =
-                    newOptions().objectMapperProvider(perFieldObjectMapperProvider);
-            optionsBuilder.introspectionEnabled(introspectionEnabled);
+        } else {
+            SchemaParserOptions.Builder optionsBuilder = SchemaParserOptions.newOptions();
+
+            if (perFieldObjectMapperProvider != null) {
+                optionsBuilder.objectMapperProvider(perFieldObjectMapperProvider);
+            }
+            optionsBuilder.introspectionEnabled(props.isIntrospectionEnabled());
+
+            if (typeDefinitionFactories != null) {
+                typeDefinitionFactories.forEach(optionsBuilder::typeDefinitionFactory);
+            }
+
             builder.options(optionsBuilder.build());
+        }
+
+        if (directives != null) {
+            directives.forEach(it -> builder.directive(it.getName(), it.getDirective()));
         }
 
         return builder

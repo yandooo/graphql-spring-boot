@@ -34,6 +34,7 @@ buildscript {
 
 plugins {
     id 'net.researchgate.release' version '2.7.0'
+    id 'io.franzbecker.gradle-lombok' version '1.14' apply false
 }
 
 subprojects {
@@ -42,6 +43,7 @@ subprojects {
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
     apply plugin: "com.jfrog.bintray"
+    apply plugin: 'io.franzbecker.gradle-lombok'
 
     group = PROJECT_GROUP
 
@@ -64,6 +66,14 @@ subprojects {
         sourceCompatibility = SOURCE_COMPATIBILITY
         targetCompatibility = TARGET_COMPATIBILITY
     }
+
+    compileJava.dependsOn(processResources)
+    
+    lombok {
+        version = "1.18.4"
+        sha256 = ""
+    }
+
 
     if (!it.name.startsWith('example')) {
 

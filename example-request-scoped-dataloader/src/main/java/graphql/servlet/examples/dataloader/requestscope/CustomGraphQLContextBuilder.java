@@ -7,6 +7,8 @@ import org.dataloader.DataLoaderRegistry;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.websocket.Session;
 import javax.websocket.server.HandshakeRequest;
 import java.util.concurrent.CompletableFuture;
 
@@ -20,8 +22,8 @@ public class CustomGraphQLContextBuilder implements GraphQLContextBuilder {
     }
 
     @Override
-    public GraphQLContext build(HttpServletRequest req) {
-        GraphQLContext context = new GraphQLContext(req);
+    public GraphQLContext build(HttpServletRequest req, HttpServletResponse response) {
+        GraphQLContext context = new GraphQLContext(req, response);
         context.setDataLoaderRegistry(buildDataLoaderRegistry());
 
         return context;
@@ -36,8 +38,8 @@ public class CustomGraphQLContextBuilder implements GraphQLContextBuilder {
     }
 
     @Override
-    public GraphQLContext build(HandshakeRequest request) {
-        GraphQLContext context = new GraphQLContext(request);
+    public GraphQLContext build(Session session, HandshakeRequest request) {
+        GraphQLContext context = new GraphQLContext(session, request);
         context.setDataLoaderRegistry(buildDataLoaderRegistry());
 
         return context;

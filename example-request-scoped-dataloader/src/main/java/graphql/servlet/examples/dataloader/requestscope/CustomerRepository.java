@@ -13,13 +13,13 @@ public class CustomerRepository {
     private final Map<Integer, String> data;
 
     private CustomerRepository() {
-        data = new HashMap<Integer, String>();
-        data.put(Integer.valueOf(101), "Customer Name 1");
-        data.put(Integer.valueOf(102), "Customer Name 2");
-        data.put(Integer.valueOf(103), "Customer Name 3");
-        data.put(Integer.valueOf(104), "Customer Name 4");
-        data.put(Integer.valueOf(105), "Customer Name 5");
-        data.put(Integer.valueOf(106), "Customer Name 6");
+        data = new HashMap<>();
+        data.put(101, "Customer Name 1");
+        data.put(102, "Customer Name 2");
+        data.put(103, "Customer Name 3");
+        data.put(104, "Customer Name 4");
+        data.put(105, "Customer Name 5");
+        data.put(106, "Customer Name 6");
     }
 
     public List getUserNamesForIds(List<Integer> customerIds) {

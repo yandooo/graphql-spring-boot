@@ -1,7 +1,6 @@
 package com.oembedler.moon.voyager.boot.test;
 
 import org.junit.After;
-import org.springframework.boot.test.util.EnvironmentTestUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigRegistry;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -41,9 +40,9 @@ public abstract class AbstractAutoConfigurationTest {
             throw new RuntimeException(e);
         }
 
-        if (environment != null && environment.length > 0) {
-            EnvironmentTestUtils.addEnvironment(getContext(), environment);
-        }
+//        if (environment != null && environment.length > 0) {
+//            EnvironmentTestUtils.addEnvironment(getContext(), environment);
+//        }
 
         getRegistry().register(config);
         getRegistry().register(autoConfiguration);
