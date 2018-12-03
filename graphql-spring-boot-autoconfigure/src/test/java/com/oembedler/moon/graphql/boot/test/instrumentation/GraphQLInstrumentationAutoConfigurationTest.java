@@ -1,7 +1,7 @@
 package com.oembedler.moon.graphql.boot.test.instrumentation;
 
 import com.oembedler.moon.graphql.boot.GraphQLInstrumentationAutoConfiguration;
-import com.oembedler.moon.graphql.boot.MetricsInstrumentation;
+import com.oembedler.moon.graphql.boot.metrics.MetricsInstrumentation;
 import com.oembedler.moon.graphql.boot.test.AbstractAutoConfigurationTest;
 import graphql.analysis.MaxQueryComplexityInstrumentation;
 import graphql.analysis.MaxQueryDepthInstrumentation;

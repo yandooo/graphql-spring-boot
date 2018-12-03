@@ -1,5 +1,7 @@
 package com.oembedler.moon.graphql.boot;
 
+import com.oembedler.moon.graphql.boot.metrics.MetricsInstrumentation;
+import com.oembedler.moon.graphql.boot.metrics.TracingNoResolversInstrumentation;
 import graphql.analysis.MaxQueryComplexityInstrumentation;
 import graphql.analysis.MaxQueryDepthInstrumentation;
 import graphql.execution.instrumentation.tracing.TracingInstrumentation;
@@ -30,11 +32,21 @@ public class GraphQLInstrumentationAutoConfiguration {
     @Value("${graphql.servlet.maxQueryDepth:#{null}}")
     private Integer maxQueryDepth;
 
+    @Value("${graphql.servlet.tracing-enabled:#{false}}")
+    private Boolean tracingEnabled;
+
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "graphql.servlet.tracing-enabled", havingValue = "true")
     public TracingInstrumentation tracingInstrumentation() {
         return new TracingInstrumentation();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "graphql.servlet.tracing-enabled", havingValue = "false")
+    public TracingNoResolversInstrumentation tracingNoResolversInstrumentation() {
+        return new TracingNoResolversInstrumentation();
     }
 
     @Bean
@@ -53,10 +65,10 @@ public class GraphQLInstrumentationAutoConfiguration {
 
     @Bean
     @ConditionalOnProperty(value = "graphql.servlet.actuator-metrics", havingValue = "true")
-    @ConditionalOnBean(MeterRegistry.class)
+    @ConditionalOnBean({MeterRegistry.class, TracingInstrumentation.class})
     @ConditionalOnMissingBean
     public MetricsInstrumentation metricsInstrumentation(MeterRegistry meterRegistry) {
-        return new MetricsInstrumentation(meterRegistry);
+        return new MetricsInstrumentation(meterRegistry, tracingEnabled);
     }
 
 }
