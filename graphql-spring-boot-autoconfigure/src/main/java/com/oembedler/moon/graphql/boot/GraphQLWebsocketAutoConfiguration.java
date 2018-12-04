@@ -49,8 +49,8 @@ public class GraphQLWebsocketAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLWebsocketServlet graphQLWebsocketServlet(GraphQLInvocationInputFactory invocationInputFactory, GraphQLQueryInvoker queryInvoker, GraphQLObjectMapper graphQLObjectMapper) {
-        return new GraphQLWebsocketServlet(queryInvoker, invocationInputFactory, graphQLObjectMapper);
+    public GraphQLWebsocketServlet graphQLWebsocketServlet(GraphQLInvocationInputFactory invocationInputFactory, GraphQLQueryInvoker queryInvoker, GraphQLObjectMapper graphQLObjectMapper, SubscriptionConnectionListener subscriptionConnectionListener) {
+        return new GraphQLWebsocketServlet(queryInvoker, invocationInputFactory, graphQLObjectMapper, subscriptionConnectionListener);
     }
 
     @Bean
