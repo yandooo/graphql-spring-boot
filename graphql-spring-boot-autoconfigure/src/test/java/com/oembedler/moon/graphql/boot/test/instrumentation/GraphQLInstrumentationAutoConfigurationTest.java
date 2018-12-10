@@ -2,6 +2,7 @@ package com.oembedler.moon.graphql.boot.test.instrumentation;
 
 import com.oembedler.moon.graphql.boot.GraphQLInstrumentationAutoConfiguration;
 import com.oembedler.moon.graphql.boot.metrics.MetricsInstrumentation;
+import com.oembedler.moon.graphql.boot.metrics.TracingNoResolversInstrumentation;
 import com.oembedler.moon.graphql.boot.test.AbstractAutoConfigurationTest;
 import graphql.analysis.MaxQueryComplexityInstrumentation;
 import graphql.analysis.MaxQueryDepthInstrumentation;
@@ -49,16 +50,9 @@ public class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoCon
         this.getContext().getBean(Instrumentation.class);
     }
 
-    @Test(expected = NoSuchBeanDefinitionException.class)
-    public void tracingInstrumentationDisabled() {
-        load(DefaultConfiguration.class, "graphql.servlet.tracingEnabled=false");
-
-        this.getContext().getBean(TracingInstrumentation.class);
-    }
-
     @Test
     public void tracingInstrumentationEnabled() {
-        load(DefaultConfiguration.class, "graphql.servlet.tracingEnabled=true");
+        load(DefaultConfiguration.class, "graphql.servlet.tracing-enabled=true");
 
         Assert.assertNotNull(this.getContext().getBean(TracingInstrumentation.class));
     }
@@ -78,11 +72,39 @@ public class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoCon
     }
 
     @Test
-    public void actuatorMetricsEnabled() {
-        load(DefaultConfiguration.class, "graphql.servlet.actuator-metrics=true");
+    public void actuatorMetricsEnabledAndTracingEnabled() {
+        load(DefaultConfiguration.class, "graphql.servlet.tracing-enabled=true", "graphql.servlet.actuator-metrics=true");
 
+        Assert.assertNotNull(this.getContext().getBean(TracingInstrumentation.class));
         Assert.assertNotNull(this.getContext().getBean(MetricsInstrumentation.class));
     }
+
+    @Test
+    public void tracingInstrumentationDisabledndMetricsEnabled() {
+        load(DefaultConfiguration.class, "graphql.servlet.tracing-enabled=false", "graphql.servlet.actuator-metrics=true");
+
+        Assert.assertNotNull(this.getContext().getBean(MetricsInstrumentation.class));
+        Assert.assertNotNull(this.getContext().getBean(TracingNoResolversInstrumentation.class));
+    }
+
+    @Test(expected = NoSuchBeanDefinitionException.class)
+    public void tracingInstrumentationEnabledAndMetricsDisabled() {
+        load(DefaultConfiguration.class, "graphql.servlet.tracing-enabled=true", "graphql.servlet.actuator-metrics=false");
+
+        Assert.assertNotNull(this.getContext().getBean(TracingInstrumentation.class));
+        this.getContext().getBean(MetricsInstrumentation.class);
+    }
+
+    @Test(expected = NoSuchBeanDefinitionException.class)
+    public void tracingInstrumentationDisabledAndMetricsDisabled() {
+        load(DefaultConfiguration.class, "graphql.servlet.tracing-enabled=false", "graphql.servlet.actuator-metrics=false");
+
+        this.getContext().getBean(MetricsInstrumentation.class);
+        this.getContext().getBean(TracingNoResolversInstrumentation.class);
+        this.getContext().getBean(TracingInstrumentation.class);
+    }
+
+
 
     @Test(expected = NoSuchBeanDefinitionException.class)
     public void actuatorMetricsDisabled() {

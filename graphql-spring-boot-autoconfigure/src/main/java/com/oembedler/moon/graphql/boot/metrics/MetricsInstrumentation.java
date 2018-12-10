@@ -1,8 +1,8 @@
 package com.oembedler.moon.graphql.boot.metrics;
 
 import graphql.ExecutionResult;
+import graphql.execution.instrumentation.SimpleInstrumentation;
 import graphql.execution.instrumentation.parameters.InstrumentationExecutionParameters;
-import graphql.execution.instrumentation.tracing.TracingInstrumentation;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
 
@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Bruno Rodrigues
  */
-public class MetricsInstrumentation extends TracingInstrumentation {
+public class MetricsInstrumentation extends SimpleInstrumentation {
 
     private MeterRegistry meterRegistry;
 
