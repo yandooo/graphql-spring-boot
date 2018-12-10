@@ -71,12 +71,12 @@ public class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoCon
         Assert.assertNotNull(this.getContext().getBean(MaxQueryDepthInstrumentation.class));
     }
 
-    @Test
+    @Test(expected = NoSuchBeanDefinitionException.class)
     public void actuatorMetricsEnabledAndTracingEnabled() {
         load(DefaultConfiguration.class, "graphql.servlet.tracing-enabled=true", "graphql.servlet.actuator-metrics=true");
 
         Assert.assertNotNull(this.getContext().getBean(TracingInstrumentation.class));
-        Assert.assertNotNull(this.getContext().getBean(MetricsInstrumentation.class));
+        this.getContext().getBean(TracingInstrumentation.class);
     }
 
     @Test

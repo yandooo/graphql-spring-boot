@@ -36,7 +36,7 @@ public class GraphQLInstrumentationAutoConfiguration {
     private Boolean tracingEnabled;
 
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean({TracingInstrumentation.class, MetricsInstrumentation.class})
     @ConditionalOnProperty(value = "graphql.servlet.tracing-enabled", havingValue = "true")
     public TracingInstrumentation tracingInstrumentation() {
         return new TracingInstrumentation();
