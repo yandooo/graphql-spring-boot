@@ -30,6 +30,7 @@ import graphql.execution.preparsed.PreparsedDocumentProvider;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.*;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.*;
@@ -194,12 +195,14 @@ public class GraphQLWebAutoConfiguration implements ApplicationContextAware {
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLObjectMapper graphQLObjectMapper(ObjectMapperProvider objectMapperProvider) {
+    public GraphQLObjectMapper graphQLObjectMapper(ObjectProvider<ObjectMapperProvider> objectMapperProviderObjectProvider) {
         GraphQLObjectMapper.Builder builder = newBuilder();
 
         if (errorHandler != null) {
             builder.withGraphQLErrorHandler(errorHandler);
         }
+
+        ObjectMapperProvider objectMapperProvider = objectMapperProviderObjectProvider.getIfAvailable();
 
         if (objectMapperProvider != null) {
             builder.withObjectMapperProvider(objectMapperProvider);
