@@ -1,8 +1,8 @@
 package com.oembedler.moon.graphql.boot.error;
 
-import graphql.ErrorType;
 import graphql.ExceptionWhileDataFetching;
 import graphql.GraphQLError;
+import graphql.GraphQLException;
 import graphql.SerializationError;
 import graphql.servlet.DefaultGraphQLErrorHandler;
 import graphql.servlet.GenericGraphQLError;
@@ -28,11 +28,7 @@ class GraphQLErrorFromExceptionHandler extends DefaultGraphQLErrorHandler {
     }
 
     private GraphQLError transform(GraphQLError error) {
-        if (error.getErrorType() == ErrorType.DataFetchingException) {
-            return extractException(error).map(this::transform).orElse(defaultError(error.getMessage()));
-        }
-
-        return defaultError(error.getMessage());
+        return extractException(error).map(this::transform).orElse(defaultError(error.getMessage()));
     }
 
     private Optional<Throwable> extractException(GraphQLError error) {
@@ -40,6 +36,8 @@ class GraphQLErrorFromExceptionHandler extends DefaultGraphQLErrorHandler {
             return Optional.of(((ExceptionWhileDataFetching) error).getException());
         } else if (error instanceof SerializationError) {
             return Optional.of(((SerializationError) error).getException());
+        } else if (error instanceof GraphQLException) {
+            return Optional.of((GraphQLException) error);
         }
         return Optional.empty();
     }
