@@ -22,6 +22,7 @@ package com.oembedler.moon.graphql.boot;
 import com.fasterxml.jackson.databind.InjectableValues;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oembedler.moon.graphql.boot.error.GraphQLErrorHandlerFactory;
+import com.oembedler.moon.graphql.boot.metrics.MetricsInstrumentation;
 import graphql.execution.AsyncExecutionStrategy;
 import graphql.execution.ExecutionStrategy;
 import graphql.execution.SubscriptionExecutionStrategy;
@@ -48,6 +49,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.CorsRegistryWorkaround;
 
 import javax.servlet.MultipartConfigElement;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -183,6 +185,9 @@ public class GraphQLWebAutoConfiguration implements ApplicationContextAware {
                 .withExecutionStrategyProvider(executionStrategyProvider);
 
         if (instrumentations != null) {
+
+            //Metrics instrumentation should be the last to run (we need that from TracingInstrumentation)
+            Collections.sort(instrumentations, (a,b) -> a instanceof MetricsInstrumentation ? 1 : 0);
             builder.with(instrumentations);
         }
 
