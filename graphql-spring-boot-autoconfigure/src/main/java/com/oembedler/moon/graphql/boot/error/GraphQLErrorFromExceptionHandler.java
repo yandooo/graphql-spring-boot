@@ -6,6 +6,7 @@ import graphql.GraphQLError;
 import graphql.SerializationError;
 import graphql.servlet.DefaultGraphQLErrorHandler;
 import graphql.servlet.GenericGraphQLError;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 class GraphQLErrorFromExceptionHandler extends DefaultGraphQLErrorHandler {
 
     private List<GraphQLErrorFactory> factories;

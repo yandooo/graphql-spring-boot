@@ -21,6 +21,7 @@ package com.oembedler.moon.graphql.boot;
 
 import com.fasterxml.jackson.databind.InjectableValues;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oembedler.moon.graphql.boot.error.ErrorHandlerSupplier;
 import com.oembedler.moon.graphql.boot.error.GraphQLErrorHandlerFactory;
 import com.oembedler.moon.graphql.boot.metrics.MetricsInstrumentation;
 import graphql.execution.AsyncExecutionStrategy;
@@ -30,9 +31,12 @@ import graphql.execution.instrumentation.Instrumentation;
 import graphql.execution.preparsed.PreparsedDocumentProvider;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
@@ -48,6 +52,7 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.CorsRegistryWorkaround;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.MultipartConfigElement;
 import java.util.Collections;
 import java.util.List;
@@ -60,6 +65,7 @@ import static graphql.servlet.GraphQLObjectMapper.newBuilder;
 /**
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
  */
+@Slf4j
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnClass(DispatcherServlet.class)
@@ -84,6 +90,8 @@ public class GraphQLWebAutoConfiguration implements ApplicationContextAware {
 
     @Autowired(required = false)
     private GraphQLErrorHandler errorHandler;
+
+    private ErrorHandlerSupplier errorHandlerSupplier = new ErrorHandlerSupplier(null);
 
     @Autowired(required = false)
     private Map<String, ExecutionStrategy> executionStrategies;
@@ -110,6 +118,7 @@ public class GraphQLWebAutoConfiguration implements ApplicationContextAware {
             errorHandler = new GraphQLErrorHandlerFactory().create(context, graphQLServletProperties.isExceptionHandlersEnabled());
             context.getBeanFactory().registerSingleton(errorHandler.getClass().getCanonicalName(), errorHandler);
         }
+        errorHandlerSupplier.setErrorHandler(errorHandler);
     }
 
     @Bean
@@ -203,9 +212,7 @@ public class GraphQLWebAutoConfiguration implements ApplicationContextAware {
     public GraphQLObjectMapper graphQLObjectMapper(ObjectProvider<ObjectMapperProvider> objectMapperProviderObjectProvider) {
         GraphQLObjectMapper.Builder builder = newBuilder();
 
-        if (errorHandler != null) {
-            builder.withGraphQLErrorHandler(errorHandler);
-        }
+        builder.withGraphQLErrorHandler(errorHandlerSupplier);
 
         ObjectMapperProvider objectMapperProvider = objectMapperProviderObjectProvider.getIfAvailable();
 
@@ -214,7 +221,7 @@ public class GraphQLWebAutoConfiguration implements ApplicationContextAware {
         } else if (objectMapperConfigurer != null) {
             builder.withObjectMapperConfigurer(objectMapperConfigurer);
         }
-
+        log.info("Building GraphQLObjectMapper including errorHandler: {}", errorHandler);
         return builder.build();
     }
 

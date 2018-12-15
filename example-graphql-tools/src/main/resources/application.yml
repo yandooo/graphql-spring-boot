@@ -3,6 +3,17 @@ spring:
     name: graphql-java-tools-app
 server:
   port: 9001
+graphql:
+  servlet:
+    exception-handlers-enabled: true
 graphiql:
   headers:
     Authorization: "Bearer 05bd9a5f3fe0408f89520946b0fe1b06"
+logging:
+  level:
+    com:
+      oembedler:
+        moon:
+          graphql:
+            boot:
+              error: debug
