@@ -53,8 +53,8 @@ public class GraphQLTestTemplate {
     /**
      * Add an HTTP header that will be sent with each request this sends.
      *
-     * @param String Name (key) of HTTP header to add.
-     * @param String Value of HTTP header to add.
+     * @param name Name (key) of HTTP header to add.
+     * @param value Value of HTTP header to add.
      */
     public void addHeader(String name, String value) {
         headers.add(name, value);
@@ -63,10 +63,10 @@ public class GraphQLTestTemplate {
     /**
      * Replace any associated HTTP headers with the provided headers.
      *
-     * @param HttpHeaders Headers to use.
+     * @param newHeaders Headers to use.
      */
     public void setHeaders(HttpHeaders newHeaders) {
-        headers = newHeaders
+        headers = newHeaders;
     }
 
     /**
