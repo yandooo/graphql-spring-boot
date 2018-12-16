@@ -9,6 +9,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
@@ -27,6 +28,7 @@ public class GraphQLTestTemplate {
     private String graphqlMapping;
 
     private ObjectMapper objectMapper = new ObjectMapper();
+    private HttpHeaders headers = new HttpHeaders();
 
     private String createJsonQuery(String graphql, ObjectNode variables)
             throws JsonProcessingException {
@@ -46,6 +48,32 @@ public class GraphQLTestTemplate {
         try (InputStream inputStream = resource.getInputStream()) {
             return StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
         }
+    }
+
+    /**
+     * Add an HTTP header that will be sent with each request this sends.
+     *
+     * @param name Name (key) of HTTP header to add.
+     * @param value Value of HTTP header to add.
+     */
+    public void addHeader(String name, String value) {
+        headers.add(name, value);
+    }
+
+    /**
+     * Replace any associated HTTP headers with the provided headers.
+     *
+     * @param newHeaders Headers to use.
+     */
+    public void setHeaders(HttpHeaders newHeaders) {
+        headers = newHeaders;
+    }
+
+    /**
+     * Clear all associated HTTP headers.
+     */
+    public void clearHeaders() {
+        setHeaders(new HttpHeaders());
     }
 
     /**
@@ -77,11 +105,11 @@ public class GraphQLTestTemplate {
     }
 
     public GraphQLResponse postMultipart(String query, String variables) {
-        return postRequest(RequestFactory.forMultipart(query, variables));
+        return postRequest(RequestFactory.forMultipart(query, variables, headers));
     }
 
     private GraphQLResponse post(String payload) {
-        return postRequest(RequestFactory.forJson(payload));
+        return postRequest(RequestFactory.forJson(payload, headers));
     }
 
     private GraphQLResponse postRequest(HttpEntity<Object> request) {
