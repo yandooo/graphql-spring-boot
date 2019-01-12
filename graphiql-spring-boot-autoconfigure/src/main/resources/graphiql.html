@@ -123,7 +123,7 @@
     newUri += "//" + loc.host;
     newUri += "${subscriptionsEndpoint}";
 
-    var subscriptionsClient = new window.SubscriptionsTransportWs.SubscriptionClient(newUri, { reconnect: true });
+    var subscriptionsClient = new window.SubscriptionsTransportWs.SubscriptionClient(newUri, { reconnect: true, timeout: ${subscriptionClientTimeout} });
     var subscriptionsFetcher = window.GraphiQLSubscriptionsFetcher.graphQLFetcher(subscriptionsClient, graphQLFetcher);
 
     var props = ${props};

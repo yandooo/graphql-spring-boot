@@ -51,6 +51,9 @@ public class GraphiQLController {
     @Value("${graphiql.cdn.version:0.11.11}")
     private String graphiqlCdnVersion;
 
+    @Value("${graphiql.subscriptions.timeout:30}")
+    private int subscriptionsTimeout;
+
     @Autowired
     private Environment environment;
 
@@ -113,6 +116,7 @@ public class GraphiQLController {
         replacements.put("graphiqlJsUrl", graphiqlUrl(staticBasePath, "graphiql.min.js"));
         replacements.put("props", props);
         replacements.put("headers", headers);
+        replacements.put("subscriptionClientTimeout", String.valueOf(subscriptionsTimeout));
         return replacements;
     }
 
