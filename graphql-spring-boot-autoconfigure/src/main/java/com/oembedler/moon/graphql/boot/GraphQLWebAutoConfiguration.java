@@ -113,7 +113,7 @@ public class GraphQLWebAutoConfiguration implements ApplicationContextAware {
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        if (errorHandler != null) {
+        if (errorHandler == null) {
             ConfigurableApplicationContext context = (ConfigurableApplicationContext) applicationContext;
             errorHandler = new GraphQLErrorHandlerFactory().create(context, graphQLServletProperties.isExceptionHandlersEnabled());
             context.getBeanFactory().registerSingleton(errorHandler.getClass().getCanonicalName(), errorHandler);
