@@ -30,15 +30,32 @@ import graphql.execution.SubscriptionExecutionStrategy;
 import graphql.execution.instrumentation.Instrumentation;
 import graphql.execution.preparsed.PreparsedDocumentProvider;
 import graphql.schema.GraphQLSchema;
-import graphql.servlet.*;
+import graphql.servlet.AbstractGraphQLHttpServlet;
+import graphql.servlet.DefaultExecutionStrategyProvider;
+import graphql.servlet.DefaultGraphQLSchemaProvider;
+import graphql.servlet.ExecutionStrategyProvider;
+import graphql.servlet.GraphQLConfiguration;
+import graphql.servlet.GraphQLContextBuilder;
+import graphql.servlet.GraphQLErrorHandler;
+import graphql.servlet.GraphQLHttpServlet;
+import graphql.servlet.GraphQLInvocationInputFactory;
+import graphql.servlet.GraphQLObjectMapper;
+import graphql.servlet.GraphQLQueryInvoker;
+import graphql.servlet.GraphQLRootObjectBuilder;
+import graphql.servlet.GraphQLSchemaProvider;
+import graphql.servlet.GraphQLServletListener;
+import graphql.servlet.ObjectMapperConfigurer;
+import graphql.servlet.ObjectMapperProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -52,9 +69,7 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.CorsRegistryWorkaround;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.MultipartConfigElement;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -196,7 +211,7 @@ public class GraphQLWebAutoConfiguration implements ApplicationContextAware {
         if (instrumentations != null) {
 
             //Metrics instrumentation should be the last to run (we need that from TracingInstrumentation)
-            Collections.sort(instrumentations, (a,b) -> a instanceof MetricsInstrumentation ? 1 : 0);
+            instrumentations.sort((a, b) -> a instanceof MetricsInstrumentation ? 1 : 0);
             builder.with(instrumentations);
         }
 
