@@ -260,6 +260,7 @@ public class GraphQLWebAutoConfiguration implements ApplicationContextAware {
                 .with(graphQLObjectMapper)
                 .with(listeners)
                 .with(graphQLServletProperties.isAsyncModeEnabled())
+                .with(graphQLServletProperties.getSubscriptionTimeout())
                 .build();
         return GraphQLHttpServlet.with(configuration);
     }
