@@ -36,6 +36,8 @@ public class GraphQLServletProperties {
 
     private boolean exceptionHandlersEnabled = false;
 
+    private long subscriptionTimeout = 0;
+
     public String getMapping() {
         return mapping != null ? mapping : "/graphql";
     }
@@ -94,5 +96,13 @@ public class GraphQLServletProperties {
 
     public void setExceptionHandlersEnabled(boolean exceptionHandlersEnabled) {
         this.exceptionHandlersEnabled = exceptionHandlersEnabled;
+    }
+
+    public long getSubscriptionTimeout() {
+        return subscriptionTimeout;
+    }
+
+    public void setSubscriptionTimeout(long subscriptionTimeout) {
+        this.subscriptionTimeout = subscriptionTimeout;
     }
 }
