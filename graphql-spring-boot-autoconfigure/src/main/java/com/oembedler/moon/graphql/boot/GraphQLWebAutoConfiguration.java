@@ -34,6 +34,7 @@ import graphql.servlet.AbstractGraphQLHttpServlet;
 import graphql.servlet.DefaultExecutionStrategyProvider;
 import graphql.servlet.DefaultGraphQLSchemaProvider;
 import graphql.servlet.ExecutionStrategyProvider;
+import graphql.servlet.GraphQLBatchExecutionHandlerFactory;
 import graphql.servlet.GraphQLConfiguration;
 import graphql.servlet.GraphQLContextBuilder;
 import graphql.servlet.GraphQLErrorHandler;
@@ -125,6 +126,9 @@ public class GraphQLWebAutoConfiguration implements ApplicationContextAware {
 
     @Autowired(required = false)
     private MultipartConfigElement multipartConfigElement;
+
+    @Autowired(required = false)
+    private GraphQLBatchExecutionHandlerFactory graphQLBatchExecutionHandlerFactory;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -251,18 +255,22 @@ public class GraphQLWebAutoConfiguration implements ApplicationContextAware {
         return () -> objectMapper;
     }
 
+    @Bean
+    @ConditionalOnMissingBean
+    public GraphQLConfiguration graphQLConfiguration(GraphQLInvocationInputFactory invocationInputFactory, GraphQLQueryInvoker queryInvoker, GraphQLObjectMapper graphQLObjectMapper) {
+        return GraphQLConfiguration.with(invocationInputFactory)
+            .with(queryInvoker)
+            .with(graphQLObjectMapper)
+            .with(listeners)
+            .with(graphQLServletProperties.isAsyncModeEnabled())
+            .with(graphQLServletProperties.getSubscriptionTimeout())
+            .with(graphQLBatchExecutionHandlerFactory).build();
+    }
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLHttpServlet graphQLHttpServlet(GraphQLInvocationInputFactory invocationInputFactory, GraphQLQueryInvoker queryInvoker, GraphQLObjectMapper graphQLObjectMapper) {
-        GraphQLConfiguration configuration = GraphQLConfiguration.with(invocationInputFactory)
-                .with(queryInvoker)
-                .with(graphQLObjectMapper)
-                .with(listeners)
-                .with(graphQLServletProperties.isAsyncModeEnabled())
-                .with(graphQLServletProperties.getSubscriptionTimeout())
-                .build();
-        return GraphQLHttpServlet.with(configuration);
+    public GraphQLHttpServlet graphQLHttpServlet(GraphQLConfiguration graphQLConfiguration) {
+        return GraphQLHttpServlet.with(graphQLConfiguration);
     }
 
     @Bean
