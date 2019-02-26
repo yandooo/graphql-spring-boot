@@ -19,7 +19,7 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## WARNING: NoClassDefFoundError when using GraphQL Java Tools 5.4.x
+## WARNING: NoClassDefFoundError when using GraphQL Java Tools > 5.4.x
 
 If you're using `graphl-java-tools` you need to set the `kotlin.version` in your Spring Boot project explicitly to 
 version 1.3.10, because Spring Boot Starter parent currently overrides it with a 1.2.* version of Kotlin. 
@@ -66,16 +66,16 @@ repositories {
 }
 
 dependencies {
-  compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.3.1'
+  compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.5.0'
   
   // to embed GraphiQL tool
-  compile 'com.graphql-java-kickstart:graphiql-spring-boot-starter:5.3.1'
+  compile 'com.graphql-java-kickstart:graphiql-spring-boot-starter:5.5.0'
 
   // to embed Voyager tool
-  compile 'com.graphql-java-kickstart:voyager-spring-boot-starter:5.3.1'
+  compile 'com.graphql-java-kickstart:voyager-spring-boot-starter:5.5.0'
   
   // testing facilities
-  testCompile 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:5.3.1'
+  testCompile 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:5.5.0'
 }
 ```
 
@@ -84,28 +84,28 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>5.3.1</version>
+    <version>5.5.0</version>
 </dependency>
 
 <!-- to embed GraphiQL tool -->
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>5.3.1</version>
+    <version>5.5.0</version>
 </dependency>
 
 <!-- to embed Voyager tool -->
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>voyager-spring-boot-starter</artifactId>
-    <version>5.3.1</version>
+    <version>5.5.0</version>
 </dependency>
 
 <!-- testing facilities -->
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphql-spring-boot-starter-test</artifactId>
-    <version>5.3.1</version>
+    <version>5.5.0</version>
     <scope>test</scope>
 </dependency>
 
