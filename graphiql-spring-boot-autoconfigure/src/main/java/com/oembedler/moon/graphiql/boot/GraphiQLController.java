@@ -53,10 +53,10 @@ public class GraphiQLController {
     @Value("${graphiql.pageTitle:GraphiQL}")
     private String pageTitle;
 
-    @Value("${graphiql.cdn.enabled:false}")
+    @Value("${graphiql.cdn.enabled:true}")
     private Boolean graphiqlCdnEnabled;
 
-    @Value("${graphiql.cdn.version:0.12.0}")
+    @Value("${graphiql.cdn.version:0.13.0}")
     private String graphiqlCdnVersion;
 
     @Value("${graphiql.subscriptions.timeout:30}")
@@ -121,23 +121,23 @@ public class GraphiQLController {
         replacements.put("staticBasePath", staticBasePath);
         replacements.put("pageTitle", pageTitle);
         replacements.put("es6PromiseJsUrl", getCdnJsUrl(staticBasePath, graphiqlCdnEnabled, ES_6_PROMISE,
-                "4.1.1", "es6-promise.auto.min.js"));
+                "4.1.1", "es6-promise.auto.min.js", "es6-promise.auto.min.js"));
         replacements.put("fetchJsUrl", getCdnJsUrl(staticBasePath, graphiqlCdnEnabled, FETCH,
-                "3.0.0", "fetch.min.js"));
+                "2.0.4", "fetch.min.js", "fetch.min.js"));
         replacements.put("reactJsUrl", getCdnJsUrl(staticBasePath, graphiqlCdnEnabled, REACT,
-                "16.8.3", "react.production.min.js"));
+                "16.8.3", "umd/react.production.min.js", "react.min.js"));
         replacements.put("reactDomJsUrl", getCdnJsUrl(staticBasePath, graphiqlCdnEnabled, REACT_DOM,
-                "16.8.3", "react-dom.production.min.js"));
-        replacements.put("graphiqlCssUrl", getCdnJsUrl(staticBasePath, graphiqlCdnEnabled, GRAPHIQL,
-                graphiqlCdnVersion, "graphiql.min.css"));
-        replacements.put("graphiqlJsUrl", getCdnJsUrl(staticBasePath, graphiqlCdnEnabled, GRAPHIQL,
-                graphiqlCdnVersion, "graphiql.min.js"));
+                "16.8.3", "umd/react-dom.production.min.js", "react-dom.min.js"));
+        replacements.put("graphiqlCssUrl", getJsDelivrUrl(staticBasePath, graphiqlCdnEnabled, GRAPHIQL,
+                graphiqlCdnVersion, "graphiql.css", "graphiql.min.css"));
+        replacements.put("graphiqlJsUrl", getJsDelivrUrl(staticBasePath, graphiqlCdnEnabled, GRAPHIQL,
+                graphiqlCdnVersion, "graphiql.min.js", "graphiql.min.js"));
         replacements.put("subscriptionsTransportWsBrowserClient", getJsDelivrUrl(staticBasePath, graphiqlCdnEnabled,
-                SUBSCRIPTIONS_TRANSPORT_WS, "@0.9.15", "browser/client.js",
-                "subscriptions-transport-ws-browser-client-0.9.15.js"));
+                SUBSCRIPTIONS_TRANSPORT_WS, "0.9.15", "browser/client.js",
+                "subscriptions-transport-ws-browser-client.js"));
         replacements.put("graphiqlSubscriptionsFetcherBrowserClient", getJsDelivrUrl(staticBasePath, graphiqlCdnEnabled,
-                GRAPHIQL_SUBSCRIPTIONS_FETCHER, "@0.0.2", "browser/client.js",
-                "graphiql-subscriptions-fetcher-browser-client-0.0.2.js"));
+                GRAPHIQL_SUBSCRIPTIONS_FETCHER, "0.0.2", "browser/client.js",
+                "graphiql-subscriptions-fetcher-browser-client.js"));
         replacements.put("props", props);
         replacements.put("headers", headers);
         replacements.put("subscriptionClientTimeout", String.valueOf(subscriptionsTimeout));
@@ -145,9 +145,9 @@ public class GraphiQLController {
     }
 
     private String getCdnJsUrl(String staticBasePath, Boolean isCdnEnabled, String library,
-                               String cdnVersion, String filename) {
+                               String cdnVersion, String cdnFileName, String filename) {
         if (isCdnEnabled && StringUtils.isNotBlank(cdnVersion)) {
-            return CDNJS_CLOUDFLARE_COM_AJAX_LIBS + library + cdnVersion + "/" + filename;
+            return CDNJS_CLOUDFLARE_COM_AJAX_LIBS + library + "/" + cdnVersion + "/" + cdnFileName;
         }
         return staticBasePath + "vendor/" + filename;
     }
@@ -155,7 +155,7 @@ public class GraphiQLController {
     private String getJsDelivrUrl(String staticBasePath, Boolean isCdnEnabled, String library,
                                   String cdnVersion, String cdnFileName, String filename) {
         if (isCdnEnabled && StringUtils.isNotBlank(cdnVersion)) {
-            return CDN_JSDELIVR_NET_NPM + library + "/" + cdnVersion + "/" + cdnFileName;
+            return CDN_JSDELIVR_NET_NPM + library + "@" + cdnVersion + "/" + cdnFileName;
         }
         return staticBasePath + "vendor/" + filename;
     }

@@ -17,3 +17,5 @@ graphql:
     actuator-metrics: true
 graphiql:
   enabled: true
+voyager:
+  enabled: true

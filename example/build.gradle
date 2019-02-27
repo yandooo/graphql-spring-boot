@@ -38,7 +38,8 @@ repositories {
 dependencies{
     compile(project(":graphql-spring-boot-starter"))
     compile(project(":graphiql-spring-boot-starter"))
-
+    compile(project(":voyager-spring-boot-starter"))
+    
     compile("org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER")
     compile("org.springframework.boot:spring-boot-starter-actuator:$LIB_SPRING_BOOT_VER")
 }
