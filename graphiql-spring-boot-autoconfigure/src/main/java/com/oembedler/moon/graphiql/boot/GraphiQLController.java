@@ -53,7 +53,7 @@ public class GraphiQLController {
     @Value("${graphiql.pageTitle:GraphiQL}")
     private String pageTitle;
 
-    @Value("${graphiql.cdn.enabled:true}")
+    @Value("${graphiql.cdn.enabled:false")
     private Boolean graphiqlCdnEnabled;
 
     @Value("${graphiql.cdn.version:0.13.0}")

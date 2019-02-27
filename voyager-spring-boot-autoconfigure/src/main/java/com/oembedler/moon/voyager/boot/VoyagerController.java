@@ -38,7 +38,7 @@ public class VoyagerController {
     @Value("${voyager.static.basePath:/}")
     private String staticBasePath;
 
-    @Value("${voyager.cdn.enabled:true}")
+    @Value("${voyager.cdn.enabled:false}")
     private Boolean voyagerCdnEnabled;
 
     @Value("${voyager.cdn.version:1.0.0-rc.26}")
