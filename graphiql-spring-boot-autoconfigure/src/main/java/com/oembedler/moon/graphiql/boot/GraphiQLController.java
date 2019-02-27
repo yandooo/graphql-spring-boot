@@ -38,7 +38,7 @@ public class GraphiQLController {
     private static final String ES_6_PROMISE = "es6-promise";
     private static final String REACT = "react";
     private static final String REACT_DOM = "react-dom";
-    private static final String SUBSCRIPTIONS_TRANSPORT_WS = "subscriptions-transport-*ws";
+    private static final String SUBSCRIPTIONS_TRANSPORT_WS = "subscriptions-transport-ws";
     private static final String GRAPHIQL_SUBSCRIPTIONS_FETCHER = "graphiql-subscriptions-fetcher";
 
     @Value("${graphiql.endpoint.graphql:/graphql}")
@@ -132,11 +132,11 @@ public class GraphiQLController {
                 graphiqlCdnVersion, "graphiql.min.css"));
         replacements.put("graphiqlJsUrl", getCdnJsUrl(staticBasePath, graphiqlCdnEnabled, GRAPHIQL,
                 graphiqlCdnVersion, "graphiql.min.js"));
-        replacements.put("subscriptionsTransportWsBrowserClient", getJsDeliverUrl(staticBasePath, graphiqlCdnEnabled,
-                SUBSCRIPTIONS_TRANSPORT_WS, "@0.9.15", "/browser/client.js",
-                "subscriptions-transport-ws-browser-client-0.8.3.js"));
-        replacements.put("graphiqlSubscriptionsFetcherBrowserClient", getJsDeliverUrl(staticBasePath, graphiqlCdnEnabled,
-                GRAPHIQL_SUBSCRIPTIONS_FETCHER, "@0.0.2", "/browser/client.js",
+        replacements.put("subscriptionsTransportWsBrowserClient", getJsDelivrUrl(staticBasePath, graphiqlCdnEnabled,
+                SUBSCRIPTIONS_TRANSPORT_WS, "@0.9.15", "browser/client.js",
+                "subscriptions-transport-ws-browser-client-0.9.15.js"));
+        replacements.put("graphiqlSubscriptionsFetcherBrowserClient", getJsDelivrUrl(staticBasePath, graphiqlCdnEnabled,
+                GRAPHIQL_SUBSCRIPTIONS_FETCHER, "@0.0.2", "browser/client.js",
                 "graphiql-subscriptions-fetcher-browser-client-0.0.2.js"));
         replacements.put("props", props);
         replacements.put("headers", headers);
@@ -152,10 +152,10 @@ public class GraphiQLController {
         return staticBasePath + "vendor/" + filename;
     }
 
-    private String getJsDeliverUrl(String staticBasePath, Boolean isCdnEnabled, String library,
-                                   String cdnVersion, String cdnFileName, String filename) {
+    private String getJsDelivrUrl(String staticBasePath, Boolean isCdnEnabled, String library,
+                                  String cdnVersion, String cdnFileName, String filename) {
         if (isCdnEnabled && StringUtils.isNotBlank(cdnVersion)) {
-            return CDN_JSDELIVR_NET_NPM + library + cdnVersion + "/" + cdnFileName;
+            return CDN_JSDELIVR_NET_NPM + library + "/" + cdnVersion + "/" + cdnFileName;
         }
         return staticBasePath + "vendor/" + filename;
     }
