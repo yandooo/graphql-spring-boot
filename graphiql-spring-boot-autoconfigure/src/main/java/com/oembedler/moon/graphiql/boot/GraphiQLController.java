@@ -127,7 +127,7 @@ public class GraphiQLController {
         replacements.put("reactJsUrl", getCdnJsUrl(staticBasePath, graphiqlCdnEnabled, REACT,
                 "16.8.3", "react.production.min.js"));
         replacements.put("reactDomJsUrl", getCdnJsUrl(staticBasePath, graphiqlCdnEnabled, REACT_DOM,
-                "16.8.3", "react-dom-server.browser.production.min.js"));
+                "16.8.3", "react-dom.production.min.js"));
         replacements.put("graphiqlCssUrl", getCdnJsUrl(staticBasePath, graphiqlCdnEnabled, GRAPHIQL,
                 graphiqlCdnVersion, "graphiql.min.css"));
         replacements.put("graphiqlJsUrl", getCdnJsUrl(staticBasePath, graphiqlCdnEnabled, GRAPHIQL,
