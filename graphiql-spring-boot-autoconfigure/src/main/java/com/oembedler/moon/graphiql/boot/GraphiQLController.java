@@ -33,13 +33,7 @@ public class GraphiQLController {
 
     private static final String CDNJS_CLOUDFLARE_COM_AJAX_LIBS = "//cdnjs.cloudflare.com/ajax/libs/";
     private static final String CDN_JSDELIVR_NET_NPM = "//cdn.jsdelivr.net/npm/";
-    private static final String FETCH = "fetch";
     private static final String GRAPHIQL = "graphiql";
-    private static final String ES_6_PROMISE = "es6-promise";
-    private static final String REACT = "react";
-    private static final String REACT_DOM = "react-dom";
-    private static final String SUBSCRIPTIONS_TRANSPORT_WS = "subscriptions-transport-ws";
-    private static final String GRAPHIQL_SUBSCRIPTIONS_FETCHER = "graphiql-subscriptions-fetcher";
 
     @Value("${graphiql.endpoint.graphql:/graphql}")
     private String graphqlEndpoint;
@@ -120,44 +114,47 @@ public class GraphiQLController {
         replacements.put("subscriptionsEndpoint", subscriptionsEndpoint);
         replacements.put("staticBasePath", staticBasePath);
         replacements.put("pageTitle", pageTitle);
-        replacements.put("es6PromiseJsUrl", getCdnJsUrl(staticBasePath, graphiqlCdnEnabled, ES_6_PROMISE,
-                "4.1.1", "es6-promise.auto.min.js", "es6-promise.auto.min.js"));
-        replacements.put("fetchJsUrl", getCdnJsUrl(staticBasePath, graphiqlCdnEnabled, FETCH,
-                "2.0.4", "fetch.min.js", "fetch.min.js"));
-        replacements.put("reactJsUrl", getCdnJsUrl(staticBasePath, graphiqlCdnEnabled, REACT,
-                "16.8.3", "umd/react.production.min.js", "react.min.js"));
-        replacements.put("reactDomJsUrl", getCdnJsUrl(staticBasePath, graphiqlCdnEnabled, REACT_DOM,
-                "16.8.3", "umd/react-dom.production.min.js", "react-dom.min.js"));
-        replacements.put("graphiqlCssUrl", getJsDelivrUrl(staticBasePath, graphiqlCdnEnabled, GRAPHIQL,
-                graphiqlCdnVersion, "graphiql.css", "graphiql.min.css"));
-        replacements.put("graphiqlJsUrl", getJsDelivrUrl(staticBasePath, graphiqlCdnEnabled, GRAPHIQL,
-                graphiqlCdnVersion, "graphiql.min.js", "graphiql.min.js"));
-        replacements.put("subscriptionsTransportWsBrowserClient", getJsDelivrUrl(staticBasePath, graphiqlCdnEnabled,
-                SUBSCRIPTIONS_TRANSPORT_WS, "0.9.15", "browser/client.js",
-                "subscriptions-transport-ws-browser-client.js"));
-        replacements.put("graphiqlSubscriptionsFetcherBrowserClient", getJsDelivrUrl(staticBasePath, graphiqlCdnEnabled,
-                GRAPHIQL_SUBSCRIPTIONS_FETCHER, "0.0.2", "browser/client.js",
-                "graphiql-subscriptions-fetcher-browser-client.js"));
+        replacements.put("es6PromiseJsUrl", getResourceUrl(staticBasePath, "es6-promise.auto.min.js",
+                joinCdnjsPath("es6-promise", "4.1.1", "es6-promise.auto.min.js")));
+        replacements.put("fetchJsUrl", getResourceUrl(staticBasePath, "fetch.min.js",
+                joinCdnjsPath("fetch", "2.0.4", "fetch.min.js")));
+        replacements.put("reactJsUrl", getResourceUrl(staticBasePath, "react.min.js",
+                joinCdnjsPath("react", "16.8.3", "umd/react.production.min.js")));
+        replacements.put("reactDomJsUrl", getResourceUrl(staticBasePath, "react-dom.min.js",
+                joinCdnjsPath("react-dom", "16.8.3", "umd/react-dom.production.min.js")));
+        replacements.put("graphiqlCssUrl", getResourceUrl(staticBasePath, "graphiql.min.css",
+                joinJsDelivrPath(GRAPHIQL, graphiqlCdnVersion, "graphiql.css")));
+        replacements.put("graphiqlJsUrl", getResourceUrl(staticBasePath, "graphiql.min.js",
+                joinJsDelivrPath(GRAPHIQL, graphiqlCdnVersion, "graphiql.min.js")));
+        replacements.put("subscriptionsTransportWsBrowserClientUrl", getResourceUrl(staticBasePath,
+                "subscriptions-transport-ws-browser-client.js",
+                joinJsDelivrPath("subscriptions-transport-ws", "0.9.15", "browser/client.js")));
+        replacements.put("graphiqlSubscriptionsFetcherBrowserClientUrl", getResourceUrl(staticBasePath,
+                "graphiql-subscriptions-fetcher-browser-client.js",
+                joinJsDelivrPath("graphiql-subscriptions-fetcher", "0.0.2", "browser/client.js")));
         replacements.put("props", props);
         replacements.put("headers", headers);
         replacements.put("subscriptionClientTimeout", String.valueOf(subscriptionsTimeout));
         return replacements;
     }
 
-    private String getCdnJsUrl(String staticBasePath, Boolean isCdnEnabled, String library,
-                               String cdnVersion, String cdnFileName, String filename) {
-        if (isCdnEnabled && StringUtils.isNotBlank(cdnVersion)) {
-            return CDNJS_CLOUDFLARE_COM_AJAX_LIBS + library + "/" + cdnVersion + "/" + cdnFileName;
+    private String getResourceUrl(String staticBasePath, String staticFileName, String cdnUrl) {
+        if (graphiqlCdnEnabled && StringUtils.isNotBlank(cdnUrl)) {
+            return cdnUrl;
         }
-        return staticBasePath + "vendor/" + filename;
+        return joinStaticPath(staticBasePath, staticFileName);
     }
 
-    private String getJsDelivrUrl(String staticBasePath, Boolean isCdnEnabled, String library,
-                                  String cdnVersion, String cdnFileName, String filename) {
-        if (isCdnEnabled && StringUtils.isNotBlank(cdnVersion)) {
-            return CDN_JSDELIVR_NET_NPM + library + "@" + cdnVersion + "/" + cdnFileName;
-        }
-        return staticBasePath + "vendor/" + filename;
+    private String joinStaticPath(String staticBasePath, String staticFileName) {
+        return staticBasePath + "vendor/" + staticFileName;
+    }
+
+    private String joinCdnjsPath(String library, String cdnVersion, String cdnFileName) {
+        return CDNJS_CLOUDFLARE_COM_AJAX_LIBS + library + "/" + cdnVersion + "/" + cdnFileName;
+    }
+
+    private String joinJsDelivrPath(String library, String cdnVersion, String cdnFileName) {
+        return CDN_JSDELIVR_NET_NPM + library + "@" + cdnVersion + "/" + cdnFileName;
     }
 
     private String constructGraphQlEndpoint(HttpServletRequest request, @RequestParam Map<String, String> params) {

@@ -23,10 +23,6 @@ public class VoyagerController {
 
     private static final String CDNJS_CLOUDFLARE_COM_AJAX_LIBS = "//cdnjs.cloudflare.com/ajax/libs/";
     private static final String CDN_JSDELIVR_NET_NPM = "//cdn.jsdelivr.net/npm/";
-    private static final String FETCH = "fetch";
-    private static final String ES_6_PROMISE = "es6-promise";
-    private static final String REACT = "react";
-    private static final String REACT_DOM = "react-dom";
     private static final String VOYAGER = "graphql-voyager";
 
     @Value("${voyager.endpoint:/graphql}")
@@ -53,38 +49,41 @@ public class VoyagerController {
         Map<String, String> replacements = new HashMap<>();
         replacements.put("graphqlEndpoint", contextPath + graphqlEndpoint);
         replacements.put("pageTitle", pageTitle);
-        replacements.put("es6PromiseJsUrl", getCdnJsUrl(staticBasePath, voyagerCdnEnabled, ES_6_PROMISE,
-                "4.1.1", "es6-promise.auto.min.js", "es6-promise.auto.min.js"));
-        replacements.put("fetchJsUrl", getCdnJsUrl(staticBasePath, voyagerCdnEnabled, FETCH,
-                "2.0.4", "fetch.min.js", "fetch.min.js"));
-        replacements.put("reactJsUrl", getCdnJsUrl(staticBasePath, voyagerCdnEnabled, REACT,
-                "16.8.3", "umd/react.production.min.js", "react.min.js"));
-        replacements.put("reactDomJsUrl", getCdnJsUrl(staticBasePath, voyagerCdnEnabled, REACT_DOM,
-                "16.8.3", "umd/react-dom.production.min.js", "react-dom.min.js"));
-        replacements.put("voyagerCssUrl", getJsDeliverUrl(staticBasePath, voyagerCdnEnabled, VOYAGER,
-                voyagerCdnVersion, "dist/voyager.css", "voyager.css"));
-        replacements.put("voyagerJsUrl", getJsDeliverUrl(staticBasePath, voyagerCdnEnabled, VOYAGER,
-                voyagerCdnVersion, "dist/voyager.min.js", "voyager.min.js"));
-        replacements.put("voyagerWorkerJsUrl", getJsDeliverUrl(staticBasePath, voyagerCdnEnabled, VOYAGER,
-                voyagerCdnVersion, "dist/voyager.worker.min.js", "voyager.worker.min.js"));
+        replacements.put("es6PromiseJsUrl", getResourceUrl(staticBasePath, "es6-promise.auto.min.js",
+                joinCdnjsPath("es6-promise", "4.1.1", "es6-promise.auto.min.js")));
+        replacements.put("fetchJsUrl", getResourceUrl(staticBasePath, "fetch.min.js",
+                joinCdnjsPath("fetch", "2.0.4", "fetch.min.js")));
+        replacements.put("reactJsUrl", getResourceUrl(staticBasePath, "react.min.js",
+                joinCdnjsPath("react", "16.8.3", "umd/react.production.min.js")));
+        replacements.put("reactDomJsUrl", getResourceUrl(staticBasePath, "react-dom.min.js",
+                joinCdnjsPath("react-dom", "16.8.3", "umd/react-dom.production.min.js")));
+        replacements.put("voyagerCssUrl", getResourceUrl(staticBasePath, "voyager.css",
+                joinJsDelivrPath(VOYAGER, voyagerCdnVersion, "dist/voyager.css")));
+        replacements.put("voyagerJsUrl", getResourceUrl(staticBasePath, "voyager.min.js",
+                joinJsDelivrPath(VOYAGER, voyagerCdnVersion, "dist/voyager.min.js")));
+        replacements.put("voyagerWorkerJsUrl", getResourceUrl(staticBasePath, "voyager.worker.js",
+                joinJsDelivrPath(VOYAGER, voyagerCdnVersion, "dist/voyager.worker.min.js")));
         replacements.put("contextPath", contextPath);
 
         response.getOutputStream().write(StrSubstitutor.replace(template, replacements).getBytes(Charset.defaultCharset()));
     }
 
-    private String getCdnJsUrl(String staticBasePath, Boolean isCdnEnabled, String library,
-                               String cdnVersion, String cdnFileName, String filename) {
-        if (isCdnEnabled && StringUtils.isNotBlank(cdnVersion)) {
-            return CDNJS_CLOUDFLARE_COM_AJAX_LIBS + library + "/" + cdnVersion + "/" + cdnFileName;
+    private String getResourceUrl(String staticBasePath, String staticFileName, String cdnUrl) {
+        if (voyagerCdnEnabled && StringUtils.isNotBlank(cdnUrl)) {
+            return cdnUrl;
         }
-        return staticBasePath + "vendor/" + filename;
+        return joinStaticPath(staticBasePath, staticFileName);
     }
 
-    private String getJsDeliverUrl(String staticBasePath, Boolean isCdnEnabled, String library,
-                                   String cdnVersion, String cdnFileName, String filename) {
-        if (isCdnEnabled && StringUtils.isNotBlank(cdnVersion)) {
-            return CDN_JSDELIVR_NET_NPM + library + "@" + cdnVersion + "/" + cdnFileName;
-        }
-        return staticBasePath + "vendor/" + filename;
+    private String joinStaticPath(String staticBasePath, String staticFileName) {
+        return staticBasePath + "vendor/" + staticFileName;
+    }
+
+    private String joinCdnjsPath(String library, String cdnVersion, String cdnFileName) {
+        return CDNJS_CLOUDFLARE_COM_AJAX_LIBS + library + "/" + cdnVersion + "/" + cdnFileName;
+    }
+
+    private String joinJsDelivrPath(String library, String cdnVersion, String cdnFileName) {
+        return CDN_JSDELIVR_NET_NPM + library + "@" + cdnVersion + "/" + cdnFileName;
     }
 }
