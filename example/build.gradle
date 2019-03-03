@@ -36,6 +36,7 @@ repositories {
 }
 
 dependencies{
+    compile(project(":altair-spring-boot-starter"))
     compile(project(":graphql-spring-boot-starter"))
     compile(project(":graphiql-spring-boot-starter"))
     compile(project(":voyager-spring-boot-starter"))

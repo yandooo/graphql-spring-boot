@@ -15,7 +15,15 @@ management:
 graphql:
   servlet:
     actuator-metrics: true
+altair:
+  enabled: true
+  cdn:
+    enabled: false
 graphiql:
   enabled: true
+  cdn:
+    enabled: false
 voyager:
   enabled: true
+  cdn:
+    enabled: false

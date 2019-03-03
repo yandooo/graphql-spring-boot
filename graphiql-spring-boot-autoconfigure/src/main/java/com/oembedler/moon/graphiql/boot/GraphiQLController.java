@@ -34,6 +34,7 @@ public class GraphiQLController {
     private static final String CDNJS_CLOUDFLARE_COM_AJAX_LIBS = "//cdnjs.cloudflare.com/ajax/libs/";
     private static final String CDN_JSDELIVR_NET_NPM = "//cdn.jsdelivr.net/npm/";
     private static final String GRAPHIQL = "graphiql";
+    private static final String FAVICON_GRAPHQL_ORG = "//graphql.org/img/favicon.png";
 
     @Value("${graphiql.endpoint.graphql:/graphql}")
     private String graphqlEndpoint;
@@ -54,7 +55,10 @@ public class GraphiQLController {
     private String graphiqlCdnVersion;
 
     @Value("${graphiql.subscriptions.timeout:30}")
-    private int subscriptionsTimeout;
+    private Integer subscriptionsTimeout;
+
+    @Value("${graphiql.subscriptions.reconnect:false}")
+    private Boolean subscriptionsReconnect;
 
     @Autowired
     private Environment environment;
@@ -114,6 +118,7 @@ public class GraphiQLController {
         replacements.put("subscriptionsEndpoint", subscriptionsEndpoint);
         replacements.put("staticBasePath", staticBasePath);
         replacements.put("pageTitle", pageTitle);
+        replacements.put("pageFavicon", getResourceUrl(staticBasePath, "favicon.ico", FAVICON_GRAPHQL_ORG));
         replacements.put("es6PromiseJsUrl", getResourceUrl(staticBasePath, "es6-promise.auto.min.js",
                 joinCdnjsPath("es6-promise", "4.1.1", "es6-promise.auto.min.js")));
         replacements.put("fetchJsUrl", getResourceUrl(staticBasePath, "fetch.min.js",
@@ -135,6 +140,7 @@ public class GraphiQLController {
         replacements.put("props", props);
         replacements.put("headers", headers);
         replacements.put("subscriptionClientTimeout", String.valueOf(subscriptionsTimeout));
+        replacements.put("subscriptionClientReconnect", String.valueOf(subscriptionsReconnect));
         return replacements;
     }
 
@@ -146,7 +152,7 @@ public class GraphiQLController {
     }
 
     private String joinStaticPath(String staticBasePath, String staticFileName) {
-        return staticBasePath + "vendor/" + staticFileName;
+        return staticBasePath + "vendor/graphiql/" + staticFileName;
     }
 
     private String joinCdnjsPath(String library, String cdnVersion, String cdnFileName) {
