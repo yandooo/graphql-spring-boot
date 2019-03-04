@@ -7,13 +7,16 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
 
-- [Intro](#intro)
+- [GraphQL and Graph*i*QL Spring Framework Boot Starters](#graphql-and-graphiql-spring-framework-boot-starters)
+  - [WARNING: NoClassDefFoundError when using GraphQL Java Tools > 5.4.x](#warning-noclassdeffounderror-when-using-graphql-java-tools--54x)
+    - [Using Gradle](#using-gradle)
+    - [Using Maven](#using-maven)
+- [Documentation](#documentation)
 - [Requirements and Downloads](#requirements-and-downloads)
 - [Enable GraphQL Servlet](#enable-graphql-servlet)
-- [Enable GraphiQL](#enable-graphiql)
+- [Enable Graph*i*QL](#enable-graphiql)
 - [Supported GraphQL-Java Libraries](#supported-graphql-java-libraries)
-    - [GraphQL Java Tools](#graphql-java-tools) - [https://github.com/graphql-java-kickstart/graphql-java-tools](https://github.com/graphql-java-kickstart/graphql-java-tools)
-    - [GraphQL Spring Common](#graphql-spring-common) - [https://github.com/oembedler/spring-graphql-common](https://github.com/oembedler/spring-graphql-common)
+  - [GraphQL Java Tools](#graphql-java-tools)
 - [Contributions](#contributions)
 - [Licenses](#licenses)
 
@@ -49,7 +52,9 @@ See our new [Documentation](https://www.graphql-java-kickstart.com/spring-boot/)
 Repository contains:
 
 * `graphql-spring-boot-starter` to turn your boot application into GraphQL server (see [graphql-java-servlet](https://github.com/graphql-java-kickstart/graphql-java-servlet))
+* `altair-spring-boot-starter`to embed `Altair` tool for schema introspection and query debugging (see [altair](https://github.com/imolorhe/altair))
 * `graphiql-spring-boot-starter`to embed `GraphiQL` tool for schema introspection and query debugging (see [graphiql](https://github.com/graphql/graphiql))
+* `voyager-spring-boot-starter`to embed `Voyager` tool for visually explore GraphQL APIs as an interactive graph (see [voyger](https://github.com/APIs-guru/graphql-voyager))
 
 # Requirements and Downloads
 
@@ -68,6 +73,9 @@ repositories {
 dependencies {
   compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.6.1'
   
+  // to embed Altair tool
+  compile 'com.altair-java-kickstart:graphiql-spring-boot-starter:5.6.1'
+
   // to embed GraphiQL tool
   compile 'com.graphql-java-kickstart:graphiql-spring-boot-starter:5.6.1'
 
@@ -84,6 +92,13 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
+    <version>5.6.1</version>
+</dependency>
+
+<!-- to embed Altair tool -->
+<dependency>
+    <groupId>com.graphql-java-kickstart</groupId>
+    <artifactId>altair-spring-boot-starter</artifactId>
     <version>5.6.1</version>
 </dependency>
 
@@ -163,13 +178,16 @@ graphiql:
     endpoint:
       graphql: /graphql
       subscriptions: /subscriptions
+    subscriptions:
+      timeout: 30
+      reconnect: false
     static:
       basePath: /
     enabled: true
     pageTitle: GraphiQL
     cdn:
         enabled: false
-        version: 0.11.11
+        version: 0.13.0
     props:
         resources:
             query: query.graphql
@@ -220,7 +238,7 @@ Contributions are welcome.  Please respect the [Code of Conduct](http://contribu
 
 # Licenses
 
-`graphql-spring-boot-starter` and `graphiql-spring-boot-starter` are licensed under the MIT License. See [LICENSE](LICENSE.md) for details.
+`graphql-spring-boot-starter`, `altair-spring-boot-starter`, `graphiql-spring-boot-starter`and `voyager-spring-boot-starter` are licensed under the MIT License. See [LICENSE](LICENSE.md) for details.
 
 [graphql-java License](https://github.com/andimarek/graphql-java/blob/master/LICENSE.md)
 

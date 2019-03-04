@@ -176,6 +176,8 @@ release {
     tagTemplate = 'v${version}'
     failOnPublishNeeded = false
     ignoredSnapshotDependencies = [
+            'com.graphql-java-kickstart:altair-spring-boot-autoconfigure',
+            'com.graphql-java-kickstart:altair-spring-boot-starter',
             'com.graphql-java-kickstart:graphiql-spring-boot-autoconfigure',
             'com.graphql-java-kickstart:graphiql-spring-boot-starter',
             'com.graphql-java-kickstart:graphql-spring-boot-autoconfigure',

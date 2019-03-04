@@ -26,6 +26,16 @@
       "type": "java.lang.String"
     },
     {
+      "name": "graphiql.subscriptions.timeout",
+      "defaultValue": 30,
+      "type": "java.lang.String"
+    },
+    {
+      "name": "graphiql.subscriptions.reconnect",
+      "defaultValue": false,
+      "type": "java.lang.Boolean"
+    },
+    {
       "name": "graphiql.static.basePath",
       "defaultValue": "/",
       "type": "java.lang.String"

@@ -24,6 +24,7 @@ public class VoyagerController {
     private static final String CDNJS_CLOUDFLARE_COM_AJAX_LIBS = "//cdnjs.cloudflare.com/ajax/libs/";
     private static final String CDN_JSDELIVR_NET_NPM = "//cdn.jsdelivr.net/npm/";
     private static final String VOYAGER = "graphql-voyager";
+    private static final String FAVICON_APIS_GURU = "//apis.guru/graphql-voyager/icons/favicon-16x16.png";
 
     @Value("${voyager.endpoint:/graphql}")
     private String graphqlEndpoint;
@@ -49,6 +50,7 @@ public class VoyagerController {
         Map<String, String> replacements = new HashMap<>();
         replacements.put("graphqlEndpoint", contextPath + graphqlEndpoint);
         replacements.put("pageTitle", pageTitle);
+        replacements.put("pageFavicon", getResourceUrl(staticBasePath, "favicon.ico", FAVICON_APIS_GURU));
         replacements.put("es6PromiseJsUrl", getResourceUrl(staticBasePath, "es6-promise.auto.min.js",
                 joinCdnjsPath("es6-promise", "4.1.1", "es6-promise.auto.min.js")));
         replacements.put("fetchJsUrl", getResourceUrl(staticBasePath, "fetch.min.js",
@@ -76,7 +78,7 @@ public class VoyagerController {
     }
 
     private String joinStaticPath(String staticBasePath, String staticFileName) {
-        return staticBasePath + "vendor/" + staticFileName;
+        return staticBasePath + "vendor/voyager/" + staticFileName;
     }
 
     private String joinCdnjsPath(String library, String cdnVersion, String cdnFileName) {

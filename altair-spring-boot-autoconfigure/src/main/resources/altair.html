@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>${pageTitle}</title>
+    <base href="${altairBaseUrl}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="${pageFavicon}">
+    <link rel="stylesheet" href="${altairCssUrl}"/>
+
+</head>
+
+<body>
+<script>
+    var properties = '${props}';
+
+    window.__ALTAIR_ENDPOINT_URL__ = '${graphqlEndpoint}';
+    window.__ALTAIR_SUBSCRIPTIONS_ENDPOINT__ = '${subscriptionsEndpoint}';
+    window.__ALTAIR_INITIAL_QUERY__ = properties.defaultQuery;
+    window.__ALTAIR_INITIAL_VARIABLES__ = properties.variables;
+
+</script>
+<app-root>
+    <style>
+        .loading-screen {
+          /*Prevents the loading screen from showing until CSS is downloaded*/
+          display: none;
+        }
+
+
+    </style>
+    <div class="loading-screen styled">
+        <div class="loading-screen-inner">
+            <div class="loading-screen-logo-container">
+                <img src="${altairLogoUrl}" alt="Altair">
+            </div>
+            <div class="loading-screen-loading-indicator">
+                <span class="loading-indicator-dot"></span>
+                <span class="loading-indicator-dot"></span>
+                <span class="loading-indicator-dot"></span>
+            </div>
+        </div>
+    </div>
+</app-root>
+<script type="text/javascript" src="${altairRuntimeJsUrl}"></script>
+<script type="text/javascript" src="${altairPolyfillsJsUrl}"></script>
+<script type="text/javascript" src="${altairMainJsUrl}"></script>
+</body>
+
+</html>

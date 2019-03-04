@@ -31,6 +31,7 @@
     <script src="${reactDomJsUrl}"></script>
 
     <link rel="stylesheet" href="${graphiqlCssUrl}"/>
+    <link rel="icon" type="image/x-icon" href="${pageFavicon}">
     <script src="${graphiqlJsUrl}"></script>
     <script src="${subscriptionsTransportWsBrowserClientUrl}"></script>
     <script src="${graphiqlSubscriptionsFetcherBrowserClientUrl}"></script>
@@ -124,7 +125,7 @@
     newUri += "//" + loc.host;
     newUri += "${subscriptionsEndpoint}";
 
-    var subscriptionsClient = new window.SubscriptionsTransportWs.SubscriptionClient(newUri, { reconnect: true, timeout: ${subscriptionClientTimeout} });
+    var subscriptionsClient = new window.SubscriptionsTransportWs.SubscriptionClient(newUri, { reconnect: ${subscriptionClientReconnect}, timeout: ${subscriptionClientTimeout} });
     var subscriptionsFetcher = window.GraphiQLSubscriptionsFetcher.graphQLFetcher(subscriptionsClient, graphQLFetcher);
 
     var props = ${props};
