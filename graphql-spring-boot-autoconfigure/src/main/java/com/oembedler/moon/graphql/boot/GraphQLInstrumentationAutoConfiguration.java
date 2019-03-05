@@ -11,6 +11,7 @@ import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfigu
 import org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleMetricsExportAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -44,7 +45,7 @@ public class GraphQLInstrumentationAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "graphql.servlet.tracing-enabled", havingValue = "false")
+    @ConditionalOnExpression("${graphql.servlet.actuator-metrics:false} && !${graphql.servlet.tracing-enabled:false}")
     public TracingNoResolversInstrumentation tracingNoResolversInstrumentation() {
         return new TracingNoResolversInstrumentation();
     }
