@@ -74,7 +74,7 @@ dependencies {
   compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.6.1'
   
   // to embed Altair tool
-  compile 'com.altair-java-kickstart:graphiql-spring-boot-starter:5.6.1'
+  compile 'com.graphql-java-kickstart:altair-spring-boot-starter:5.6.1'
 
   // to embed GraphiQL tool
   compile 'com.graphql-java-kickstart:graphiql-spring-boot-starter:5.6.1'
