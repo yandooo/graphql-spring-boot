@@ -139,7 +139,7 @@ public class GraphiQLController {
                 joinJsDelivrPath("graphiql-subscriptions-fetcher", "0.0.2", "browser/client.js")));
         replacements.put("props", props);
         replacements.put("headers", headers);
-        replacements.put("subscriptionClientTimeout", String.valueOf(subscriptionsTimeout));
+        replacements.put("subscriptionClientTimeout", String.valueOf(subscriptionsTimeout * 1000));
         replacements.put("subscriptionClientReconnect", String.valueOf(subscriptionsReconnect));
         return replacements;
     }
