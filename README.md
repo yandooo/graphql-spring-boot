@@ -74,13 +74,13 @@ dependencies {
   compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.7.0'
   
   // to embed Altair tool
-  compile 'com.graphql-java-kickstart:altair-spring-boot-starter:5.7.0'
+  runtime 'com.graphql-java-kickstart:altair-spring-boot-starter:5.7.0'
 
   // to embed GraphiQL tool
-  compile 'com.graphql-java-kickstart:graphiql-spring-boot-starter:5.7.0'
+  runtime 'com.graphql-java-kickstart:graphiql-spring-boot-starter:5.7.0'
 
   // to embed Voyager tool
-  compile 'com.graphql-java-kickstart:voyager-spring-boot-starter:5.7.0'
+  runtime 'com.graphql-java-kickstart:voyager-spring-boot-starter:5.7.0'
   
   // testing facilities
   testCompile 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:5.7.0'
@@ -100,6 +100,7 @@ Maven:
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>altair-spring-boot-starter</artifactId>
     <version>5.7.0</version>
+    <scope>runtime</scope>
 </dependency>
 
 <!-- to embed GraphiQL tool -->
@@ -107,6 +108,7 @@ Maven:
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
     <version>5.7.0</version>
+    <scope>runtime</scope>
 </dependency>
 
 <!-- to embed Voyager tool -->
@@ -114,6 +116,7 @@ Maven:
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>voyager-spring-boot-starter</artifactId>
     <version>5.7.0</version>
+    <scope>runtime</scope>
 </dependency>
 
 <!-- testing facilities -->
