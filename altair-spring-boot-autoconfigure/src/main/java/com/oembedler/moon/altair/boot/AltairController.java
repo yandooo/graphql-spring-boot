@@ -49,7 +49,7 @@ public class AltairController {
     @Value("${altair.cdn.enabled:false}")
     private Boolean altairCdnEnabled;
 
-    @Value("${altair.cdn.version:2.1.1}")
+    @Value("${altair.cdn.version:2.1.4}")
     private String altairCdnVersion;
 
     @Autowired
@@ -57,11 +57,13 @@ public class AltairController {
 
     private String template;
     private String props;
+    private String headers;
 
     @PostConstruct
     public void onceConstructed() throws IOException {
         loadTemplate();
         loadProps();
+        loadHeaders();
     }
 
     private void loadTemplate() throws IOException {
@@ -73,6 +75,15 @@ public class AltairController {
     private void loadProps() throws IOException {
         props = new PropsLoader(environment).load();
     }
+
+    private void loadHeaders() throws JsonProcessingException {
+        PropertyGroupReader propertyReader = new PropertyGroupReader(environment, "graphiql.headers.");
+        Properties headerProperties = propertyReader.load();
+        addIfAbsent(headerProperties, "Accept");
+        addIfAbsent(headerProperties, "Content-Type");
+        this.headers = new ObjectMapper().writeValueAsString(headerProperties);
+    }
+
 
     private void addIfAbsent(Properties headerProperties, String header) {
         if (!headerProperties.containsKey(header)) {
@@ -99,7 +110,7 @@ public class AltairController {
         replacements.put("subscriptionsEndpoint", subscriptionsEndpoint);
         replacements.put("pageTitle", pageTitle);
         replacements.put("pageFavicon", getResourceUrl("favicon.ico", "favicon.ico"));
-        replacements.put("altairBaseUrl", getResourceUrl("/vendor/altair/",
+        replacements.put("altairBaseUrl", getResourceUrl(String.join(staticBasePath, "/vendor/altair/"),
                 joinJsUnpkgPath(ALTAIR, altairCdnVersion, "build/dist/")));
         replacements.put("altairLogoUrl", getResourceUrl("assets/img/logo_350.svg", "assets/img/logo_350.svg"));
         replacements.put("altairCssUrl", getResourceUrl("styles.css", "styles.css"));
@@ -107,6 +118,7 @@ public class AltairController {
         replacements.put("altairPolyfillsJsUrl", getResourceUrl("polyfills.js", "polyfills.js"));
         replacements.put("altairRuntimeJsUrl", getResourceUrl("runtime.js", "runtime.js"));
         replacements.put("props", props);
+        replacements.put("headers", headers);
         return replacements;
     }
 

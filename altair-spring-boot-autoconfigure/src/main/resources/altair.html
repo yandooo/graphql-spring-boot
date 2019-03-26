@@ -13,12 +13,13 @@
 
 <body>
 <script>
-    var properties = '${props}';
+    var properties = JSON.parse(`${props}`);
 
-    window.__ALTAIR_ENDPOINT_URL__ = '${graphqlEndpoint}';
-    window.__ALTAIR_SUBSCRIPTIONS_ENDPOINT__ = '${subscriptionsEndpoint}';
-    window.__ALTAIR_INITIAL_QUERY__ = properties.defaultQuery;
-    window.__ALTAIR_INITIAL_VARIABLES__ = properties.variables;
+    window.__ALTAIR_ENDPOINT_URL__ = `${graphqlEndpoint}`;
+    window.__ALTAIR_SUBSCRIPTIONS_ENDPOINT__ = `${subscriptionsEndpoint}`;
+    window.__ALTAIR_INITIAL_QUERY__ = `${properties.defaultQuery}`;
+    window.__ALTAIR_INITIAL_VARIABLES__ = `${properties.variables}`;
+    window.__ALTAIR_INITIAL_HEADERS__ = JSON.parse(`${headers}`);
 
 </script>
 <app-root>
@@ -27,6 +28,8 @@
           /*Prevents the loading screen from showing until CSS is downloaded*/
           display: none;
         }
+
+
 
 
     </style>

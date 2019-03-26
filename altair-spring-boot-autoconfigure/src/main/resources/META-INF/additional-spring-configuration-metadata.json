@@ -42,7 +42,7 @@
     },
     {
       "name": "altair.cdn.version",
-      "defaultValue": "2.1.1",
+      "defaultValue": "2.1.4",
       "type": "java.lang.String"
     },
     {
@@ -52,6 +52,11 @@
     },
     {
       "name": "altair.props.resources.variables",
+      "defaultValue": null,
+      "type": "java.lang.String"
+    },
+    {
+      "name": "altair.headers.Authorization",
       "defaultValue": null,
       "type": "java.lang.String"
     }
