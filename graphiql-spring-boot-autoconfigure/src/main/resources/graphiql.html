@@ -125,7 +125,10 @@
     newUri += "//" + loc.host;
     newUri += "${subscriptionsEndpoint}";
 
-    var subscriptionsClient = new window.SubscriptionsTransportWs.SubscriptionClient(newUri, { reconnect: ${subscriptionClientReconnect}, timeout: ${subscriptionClientTimeout} });
+    var subscriptionsClient = new window.SubscriptionsTransportWs.SubscriptionClient(newUri, {
+        reconnect: ${subscriptionClientReconnect},
+        timeout: ${subscriptionClientTimeout}
+    });
     var subscriptionsFetcher = window.GraphiQLSubscriptionsFetcher.graphQLFetcher(subscriptionsClient, graphQLFetcher);
 
     var props = ${props};
