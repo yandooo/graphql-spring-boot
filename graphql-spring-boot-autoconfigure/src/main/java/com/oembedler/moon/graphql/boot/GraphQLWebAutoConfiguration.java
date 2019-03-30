@@ -61,13 +61,14 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.servlet.config.annotation.CorsRegistryWorkaround;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.MultipartConfigElement;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -87,6 +88,7 @@ import static graphql.servlet.GraphQLObjectMapper.newBuilder;
 @AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class, JacksonAutoConfiguration.class})
 @EnableConfigurationProperties({GraphQLServletProperties.class})
 public class GraphQLWebAutoConfiguration {
+
 
     public static final String QUERY_EXECUTION_STRATEGY = "queryExecutionStrategy";
     public static final String MUTATION_EXECUTION_STRATEGY = "mutationExecutionStrategy";
@@ -143,8 +145,12 @@ public class GraphQLWebAutoConfiguration {
     @ConditionalOnClass(CorsFilter.class)
     @ConditionalOnProperty(value = "graphql.servlet.corsEnabled", havingValue = "true", matchIfMissing = true)
     public CorsFilter corsConfigurer() {
+        Map<String, CorsConfiguration> corsConfigurations = new LinkedHashMap<>(1);
+        CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+        corsConfigurations.put(graphQLServletProperties.getCorsMapping(), corsConfiguration);
+
         UrlBasedCorsConfigurationSource configurationSource = new UrlBasedCorsConfigurationSource();
-        configurationSource.setCorsConfigurations(CorsRegistryWorkaround.getCorsConfiguration(graphQLServletProperties.getCorsMapping()));
+        configurationSource.setCorsConfigurations(corsConfigurations);
         configurationSource.setAlwaysUseFullPath(true);
 
         return new CorsFilter(configurationSource);
