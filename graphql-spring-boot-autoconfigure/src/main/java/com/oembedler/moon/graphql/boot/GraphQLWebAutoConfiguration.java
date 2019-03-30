@@ -22,7 +22,7 @@ package com.oembedler.moon.graphql.boot;
 import com.fasterxml.jackson.databind.InjectableValues;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oembedler.moon.graphql.boot.error.ErrorHandlerSupplier;
-import com.oembedler.moon.graphql.boot.error.GraphQLErrorHandlerFactory;
+import com.oembedler.moon.graphql.boot.error.GraphQLErrorStartupListener;
 import com.oembedler.moon.graphql.boot.metrics.MetricsInstrumentation;
 import graphql.execution.AsyncExecutionStrategy;
 import graphql.execution.ExecutionStrategy;
@@ -48,7 +48,6 @@ import graphql.servlet.GraphQLServletListener;
 import graphql.servlet.ObjectMapperConfigurer;
 import graphql.servlet.ObjectMapperProvider;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -60,9 +59,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -70,6 +66,7 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.CorsRegistryWorkaround;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.MultipartConfigElement;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +86,7 @@ import static graphql.servlet.GraphQLObjectMapper.newBuilder;
 @ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class, JacksonAutoConfiguration.class})
 @EnableConfigurationProperties({GraphQLServletProperties.class})
-public class GraphQLWebAutoConfiguration implements ApplicationContextAware {
+public class GraphQLWebAutoConfiguration {
 
     public static final String QUERY_EXECUTION_STRATEGY = "queryExecutionStrategy";
     public static final String MUTATION_EXECUTION_STRATEGY = "mutationExecutionStrategy";
@@ -130,14 +127,14 @@ public class GraphQLWebAutoConfiguration implements ApplicationContextAware {
     @Autowired(required = false)
     private BatchExecutionHandler batchExecutionHandler;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        if (errorHandler == null) {
-            ConfigurableApplicationContext context = (ConfigurableApplicationContext) applicationContext;
-            errorHandler = new GraphQLErrorHandlerFactory().create(context, graphQLServletProperties.isExceptionHandlersEnabled());
-            context.getBeanFactory().registerSingleton(errorHandler.getClass().getCanonicalName(), errorHandler);
-        }
+    @PostConstruct
+    void postConstruct() {
         errorHandlerSupplier.setErrorHandler(errorHandler);
+    }
+
+    @Bean
+    public GraphQLErrorStartupListener graphQLErrorStartupListener() {
+        return new GraphQLErrorStartupListener(errorHandlerSupplier, graphQLServletProperties.isExceptionHandlersEnabled());
     }
 
     @Bean
@@ -263,12 +260,12 @@ public class GraphQLWebAutoConfiguration implements ApplicationContextAware {
     @ConditionalOnMissingBean
     public GraphQLConfiguration graphQLServletConfiguration(GraphQLInvocationInputFactory invocationInputFactory, GraphQLQueryInvoker queryInvoker, GraphQLObjectMapper graphQLObjectMapper) {
         return GraphQLConfiguration.with(invocationInputFactory)
-            .with(queryInvoker)
-            .with(graphQLObjectMapper)
-            .with(listeners)
-            .with(graphQLServletProperties.isAsyncModeEnabled())
-            .with(graphQLServletProperties.getSubscriptionTimeout())
-            .build();
+                .with(queryInvoker)
+                .with(graphQLObjectMapper)
+                .with(listeners)
+                .with(graphQLServletProperties.isAsyncModeEnabled())
+                .with(graphQLServletProperties.getSubscriptionTimeout())
+                .build();
     }
 
     @Bean

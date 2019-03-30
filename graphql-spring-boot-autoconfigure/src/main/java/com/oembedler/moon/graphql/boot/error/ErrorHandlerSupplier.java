@@ -18,6 +18,10 @@ public class ErrorHandlerSupplier implements Supplier<GraphQLErrorHandler> {
         return errorHandler;
     }
 
+    public boolean isPresent() {
+        return errorHandler != null;
+    }
+
     public void setErrorHandler(GraphQLErrorHandler errorHandler) {
         this.errorHandler = Objects.requireNonNull(errorHandler);
     }
