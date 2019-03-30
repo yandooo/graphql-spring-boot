@@ -19,8 +19,8 @@ class RequestFactory {
     static HttpEntity<Object> forMultipart(String query, String variables, HttpHeaders headers) {
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         LinkedMultiValueMap<String, Object> values = new LinkedMultiValueMap<>();
-        values.add("query", forJson(query, headers));
-        values.add("variables", forJson(variables, headers));
+        values.add("query", forJson(query, new HttpHeaders()));
+        values.add("variables", forJson(variables, new HttpHeaders()));
         return new HttpEntity<>(values, headers);
     }
 
