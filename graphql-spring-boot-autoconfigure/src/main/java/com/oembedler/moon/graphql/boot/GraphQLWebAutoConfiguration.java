@@ -129,7 +129,9 @@ public class GraphQLWebAutoConfiguration {
 
     @PostConstruct
     void postConstruct() {
-        errorHandlerSupplier.setErrorHandler(errorHandler);
+        if (errorHandler != null) {
+            errorHandlerSupplier.setErrorHandler(errorHandler);
+        }
     }
 
     @Bean
