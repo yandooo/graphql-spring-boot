@@ -42,7 +42,7 @@
     },
     {
       "name": "altair.cdn.version",
-      "defaultValue": "2.1.4",
+      "defaultValue": "2.1.5",
       "type": "java.lang.String"
     },
     {
