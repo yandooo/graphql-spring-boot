@@ -211,6 +211,45 @@ to set the classpath resources that should be loaded.
 
 Headers that are used when sending the GraphiQL queries can be set by defining them in the `graphiql.headers` group.
 
+# Enable Altair
+
+Altair becomes accessible at the root `/altair` if `altair-spring-boot-starter` is added as a dependency to a boot application.
+
+Note that GraphQL server must be available at `/graphql/*` context to be discovered by Altair.
+
+Available Spring Boot configuration parameters (either `application.yml` or `application.properties`):
+```yaml
+altair:
+    mapping: /altair
+    endpoint:
+      graphql: /graphql
+      subscriptions: /subscriptions
+    subscriptions:
+      timeout: 30
+      reconnect: false
+    static:
+      basePath: /
+    enabled: true
+    pageTitle: Altair
+    cdn:
+        enabled: false
+        version: 2.1.5
+    props:
+        resources:
+            defaultQuery: defaultQuery.graphql
+            variables: variables.graphql
+    headers:
+        Authorization: "Bearer <your-token>"
+```
+By default Altair is served from within the package. This can be configured to be served from CDN instead,
+by setting the property `altair.cdn.enabled` to `true`.
+
+You are able to set the Altair props as well. The `altair.props.variables` group. Since setting (large) queries in the
+properties like this isn't very readable, you can use the properties in the `altair.props.resources` group
+to set the classpath resources that should be loaded.
+
+Headers that are used when sending the Altair queries can be set by defining them in the `altair.headers` group.
+
 # Supported GraphQL-Java Libraries
 
 The following libraries have auto-configuration classes for creating a `GraphQLSchema`.
