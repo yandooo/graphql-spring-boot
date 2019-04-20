@@ -51,6 +51,7 @@ subprojects {
         mavenLocal()
         mavenCentral()
         jcenter()
+        maven { url "https://dl.bintray.com/graphql-java-kickstart/releases" }
         maven { url "http://oss.jfrog.org/artifactory/oss-snapshot-local" }
         maven { url "http://repo.spring.io/libs-milestone" }
     }

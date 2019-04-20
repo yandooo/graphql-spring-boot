@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.graphql.spring.boot.test.GraphQLResponse;
 import com.graphql.spring.boot.test.GraphQLTestTemplate;
 import com.graphql.spring.boot.test.GraphQLTest;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ public class GraphQLToolsSampleApplicationTest {
     private GraphQLTestTemplate graphQLTestTemplate;
 
     @Test
+    @Ignore
     public void get_comments() throws IOException {
         GraphQLResponse response = graphQLTestTemplate.postForResource("graphql/post-get-comments.graphql");
         assertNotNull(response);
