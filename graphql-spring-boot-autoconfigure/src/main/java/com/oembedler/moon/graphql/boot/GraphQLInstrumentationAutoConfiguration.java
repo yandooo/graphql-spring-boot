@@ -33,19 +33,21 @@ public class GraphQLInstrumentationAutoConfiguration {
     @Value("${graphql.servlet.maxQueryDepth:#{null}}")
     private Integer maxQueryDepth;
 
-    @Value("${graphql.servlet.tracing-enabled:#{false}}")
-    private Boolean tracingEnabled;
+    @Value("${graphql.servlet.tracing-enabled:'false'}")
+    private String tracingEnabled;
 
     @Bean
     @ConditionalOnMissingBean({TracingInstrumentation.class, MetricsInstrumentation.class})
-    @ConditionalOnProperty(value = "graphql.servlet.tracing-enabled", havingValue = "true")
+    @ConditionalOnExpression("${graphql.servlet.tracing-enabled:'false'}.equals('metrics-only')"
+        + "|| ${graphql.servlet.tracing-enabled:'false'}.equals(true)")
     public TracingInstrumentation tracingInstrumentation() {
         return new TracingInstrumentation();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnExpression("${graphql.servlet.actuator-metrics:false} && !${graphql.servlet.tracing-enabled:false}")
+    @ConditionalOnExpression("${graphql.servlet.actuator-metrics:false}"
+        + "&& ${graphql.servlet.tracing-enabled:'false'}.toString().equals('false')")
     public TracingNoResolversInstrumentation tracingNoResolversInstrumentation() {
         return new TracingNoResolversInstrumentation();
     }
@@ -69,7 +71,7 @@ public class GraphQLInstrumentationAutoConfiguration {
     @ConditionalOnBean({MeterRegistry.class, TracingInstrumentation.class})
     @ConditionalOnMissingBean
     public MetricsInstrumentation metricsInstrumentation(MeterRegistry meterRegistry) {
-        return new MetricsInstrumentation(meterRegistry, tracingEnabled);
+        return new MetricsInstrumentation(meterRegistry, Boolean.TRUE.toString().equals(tracingEnabled));
     }
 
 }
