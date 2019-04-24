@@ -17,6 +17,7 @@
 - [Enable Graph*i*QL](#enable-graphiql)
 - [Supported GraphQL-Java Libraries](#supported-graphql-java-libraries)
   - [GraphQL Java Tools](#graphql-java-tools)
+- [Tracing and Metrics](#tracing-and-metrics)
 - [Contributions](#contributions)
 - [Licenses](#licenses)
 
@@ -272,7 +273,23 @@ graphql:
 By default GraphQL tools uses the location pattern `**/*.graphqls` to scan for GraphQL schemas on the classpath.
 Use the `schemaLocationPattern` property to customize this pattern.
 
+# Tracing and Metrics
 
+[Apollo style tracing](https://github.com/apollographql/apollo-tracing) along with two levels of metrics based on them are currently configurable.
+Full tracing is based on the GraphQl java implementation, and can be enabled in the application.yml or application.properties file:
+```yaml
+graphql:
+    servlet:
+        tracing-enabled: true
+```
+the default value is false, with "metrics-only" being available. Metrics-only does not add the tracing extension to the response.
+
+Metrics utilize one of two forms of tracing to feed information to Micrometer. If tracing is enabled, or set to "metrics-only", full tracing metrics will be collected, otherwise a tracing implementation that does not collect field data will be injected. Metrics can be configured in the application.yml or application.properties to either true or false, with a default of false:
+```yaml
+graphql:
+    servlet:
+        actuator-metrics: true
+```
 # Contributions
 
 Contributions are welcome.  Please respect the [Code of Conduct](http://contributor-covenant.org/version/1/3/0/).
