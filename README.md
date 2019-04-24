@@ -234,7 +234,7 @@ altair:
     pageTitle: Altair
     cdn:
         enabled: false
-        version: 2.1.5
+        version: 2.1.7
     props:
         resources:
             defaultQuery: defaultQuery.graphql
