@@ -89,6 +89,14 @@ public class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoCon
     }
 
     @Test
+    public void tracingMetricsWithTracingDisabled() {
+        load(DefaultConfiguration.class, "graphql.servlet.tracing-enabled='metrics-only'", "graphql.servlet.actuator-metrics=true");
+
+        Assert.assertNotNull(this.getContext().getBean("metricsInstrumentation"));
+        Assert.assertNotNull(this.getContext().getBean("tracingInstrumentation"));
+    }
+
+    @Test
     public void actuatorMetricsEnabled() {
         load(DefaultConfiguration.class, "graphql.servlet.actuator-metrics=true");
 
