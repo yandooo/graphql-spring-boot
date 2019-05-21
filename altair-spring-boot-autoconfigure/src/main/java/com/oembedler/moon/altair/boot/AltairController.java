@@ -49,7 +49,7 @@ public class AltairController {
     @Value("${altair.cdn.enabled:false}")
     private Boolean altairCdnEnabled;
 
-    @Value("${altair.cdn.version:2.1.5}")
+    @Value("${altair.cdn.version:2.1.7}")
     private String altairCdnVersion;
 
     @Autowired
