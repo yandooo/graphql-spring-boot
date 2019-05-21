@@ -110,7 +110,7 @@ public class AltairController {
         replacements.put("subscriptionsEndpoint", subscriptionsEndpoint);
         replacements.put("pageTitle", pageTitle);
         replacements.put("pageFavicon", getResourceUrl("favicon.ico", "favicon.ico"));
-        replacements.put("altairBaseUrl", getResourceUrl(String.join(staticBasePath, "/vendor/altair/"),
+        replacements.put("altairBaseUrl", getResourceUrl(StringUtils.join(staticBasePath, "/vendor/altair/"),
                 joinJsUnpkgPath(ALTAIR, altairCdnVersion, "build/dist/")));
         replacements.put("altairLogoUrl", getResourceUrl("assets/img/logo_350.svg", "assets/img/logo_350.svg"));
         replacements.put("altairCssUrl", getResourceUrl("styles.css", "styles.css"));
