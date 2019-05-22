@@ -290,6 +290,17 @@ graphql:
     servlet:
         actuator-metrics: true
 ```
+
+## Usage
+See [Baeldung Spring Boot Actuators](https://www.baeldung.com/spring-boot-actuators) for the basics of using Actuator. 
+Add `spring-boot-starter-actuator` to your project as dependency.
+
+The following metrics are available for exposure:
+* `graphql.timer.query`
+* `graphql.websocket.sessions` - number of active websocket sessions for subscriptions
+* `graphql.websocket.subscriptions` - number of active subscriptions 
+
+
 # Contributions
 
 Contributions are welcome.  Please respect the [Code of Conduct](http://contributor-covenant.org/version/1/3/0/).

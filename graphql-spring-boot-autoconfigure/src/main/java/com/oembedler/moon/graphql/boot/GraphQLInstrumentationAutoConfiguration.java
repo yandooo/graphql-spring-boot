@@ -2,10 +2,13 @@ package com.oembedler.moon.graphql.boot;
 
 import com.oembedler.moon.graphql.boot.metrics.MetricsInstrumentation;
 import com.oembedler.moon.graphql.boot.metrics.TracingNoResolversInstrumentation;
+import com.oembedler.moon.graphql.boot.metrics.WebsocketMetrics;
 import graphql.analysis.MaxQueryComplexityInstrumentation;
 import graphql.analysis.MaxQueryDepthInstrumentation;
 import graphql.execution.instrumentation.tracing.TracingInstrumentation;
+import graphql.servlet.GraphQLWebsocketServlet;
 import io.micrometer.core.instrument.MeterRegistry;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleMetricsExportAutoConfiguration;
@@ -18,11 +21,13 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.PostConstruct;
+
 /**
  * @author Marcel Overdijk
  */
 @Configuration
-@AutoConfigureAfter({MetricsAutoConfiguration.class, SimpleMetricsExportAutoConfiguration.class})
+@AutoConfigureAfter({MetricsAutoConfiguration.class, SimpleMetricsExportAutoConfiguration.class, GraphQLWebsocketAutoConfiguration.class})
 @ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties({GraphQLServletProperties.class})
 public class GraphQLInstrumentationAutoConfiguration {
@@ -72,6 +77,14 @@ public class GraphQLInstrumentationAutoConfiguration {
     @ConditionalOnMissingBean
     public MetricsInstrumentation metricsInstrumentation(MeterRegistry meterRegistry) {
         return new MetricsInstrumentation(meterRegistry, Boolean.TRUE.toString().equals(tracingEnabled));
+    }
+
+    @Bean
+    @ConditionalOnProperty(value = "graphql.servlet.actuator-metrics", havingValue = "true")
+    @ConditionalOnBean({MeterRegistry.class, GraphQLWebsocketServlet.class})
+    @ConditionalOnMissingBean
+    public WebsocketMetrics websocketMetrics(MeterRegistry meterRegistry, GraphQLWebsocketServlet websocketServlet) {
+        return new WebsocketMetrics(meterRegistry, websocketServlet);
     }
 
 }
