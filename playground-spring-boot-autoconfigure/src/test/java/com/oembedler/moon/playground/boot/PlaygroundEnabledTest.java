@@ -12,7 +12,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {PlaygroundAutoConfiguration.class, ObjectMapper.class},
-        properties = "playground.enabled=true")
+        properties = "graphql.playground.enabled=true")
 public class PlaygroundEnabledTest {
 
     @Autowired

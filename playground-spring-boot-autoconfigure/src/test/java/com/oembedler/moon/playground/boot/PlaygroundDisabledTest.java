@@ -1,5 +1,6 @@
 package com.oembedler.moon.playground.boot;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -9,7 +10,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = PlaygroundAutoConfiguration.class, properties = "playground.enabled=false")
+@SpringBootTest(classes = {PlaygroundAutoConfiguration.class, ObjectMapper.class},
+        properties = "graphql.playground.enabled=false")
 public class PlaygroundDisabledTest {
 
     @Autowired

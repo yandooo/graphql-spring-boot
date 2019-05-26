@@ -1,9 +1,7 @@
 package com.oembedler.moon.playground.boot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oembedler.moon.playground.boot.settings.PlaygroundSettingsProperties;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,41 +26,24 @@ public class PlaygroundController {
     private static final String SCRIPT_URL_ATTRIBUTE_NAME = "scriptUrl";
     private static final String LOGO_URL_ATTRIBUTE_NAME = "logoUrl";
 
-    @Value("${playground.endpoint.graphql:/graphql}")
-    private String graphqlEndpoint;
-
-    @Value("${playground.endpoint.subscriptions:/subscriptions}")
-    private String subscriptionsEndpoint;
-
-    @Value("${playground.cdn.enabled:false}")
-    private Boolean cdnEnabled;
-
-    @Value("${playground.cdn.version:latest}")
-    private String cdnVersion;
-
-    @Value("${playground.pageTitle:Playground}")
-    private String pageTitle;
-
-    private final PlaygroundSettingsProperties settingsProperties;
+    private final PlaygroundPropertiesConfiguration propertiesConfiguration;
 
     private final ObjectMapper objectMapper;
 
-    @GetMapping("${playground.mapping:/playground}")
+    @GetMapping("${graphql.playground.mapping:/playground}")
     public String playground(final Model model) {
-        if (cdnEnabled) {
+        if (propertiesConfiguration.getPlayground().isCdnEnabled()) {
             setCdnUrls(model);
         } else {
             setLocalAssetUrls(model);
         }
-        model.addAttribute("graphqlEndpoint", graphqlEndpoint);
-        model.addAttribute("subscriptionsEndpoint", subscriptionsEndpoint);
-        model.addAttribute("pageTitle", pageTitle);
-        model.addAttribute("settings", objectMapper.valueToTree(settingsProperties));
+        model.addAttribute("pageTitle", propertiesConfiguration.getPlayground().getPageTitle());
+        model.addAttribute("properties", objectMapper.valueToTree(propertiesConfiguration.getPlayground()));
         return "playground";
     }
 
     private String getCdnUrl(final String assetUrl) {
-        return String.format("%s@%s/%s", CDN_ROOT, cdnVersion, assetUrl);
+        return String.format("%s@%s/%s", CDN_ROOT, propertiesConfiguration.getPlayground().getCdnVersion(), assetUrl);
     }
 
     private void setCdnUrls(final Model model) {

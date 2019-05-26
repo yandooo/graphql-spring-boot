@@ -1,7 +1,6 @@
 package com.oembedler.moon.playground.boot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oembedler.moon.playground.boot.settings.PlaygroundSettingsProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -13,13 +12,13 @@ import org.springframework.web.servlet.DispatcherServlet;
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnClass(DispatcherServlet.class)
-@EnableConfigurationProperties(PlaygroundSettingsProperties.class)
+@EnableConfigurationProperties(PlaygroundPropertiesConfiguration.class)
 public class PlaygroundAutoConfiguration {
 
     @Bean
-    @ConditionalOnProperty(value = "playground.enabled", havingValue = "true", matchIfMissing = true)
-    PlaygroundController playgroundController(final PlaygroundSettingsProperties playgroundSettingsProperties,
+    @ConditionalOnProperty(value = "graphql.playground.enabled", havingValue = "true", matchIfMissing = true)
+    PlaygroundController playgroundController(final PlaygroundPropertiesConfiguration playgroundPropertiesConfiguration,
             final ObjectMapper objectMapper) {
-        return new PlaygroundController(playgroundSettingsProperties, objectMapper);
+        return new PlaygroundController(playgroundPropertiesConfiguration, objectMapper);
     }
 }
