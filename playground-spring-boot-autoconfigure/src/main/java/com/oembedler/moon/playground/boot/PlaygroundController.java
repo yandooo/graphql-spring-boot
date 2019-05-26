@@ -1,11 +1,15 @@
 package com.oembedler.moon.playground.boot;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oembedler.moon.playground.boot.settings.PlaygroundSettingsProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class PlaygroundController {
 
     private static final String CDN_ROOT = "https://cdn.jsdelivr.net/npm/graphql-playground-react";
@@ -39,6 +43,10 @@ public class PlaygroundController {
     @Value("${playground.pageTitle:Playground}")
     private String pageTitle;
 
+    private final PlaygroundSettingsProperties settingsProperties;
+
+    private final ObjectMapper objectMapper;
+
     @GetMapping("${playground.mapping:/playground}")
     public String playground(final Model model) {
         if (cdnEnabled) {
@@ -49,6 +57,7 @@ public class PlaygroundController {
         model.addAttribute("graphqlEndpoint", graphqlEndpoint);
         model.addAttribute("subscriptionsEndpoint", subscriptionsEndpoint);
         model.addAttribute("pageTitle", pageTitle);
+        model.addAttribute("settings", objectMapper.valueToTree(settingsProperties));
         return "playground";
     }
 

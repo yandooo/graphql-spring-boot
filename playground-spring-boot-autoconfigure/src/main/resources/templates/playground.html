@@ -21,13 +21,15 @@
 <script th:inline="javascript">
     let graphqlEndpoint = /*[[${graphqlEndpoint}]]*/ "";
     let subscriptionsEndpoint = /*[[${subscriptionsEndpoint}]]*/ "";
+    let settings = /*[[${settings}]]*/ null;
 </script>
 
 <script>window.addEventListener('load', function (event) {
       GraphQLPlayground.init(document.getElementById('root'), {
         endpoint: graphqlEndpoint,
         subscriptionEndpoint: subscriptionsEndpoint,
-        setTitle: false
+        setTitle: false,
+        settings: settings
       })
     })</script>
 </body>
