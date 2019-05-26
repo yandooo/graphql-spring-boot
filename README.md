@@ -251,6 +251,32 @@ to set the classpath resources that should be loaded.
 
 Headers that are used when sending the Altair queries can be set by defining them in the `altair.headers` group.
 
+# Enable GraphQL Playground
+
+GraphQL Playground becomes accessible at root `/playground` (or as configured in `playground.mapping`) 
+if `playground-spring-boot-starter` is added as a dependency to a boot application. 
+
+It uses an embedded `GraphQL Playground React`, according to the [official guide](https://github.com/prisma/graphql-playground#as-html-page),
+using the 'minimum HTML' approach.
+
+Available Spring Boot configuration parameters (either `application.yml` or `application.properties`):
+
+```yaml
+playground:
+    mapping: /playground
+    endpoint:
+      graphql: /graphql
+      subscriptions: /subscriptions
+    enabled: true
+    pageTitle: Playground
+    cdn:
+        enabled: false
+        version: latest
+```
+The currently bundled version is `1.7.20`, which is - as of writing this - the latest release of `GraphQL Playground React`. 
+The CDN option uses `jsDelivr` CDN. By default, it will load the latest available release.
+Available CDN versions can be found here: https://www.jsdelivr.com/package/npm/graphql-playground-react
+
 # Supported GraphQL-Java Libraries
 
 The following libraries have auto-configuration classes for creating a `GraphQLSchema`.

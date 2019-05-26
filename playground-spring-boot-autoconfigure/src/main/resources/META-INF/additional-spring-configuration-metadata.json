@@ -1,0 +1,39 @@
+{
+  "groups": [
+    {
+      "name": "playground"
+    }
+  ],
+  "properties": [
+    {
+      "name": "playground.mapping",
+      "defaultValue": "/playground",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "playground.endpoint.graphql",
+      "defaultValue": "/graphql",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "playground.endpoint.subscriptions",
+      "defaultValue": "/subscriptions",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "playground.cdn.enabled",
+      "defaultValue": false,
+      "type": "java.lang.Boolean"
+    },
+    {
+      "name": "playground.cdn.version",
+      "defaultValue": "latest",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "playground.pageTitle",
+      "defaultValue": "Playground",
+      "type": "java.lang.String"
+    }
+  ]
+}
