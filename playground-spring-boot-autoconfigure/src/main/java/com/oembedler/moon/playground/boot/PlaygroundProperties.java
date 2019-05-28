@@ -7,6 +7,7 @@ import com.oembedler.moon.playground.boot.settings.PlaygroundSettings;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Data
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE,
@@ -31,4 +32,7 @@ public class PlaygroundProperties {
 
     @JsonProperty
     private PlaygroundSettings settings;
+
+    @JsonProperty
+    private List<PlaygroundTab> tabs;
 }
