@@ -1,11 +1,11 @@
-package com.oembedler.moon.playground.boot;
+package com.oembedler.moon.playground.boot.properties;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.oembedler.moon.playground.boot.settings.PlaygroundSettings;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -19,16 +19,12 @@ public class PlaygroundProperties {
     private String subscriptionEndpoint = "/subscriptions";
 
     @JsonIgnore
-    private boolean cdnEnabled;
-
-    @NotEmpty
-    @JsonIgnore
-    private String cdnVersion = "latest";
+    private PlaygroundCdn cdn = new PlaygroundCdn();
 
     @JsonIgnore
     private String pageTitle = "Playground";
 
     private PlaygroundSettings settings;
 
-    private List<PlaygroundTab> tabs;
+    private List<PlaygroundTab> tabs = Collections.emptyList();
 }

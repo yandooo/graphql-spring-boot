@@ -32,7 +32,7 @@ public class PlaygroundController {
 
     @GetMapping("${graphql.playground.mapping:/playground}")
     public String playground(final Model model) {
-        if (propertiesConfiguration.getPlayground().isCdnEnabled()) {
+        if (propertiesConfiguration.getPlayground().getCdn().isEnabled()) {
             setCdnUrls(model);
         } else {
             setLocalAssetUrls(model);
@@ -43,7 +43,8 @@ public class PlaygroundController {
     }
 
     private String getCdnUrl(final String assetUrl) {
-        return String.format("%s@%s/%s", CDN_ROOT, propertiesConfiguration.getPlayground().getCdnVersion(), assetUrl);
+        return String.format("%s@%s/%s", CDN_ROOT, propertiesConfiguration.getPlayground().getCdn().getVersion(),
+                assetUrl);
     }
 
     private void setCdnUrls(final Model model) {

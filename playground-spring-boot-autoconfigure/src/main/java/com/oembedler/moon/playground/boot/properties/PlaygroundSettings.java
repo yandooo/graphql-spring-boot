@@ -1,7 +1,12 @@
-package com.oembedler.moon.playground.boot.settings;
+package com.oembedler.moon.playground.boot.properties;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.oembedler.moon.playground.boot.properties.settings.PlaygroundEditorSettings;
+import com.oembedler.moon.playground.boot.properties.settings.PlaygroundPrettierSettings;
+import com.oembedler.moon.playground.boot.properties.settings.PlaygroundRequestSettings;
+import com.oembedler.moon.playground.boot.properties.settings.PlaygroundSchemaSettings;
+import com.oembedler.moon.playground.boot.properties.settings.PlaygroundTracingSettings;
 import lombok.Data;
 
 @Data

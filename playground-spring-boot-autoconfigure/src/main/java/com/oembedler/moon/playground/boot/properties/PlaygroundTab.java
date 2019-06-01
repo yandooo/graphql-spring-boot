@@ -1,6 +1,7 @@
-package com.oembedler.moon.playground.boot;
+package com.oembedler.moon.playground.boot.properties;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.oembedler.moon.playground.boot.ResourceSerializer;
 import lombok.Data;
 import org.springframework.core.io.Resource;
 

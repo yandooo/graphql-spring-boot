@@ -1,4 +1,4 @@
-package com.oembedler.moon.playground.boot.settings;
+package com.oembedler.moon.playground.boot.properties.settings;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
