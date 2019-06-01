@@ -1,6 +1,8 @@
 package com.oembedler.moon.playground.boot;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
+import org.springframework.core.io.Resource;
 
 import java.util.List;
 import java.util.Map;
@@ -14,9 +16,10 @@ public class PlaygroundTab {
     private String endpoint;
 
     /**
-     * The GraphQL query (operation) to be initially displayed on the tab.
+     * The GraphQL query (operation) to be initially displayed on the tab. It should be a graphql resource.
      */
-    private String query;
+    @JsonSerialize(using = ResourceSerializer.class)
+    private Resource query;
 
     /**
      * The name of the tab.
@@ -24,14 +27,16 @@ public class PlaygroundTab {
     private String name;
 
     /**
-     * The query variables. It should be a serialized JSON.
+     * The query variables. It should be a JSON resource.
      */
-    private String variables;
+    @JsonSerialize(using = ResourceSerializer.class)
+    private Resource variables;
 
     /**
-     * The list of responses to be displayed under "responses". Should be a list of serialized JSONs.
+     * The list of responses to be displayed under "responses". It should be a list of JSON resources.
      */
-    private List<String> responses;
+    @JsonSerialize(contentUsing = ResourceSerializer.class)
+    private List<Resource> responses;
 
     /**
      * HTTP headers. Key-value pairs expected.
