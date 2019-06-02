@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class PlaygroundProperties {
 
     @NotEmpty

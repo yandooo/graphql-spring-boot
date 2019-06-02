@@ -19,7 +19,21 @@
 </div>
 
 <script th:inline="javascript">
+    function addCsrfHeaderTo(properties, csrf) {
+        if (!properties.headers) {
+            properties.headers = {};
+        }
+        properties.headers[csrf.headerName] = csrf.token;
+    }
+
+    let csrf = /*[[${_csrf}]]*/ null;
     let properties = /*[[${properties}]]*/ {};
+    if (csrf) {
+        addCsrfHeaderTo(properties, csrf);
+        if (properties.tabs) {
+            properties.tabs.forEach(tab => addCsrfHeaderTo(tab, csrf));
+        }
+    }
     properties.setTitle = false;
     window.addEventListener('load', function (event) {
       GraphQLPlayground.init(document.getElementById('root'), properties)
