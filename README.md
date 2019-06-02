@@ -7,7 +7,6 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
 
-- [GraphQL and Graph*i*QL Spring Framework Boot Starters](#graphql-and-graphiql-spring-framework-boot-starters)
   - [WARNING: NoClassDefFoundError when using GraphQL Java Tools > 5.4.x](#warning-noclassdeffounderror-when-using-graphql-java-tools--54x)
     - [Using Gradle](#using-gradle)
     - [Using Maven](#using-maven)
@@ -15,9 +14,16 @@
 - [Requirements and Downloads](#requirements-and-downloads)
 - [Enable GraphQL Servlet](#enable-graphql-servlet)
 - [Enable Graph*i*QL](#enable-graphiql)
+- [Enable Altair](#enable-altair)
+- [Enable GraphQL Playground](#enable-graphql-playground)
+  - [Basic settings](#basic-settings)
+  - [CDN](#cdn)
+  - [Customizing GraphQL Playground](#customizing-graphql-playground)
+  - [Tabs](#tabs)
 - [Supported GraphQL-Java Libraries](#supported-graphql-java-libraries)
   - [GraphQL Java Tools](#graphql-java-tools)
 - [Tracing and Metrics](#tracing-and-metrics)
+  - [Usage](#usage)
 - [Contributions](#contributions)
 - [Licenses](#licenses)
 
@@ -55,6 +61,7 @@ Repository contains:
 * `graphql-spring-boot-starter` to turn your boot application into GraphQL server (see [graphql-java-servlet](https://github.com/graphql-java-kickstart/graphql-java-servlet))
 * `altair-spring-boot-starter`to embed `Altair` tool for schema introspection and query debugging (see [altair](https://github.com/imolorhe/altair))
 * `graphiql-spring-boot-starter`to embed `GraphiQL` tool for schema introspection and query debugging (see [graphiql](https://github.com/graphql/graphiql))
+* `playground-spring-boot-starter`to embed `GraphQL Playground` tool for schema introspection and query debugging (see [GraphQL Playground](https://github.com/prisma/graphql-playground))
 * `voyager-spring-boot-starter`to embed `Voyager` tool for visually explore GraphQL APIs as an interactive graph (see [voyger](https://github.com/APIs-guru/graphql-voyager))
 
 # Requirements and Downloads
@@ -253,29 +260,79 @@ Headers that are used when sending the Altair queries can be set by defining the
 
 # Enable GraphQL Playground
 
-GraphQL Playground becomes accessible at root `/playground` (or as configured in `playground.mapping`) 
+GraphQL Playground becomes accessible at root `/playground` (or as configured in `graphql.playground.mapping`) 
 if `playground-spring-boot-starter` is added as a dependency to a boot application. 
 
-It uses an embedded `GraphQL Playground React`, according to the [official guide](https://github.com/prisma/graphql-playground#as-html-page),
+It uses an embedded `GraphQL Playground React`, in accordance to the [official guide](https://github.com/prisma/graphql-playground#as-html-page),
 using the 'minimum HTML' approach.
 
 Available Spring Boot configuration parameters (either `application.yml` or `application.properties`):
 
 ```yaml
-playground:
+graphql.playground:
     mapping: /playground
-    endpoint:
-      graphql: /graphql
-      subscriptions: /subscriptions
+    endpoint: /graphql
+    subscriptionsEndpoint: /subscriptions
     enabled: true
     pageTitle: Playground
     cdn:
         enabled: false
         version: latest
+    settings:
+        editor.cursorShape: line
+        editor.fontFamily: "'Source Code Pro', 'Consolas', 'Inconsolata', 'Droid Sans Mono', 'Monaco', monospace"
+        editor.fontSize: 14
+        editor.reuseHeaders: true
+        editor.theme: dark
+        general.betaUpdates: false
+        prettier.printWidth: 80
+        prettier.tabWidth: 2
+        prettier.useTabs: false
+        request.credentials: omit
+        schema.polling.enable: true
+        schema.polling.endpointFilter: "*localhost*"
+        schema.polling.interval: 2000
+        schema.disableComments: true
+        tracing.hideTracingResponse: true
+    tabs:
+        - name: Example Tab
+          query: classpath:exampleQuery.graphql
+          headers:
+            SomeHeader: Some value
+          variables: classpath:variables.json
+          responses:
+            - classpath:exampleResponse1.json
+            - classpath:exampleResponse2.json
 ```
+## Basic settings
+
+`mapping`, `endpoint` and `subscriptionsEndpoint` will default to `/playground`, `/graphql` and `/subscriptions`, 
+respectively. Note that these values may not be empty.
+
+`enabled` defaults to `true`, and therefor Playground will be available by default if the dependency is added to a
+ Spring Boot Web Application project.
+
+`pageTitle` defaults to `Playground`.
+
+## CDN
+
 The currently bundled version is `1.7.20`, which is - as of writing this - the latest release of `GraphQL Playground React`. 
-The CDN option uses `jsDelivr` CDN. By default, it will load the latest available release.
-Available CDN versions can be found here: https://www.jsdelivr.com/package/npm/graphql-playground-react
+The CDN option uses `jsDelivr` CDN, if enabled. By default, it will load the latest available release.
+Available CDN versions can be found on the project's 
+[jsDelivr page](https://www.jsdelivr.com/package/npm/graphql-playground-react). The CDN option is disabled by default.
+
+## Customizing GraphQL Playground
+
+Further GraphQL Playground settings can be specified under the `settings` group, which are documented in the official 
+[GraphQL Playground readme](https://github.com/prisma/graphql-playground#settings). Note that enum-like values are 
+validated against the available options, and your application will not start if wrong settings are provided. Similarly
+there is some basic validation for integer values (they must be valid positive integers).
+
+## Tabs
+
+Optionally, you can specify tabs that will be present when the user first opens GraphQL Playground. You can configure the 
+query, variables, headers and even supply sample responses. Note that `query`, `variables` and `responses` are expected
+to be resources of the appropriate format (GraphQL for `query`, JSON for `variables` and `responses`). 
 
 # Supported GraphQL-Java Libraries
 
