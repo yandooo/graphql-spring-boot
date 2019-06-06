@@ -294,6 +294,8 @@ graphql.playground:
         schema.polling.interval: 2000
         schema.disableComments: true
         tracing.hideTracingResponse: true
+    headers:
+        headerFor: AllTabs
     tabs:
         - name: Example Tab
           query: classpath:exampleQuery.graphql
@@ -313,6 +315,11 @@ respectively. Note that these values may not be empty.
  Spring Boot Web Application project.
 
 `pageTitle` defaults to `Playground`.
+
+`headers` allows you to specify headers for the default tab. Note that if your are using Spring Security and CSRF is 
+enabled CSRF, the CSRF token will be automatically added to the headers. These headers will also be added to all the tabs
+configured under the [Tabs](#tabs) section. If a header is defined both in this 'global' header list and the header list
+of the individual tabs, the 'local' version will be used for that tab. 
 
 ## CDN
 

@@ -19,20 +19,16 @@
 </div>
 
 <script th:inline="javascript">
-    function addCsrfHeaderTo(properties, csrf) {
-        if (!properties.headers) {
-            properties.headers = {};
-        }
-        properties.headers[csrf.headerName] = csrf.token;
-    }
-
     let csrf = /*[[${_csrf}]]*/ null;
     let properties = /*[[${properties}]]*/ {};
+    if (!properties.headers) {
+            properties.headers = {};
+    }
     if (csrf) {
-        addCsrfHeaderTo(properties, csrf);
-        if (properties.tabs) {
-            properties.tabs.forEach(tab => addCsrfHeaderTo(tab, csrf));
-        }
+        properties.headers[csrf.headerName] = csrf.token;
+    }
+    if (properties.tabs) {
+        properties.tabs.forEach(tab => tab.headers = Object.assign({}, properties.headers || {}, tab.headers || {}));
     }
     properties.setTitle = false;
     window.addEventListener('load', function (event) {
