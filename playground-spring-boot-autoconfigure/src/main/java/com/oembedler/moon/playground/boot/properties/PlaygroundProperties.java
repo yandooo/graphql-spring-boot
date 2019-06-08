@@ -3,6 +3,7 @@ package com.oembedler.moon.playground.boot.properties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.Collections;
@@ -19,15 +20,18 @@ public class PlaygroundProperties {
     @NotEmpty
     private String subscriptionEndpoint = "/subscriptions";
 
+    @NestedConfigurationProperty
     @JsonIgnore
     private PlaygroundCdn cdn = new PlaygroundCdn();
 
     @JsonIgnore
     private String pageTitle = "Playground";
 
+    @NestedConfigurationProperty
     private PlaygroundSettings settings;
 
     private Map<String, String> headers = Collections.emptyMap();
 
+    @NestedConfigurationProperty
     private List<PlaygroundTab> tabs = Collections.emptyList();
 }
