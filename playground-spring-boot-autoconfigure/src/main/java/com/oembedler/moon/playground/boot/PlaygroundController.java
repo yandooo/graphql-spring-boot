@@ -7,21 +7,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Controller
 @RequiredArgsConstructor
 public class PlaygroundController {
 
     private static final String CDN_ROOT = "https://cdn.jsdelivr.net/npm/graphql-playground-react";
-    private static final String CDN_CSS = "build/static/css/index.css";
-    private static final String CDN_FAVICON =  "build/favicon.png";
-    private static final String CDN_SCRIPT = "build/static/js/middleware.js";
-    private static final String CDN_LOGO = "build/logo.png";
-
-    private static final String LOCAL_CSS = "/vendor/playground/playground.css";
-    private static final String LOCAL_FAVICON = "/vendor/playground/favicon.png";
-    private static final String LOCAL_SCRIPT = "/vendor/playground/playground.js";
-    private static final String LOCAL_LOGO = "/vendor/playground/assets/logo.png";
+    private static final String CSS_PATH = "static/css/index.css";
+    private static final String FAVICON_PATH =  "favicon.png";
+    private static final String SCRIPT_PATH = "static/js/middleware.js";
+    private static final String LOGO_PATH = "logo.png";
 
     private static final String CSS_URL_ATTRIBUTE_NAME = "cssUrl";
     private static final String FAVICON_URL_ATTRIBUTE_NAME = "faviconUrl";
@@ -46,21 +43,25 @@ public class PlaygroundController {
     }
 
     private String getCdnUrl(final String assetUrl) {
-        return String.format("%s@%s/%s", CDN_ROOT, propertiesConfiguration.getPlayground().getCdn().getVersion(),
+        return String.format("%s@%s/build/%s", CDN_ROOT, propertiesConfiguration.getPlayground().getCdn().getVersion(),
                 assetUrl);
     }
 
+    private Path getLocalUrl(final String cssPath) {
+        return Paths.get(propertiesConfiguration.getPlayground().getStaticPath().getBase(), cssPath);
+    }
+
     private void setCdnUrls(final Model model) {
-        model.addAttribute(CSS_URL_ATTRIBUTE_NAME, getCdnUrl(CDN_CSS));
-        model.addAttribute(FAVICON_URL_ATTRIBUTE_NAME, getCdnUrl(CDN_FAVICON));
-        model.addAttribute(SCRIPT_URL_ATTRIBUTE_NAME, getCdnUrl(CDN_SCRIPT));
-        model.addAttribute(LOGO_URL_ATTRIBUTE_NAME, getCdnUrl(CDN_LOGO));
+        model.addAttribute(CSS_URL_ATTRIBUTE_NAME, getCdnUrl(CSS_PATH));
+        model.addAttribute(FAVICON_URL_ATTRIBUTE_NAME, getCdnUrl(FAVICON_PATH));
+        model.addAttribute(SCRIPT_URL_ATTRIBUTE_NAME, getCdnUrl(SCRIPT_PATH));
+        model.addAttribute(LOGO_URL_ATTRIBUTE_NAME, getCdnUrl(LOGO_PATH));
     }
 
     private void setLocalAssetUrls(final Model model) {
-        model.addAttribute(CSS_URL_ATTRIBUTE_NAME, LOCAL_CSS);
-        model.addAttribute(FAVICON_URL_ATTRIBUTE_NAME, LOCAL_FAVICON);
-        model.addAttribute(SCRIPT_URL_ATTRIBUTE_NAME, LOCAL_SCRIPT);
-        model.addAttribute(LOGO_URL_ATTRIBUTE_NAME, LOCAL_LOGO);
+        model.addAttribute(CSS_URL_ATTRIBUTE_NAME, getLocalUrl(CSS_PATH));
+        model.addAttribute(FAVICON_URL_ATTRIBUTE_NAME, getLocalUrl(FAVICON_PATH));
+        model.addAttribute(SCRIPT_URL_ATTRIBUTE_NAME, getLocalUrl(SCRIPT_PATH));
+        model.addAttribute(LOGO_URL_ATTRIBUTE_NAME, getLocalUrl(LOGO_PATH));
     }
 }

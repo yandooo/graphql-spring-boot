@@ -5,9 +5,8 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class PlaygroundCdn {
+public class PlaygroundStaticPathSettings {
 
-    private boolean enabled;
     @NotBlank
-    private String version = "latest";
+    private String base = "/vendor/playground";
 }

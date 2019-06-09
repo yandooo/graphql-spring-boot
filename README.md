@@ -18,6 +18,7 @@
 - [Enable GraphQL Playground](#enable-graphql-playground)
   - [Basic settings](#basic-settings)
   - [CDN](#cdn)
+  - [Custom static resources](#custom-static-resources)
   - [Customizing GraphQL Playground](#customizing-graphql-playground)
   - [Tabs](#tabs)
 - [Supported GraphQL-Java Libraries](#supported-graphql-java-libraries)
@@ -273,6 +274,7 @@ graphql.playground:
     mapping: /playground
     endpoint: /graphql
     subscriptionsEndpoint: /subscriptions
+    staticFolder.basePath: my-playground-resources-folder
     enabled: true
     pageTitle: Playground
     cdn:
@@ -327,6 +329,18 @@ The currently bundled version is `1.7.20`, which is - as of writing this - the l
 The CDN option uses `jsDelivr` CDN, if enabled. By default, it will load the latest available release.
 Available CDN versions can be found on the project's 
 [jsDelivr page](https://www.jsdelivr.com/package/npm/graphql-playground-react). The CDN option is disabled by default.
+
+## Custom static resources
+
+You can also specify a custom local version of Playground by setting the base path for `Playground` resources in
+the `staticPath.base` property. Under this directory, you have to provide the following files:
+   
+* `static/css/index.css`
+* `static/js/middleware.js`
+* `favicon.png`
+* `logo.png`
+
+This is identical to the directory structure of the CDN under the `build` subfolder (where these files can be found).
 
 ## Customizing GraphQL Playground
 
