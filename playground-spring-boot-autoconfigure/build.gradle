@@ -25,6 +25,8 @@ dependencies{
 
     testCompile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
     testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
+    testCompile "org.springframework.boot:spring-boot-starter-security:$LIB_SPRING_BOOT_VER"
+    testCompile "org.jsoup:jsoup:1.12.1"
 }
 
 compileJava.dependsOn(processResources)
