@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Controller
@@ -42,13 +41,14 @@ public class PlaygroundController {
         return "playground";
     }
 
-    private String getCdnUrl(final String assetUrl) {
+    private String getCdnUrl(final String assetPath) {
         return String.format("%s@%s/build/%s", CDN_ROOT, propertiesConfiguration.getPlayground().getCdn().getVersion(),
-                assetUrl);
+                assetPath);
     }
 
-    private Path getLocalUrl(final String cssPath) {
-        return Paths.get(propertiesConfiguration.getPlayground().getStaticPath().getBase(), cssPath);
+    private String getLocalUrl(final String assetPath) {
+        return Paths.get(propertiesConfiguration.getPlayground().getStaticPath().getBase(), assetPath).toString()
+                .replace('\\', '/');
     }
 
     private void setCdnUrls(final Model model) {
