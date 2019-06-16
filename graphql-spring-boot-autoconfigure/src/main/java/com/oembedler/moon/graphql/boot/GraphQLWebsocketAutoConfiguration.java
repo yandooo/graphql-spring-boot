@@ -1,6 +1,5 @@
 package com.oembedler.moon.graphql.boot;
 
-import graphql.schema.GraphQLSchema;
 import graphql.servlet.ApolloSubscriptionConnectionListener;
 import graphql.servlet.GraphQLInvocationInputFactory;
 import graphql.servlet.GraphQLObjectMapper;
@@ -13,6 +12,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
@@ -26,7 +26,7 @@ import java.time.Duration;
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnClass(DispatcherServlet.class)
-@ConditionalOnBean({GraphQLSchema.class})
+@Conditional(OnSchemaOrSchemaProviderBean.class)
 @ConditionalOnProperty(value = "graphql.servlet.websocket.enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class})
 @EnableConfigurationProperties(GraphQLSubscriptionApolloProperties.class)
