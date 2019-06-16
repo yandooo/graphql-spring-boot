@@ -187,7 +187,9 @@ release {
             'com.graphql-java-kickstart:graphql-spring-boot-test',
             'com.graphql-java-kickstart:graphql-spring-boot-test-autoconfigure',
             'com.graphql-java-kickstart:voyager-spring-boot-autoconfigure',
-            'com.graphql-java-kickstart:voyager-spring-boot-starter'
+            'com.graphql-java-kickstart:voyager-spring-boot-starter',
+            'com.graphql-java-kickstart:playgroud-spring-boot-autoconfigure',
+            'com.graphql-java-kickstart:playgroud-spring-boot-starter'
     ]
 }
 

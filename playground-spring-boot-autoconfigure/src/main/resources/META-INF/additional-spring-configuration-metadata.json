@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "graphql.playground.mapping",
+      "defaultValue": "/playground",
+      "type": "java.lang.String"
+    }
+  ]
+}

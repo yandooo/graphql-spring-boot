@@ -16,28 +16,17 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+dependencies{
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
+    
+    compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
+    compile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
+    compile "org.springframework.boot:spring-boot-starter-thymeleaf:$LIB_SPRING_BOOT_VER"
 
-rootProject.name = PROJECT_NAME
+    testCompile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
+    testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
+    testCompile "org.springframework.boot:spring-boot-starter-security:$LIB_SPRING_BOOT_VER"
+    testCompile "org.jsoup:jsoup:1.12.1"
+}
 
-include ":altair-spring-boot-autoconfigure"
-include ":altair-spring-boot-starter"
-include ":graphql-spring-boot-autoconfigure"
-include ":graphql-spring-boot-starter"
-include ":graphiql-spring-boot-autoconfigure"
-include ":graphiql-spring-boot-starter"
-include ":voyager-spring-boot-autoconfigure"
-include ":voyager-spring-boot-starter"
-include ":playground-spring-boot-autoconfigure"
-include ":playground-spring-boot-starter"
-
-include ":graphql-spring-boot-starter-test"
-
-include ":example"
-include ":example-spring-common"
-include ':example-graphql-tools'
-include ':example-graphql-subscription'
-include ':example-request-scoped-dataloader'
-
-include ':graphql-spring-boot-test'
-include ':graphql-spring-boot-test-autoconfigure'
-
+compileJava.dependsOn(processResources)
