@@ -59,7 +59,7 @@ import static org.springframework.context.annotation.FilterType.ASSIGNABLE_TYPE;
  * <p>
  * If you are looking to load your full application configuration and use
  * {@link com.graphql.spring.boot.test.GraphQLTestTemplate GraphQLTestTemplate} you should consider
- * {@link SpringBootTest @SpringBootTest} rather thatn this annotation.
+ * {@link SpringBootTest @SpringBootTest} rather than this annotation.
  *
  * @author Michiel Oliemans
  * @since 5.0.2
@@ -100,6 +100,11 @@ public @interface GraphQLTest {
             SimpleMetricsExportAutoConfiguration.class,
             JacksonAutoConfiguration.class
     };
+
+    @AliasFor(
+            annotation = ComponentScan.class
+    )
+    boolean useDefaultFilters() default false;
 
     @AliasFor(
             annotation = ComponentScan.class

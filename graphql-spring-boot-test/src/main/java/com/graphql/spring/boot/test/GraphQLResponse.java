@@ -19,6 +19,9 @@ public class GraphQLResponse {
     public GraphQLResponse(ResponseEntity<String> responseEntity) {
         this.responseEntity = Objects.requireNonNull(responseEntity);
         this.mapper = new ObjectMapper();
+
+        Objects.requireNonNull(responseEntity.getBody(),
+                () -> "Body is empty with status " + responseEntity.getStatusCodeValue());
         context = JsonPath.parse(responseEntity.getBody());
     }
 
