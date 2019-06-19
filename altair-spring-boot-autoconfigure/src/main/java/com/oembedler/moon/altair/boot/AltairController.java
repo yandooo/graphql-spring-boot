@@ -40,7 +40,7 @@ public class AltairController {
     @Value("${altair.endpoint.subscriptions:/subscriptions}")
     private String subscriptionsEndpoint;
 
-    @Value("${altair.static.basePath:/}")
+    @Value("${altair.static.basePath:}")
     private String staticBasePath;
 
     @Value("${altair.pageTitle:Altair}")
