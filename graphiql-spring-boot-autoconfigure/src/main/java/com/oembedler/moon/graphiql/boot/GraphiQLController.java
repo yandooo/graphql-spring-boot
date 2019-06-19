@@ -63,6 +63,9 @@ public class GraphiQLController {
     @Autowired
     private Environment environment;
 
+    @Autowired
+    private GraphiQLProperties graphiQLProperties;
+
     private String template;
     private String props;
     private String headers;
@@ -141,7 +144,20 @@ public class GraphiQLController {
         replacements.put("headers", headers);
         replacements.put("subscriptionClientTimeout", String.valueOf(subscriptionsTimeout * 1000));
         replacements.put("subscriptionClientReconnect", String.valueOf(subscriptionsReconnect));
+        replacements.put("editorThemeCss", getEditorThemeCssURL());
         return replacements;
+    }
+
+    private String getEditorThemeCssURL() {
+        String theme = graphiQLProperties.getProps().getVariables().getEditorTheme();
+        if (theme != null) {
+            return String.format(
+                    "https://cdnjs.cloudflare.com/ajax/libs/codemirror/%s/theme/%s.min.css",
+                    graphiQLProperties.getCodeMirror().getVersion(),
+                    theme.split("\\s")[0]
+            );
+        }
+        return "";
     }
 
     private String getResourceUrl(String staticBasePath, String staticFileName, String cdnUrl) {

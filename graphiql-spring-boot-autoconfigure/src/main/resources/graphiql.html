@@ -41,6 +41,17 @@
     Loading&hellip;
 </div>
 <script>
+    var editorThemeCss = '${editorThemeCss}'
+    if (editorThemeCss !== '') {
+        var link = document.createElement( "link" );
+        link.href = editorThemeCss;
+        link.type = "text/css";
+        link.rel = "stylesheet";
+        link.media = "screen,print";
+
+        document.getElementsByTagName( "head" )[0].appendChild( link );
+    }
+
     // Parse the search string to get url parameters.
     var search = window.location.search;
     var parameters = {};
@@ -55,8 +66,7 @@
     // if variables was provided, try to format it.
     if (parameters.variables) {
         try {
-            parameters.variables =
-                JSON.stringify(JSON.parse(parameters.variables), null, 2);
+            parameters.variables = JSON.stringify(JSON.parse(parameters.variables), null, 2);
         } catch (e) {
             // Do nothing, we want to display the invalid JSON as a string, rather
             // than present an error.
@@ -84,8 +94,7 @@
         var newSearch = '?' + Object.keys(parameters).filter(function (key) {
             return Boolean(parameters[key]);
         }).map(function (key) {
-            return encodeURIComponent(key) + '=' +
-                encodeURIComponent(parameters[key]);
+            return encodeURIComponent(key) + '=' + encodeURIComponent(parameters[key]);
         }).join('&');
         history.replaceState(null, null, newSearch);
     }
@@ -114,8 +123,7 @@
         });
     }
 
-    var loc = window.location,
-        newUri;
+    var loc = window.location, newUri;
 
     if (loc.protocol === "https:") {
         newUri = "wss:";
@@ -149,7 +157,7 @@
     // Render <GraphiQL /> into the body.
     ReactDOM.render(
         React.createElement(GraphiQL, props),
-        document.body
+        document.getElementById("splash")
     );
 
 </script>

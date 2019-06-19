@@ -16,7 +16,7 @@ class PropsLoader {
 
     private static final String GRAPHIQL_PROPS_PREFIX = "graphiql.props.";
     private static final String GRAPHIQL_PROPS_RESOURCES_PREFIX = GRAPHIQL_PROPS_PREFIX + "resources.";
-    private static final String GRAPHIQL_PROPS_VALUES_PREFIX = GRAPHIQL_PROPS_PREFIX + "values.";
+    private static final String GRAPHIQL_PROPS_VALUES_PREFIX = GRAPHIQL_PROPS_PREFIX + "variables.";
 
     private Environment environment;
 
