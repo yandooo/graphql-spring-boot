@@ -38,7 +38,11 @@ public class GraphQLErrorHandlerFactory {
 
     private List<GraphQLErrorFactory> scanForExceptionHandlers(ApplicationContext context, String name) {
         try {
-            Class<?> objClz = context.getBean(name).getClass();
+            Class<?> objClz = context.getType(name);
+            if (objClz == null) {
+                log.info("Cannot load class " + name);
+                return Collections.emptyList();
+            }
             return Arrays.stream(objClz.getDeclaredMethods())
                     .filter(this::isGraphQLExceptionHandlerMethod)
                     .map(method -> GraphQLErrorFactory.withReflection(context.getBean(name), method))
