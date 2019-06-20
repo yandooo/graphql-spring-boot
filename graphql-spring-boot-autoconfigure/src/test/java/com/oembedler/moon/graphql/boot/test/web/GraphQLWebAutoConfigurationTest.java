@@ -10,6 +10,8 @@ import graphql.execution.instrumentation.tracing.TracingInstrumentation;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.AbstractGraphQLHttpServlet;
+import graphql.servlet.DefaultGraphQLSchemaProvider;
+import graphql.servlet.GraphQLSchemaProvider;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.context.annotation.Bean;
@@ -25,12 +27,14 @@ public class GraphQLWebAutoConfigurationTest extends AbstractAutoConfigurationTe
         super(AnnotationConfigWebApplicationContext.class, GraphQLWebAutoConfiguration.class);
     }
 
+    private static final GraphQLSchema SCHEMA = GraphQLSchema.newSchema().query(GraphQLObjectType.newObject().name("Query").build()).build();
+
     @Configuration
     static class SimpleConfiguration {
 
         @Bean
         GraphQLSchema schema() {
-            return GraphQLSchema.newSchema().query(GraphQLObjectType.newObject().name("Query").build()).build();
+            return SCHEMA;
         }
 
     }
@@ -140,6 +144,21 @@ public class GraphQLWebAutoConfigurationTest extends AbstractAutoConfigurationTe
     @Test
     public void appContextLoadsWithMultipleInstrumentations() {
         load(MultipleInstrumentationsConfiguration.class);
+
+        Assert.assertNotNull(this.getContext().getBean(AbstractGraphQLHttpServlet.class));
+    }
+
+    @Configuration
+    static class SchemaProviderConfiguration {
+        @Bean
+        GraphQLSchemaProvider schemaProvider() {
+            return new DefaultGraphQLSchemaProvider(SCHEMA);
+        }
+    }
+
+    @Test
+    public void appContextLoadsWithCustomSchemaProvider() {
+        load(SchemaProviderConfiguration.class);
 
         Assert.assertNotNull(this.getContext().getBean(AbstractGraphQLHttpServlet.class));
     }
