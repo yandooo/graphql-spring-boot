@@ -1,6 +1,6 @@
 package com.oembedler.moon.graphql.boot.error;
 
-import graphql.servlet.GenericGraphQLError;
+import graphql.servlet.core.GenericGraphQLError;
 
 import java.util.Objects;
 

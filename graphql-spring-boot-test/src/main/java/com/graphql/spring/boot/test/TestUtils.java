@@ -6,7 +6,7 @@ import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
 import graphql.GraphQLError;
-import graphql.servlet.GraphQLObjectMapper;
+import graphql.servlet.core.GraphQLObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;

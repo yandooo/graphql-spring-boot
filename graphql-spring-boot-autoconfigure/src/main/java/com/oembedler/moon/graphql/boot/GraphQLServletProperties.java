@@ -19,6 +19,7 @@
 
 package com.oembedler.moon.graphql.boot;
 
+import graphql.servlet.context.ContextSetting;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.context.annotation.Configuration;
@@ -37,6 +38,8 @@ public class GraphQLServletProperties {
     private boolean exceptionHandlersEnabled = false;
 
     private long subscriptionTimeout = 0;
+
+    private ContextSetting contextSetting = ContextSetting.PER_QUERY_WITH_INSTRUMENTATION;
 
     public String getMapping() {
         return mapping != null ? mapping : "/graphql";
@@ -104,5 +107,13 @@ public class GraphQLServletProperties {
 
     public void setSubscriptionTimeout(long subscriptionTimeout) {
         this.subscriptionTimeout = subscriptionTimeout;
+    }
+
+    public ContextSetting getContextSetting() {
+        return contextSetting;
+    }
+
+    public void setContextSetting(ContextSetting contextSetting) {
+        this.contextSetting = contextSetting;
     }
 }

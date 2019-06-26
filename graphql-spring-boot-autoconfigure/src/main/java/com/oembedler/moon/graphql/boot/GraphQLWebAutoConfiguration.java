@@ -31,22 +31,22 @@ import graphql.execution.instrumentation.Instrumentation;
 import graphql.execution.preparsed.PreparsedDocumentProvider;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.AbstractGraphQLHttpServlet;
-import graphql.servlet.BatchExecutionHandler;
-import graphql.servlet.DefaultExecutionStrategyProvider;
-import graphql.servlet.DefaultGraphQLSchemaProvider;
-import graphql.servlet.ExecutionStrategyProvider;
-import graphql.servlet.GraphQLConfiguration;
-import graphql.servlet.GraphQLContextBuilder;
-import graphql.servlet.GraphQLErrorHandler;
 import graphql.servlet.GraphQLHttpServlet;
-import graphql.servlet.GraphQLInvocationInputFactory;
-import graphql.servlet.GraphQLObjectMapper;
-import graphql.servlet.GraphQLQueryInvoker;
-import graphql.servlet.GraphQLRootObjectBuilder;
-import graphql.servlet.GraphQLSchemaProvider;
-import graphql.servlet.GraphQLServletListener;
-import graphql.servlet.ObjectMapperConfigurer;
-import graphql.servlet.ObjectMapperProvider;
+import graphql.servlet.config.DefaultExecutionStrategyProvider;
+import graphql.servlet.config.DefaultGraphQLSchemaProvider;
+import graphql.servlet.config.ExecutionStrategyProvider;
+import graphql.servlet.config.GraphQLConfiguration;
+import graphql.servlet.config.GraphQLSchemaProvider;
+import graphql.servlet.config.ObjectMapperConfigurer;
+import graphql.servlet.config.ObjectMapperProvider;
+import graphql.servlet.context.GraphQLContextBuilder;
+import graphql.servlet.core.GraphQLErrorHandler;
+import graphql.servlet.core.GraphQLObjectMapper;
+import graphql.servlet.core.GraphQLQueryInvoker;
+import graphql.servlet.core.GraphQLRootObjectBuilder;
+import graphql.servlet.core.GraphQLServletListener;
+import graphql.servlet.input.BatchInputPreProcessor;
+import graphql.servlet.input.GraphQLInvocationInputFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +73,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static graphql.servlet.GraphQLObjectMapper.newBuilder;
+import static graphql.servlet.core.GraphQLObjectMapper.*;
 
 
 /**
@@ -127,7 +127,7 @@ public class GraphQLWebAutoConfiguration {
     private MultipartConfigElement multipartConfigElement;
 
     @Autowired(required = false)
-    private BatchExecutionHandler batchExecutionHandler;
+    private BatchInputPreProcessor batchInputPreProcessor;
 
     @PostConstruct
     void postConstruct() {
@@ -228,10 +228,6 @@ public class GraphQLWebAutoConfiguration {
             builder.withPreparsedDocumentProvider(preparsedDocumentProvider);
         }
 
-        if (batchExecutionHandler != null) {
-            builder.withBatchExeuctionHandler(batchExecutionHandler);
-        }
-
         return builder.build();
     }
 
@@ -273,6 +269,8 @@ public class GraphQLWebAutoConfiguration {
                 .with(listeners)
                 .with(graphQLServletProperties.isAsyncModeEnabled())
                 .with(graphQLServletProperties.getSubscriptionTimeout())
+                .with(batchInputPreProcessor)
+                .with(graphQLServletProperties.getContextSetting())
                 .build();
     }
 

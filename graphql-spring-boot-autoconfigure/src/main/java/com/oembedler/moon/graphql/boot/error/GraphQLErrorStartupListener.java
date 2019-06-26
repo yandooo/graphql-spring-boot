@@ -1,6 +1,6 @@
 package com.oembedler.moon.graphql.boot.error;
 
-import graphql.servlet.GraphQLErrorHandler;
+import graphql.servlet.core.GraphQLErrorHandler;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
