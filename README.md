@@ -172,6 +172,7 @@ graphql:
            corsEnabled: true
            # if you want to @ExceptionHandler annotation for custom GraphQLErrors
            exception-handlers-enabled: true
+           contextSetting: PER_REQUEST_WITH_INSTRUMENTATION
 ```
 
 By default a global CORS filter is enabled for `/graphql/**` context.
