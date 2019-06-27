@@ -1,5 +1,6 @@
 package com.oembedler.moon.graphql.boot;
 
+import graphql.servlet.context.ContextSetting;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import static graphql.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(properties = {"graphql.servlet.mapping=/test"})
+@SpringBootTest(properties = {"graphql.servlet.mapping=/test", "graphql.servlet.contextSetting=PER_REQUEST_WITH_INSTRUMENTATION"})
 public class GraphQLServletPropertiesTest {
 
     @Autowired
@@ -23,4 +24,9 @@ public class GraphQLServletPropertiesTest {
         assertEquals("/test", mapping);
     }
 
+    @Test
+    public void containsCorrectContextSetting() {
+        ContextSetting contextSetting = properties.getContextSetting();
+        assertEquals(ContextSetting.PER_REQUEST_WITH_INSTRUMENTATION, contextSetting);
+    }
 }

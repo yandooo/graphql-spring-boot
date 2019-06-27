@@ -2,7 +2,7 @@ package graphql.servlet.examples.dataloader.requestscope;
 
 import com.coxautodev.graphql.tools.GraphQLResolver;
 import graphql.schema.DataFetchingEnvironment;
-import graphql.servlet.GraphQLContext;
+import graphql.servlet.context.GraphQLContext;
 import org.dataloader.DataLoader;
 import org.springframework.stereotype.Component;
 

@@ -4,8 +4,8 @@ import graphql.ExceptionWhileDataFetching;
 import graphql.GraphQLError;
 import graphql.GraphQLException;
 import graphql.SerializationError;
-import graphql.servlet.DefaultGraphQLErrorHandler;
-import graphql.servlet.GenericGraphQLError;
+import graphql.servlet.core.DefaultGraphQLErrorHandler;
+import graphql.servlet.core.GenericGraphQLError;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;

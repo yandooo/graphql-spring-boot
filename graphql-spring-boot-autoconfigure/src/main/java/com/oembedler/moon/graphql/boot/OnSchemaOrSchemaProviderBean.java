@@ -1,7 +1,7 @@
 package com.oembedler.moon.graphql.boot;
 
 import graphql.schema.GraphQLSchema;
-import graphql.servlet.GraphQLSchemaProvider;
+import graphql.servlet.config.GraphQLSchemaProvider;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 

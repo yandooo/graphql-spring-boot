@@ -1,8 +1,8 @@
 package com.oembedler.moon.graphql.boot.error;
 
 import graphql.GraphQLError;
-import graphql.servlet.DefaultGraphQLErrorHandler;
-import graphql.servlet.GraphQLErrorHandler;
+import graphql.servlet.core.DefaultGraphQLErrorHandler;
+import graphql.servlet.core.GraphQLErrorHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
