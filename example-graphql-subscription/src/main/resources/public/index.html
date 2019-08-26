@@ -62,7 +62,7 @@
         }
 
         function subscribeToStocks() {
-            var exampleSocket = new WebSocket("ws://localhost:9000/subscriptions");
+            var exampleSocket = new WebSocket("ws://localhost:9001/subscriptions");
             networkBlip();
 
             exampleSocket.onopen = function () {
