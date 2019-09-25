@@ -27,3 +27,7 @@ voyager:
   enabled: true
   cdn:
     enabled: false
+graphql.playground:
+  enabled: true
+  cdn:
+    enabled: false
