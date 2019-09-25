@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 class GraphQLToolsProperties {
 
     private String schemaLocationPattern = "**/*.graphqls";
+    /** @deprecated Set graphql.tools.schema-parser-options.introspection-enabled instead */
+    @Deprecated
     private boolean introspectionEnabled = true;
     private boolean useDefaultObjectmapper = true;
 
