@@ -32,7 +32,7 @@
 
 ## WARNING: NoClassDefFoundError when using GraphQL Java Tools > 5.4.x
 
-If you're using `graphl-java-tools` you need to set the `kotlin.version` in your Spring Boot project explicitly to 
+If you're using `graphql-java-tools` you need to set the `kotlin.version` in your Spring Boot project explicitly to 
 version 1.3.10, because Spring Boot Starter parent currently overrides it with a 1.2.* version of Kotlin. 
 `graphql-java-tools` requires 1.3.* however because of its coroutine support. If you don't override this version
 you will run into a `NoClassDefFoundError`.
