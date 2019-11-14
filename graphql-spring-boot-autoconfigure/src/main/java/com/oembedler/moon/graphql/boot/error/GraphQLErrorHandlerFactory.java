@@ -1,8 +1,14 @@
 package com.oembedler.moon.graphql.boot.error;
 
-import graphql.GraphQLError;
+import static com.oembedler.moon.graphql.boot.error.GraphQLErrorFactory.withReflection;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
+
 import graphql.servlet.core.DefaultGraphQLErrorHandler;
 import graphql.servlet.core.GraphQLErrorHandler;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -10,51 +16,42 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Slf4j
 public class GraphQLErrorHandlerFactory {
 
-    public GraphQLErrorHandler create(ConfigurableApplicationContext applicationContext, boolean exceptionHandlersEnabled) {
-        ConfigurableListableBeanFactory beanFactory = applicationContext.getBeanFactory();
-        List<GraphQLErrorFactory> factories = Arrays.stream(beanFactory.getBeanDefinitionNames())
-                .filter(applicationContext::containsBean)
-                .map(name -> scanForExceptionHandlers(applicationContext, name))
-                .flatMap(List::stream)
-                .collect(Collectors.toList());
+  public GraphQLErrorHandler create(ConfigurableApplicationContext applicationContext,
+      boolean exceptionHandlersEnabled) {
+    ConfigurableListableBeanFactory beanFactory = applicationContext.getBeanFactory();
+    List<GraphQLErrorFactory> factories = Arrays.stream(beanFactory.getBeanDefinitionNames())
+        .filter(applicationContext::containsBean)
+        .map(name -> scanForExceptionHandlers(applicationContext, name))
+        .flatMap(List::stream)
+        .collect(toList());
 
-        if (!factories.isEmpty() || exceptionHandlersEnabled) {
-            log.debug("Handle GraphQL errors using exception handlers defined in {} custom factories", factories.size());
-            return new GraphQLErrorFromExceptionHandler(factories);
-        }
-
-        log.debug("Using default GraphQL error handler");
-        return new DefaultGraphQLErrorHandler();
+    if (!factories.isEmpty() || exceptionHandlersEnabled) {
+      log.debug("Handle GraphQL errors using exception handlers defined in {} custom factories", factories.size());
+      return new GraphQLErrorFromExceptionHandler(factories);
     }
 
-    private List<GraphQLErrorFactory> scanForExceptionHandlers(ApplicationContext context, String name) {
-        try {
-            Class<?> objClz = context.getType(name);
-            if (objClz == null) {
-                log.info("Cannot load class " + name);
-                return Collections.emptyList();
-            }
-            return Arrays.stream(objClz.getDeclaredMethods())
-                    .filter(this::isGraphQLExceptionHandlerMethod)
-                    .map(method -> GraphQLErrorFactory.withReflection(context.getBean(name), method))
-                    .collect(Collectors.toList());
-        } catch (BeanCreationException e) {
-            log.error("Cannot load class " + name + ". " + e.getMessage());
-            return Collections.emptyList();
-        }
-    }
+    log.debug("Using default GraphQL error handler");
+    return new DefaultGraphQLErrorHandler();
+  }
 
-    private boolean isGraphQLExceptionHandlerMethod(Method method) {
-        return method.isAnnotationPresent(ExceptionHandler.class) && GraphQLError.class.isAssignableFrom(method.getReturnType());
+  private List<GraphQLErrorFactory> scanForExceptionHandlers(ApplicationContext context, String name) {
+    try {
+      Class<?> objClz = context.getType(name);
+      if (objClz == null) {
+        log.info("Cannot load class " + name);
+        return emptyList();
+      }
+      return Arrays.stream(objClz.getDeclaredMethods())
+          .filter(ReflectiveMethodValidator::isGraphQLExceptionHandler)
+          .map(method -> withReflection(context.getBean(name), method))
+          .collect(toList());
+    } catch (BeanCreationException e) {
+      log.error("Cannot load class {}. {}", name, e.getMessage());
+      return emptyList();
     }
+  }
 
 }

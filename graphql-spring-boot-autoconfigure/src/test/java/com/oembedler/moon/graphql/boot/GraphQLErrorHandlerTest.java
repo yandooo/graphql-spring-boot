@@ -7,7 +7,6 @@ import com.oembedler.moon.graphql.boot.error.ThrowableGraphQLError;
 import com.oembedler.moon.graphql.boot.test.AbstractAutoConfigurationTest;
 import graphql.GraphQL;
 import graphql.GraphQLError;
-import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.core.GraphQLErrorHandler;
 import graphql.servlet.core.GraphQLObjectMapper;
@@ -17,11 +16,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-
-import java.io.IOException;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
 
