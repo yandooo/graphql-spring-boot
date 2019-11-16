@@ -86,7 +86,7 @@ import static graphql.servlet.core.GraphQLObjectMapper.*;
 @Conditional(OnSchemaOrSchemaProviderBean.class)
 @ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class, JacksonAutoConfiguration.class})
-@EnableConfigurationProperties({GraphQLServletProperties.class})
+@EnableConfigurationProperties({GraphQLServletProperties.class, GraphQLQueryInvokerProperties.class})
 public class GraphQLWebAutoConfiguration {
 
 
@@ -213,7 +213,10 @@ public class GraphQLWebAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLQueryInvoker queryInvoker(ExecutionStrategyProvider executionStrategyProvider) {
+    public GraphQLQueryInvoker queryInvoker(
+            ExecutionStrategyProvider executionStrategyProvider,
+            GraphQLQueryInvokerProperties graphQLQueryInvokerProperties
+    ) {
         GraphQLQueryInvoker.Builder builder = GraphQLQueryInvoker.newBuilder()
                 .withExecutionStrategyProvider(executionStrategyProvider);
 
@@ -228,7 +231,13 @@ public class GraphQLWebAutoConfiguration {
             builder.withPreparsedDocumentProvider(preparsedDocumentProvider);
         }
 
-        return builder.build();
+        GraphQLQueryInvoker queryInvoker = builder.build();
+
+        if (graphQLQueryInvokerProperties.isTransactional()) {
+            queryInvoker = new TransactionalGraphQLQueryInvokerWrapper(queryInvoker);
+            log.info("Using transactional query invoker.");
+        }
+        return queryInvoker;
     }
 
     @Bean

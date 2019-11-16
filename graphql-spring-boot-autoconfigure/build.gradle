@@ -23,6 +23,7 @@ dependencies {
 
     compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
     compile "org.springframework.boot:spring-boot-starter-websocket:$LIB_SPRING_BOOT_VER"
+    compile "javax.transaction:javax.transaction-api:$LIB_TRANSACTIONS_API_VERSION"
     compile "org.springframework.boot:spring-boot-starter-actuator:$LIB_SPRING_BOOT_VER"
     compile "com.graphql-java-kickstart:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
     compile "com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"

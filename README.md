@@ -173,6 +173,10 @@ graphql:
            # if you want to @ExceptionHandler annotation for custom GraphQLErrors
            exception-handlers-enabled: true
            contextSetting: PER_REQUEST_WITH_INSTRUMENTATION
+      query-invoker:
+           # use a transactional query invoker; useful when working with JPA entities across multiple resolvers to 
+           # prevent LazyInitializationException; false by default
+           transactional: true
 ```
 
 By default a global CORS filter is enabled for `/graphql/**` context.
