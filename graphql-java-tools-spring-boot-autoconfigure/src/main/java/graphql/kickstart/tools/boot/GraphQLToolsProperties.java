@@ -1,4 +1,4 @@
-package com.oembedler.moon.graphql.boot;
+package graphql.kickstart.tools.boot;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

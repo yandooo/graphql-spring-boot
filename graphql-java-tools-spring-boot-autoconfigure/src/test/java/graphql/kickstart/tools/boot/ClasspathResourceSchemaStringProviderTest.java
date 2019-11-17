@@ -1,12 +1,13 @@
-package com.oembedler.moon.graphql.boot;
+package graphql.kickstart.tools.boot;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
-import com.oembedler.moon.graphql.boot.test.AbstractAutoConfigurationTest;
 import java.io.IOException;
 import java.util.List;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,9 +19,18 @@ public class ClasspathResourceSchemaStringProviderTest extends AbstractAutoConfi
     super(GraphQLJavaToolsAutoConfiguration.class);
   }
 
+  @Before
+  public void setup() {
+    System.setProperty("graphql.tools.schemaLocationPattern", "graphql/*.gqls");
+  }
+
+  @After
+  public void clear() {
+    System.clearProperty("graphql.tools.schemaLocationPattern");
+  }
+
   @Test
   public void schemaStrings() throws IOException {
-    System.setProperty("graphql.tools.schemaLocationPattern", "graphql/*.gqls");
     load(BaseConfiguration.class);
     schemaStringProvider = getContext().getBean(ClasspathResourceSchemaStringProvider.class);
 
@@ -33,6 +43,7 @@ public class ClasspathResourceSchemaStringProviderTest extends AbstractAutoConfi
   static class BaseConfiguration {
 
     public class Query implements GraphQLQueryResolver {
+
       String schemaLocationTest(String id) {
         return id;
       }

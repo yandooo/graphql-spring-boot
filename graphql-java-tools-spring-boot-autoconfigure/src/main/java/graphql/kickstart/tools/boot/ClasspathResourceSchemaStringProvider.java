@@ -1,4 +1,4 @@
-package com.oembedler.moon.graphql.boot;
+package graphql.kickstart.tools.boot;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.oembedler.moon.graphql.boot;
+package graphql.kickstart.tools.boot;
 
 import com.coxautodev.graphql.tools.GraphQLResolver;
 import com.coxautodev.graphql.tools.PerFieldObjectMapperProvider;

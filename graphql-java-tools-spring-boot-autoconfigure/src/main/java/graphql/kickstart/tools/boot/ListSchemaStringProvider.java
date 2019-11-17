@@ -1,4 +1,4 @@
-package com.oembedler.moon.graphql.boot;
+package graphql.kickstart.tools.boot;
 
 import java.io.IOException;
 import java.util.ArrayList;

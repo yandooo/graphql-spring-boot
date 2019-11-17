@@ -1,4 +1,4 @@
-package com.oembedler.moon.graphql.boot;
+package graphql.kickstart.tools.boot;
 
 import graphql.schema.idl.SchemaDirectiveWiring;
 

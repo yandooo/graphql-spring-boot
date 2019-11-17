@@ -1,4 +1,4 @@
-package com.oembedler.moon.graphql.boot.test.graphqlJavaTools.resolvers;
+package graphql.kickstart.tools.boot;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;

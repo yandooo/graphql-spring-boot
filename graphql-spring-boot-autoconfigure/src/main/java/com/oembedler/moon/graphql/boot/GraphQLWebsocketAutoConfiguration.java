@@ -1,5 +1,6 @@
 package com.oembedler.moon.graphql.boot;
 
+import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
 import graphql.servlet.GraphQLWebsocketServlet;
 import graphql.servlet.core.ApolloSubscriptionConnectionListener;
 import graphql.servlet.core.GraphQLObjectMapper;
@@ -18,8 +19,6 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 import org.springframework.web.socket.server.standard.ServerEndpointRegistration;
 
-import javax.websocket.ContainerProvider;
-import javax.websocket.WebSocketContainer;
 import javax.websocket.server.ServerContainer;
 import java.time.Duration;
 
