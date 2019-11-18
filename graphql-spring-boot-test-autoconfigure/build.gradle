@@ -22,6 +22,9 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER")
     compile(project(":graphql-spring-boot-test"))
     compile(project(":graphql-spring-boot-starter"))
+    compile(project(":graphql-java-tools-spring-boot-starter"))
+    compile("org.springframework.boot:spring-boot-starter-actuator:$LIB_SPRING_BOOT_VER")
+    compile("org.springframework.boot:spring-boot-starter-websocket:$LIB_SPRING_BOOT_VER")
     compile("com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER")
 }
 

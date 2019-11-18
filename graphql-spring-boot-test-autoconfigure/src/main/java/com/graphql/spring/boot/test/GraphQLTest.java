@@ -4,11 +4,11 @@ import com.coxautodev.graphql.tools.GraphQLResolver;
 import com.coxautodev.graphql.tools.SchemaParserDictionary;
 import com.coxautodev.graphql.tools.SchemaParserOptions;
 import com.oembedler.moon.graphql.boot.GraphQLInstrumentationAutoConfiguration;
-import com.oembedler.moon.graphql.boot.GraphQLJavaToolsAutoConfiguration;
 import com.oembedler.moon.graphql.boot.GraphQLWebAutoConfiguration;
 import graphql.execution.ExecutionStrategy;
 import graphql.execution.instrumentation.Instrumentation;
 import graphql.execution.preparsed.PreparsedDocumentProvider;
+import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
 import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.SchemaParser;
@@ -36,13 +36,13 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 import javax.servlet.MultipartConfigElement;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 import static org.springframework.context.annotation.FilterType.ASSIGNABLE_TYPE;
 
