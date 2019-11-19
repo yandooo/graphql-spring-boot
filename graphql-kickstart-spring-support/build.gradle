@@ -1,0 +1,4 @@
+dependencies {
+    compileOnly "com.graphql-java-kickstart:graphql-java-kickstart:$LIB_GRAPHQL_SERVLET_VER"
+    compileOnly "org.springframework:spring-web:$LIB_SPRING_CORE_VER"
+}

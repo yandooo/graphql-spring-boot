@@ -29,8 +29,12 @@ include ":voyager-spring-boot-autoconfigure"
 include ":voyager-spring-boot-starter"
 include ":playground-spring-boot-autoconfigure"
 include ":playground-spring-boot-starter"
-include ':graphql-java-tools-spring-boot-autoconfigure'
-include ':graphql-java-tools-spring-boot-starter'
+
+include ':graphql-kickstart-spring-boot-autoconfigure-tools'
+include ':graphql-kickstart-spring-boot-starter-tools'
+include ':graphql-kickstart-spring-support'
+include ':graphql-kickstart-spring-boot-autoconfigure-webflux'
+include ':graphql-kickstart-spring-boot-starter-webflux'
 
 include ":graphql-spring-boot-starter-test"
 
