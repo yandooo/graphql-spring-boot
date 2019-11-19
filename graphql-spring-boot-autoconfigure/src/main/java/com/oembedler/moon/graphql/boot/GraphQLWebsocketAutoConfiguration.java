@@ -1,11 +1,11 @@
 package com.oembedler.moon.graphql.boot;
 
+import graphql.kickstart.execution.GraphQLObjectMapper;
+import graphql.kickstart.execution.GraphQLQueryInvoker;
+import graphql.kickstart.execution.subscription.SubscriptionConnectionListener;
 import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
 import graphql.servlet.GraphQLWebsocketServlet;
-import graphql.servlet.core.ApolloSubscriptionConnectionListener;
-import graphql.servlet.core.GraphQLObjectMapper;
-import graphql.servlet.core.GraphQLQueryInvoker;
-import graphql.servlet.core.SubscriptionConnectionListener;
+import graphql.servlet.apollo.ApolloSubscriptionConnectionListener;
 import graphql.servlet.input.GraphQLInvocationInputFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

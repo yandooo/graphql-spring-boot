@@ -19,9 +19,8 @@
 
 package com.oembedler.moon.graphql.boot;
 
-import graphql.servlet.context.ContextSetting;
+import graphql.kickstart.execution.context.ContextSetting;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -31,89 +30,90 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "graphql.servlet")
 public class GraphQLServletProperties {
 
-    private String mapping;
+  private String mapping;
 
-    private boolean asyncModeEnabled = false;
+  private boolean asyncModeEnabled = false;
 
-    private boolean exceptionHandlersEnabled = false;
+  private boolean exceptionHandlersEnabled = false;
 
-    private long subscriptionTimeout = 0;
+  private long subscriptionTimeout = 0;
 
-    private ContextSetting contextSetting = ContextSetting.PER_QUERY_WITH_INSTRUMENTATION;
+  private ContextSetting contextSetting = ContextSetting.PER_QUERY_WITH_INSTRUMENTATION;
 
-    public String getMapping() {
-        return mapping != null ? mapping : "/graphql";
+  public String getMapping() {
+    return mapping != null ? mapping : "/graphql";
+  }
+
+  public void setMapping(String mapping) {
+    this.mapping = mapping;
+  }
+
+  private boolean mappingIsServletWildcard() {
+    return getMapping().endsWith("/*");
+  }
+
+  private boolean mappingIsAntWildcard() {
+    return getMapping().endsWith("/**");
+  }
+
+  /**
+   * @return the servlet mapping, coercing into an appropriate wildcard for servlets (ending in /*)
+   */
+  public String getServletMapping() {
+    final String mapping = getMapping();
+    if (mappingIsAntWildcard()) {
+      return mapping.replaceAll("\\*$", "");
+    } else if (mappingIsServletWildcard()) {
+      return mapping;
+    } else {
+      return mapping.endsWith("/") ? mapping + "*" : mapping + "/*";
     }
+  }
 
-    private boolean mappingIsServletWildcard() {
-        return getMapping().endsWith("/*");
+  /**
+   * @return the servlet mapping, coercing into an appropriate wildcard for CORS, which uses ant matchers (ending in
+   * /**)
+   */
+  public String getCorsMapping() {
+    final String mapping = getMapping();
+    if (mappingIsAntWildcard()) {
+      return mapping;
+    } else if (mappingIsServletWildcard()) {
+      return mapping + "*";
+    } else {
+      return mapping.endsWith("/") ? mapping + "**" : mapping + "/**";
     }
+  }
 
-    private boolean mappingIsAntWildcard() {
-        return getMapping().endsWith("/**");
-    }
+  public boolean isAsyncModeEnabled() {
+    return asyncModeEnabled;
+  }
 
-    /**
-     * @return the servlet mapping, coercing into an appropriate wildcard for servlets (ending in /*)
-     */
-    public String getServletMapping() {
-        final String mapping = getMapping();
-        if(mappingIsAntWildcard()) {
-            return mapping.replaceAll("\\*$", "");
-        } else if(mappingIsServletWildcard()) {
-            return mapping;
-        } else {
-            return mapping.endsWith("/") ? mapping + "*" : mapping + "/*";
-        }
-    }
+  public void setAsyncModeEnabled(boolean asyncModeEnabled) {
+    this.asyncModeEnabled = asyncModeEnabled;
+  }
 
-    /**
-     * @return the servlet mapping, coercing into an appropriate wildcard for CORS, which uses ant matchers (ending in /**)
-     */
-    public String getCorsMapping() {
-        final String mapping = getMapping();
-        if(mappingIsAntWildcard()) {
-            return mapping;
-        } else if(mappingIsServletWildcard()) {
-            return mapping + "*";
-        } else {
-            return mapping.endsWith("/") ? mapping + "**" : mapping + "/**";
-        }
-    }
+  public boolean isExceptionHandlersEnabled() {
+    return exceptionHandlersEnabled;
+  }
 
-    public void setMapping(String mapping) {
-        this.mapping = mapping;
-    }
+  public void setExceptionHandlersEnabled(boolean exceptionHandlersEnabled) {
+    this.exceptionHandlersEnabled = exceptionHandlersEnabled;
+  }
 
-    public boolean isAsyncModeEnabled() {
-        return asyncModeEnabled;
-    }
+  public long getSubscriptionTimeout() {
+    return subscriptionTimeout;
+  }
 
-    public void setAsyncModeEnabled(boolean asyncModeEnabled) {
-        this.asyncModeEnabled = asyncModeEnabled;
-    }
+  public void setSubscriptionTimeout(long subscriptionTimeout) {
+    this.subscriptionTimeout = subscriptionTimeout;
+  }
 
-    public boolean isExceptionHandlersEnabled() {
-        return exceptionHandlersEnabled;
-    }
+  public ContextSetting getContextSetting() {
+    return contextSetting;
+  }
 
-    public void setExceptionHandlersEnabled(boolean exceptionHandlersEnabled) {
-        this.exceptionHandlersEnabled = exceptionHandlersEnabled;
-    }
-
-    public long getSubscriptionTimeout() {
-        return subscriptionTimeout;
-    }
-
-    public void setSubscriptionTimeout(long subscriptionTimeout) {
-        this.subscriptionTimeout = subscriptionTimeout;
-    }
-
-    public ContextSetting getContextSetting() {
-        return contextSetting;
-    }
-
-    public void setContextSetting(ContextSetting contextSetting) {
-        this.contextSetting = contextSetting;
-    }
+  public void setContextSetting(ContextSetting contextSetting) {
+    this.contextSetting = contextSetting;
+  }
 }

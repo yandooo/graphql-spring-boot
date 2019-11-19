@@ -33,6 +33,7 @@ include ":playground-spring-boot-starter"
 include ':graphql-kickstart-spring-boot-autoconfigure-tools'
 include ':graphql-kickstart-spring-boot-starter-tools'
 include ':graphql-kickstart-spring-support'
+include ':graphql-kickstart-spring-webflux'
 include ':graphql-kickstart-spring-boot-autoconfigure-webflux'
 include ':graphql-kickstart-spring-boot-starter-webflux'
 

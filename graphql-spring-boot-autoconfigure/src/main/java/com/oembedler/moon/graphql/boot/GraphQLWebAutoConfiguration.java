@@ -19,6 +19,8 @@
 
 package com.oembedler.moon.graphql.boot;
 
+import static graphql.kickstart.execution.GraphQLObjectMapper.newBuilder;
+
 import com.fasterxml.jackson.databind.InjectableValues;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oembedler.moon.graphql.boot.error.ErrorHandlerSupplier;
@@ -29,25 +31,33 @@ import graphql.execution.ExecutionStrategy;
 import graphql.execution.SubscriptionExecutionStrategy;
 import graphql.execution.instrumentation.Instrumentation;
 import graphql.execution.preparsed.PreparsedDocumentProvider;
+import graphql.kickstart.execution.GraphQLObjectMapper;
+import graphql.kickstart.execution.GraphQLQueryInvoker;
+import graphql.kickstart.execution.config.DefaultExecutionStrategyProvider;
+import graphql.kickstart.execution.config.DefaultGraphQLSchemaProvider;
+import graphql.kickstart.execution.config.ExecutionStrategyProvider;
+import graphql.kickstart.execution.config.GraphQLSchemaProvider;
+import graphql.kickstart.execution.config.ObjectMapperConfigurer;
+import graphql.kickstart.execution.config.ObjectMapperProvider;
+import graphql.kickstart.execution.error.GraphQLErrorHandler;
 import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.AbstractGraphQLHttpServlet;
+import graphql.servlet.GraphQLConfiguration;
 import graphql.servlet.GraphQLHttpServlet;
-import graphql.servlet.config.DefaultExecutionStrategyProvider;
-import graphql.servlet.config.DefaultGraphQLSchemaProvider;
-import graphql.servlet.config.ExecutionStrategyProvider;
-import graphql.servlet.config.GraphQLConfiguration;
-import graphql.servlet.config.GraphQLSchemaProvider;
-import graphql.servlet.config.ObjectMapperConfigurer;
-import graphql.servlet.config.ObjectMapperProvider;
-import graphql.servlet.context.GraphQLContextBuilder;
-import graphql.servlet.core.GraphQLErrorHandler;
-import graphql.servlet.core.GraphQLObjectMapper;
-import graphql.servlet.core.GraphQLQueryInvoker;
-import graphql.servlet.core.GraphQLRootObjectBuilder;
+import graphql.servlet.config.DefaultGraphQLSchemaServletProvider;
+import graphql.servlet.config.GraphQLSchemaServletProvider;
+import graphql.servlet.context.GraphQLServletContextBuilder;
 import graphql.servlet.core.GraphQLServletListener;
+import graphql.servlet.core.GraphQLServletRootObjectBuilder;
 import graphql.servlet.input.BatchInputPreProcessor;
 import graphql.servlet.input.GraphQLInvocationInputFactory;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import javax.annotation.PostConstruct;
+import javax.servlet.MultipartConfigElement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,15 +77,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.MultipartConfigElement;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import static graphql.servlet.core.GraphQLObjectMapper.*;
-
 
 /**
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
@@ -91,204 +92,213 @@ import static graphql.servlet.core.GraphQLObjectMapper.*;
 public class GraphQLWebAutoConfiguration {
 
 
-    public static final String QUERY_EXECUTION_STRATEGY = "queryExecutionStrategy";
-    public static final String MUTATION_EXECUTION_STRATEGY = "mutationExecutionStrategy";
-    public static final String SUBSCRIPTION_EXECUTION_STRATEGY = "subscriptionExecutionStrategy";
+  public static final String QUERY_EXECUTION_STRATEGY = "queryExecutionStrategy";
+  public static final String MUTATION_EXECUTION_STRATEGY = "mutationExecutionStrategy";
+  public static final String SUBSCRIPTION_EXECUTION_STRATEGY = "subscriptionExecutionStrategy";
 
-    @Autowired
-    private GraphQLServletProperties graphQLServletProperties;
+  @Autowired
+  private GraphQLServletProperties graphQLServletProperties;
 
-    @Autowired(required = false)
-    private List<GraphQLServletListener> listeners;
+  @Autowired(required = false)
+  private List<GraphQLServletListener> listeners;
 
-    @Autowired(required = false)
-    private List<Instrumentation> instrumentations;
+  @Autowired(required = false)
+  private List<Instrumentation> instrumentations;
 
-    @Autowired(required = false)
-    private GraphQLErrorHandler errorHandler;
+  @Autowired(required = false)
+  private GraphQLErrorHandler errorHandler;
 
-    private ErrorHandlerSupplier errorHandlerSupplier = new ErrorHandlerSupplier(null);
+  private ErrorHandlerSupplier errorHandlerSupplier = new ErrorHandlerSupplier(null);
 
-    @Autowired(required = false)
-    private Map<String, ExecutionStrategy> executionStrategies;
+  @Autowired(required = false)
+  private Map<String, ExecutionStrategy> executionStrategies;
 
-    @Autowired(required = false)
-    private GraphQLContextBuilder contextBuilder;
+  @Autowired(required = false)
+  private GraphQLServletContextBuilder contextBuilder;
 
-    @Autowired(required = false)
-    private GraphQLRootObjectBuilder graphQLRootObjectBuilder;
+  @Autowired(required = false)
+  private GraphQLServletRootObjectBuilder graphQLRootObjectBuilder;
 
-    @Autowired(required = false)
-    private ObjectMapperConfigurer objectMapperConfigurer;
+  @Autowired(required = false)
+  private ObjectMapperConfigurer objectMapperConfigurer;
 
-    @Autowired(required = false)
-    private PreparsedDocumentProvider preparsedDocumentProvider;
+  @Autowired(required = false)
+  private PreparsedDocumentProvider preparsedDocumentProvider;
 
-    @Autowired(required = false)
-    private MultipartConfigElement multipartConfigElement;
+  @Autowired(required = false)
+  private MultipartConfigElement multipartConfigElement;
 
-    @Autowired(required = false)
-    private BatchInputPreProcessor batchInputPreProcessor;
+  @Autowired(required = false)
+  private BatchInputPreProcessor batchInputPreProcessor;
 
-    @PostConstruct
-    void postConstruct() {
-        if (errorHandler != null) {
-            errorHandlerSupplier.setErrorHandler(errorHandler);
-        }
+  @PostConstruct
+  void postConstruct() {
+    if (errorHandler != null) {
+      errorHandlerSupplier.setErrorHandler(errorHandler);
+    }
+  }
+
+  @Bean
+  public GraphQLErrorStartupListener graphQLErrorStartupListener() {
+    return new GraphQLErrorStartupListener(errorHandlerSupplier, graphQLServletProperties.isExceptionHandlersEnabled());
+  }
+
+  @Bean
+  @ConditionalOnClass(CorsFilter.class)
+  @ConditionalOnProperty(value = "graphql.servlet.corsEnabled", havingValue = "true", matchIfMissing = true)
+  public CorsFilter corsConfigurer() {
+    Map<String, CorsConfiguration> corsConfigurations = new LinkedHashMap<>(1);
+    CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+    corsConfigurations.put(graphQLServletProperties.getCorsMapping(), corsConfiguration);
+
+    UrlBasedCorsConfigurationSource configurationSource = new UrlBasedCorsConfigurationSource();
+    configurationSource.setCorsConfigurations(corsConfigurations);
+    configurationSource.setAlwaysUseFullPath(true);
+
+    return new CorsFilter(configurationSource);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GraphQLSchemaServletProvider graphQLSchemaProvider(GraphQLSchema schema) {
+    return new DefaultGraphQLSchemaServletProvider(schema);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public ExecutionStrategyProvider executionStrategyProvider() {
+    if (executionStrategies == null || executionStrategies.isEmpty()) {
+      return new DefaultExecutionStrategyProvider(new AsyncExecutionStrategy(), null,
+          new SubscriptionExecutionStrategy());
+    } else if (executionStrategies.entrySet().size() == 1) {
+      return new DefaultExecutionStrategyProvider(executionStrategies.entrySet().stream().findFirst().get().getValue());
+    } else {
+
+      if (!executionStrategies.containsKey(QUERY_EXECUTION_STRATEGY)) {
+        throwIncorrectExecutionStrategyNameException();
+      }
+
+      if (executionStrategies.size() == 2 && !(executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY)
+          || executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
+        throwIncorrectExecutionStrategyNameException();
+      }
+
+      if (executionStrategies.size() >= 3 && !(executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY)
+          && executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
+        throwIncorrectExecutionStrategyNameException();
+      }
+
+      return new DefaultExecutionStrategyProvider(
+          executionStrategies.get(QUERY_EXECUTION_STRATEGY),
+          executionStrategies.get(MUTATION_EXECUTION_STRATEGY),
+          executionStrategies.get(SUBSCRIPTION_EXECUTION_STRATEGY)
+      );
+    }
+  }
+
+  private void throwIncorrectExecutionStrategyNameException() {
+    throw new IllegalStateException(String
+        .format("When defining more than one execution strategy, they must be named %s, %s, or %s",
+            QUERY_EXECUTION_STRATEGY, MUTATION_EXECUTION_STRATEGY, SUBSCRIPTION_EXECUTION_STRATEGY));
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GraphQLInvocationInputFactory invocationInputFactory(GraphQLSchemaServletProvider schemaProvider) {
+    GraphQLInvocationInputFactory.Builder builder = GraphQLInvocationInputFactory.newBuilder(schemaProvider);
+
+    if (graphQLRootObjectBuilder != null) {
+      builder.withGraphQLRootObjectBuilder(graphQLRootObjectBuilder);
     }
 
-    @Bean
-    public GraphQLErrorStartupListener graphQLErrorStartupListener() {
-        return new GraphQLErrorStartupListener(errorHandlerSupplier, graphQLServletProperties.isExceptionHandlersEnabled());
+    if (contextBuilder != null) {
+      builder.withGraphQLContextBuilder(contextBuilder);
     }
 
-    @Bean
-    @ConditionalOnClass(CorsFilter.class)
-    @ConditionalOnProperty(value = "graphql.servlet.corsEnabled", havingValue = "true", matchIfMissing = true)
-    public CorsFilter corsConfigurer() {
-        Map<String, CorsConfiguration> corsConfigurations = new LinkedHashMap<>(1);
-        CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
-        corsConfigurations.put(graphQLServletProperties.getCorsMapping(), corsConfiguration);
+    return builder.build();
+  }
 
-        UrlBasedCorsConfigurationSource configurationSource = new UrlBasedCorsConfigurationSource();
-        configurationSource.setCorsConfigurations(corsConfigurations);
-        configurationSource.setAlwaysUseFullPath(true);
+  @Bean
+  @ConditionalOnMissingBean
+  public GraphQLQueryInvoker queryInvoker(ExecutionStrategyProvider executionStrategyProvider) {
+    GraphQLQueryInvoker.Builder builder = GraphQLQueryInvoker.newBuilder()
+        .withExecutionStrategyProvider(executionStrategyProvider);
 
-        return new CorsFilter(configurationSource);
+    if (instrumentations != null) {
+
+      //Metrics instrumentation should be the last to run (we need that from TracingInstrumentation)
+      instrumentations.sort((a, b) -> a instanceof MetricsInstrumentation ? 1 : 0);
+      builder.with(instrumentations);
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public GraphQLSchemaProvider graphQLSchemaProvider(GraphQLSchema schema) {
-        return new DefaultGraphQLSchemaProvider(schema);
+    if (preparsedDocumentProvider != null) {
+      builder.withPreparsedDocumentProvider(preparsedDocumentProvider);
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public ExecutionStrategyProvider executionStrategyProvider() {
-        if (executionStrategies == null || executionStrategies.isEmpty()) {
-            return new DefaultExecutionStrategyProvider(new AsyncExecutionStrategy(), null, new SubscriptionExecutionStrategy());
-        } else if (executionStrategies.entrySet().size() == 1) {
-            return new DefaultExecutionStrategyProvider(executionStrategies.entrySet().stream().findFirst().get().getValue());
-        } else {
+    return builder.build();
+  }
 
-            if (!executionStrategies.containsKey(QUERY_EXECUTION_STRATEGY)) {
-                throwIncorrectExecutionStrategyNameException();
-            }
+  @Bean
+  @ConditionalOnMissingBean
+  public GraphQLObjectMapper graphQLObjectMapper(
+      ObjectProvider<ObjectMapperProvider> objectMapperProviderObjectProvider) {
+    GraphQLObjectMapper.Builder builder = newBuilder();
 
-            if (executionStrategies.size() == 2 && !(executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY) || executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
-                throwIncorrectExecutionStrategyNameException();
-            }
+    builder.withGraphQLErrorHandler(errorHandlerSupplier);
 
-            if (executionStrategies.size() >= 3 && !(executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY) && executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
-                throwIncorrectExecutionStrategyNameException();
-            }
+    ObjectMapperProvider objectMapperProvider = objectMapperProviderObjectProvider.getIfAvailable();
 
-            return new DefaultExecutionStrategyProvider(
-                    executionStrategies.get(QUERY_EXECUTION_STRATEGY),
-                    executionStrategies.get(MUTATION_EXECUTION_STRATEGY),
-                    executionStrategies.get(SUBSCRIPTION_EXECUTION_STRATEGY)
-            );
-        }
+    if (objectMapperProvider != null) {
+      builder.withObjectMapperProvider(objectMapperProvider);
+    } else if (objectMapperConfigurer != null) {
+      builder.withObjectMapperConfigurer(objectMapperConfigurer);
     }
+    log.info("Building GraphQLObjectMapper including errorHandler: {}", errorHandler);
+    return builder.build();
+  }
 
-    private void throwIncorrectExecutionStrategyNameException() {
-        throw new IllegalStateException(String.format("When defining more than one execution strategy, they must be named %s, %s, or %s", QUERY_EXECUTION_STRATEGY, MUTATION_EXECUTION_STRATEGY, SUBSCRIPTION_EXECUTION_STRATEGY));
-    }
+  @Bean
+  @ConditionalOnMissingBean
+  @ConditionalOnProperty(value = "graphql.servlet.use-default-objectmapper", havingValue = "true",
+      matchIfMissing = true)
+  public ObjectMapperProvider objectMapperProvider(ObjectMapper objectMapper) {
+    InjectableValues.Std injectableValues = new InjectableValues.Std();
+    injectableValues.addValue(ObjectMapper.class, objectMapper);
+    objectMapper.setInjectableValues(injectableValues);
+    return () -> objectMapper;
+  }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public GraphQLInvocationInputFactory invocationInputFactory(GraphQLSchemaProvider schemaProvider) {
-        GraphQLInvocationInputFactory.Builder builder = GraphQLInvocationInputFactory.newBuilder(schemaProvider);
+  @Bean
+  @ConditionalOnMissingBean
+  public GraphQLConfiguration graphQLServletConfiguration(GraphQLInvocationInputFactory invocationInputFactory,
+      GraphQLQueryInvoker queryInvoker, GraphQLObjectMapper graphQLObjectMapper) {
+    return GraphQLConfiguration.with(invocationInputFactory)
+        .with(queryInvoker)
+        .with(graphQLObjectMapper)
+        .with(listeners)
+        .with(graphQLServletProperties.isAsyncModeEnabled())
+        .with(graphQLServletProperties.getSubscriptionTimeout())
+        .with(batchInputPreProcessor)
+        .with(graphQLServletProperties.getContextSetting())
+        .build();
+  }
 
-        if (graphQLRootObjectBuilder != null) {
-            builder.withGraphQLRootObjectBuilder(graphQLRootObjectBuilder);
-        }
+  @Bean
+  @ConditionalOnMissingBean
+  public GraphQLHttpServlet graphQLHttpServlet(GraphQLConfiguration graphQLConfiguration) {
+    return GraphQLHttpServlet.with(graphQLConfiguration);
+  }
 
-        if (contextBuilder != null) {
-            builder.withGraphQLContextBuilder(contextBuilder);
-        }
+  @Bean
+  public ServletRegistrationBean<AbstractGraphQLHttpServlet> graphQLServletRegistrationBean(
+      AbstractGraphQLHttpServlet servlet) {
+    ServletRegistrationBean<AbstractGraphQLHttpServlet> registration = new ServletRegistrationBean<>(servlet,
+        graphQLServletProperties.getServletMapping());
+    registration.setMultipartConfig(multipartConfigElement());
+    return registration;
+  }
 
-        return builder.build();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public GraphQLQueryInvoker queryInvoker(ExecutionStrategyProvider executionStrategyProvider) {
-        GraphQLQueryInvoker.Builder builder = GraphQLQueryInvoker.newBuilder()
-                .withExecutionStrategyProvider(executionStrategyProvider);
-
-        if (instrumentations != null) {
-
-            //Metrics instrumentation should be the last to run (we need that from TracingInstrumentation)
-            instrumentations.sort((a, b) -> a instanceof MetricsInstrumentation ? 1 : 0);
-            builder.with(instrumentations);
-        }
-
-        if (preparsedDocumentProvider != null) {
-            builder.withPreparsedDocumentProvider(preparsedDocumentProvider);
-        }
-
-        return builder.build();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public GraphQLObjectMapper graphQLObjectMapper(ObjectProvider<ObjectMapperProvider> objectMapperProviderObjectProvider) {
-        GraphQLObjectMapper.Builder builder = newBuilder();
-
-        builder.withGraphQLErrorHandler(errorHandlerSupplier);
-
-        ObjectMapperProvider objectMapperProvider = objectMapperProviderObjectProvider.getIfAvailable();
-
-        if (objectMapperProvider != null) {
-            builder.withObjectMapperProvider(objectMapperProvider);
-        } else if (objectMapperConfigurer != null) {
-            builder.withObjectMapperConfigurer(objectMapperConfigurer);
-        }
-        log.info("Building GraphQLObjectMapper including errorHandler: {}", errorHandler);
-        return builder.build();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "graphql.servlet.use-default-objectmapper", havingValue = "true",
-            matchIfMissing = true)
-    public ObjectMapperProvider objectMapperProvider(ObjectMapper objectMapper) {
-        InjectableValues.Std injectableValues = new InjectableValues.Std();
-        injectableValues.addValue(ObjectMapper.class, objectMapper);
-        objectMapper.setInjectableValues(injectableValues);
-        return () -> objectMapper;
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public GraphQLConfiguration graphQLServletConfiguration(GraphQLInvocationInputFactory invocationInputFactory, GraphQLQueryInvoker queryInvoker, GraphQLObjectMapper graphQLObjectMapper) {
-        return GraphQLConfiguration.with(invocationInputFactory)
-                .with(queryInvoker)
-                .with(graphQLObjectMapper)
-                .with(listeners)
-                .with(graphQLServletProperties.isAsyncModeEnabled())
-                .with(graphQLServletProperties.getSubscriptionTimeout())
-                .with(batchInputPreProcessor)
-                .with(graphQLServletProperties.getContextSetting())
-                .build();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public GraphQLHttpServlet graphQLHttpServlet(GraphQLConfiguration graphQLConfiguration) {
-        return GraphQLHttpServlet.with(graphQLConfiguration);
-    }
-
-    @Bean
-    public ServletRegistrationBean<AbstractGraphQLHttpServlet> graphQLServletRegistrationBean(AbstractGraphQLHttpServlet servlet) {
-        ServletRegistrationBean<AbstractGraphQLHttpServlet> registration = new ServletRegistrationBean<>(servlet, graphQLServletProperties.getServletMapping());
-        registration.setMultipartConfig(multipartConfigElement());
-        return registration;
-    }
-
-    private MultipartConfigElement multipartConfigElement() {
-        return Optional.ofNullable(multipartConfigElement).orElse(new MultipartConfigElement(""));
-    }
+  private MultipartConfigElement multipartConfigElement() {
+    return Optional.ofNullable(multipartConfigElement).orElse(new MultipartConfigElement(""));
+  }
 }

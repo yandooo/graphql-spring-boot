@@ -4,17 +4,15 @@ import static com.oembedler.moon.graphql.boot.error.GraphQLErrorFactory.withRefl
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
-import graphql.servlet.core.DefaultGraphQLErrorHandler;
-import graphql.servlet.core.GraphQLErrorHandler;
+import graphql.kickstart.execution.error.DefaultGraphQLErrorHandler;
+import graphql.kickstart.execution.error.GraphQLErrorHandler;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Slf4j
 public class GraphQLErrorHandlerFactory {

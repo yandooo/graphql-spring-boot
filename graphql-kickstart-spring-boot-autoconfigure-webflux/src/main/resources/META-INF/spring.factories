@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+graphql.kickstart.spring.webflux.boot.GraphQLSpringWebfluxAutoConfiguration

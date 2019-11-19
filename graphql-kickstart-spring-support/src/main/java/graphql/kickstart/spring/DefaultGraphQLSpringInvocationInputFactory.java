@@ -12,6 +12,30 @@ public class DefaultGraphQLSpringInvocationInputFactory implements GraphQLSpring
   private Supplier<GraphQLSpringContextBuilder> contextBuilderSupplier = () -> (DefaultGraphQLSpringContext::new);
   private Supplier<GraphQLSpringRootObjectBuilder> rootObjectBuilderSupplier = () -> (serverWebExchange -> new Object());
 
+  public DefaultGraphQLSpringInvocationInputFactory(
+      GraphQLSpringContextBuilder contextBuilder,
+      GraphQLSpringRootObjectBuilder rootObjectBuilder
+  ) {
+    if (contextBuilder != null) {
+      contextBuilderSupplier = () -> contextBuilder;
+    }
+    if (rootObjectBuilder != null) {
+      rootObjectBuilderSupplier = () -> rootObjectBuilder;
+    }
+  }
+
+  public DefaultGraphQLSpringInvocationInputFactory(
+      Supplier<GraphQLSpringContextBuilder> contextBuilderSupplier,
+      Supplier<GraphQLSpringRootObjectBuilder> rootObjectBuilderSupplier
+  ) {
+    if (contextBuilderSupplier != null) {
+      this.contextBuilderSupplier = contextBuilderSupplier;
+    }
+    if (rootObjectBuilderSupplier != null) {
+      this.rootObjectBuilderSupplier = rootObjectBuilderSupplier;
+    }
+  }
+
   @Override
   public GraphQLSingleInvocationInput create(GraphQLRequest graphQLRequest, ServerWebExchange serverWebExchange) {
     return new GraphQLSingleInvocationInput(

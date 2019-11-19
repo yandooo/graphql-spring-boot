@@ -3,7 +3,7 @@ package com.oembedler.moon.graphql.boot.error;
 import static java.util.Collections.singletonList;
 
 import graphql.GraphQLError;
-import graphql.servlet.core.GenericGraphQLError;
+import graphql.kickstart.execution.error.GenericGraphQLError;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;

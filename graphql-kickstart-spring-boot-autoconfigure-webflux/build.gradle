@@ -1,0 +1,7 @@
+dependencies {
+    compile(project(':graphql-kickstart-spring-webflux'))
+
+    compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
+    compile "com.graphql-java-kickstart:graphql-java-kickstart:$LIB_GRAPHQL_SERVLET_VER"
+    compile "org.springframework.boot:spring-boot-starter-webflux:$LIB_SPRING_BOOT_VER"
+}

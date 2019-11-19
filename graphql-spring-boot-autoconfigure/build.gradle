@@ -20,6 +20,7 @@
 dependencies {
     compile(project(":graphql-kickstart-spring-boot-starter-tools"))
     compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
+    compile "com.graphql-java-kickstart:graphql-java-kickstart:$LIB_GRAPHQL_SERVLET_VER"
     compile "com.graphql-java-kickstart:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
 
     compileOnly "org.springframework.boot:spring-boot-starter-websocket:$LIB_SPRING_BOOT_VER"

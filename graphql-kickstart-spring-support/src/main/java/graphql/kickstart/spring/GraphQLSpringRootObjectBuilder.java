@@ -2,7 +2,7 @@ package graphql.kickstart.spring;
 
 import org.springframework.web.server.ServerWebExchange;
 
-interface GraphQLSpringRootObjectBuilder {
+public interface GraphQLSpringRootObjectBuilder {
 
   Object build(ServerWebExchange serverWebExchange);
 
