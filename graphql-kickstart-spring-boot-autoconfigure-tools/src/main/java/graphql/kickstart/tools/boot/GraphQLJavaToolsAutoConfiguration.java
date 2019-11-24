@@ -16,6 +16,7 @@ import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.SchemaDirectiveWiring;
 import java.io.IOException;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -31,6 +32,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @author Andrew Potter
  */
+@Slf4j
 @Configuration
 @ConditionalOnClass(SchemaParser.class)
 @AutoConfigureAfter({JacksonAutoConfiguration.class})

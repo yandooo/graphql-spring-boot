@@ -23,9 +23,9 @@ dependencies {
     compile "com.graphql-java-kickstart:graphql-java-kickstart:$LIB_GRAPHQL_SERVLET_VER"
     compile "com.graphql-java-kickstart:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
 
-    compileOnly "org.springframework.boot:spring-boot-starter-websocket:$LIB_SPRING_BOOT_VER"
-    compileOnly "org.springframework.boot:spring-boot-starter-actuator:$LIB_SPRING_BOOT_VER"
-    compileOnly "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
+    compile "org.springframework.boot:spring-boot-starter-websocket:$LIB_SPRING_BOOT_VER"
+    compile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
+    compile "org.springframework.boot:spring-boot-starter-actuator:$LIB_SPRING_BOOT_VER"
 
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
     compileOnly "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"

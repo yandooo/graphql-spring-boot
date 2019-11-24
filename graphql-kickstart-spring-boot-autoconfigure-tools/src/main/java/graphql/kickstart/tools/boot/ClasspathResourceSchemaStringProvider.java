@@ -45,7 +45,7 @@ public class ClasspathResourceSchemaStringProvider implements SchemaStringProvid
         InputStreamReader bufferedInputStream = new InputStreamReader(inputStream, StandardCharsets.UTF_8.name());
         BufferedReader reader = new BufferedReader(bufferedInputStream)
     ) {
-      return reader.lines().collect(joining());
+      return reader.lines().collect(joining("\n"));
     } catch (IOException e) {
       throw new IllegalStateException("Cannot read graphql schema from resource " + resource, e);
     }

@@ -1,7 +1,7 @@
 package com.graphql.sample.boot;
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import graphql.servlet.config.ObjectMapperConfigurer;
+import graphql.kickstart.execution.config.ObjectMapperConfigurer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
