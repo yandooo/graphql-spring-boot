@@ -9,7 +9,7 @@ import org.springframework.web.server.ServerWebExchange;
 
 public class DefaultGraphQLSpringInvocationInputFactory implements GraphQLSpringInvocationInputFactory {
 
-  private Supplier<GraphQLSpringContextBuilder> contextBuilderSupplier = () -> (DefaultGraphQLSpringContext::new);
+  private Supplier<GraphQLSpringContextBuilder> contextBuilderSupplier = () -> (GraphQLSpringServerWebExchangeContext::new);
   private Supplier<GraphQLSpringRootObjectBuilder> rootObjectBuilderSupplier = () -> (serverWebExchange -> new Object());
 
   public DefaultGraphQLSpringInvocationInputFactory(
@@ -50,6 +50,14 @@ public class DefaultGraphQLSpringInvocationInputFactory implements GraphQLSpring
   public GraphQLBatchedInvocationInput create(Collection<GraphQLRequest> graphQLRequests,
       ServerWebExchange serverWebExchange) {
     throw new UnsupportedOperationException("Batch queries not suppoprted yet");
+  }
+
+  protected Supplier<GraphQLSpringContextBuilder> getContextBuilderSupplier() {
+    return contextBuilderSupplier;
+  }
+
+  protected Supplier<GraphQLSpringRootObjectBuilder> getRootObjectBuilderSupplier() {
+    return rootObjectBuilderSupplier;
   }
 
 }

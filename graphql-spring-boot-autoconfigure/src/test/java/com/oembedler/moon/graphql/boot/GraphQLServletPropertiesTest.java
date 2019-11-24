@@ -1,6 +1,6 @@
 package com.oembedler.moon.graphql.boot;
 
-import graphql.servlet.context.ContextSetting;
+import graphql.kickstart.execution.context.ContextSetting;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

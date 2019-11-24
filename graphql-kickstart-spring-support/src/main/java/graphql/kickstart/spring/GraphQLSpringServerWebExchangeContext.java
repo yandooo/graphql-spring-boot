@@ -5,15 +5,15 @@ import java.util.Objects;
 import org.dataloader.DataLoaderRegistry;
 import org.springframework.web.server.ServerWebExchange;
 
-public class DefaultGraphQLSpringContext extends DefaultGraphQLContext implements GraphQLSpringContext {
+public class GraphQLSpringServerWebExchangeContext extends DefaultGraphQLContext implements GraphQLSpringContext {
 
   private final ServerWebExchange serverWebExchange;
 
-  public DefaultGraphQLSpringContext(ServerWebExchange serverWebExchange) {
+  public GraphQLSpringServerWebExchangeContext(ServerWebExchange serverWebExchange) {
     this(new DataLoaderRegistry(), serverWebExchange);
   }
 
-  public DefaultGraphQLSpringContext(DataLoaderRegistry dataLoaderRegistry, ServerWebExchange serverWebExchange) {
+  public GraphQLSpringServerWebExchangeContext(DataLoaderRegistry dataLoaderRegistry, ServerWebExchange serverWebExchange) {
     super(dataLoaderRegistry, null);
     this.serverWebExchange = Objects.requireNonNull(serverWebExchange, "Server web exchange cannot be null");
   }

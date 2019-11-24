@@ -7,7 +7,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 import graphql.GraphQLError;
-import graphql.servlet.core.GraphQLErrorHandler;
+import graphql.kickstart.execution.error.GraphQLErrorHandler;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
