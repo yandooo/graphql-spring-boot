@@ -1,10 +1,10 @@
-package com.oembedler.moon.graphql.boot.error;
+package graphql.kickstart.spring.error;
 
 import graphql.kickstart.execution.error.GraphQLErrorHandler;
-import javax.validation.constraints.NotNull;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.lang.NonNull;
 
 public class GraphQLErrorStartupListener implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -17,7 +17,7 @@ public class GraphQLErrorStartupListener implements ApplicationListener<ContextR
   }
 
   @Override
-  public void onApplicationEvent(@NotNull ContextRefreshedEvent event) {
+  public void onApplicationEvent(@NonNull ContextRefreshedEvent event) {
     if (!errorHandlerSupplier.isPresent()) {
       ConfigurableApplicationContext context = (ConfigurableApplicationContext) event.getApplicationContext();
       GraphQLErrorHandler errorHandler = new GraphQLErrorHandlerFactory().create(context, exceptionHandlersEnabled);

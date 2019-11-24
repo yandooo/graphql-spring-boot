@@ -10,6 +10,8 @@ import graphql.kickstart.execution.config.ObjectMapperProvider;
 import graphql.kickstart.execution.subscriptions.GraphQLSubscriptionInvocationInputFactory;
 import graphql.kickstart.execution.subscriptions.apollo.ApolloSubscriptionConnectionListener;
 import graphql.kickstart.execution.subscriptions.apollo.KeepAliveSubscriptionConnectionListener;
+import graphql.kickstart.spring.error.ErrorHandlerSupplier;
+import graphql.kickstart.spring.error.GraphQLErrorStartupListener;
 import graphql.kickstart.spring.webflux.DefaultGraphQLSpringWebfluxContextBuilder;
 import graphql.kickstart.spring.webflux.DefaultGraphQLSpringWebfluxRootObjectBuilder;
 import graphql.kickstart.spring.webflux.GraphQLController;
@@ -45,9 +47,20 @@ public class GraphQLSpringWebfluxAutoConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
-  public GraphQLObjectMapper graphQLObjectMapper(ObjectProvider<ObjectMapperProvider> provider) {
+  public ErrorHandlerSupplier errorHandlerSupplier() {
+    return new ErrorHandlerSupplier(null);
+  }
+
+  @Bean
+  public GraphQLErrorStartupListener graphQLErrorStartupListener(ErrorHandlerSupplier errorHandlerSupplier) {
+    return new GraphQLErrorStartupListener(errorHandlerSupplier, true);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GraphQLObjectMapper graphQLObjectMapper(ObjectProvider<ObjectMapperProvider> provider, ErrorHandlerSupplier errorHandlerSupplier) {
     GraphQLObjectMapper.Builder builder = newBuilder();
-//    builder.withGraphQLErrorHandler(errorHandlerSupplier);
+    builder.withGraphQLErrorHandler(errorHandlerSupplier);
     provider.ifAvailable(builder::withObjectMapperProvider);
     return builder.build();
   }

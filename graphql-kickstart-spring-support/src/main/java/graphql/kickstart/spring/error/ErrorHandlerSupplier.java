@@ -1,4 +1,4 @@
-package com.oembedler.moon.graphql.boot.error;
+package graphql.kickstart.spring.error;
 
 import graphql.kickstart.execution.error.GraphQLErrorHandler;
 import java.util.Objects;

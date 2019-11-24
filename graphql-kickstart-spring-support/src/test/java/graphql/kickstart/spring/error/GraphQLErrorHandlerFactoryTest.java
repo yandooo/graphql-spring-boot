@@ -1,18 +1,16 @@
-package com.oembedler.moon.graphql.boot.error;
+package graphql.kickstart.spring.error;
 
 import static java.util.Collections.singletonList;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 
 import graphql.GraphQLError;
 import graphql.kickstart.execution.error.GraphQLErrorHandler;
 import java.util.List;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -30,10 +28,10 @@ public class GraphQLErrorHandlerFactoryTest {
 
   @Before
   public void setup() {
-    when(applicationContext.getBeanFactory()).thenReturn(beanFactory);
-    when(beanFactory.getBeanDefinitionNames()).thenReturn(new String[]{"Test"});
-    when(applicationContext.containsBean("Test")).thenReturn(true);
-    doReturn(TestClass.class).when(applicationContext).getType("Test");
+    Mockito.when(applicationContext.getBeanFactory()).thenReturn(beanFactory);
+    Mockito.when(beanFactory.getBeanDefinitionNames()).thenReturn(new String[]{"Test"});
+    Mockito.when(applicationContext.containsBean("Test")).thenReturn(true);
+    Mockito.doReturn(TestClass.class).when(applicationContext).getType("Test");
 
     errorHandlerFactory = new GraphQLErrorHandlerFactory();
   }
@@ -41,17 +39,18 @@ public class GraphQLErrorHandlerFactoryTest {
   @Test
   public void createFindsCollectionHandler() {
     GraphQLErrorHandler handler = errorHandlerFactory.create(applicationContext, true);
-    assertTrue(handler instanceof GraphQLErrorFromExceptionHandler);
+    Assert.assertTrue(handler instanceof GraphQLErrorFromExceptionHandler);
     GraphQLErrorFromExceptionHandler errorHandler = (GraphQLErrorFromExceptionHandler) handler;
-    assertFalse("handler.factories should not be empty", errorHandler.getFactories().isEmpty());
+    Assert.assertFalse("handler.factories should not be empty", errorHandler.getFactories().isEmpty());
   }
 
-  public class TestClass {
+  public static class TestClass {
 
     @ExceptionHandler(IllegalArgumentException.class)
     List<GraphQLError> handle(IllegalArgumentException e) {
       return singletonList(new ThrowableGraphQLError(e, "Illegal argument"));
     }
+
   }
 
 }

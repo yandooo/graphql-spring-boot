@@ -1,4 +1,11 @@
 dependencies {
     compileOnly "com.graphql-java-kickstart:graphql-java-kickstart:$LIB_GRAPHQL_SERVLET_VER"
     compileOnly "org.springframework:spring-web:$LIB_SPRING_CORE_VER"
+    compileOnly "org.springframework:spring-context:$LIB_SPRING_CORE_VER"
+
+    testCompile "com.graphql-java-kickstart:graphql-java-kickstart:$LIB_GRAPHQL_SERVLET_VER"
+    testCompile "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
+    testCompile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
+    testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
+    testCompile(project(":graphql-spring-boot-test"))
 }

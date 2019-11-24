@@ -1,6 +1,6 @@
-package com.oembedler.moon.graphql.boot.error;
+package graphql.kickstart.spring.error;
 
-import static com.oembedler.moon.graphql.boot.error.GraphQLErrorFactory.withReflection;
+import static graphql.kickstart.spring.error.GraphQLErrorFactory.withReflection;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
