@@ -1,6 +1,7 @@
 package com.oembedler.moon.graphql.boot;
 
-import graphql.GraphQL;
+import graphql.execution.instrumentation.dataloader.DataLoaderDispatcherInstrumentationOptions;
+import graphql.kickstart.execution.BatchedDataLoaderGraphQLBuilder;
 import graphql.kickstart.execution.GraphQLInvoker;
 import graphql.kickstart.execution.GraphQLObjectMapper;
 import graphql.kickstart.execution.config.GraphQLBuilder;
@@ -8,13 +9,13 @@ import graphql.kickstart.execution.subscriptions.GraphQLSubscriptionInvocationIn
 import graphql.kickstart.execution.subscriptions.SubscriptionConnectionListener;
 import graphql.kickstart.execution.subscriptions.apollo.KeepAliveSubscriptionConnectionListener;
 import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
-import graphql.schema.GraphQLSchema;
 import graphql.servlet.GraphQLWebsocketServlet;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 import javax.websocket.server.ServerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,9 +49,23 @@ public class GraphQLWebsocketAutoConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
-  public GraphQLInvoker graphQLInvoker(GraphQLSchema schema) {
-    GraphQL graphQL = new GraphQLBuilder().build(schema);
-    return new GraphQLInvoker(graphQL);
+  public GraphQLBuilder graphQLBuilder() {
+    return new GraphQLBuilder();
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public BatchedDataLoaderGraphQLBuilder batchedDataLoaderGraphQLBuilder(
+      @Autowired(required = false) Supplier<DataLoaderDispatcherInstrumentationOptions> optionsSupplier
+  ) {
+    return new BatchedDataLoaderGraphQLBuilder(optionsSupplier);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GraphQLInvoker graphQLInvoker(GraphQLBuilder graphQLBuilder,
+      BatchedDataLoaderGraphQLBuilder batchedDataLoaderGraphQLBuilder) {
+    return new GraphQLInvoker(graphQLBuilder, batchedDataLoaderGraphQLBuilder);
   }
 
   @Bean

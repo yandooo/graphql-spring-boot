@@ -2,10 +2,13 @@ package graphql.kickstart.spring.webflux.boot;
 
 import static graphql.kickstart.execution.GraphQLObjectMapper.newBuilder;
 
-import graphql.GraphQL;
+import graphql.execution.instrumentation.dataloader.DataLoaderDispatcherInstrumentationOptions;
+import graphql.kickstart.execution.BatchedDataLoaderGraphQLBuilder;
 import graphql.kickstart.execution.GraphQLInvoker;
 import graphql.kickstart.execution.GraphQLObjectMapper;
+import graphql.kickstart.execution.config.DefaultGraphQLSchemaProvider;
 import graphql.kickstart.execution.config.GraphQLBuilder;
+import graphql.kickstart.execution.config.GraphQLSchemaProvider;
 import graphql.kickstart.execution.config.ObjectMapperProvider;
 import graphql.kickstart.execution.subscriptions.GraphQLSubscriptionInvocationInputFactory;
 import graphql.kickstart.execution.subscriptions.apollo.ApolloSubscriptionConnectionListener;
@@ -21,16 +24,19 @@ import graphql.kickstart.spring.webflux.GraphQLSpringWebfluxRootObjectBuilder;
 import graphql.kickstart.spring.webflux.ReactiveSubscriptionsProtocolFactory;
 import graphql.kickstart.spring.webflux.ReactiveWebSocketSubscriptionsHandler;
 import graphql.kickstart.spring.webflux.apollo.ReactiveApolloSubscriptionProtocolFactory;
+import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
 import graphql.schema.GraphQLSchema;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -42,6 +48,7 @@ import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAd
 
 @Slf4j
 @Configuration
+@AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class})
 @ComponentScan(basePackageClasses = GraphQLController.class)
 public class GraphQLSpringWebfluxAutoConfiguration {
 
@@ -58,7 +65,8 @@ public class GraphQLSpringWebfluxAutoConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
-  public GraphQLObjectMapper graphQLObjectMapper(ObjectProvider<ObjectMapperProvider> provider, ErrorHandlerSupplier errorHandlerSupplier) {
+  public GraphQLObjectMapper graphQLObjectMapper(ObjectProvider<ObjectMapperProvider> provider,
+      ErrorHandlerSupplier errorHandlerSupplier) {
     GraphQLObjectMapper.Builder builder = newBuilder();
     builder.withGraphQLErrorHandler(errorHandlerSupplier);
     provider.ifAvailable(builder::withObjectMapperProvider);
@@ -79,18 +87,39 @@ public class GraphQLSpringWebfluxAutoConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
-  public GraphQLSpringWebfluxInvocationInputFactory graphQLSpringInvocationInputFactory(
-      @Autowired(required = false) GraphQLSpringWebfluxContextBuilder contextBuilder,
-      @Autowired(required = false) GraphQLSpringWebfluxRootObjectBuilder rootObjectBuilder
-  ) {
-    return new GraphQLSpringWebfluxInvocationInputFactory(contextBuilder, rootObjectBuilder);
+  public GraphQLSchemaProvider graphQLSchemaProvider(GraphQLSchema schema) {
+    return new DefaultGraphQLSchemaProvider(schema);
   }
 
   @Bean
   @ConditionalOnMissingBean
-  public GraphQLInvoker graphQLInvoker(GraphQLSchema schema) {
-    GraphQL graphQL = new GraphQLBuilder().build(schema);
-    return new GraphQLInvoker(graphQL);
+  public GraphQLSpringWebfluxInvocationInputFactory graphQLSpringInvocationInputFactory(
+      GraphQLSchemaProvider graphQLSchemaProvider,
+      @Autowired(required = false) GraphQLSpringWebfluxContextBuilder contextBuilder,
+      @Autowired(required = false) GraphQLSpringWebfluxRootObjectBuilder rootObjectBuilder
+  ) {
+    return new GraphQLSpringWebfluxInvocationInputFactory(graphQLSchemaProvider, contextBuilder, rootObjectBuilder);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GraphQLBuilder graphQLBuilder() {
+    return new GraphQLBuilder();
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public BatchedDataLoaderGraphQLBuilder batchedDataLoaderGraphQLBuilder(
+      @Autowired(required = false) Supplier<DataLoaderDispatcherInstrumentationOptions> optionsSupplier
+  ) {
+    return new BatchedDataLoaderGraphQLBuilder(optionsSupplier);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GraphQLInvoker graphQLInvoker(GraphQLBuilder graphQLBuilder,
+      BatchedDataLoaderGraphQLBuilder batchedDataLoaderGraphQLBuilder) {
+    return new GraphQLInvoker(graphQLBuilder, batchedDataLoaderGraphQLBuilder);
   }
 
   @Bean

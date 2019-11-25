@@ -1,6 +1,7 @@
 package graphql.kickstart.spring.webflux;
 
 import graphql.kickstart.execution.GraphQLRequest;
+import graphql.kickstart.execution.config.GraphQLSchemaProvider;
 import graphql.kickstart.execution.input.GraphQLSingleInvocationInput;
 import graphql.kickstart.execution.subscriptions.GraphQLSubscriptionInvocationInputFactory;
 import graphql.kickstart.execution.subscriptions.SubscriptionSession;
@@ -14,22 +15,24 @@ public class GraphQLSpringWebfluxInvocationInputFactory
     extends DefaultGraphQLSpringInvocationInputFactory
     implements GraphQLSubscriptionInvocationInputFactory {
 
-  public GraphQLSpringWebfluxInvocationInputFactory(GraphQLSpringContextBuilder contextBuilder,
+  public GraphQLSpringWebfluxInvocationInputFactory(GraphQLSchemaProvider schemaProvider,
+      GraphQLSpringContextBuilder contextBuilder,
       GraphQLSpringRootObjectBuilder rootObjectBuilder) {
-    super(contextBuilder, rootObjectBuilder);
+    super(schemaProvider, contextBuilder, rootObjectBuilder);
   }
 
   public GraphQLSpringWebfluxInvocationInputFactory(
+      Supplier<GraphQLSchemaProvider> schemaProviderSupplier,
       Supplier<GraphQLSpringContextBuilder> contextBuilderSupplier,
       Supplier<GraphQLSpringRootObjectBuilder> rootObjectBuilderSupplier) {
-    super(contextBuilderSupplier, rootObjectBuilderSupplier);
+    super(schemaProviderSupplier, contextBuilderSupplier, rootObjectBuilderSupplier);
   }
 
   @Override
   public GraphQLSingleInvocationInput create(GraphQLRequest graphQLRequest, SubscriptionSession session) {
     return new GraphQLSingleInvocationInput(
         graphQLRequest,
-        null,
+        getSchemaProviderSupplier().get().getSchema(),
         ((GraphQLSpringWebfluxContextBuilder) getContextBuilderSupplier().get()).build((WebSocketSession) session.unwrap()),
         ((GraphQLSpringWebfluxRootObjectBuilder) getRootObjectBuilderSupplier().get()).build((WebSocketSession) session.unwrap())
     );
