@@ -86,7 +86,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 @Conditional(OnSchemaOrSchemaProviderBean.class)
 @ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class, JacksonAutoConfiguration.class})
-@EnableConfigurationProperties({GraphQLServletProperties.class, GraphQLQueryInvokerProperties.class})
+@EnableConfigurationProperties({GraphQLServletProperties.class})
 public class GraphQLWebAutoConfiguration {
 
 
@@ -216,18 +216,16 @@ public class GraphQLWebAutoConfiguration {
     return builder.build();
   }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public GraphQLQueryInvoker queryInvoker(
-            ExecutionStrategyProvider executionStrategyProvider,
-            GraphQLQueryInvokerProperties graphQLQueryInvokerProperties
-    ) {
-        GraphQLQueryInvoker.Builder builder = GraphQLQueryInvoker.newBuilder()
-                .withExecutionStrategyProvider(executionStrategyProvider);
+  @Bean
+  @ConditionalOnMissingBean
+  public GraphQLQueryInvoker queryInvoker(
+      ExecutionStrategyProvider executionStrategyProvider
+  ) {
+    GraphQLQueryInvoker.Builder builder = GraphQLQueryInvoker.newBuilder()
+        .withExecutionStrategyProvider(executionStrategyProvider);
 
     if (instrumentations != null) {
-
-      //Metrics instrumentation should be the last to run (we need that from TracingInstrumentation)
+      // Metrics instrumentation should be the last to run (we need that from TracingInstrumentation)
       instrumentations.sort((a, b) -> a instanceof MetricsInstrumentation ? 1 : 0);
       builder.with(instrumentations);
     }
@@ -236,14 +234,8 @@ public class GraphQLWebAutoConfiguration {
       builder.withPreparsedDocumentProvider(preparsedDocumentProvider);
     }
 
-        GraphQLQueryInvoker queryInvoker = builder.build();
-
-        if (graphQLQueryInvokerProperties.isTransactional()) {
-            queryInvoker = new TransactionalGraphQLQueryInvokerWrapper(queryInvoker);
-            log.info("Using transactional query invoker.");
-        }
-        return queryInvoker;
-    }
+    return builder.build();
+  }
 
   @Bean
   @ConditionalOnMissingBean
