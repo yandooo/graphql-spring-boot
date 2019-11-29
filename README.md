@@ -80,19 +80,19 @@ repositories {
 }
 
 dependencies {
-  compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.10.0'
+  compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:6.0.0'
   
   // to embed Altair tool
-  runtime 'com.graphql-java-kickstart:altair-spring-boot-starter:5.10.0'
+  runtime 'com.graphql-java-kickstart:altair-spring-boot-starter:6.0.0'
 
   // to embed GraphiQL tool
-  runtime 'com.graphql-java-kickstart:graphiql-spring-boot-starter:5.10.0'
+  runtime 'com.graphql-java-kickstart:graphiql-spring-boot-starter:6.0.0'
 
   // to embed Voyager tool
-  runtime 'com.graphql-java-kickstart:voyager-spring-boot-starter:5.10.0'
+  runtime 'com.graphql-java-kickstart:voyager-spring-boot-starter:6.0.0'
   
   // testing facilities
-  testCompile 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:5.10.0'
+  testCompile 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:6.0.0'
 }
 ```
 
@@ -101,14 +101,14 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>5.10.0</version>
+    <version>6.0.0</version>
 </dependency>
 
 <!-- to embed Altair tool -->
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>altair-spring-boot-starter</artifactId>
-    <version>5.10.0</version>
+    <version>6.0.0</version>
     <scope>runtime</scope>
 </dependency>
 
@@ -116,7 +116,7 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>5.10.0</version>
+    <version>6.0.0</version>
     <scope>runtime</scope>
 </dependency>
 
@@ -124,7 +124,7 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>voyager-spring-boot-starter</artifactId>
-    <version>5.10.0</version>
+    <version>6.0.0</version>
     <scope>runtime</scope>
 </dependency>
 
@@ -132,7 +132,7 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphql-spring-boot-starter-test</artifactId>
-    <version>5.10.0</version>
+    <version>6.0.0</version>
     <scope>test</scope>
 </dependency>
 
@@ -173,10 +173,6 @@ graphql:
            # if you want to @ExceptionHandler annotation for custom GraphQLErrors
            exception-handlers-enabled: true
            contextSetting: PER_REQUEST_WITH_INSTRUMENTATION
-      query-invoker:
-           # use a transactional query invoker; useful when working with JPA entities across multiple resolvers to 
-           # prevent LazyInitializationException; false by default
-           transactional: true
 ```
 
 By default a global CORS filter is enabled for `/graphql/**` context.
