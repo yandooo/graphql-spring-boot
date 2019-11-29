@@ -31,10 +31,7 @@ dependencies {
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
     compileOnly "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
     compileOnly "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
-    compileOnly "javax.transaction:javax.transaction-api:$LIB_TRANSACTIONS_API_VERSION"
-    compileOnly "javax.interceptor:javax.interceptor-api:$LIB_INTERCEPTOR_API_VERSION"
 
-    testCompile "javax.transaction:javax.transaction-api:$LIB_TRANSACTIONS_API_VERSION"
     testCompile "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
     testCompile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
     testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
