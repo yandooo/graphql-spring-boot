@@ -12,6 +12,8 @@ import graphql.kickstart.execution.config.GraphQLSchemaProvider;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.AbstractGraphQLHttpServlet;
+import graphql.servlet.config.DefaultGraphQLSchemaServletProvider;
+import graphql.servlet.config.GraphQLSchemaServletProvider;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.context.annotation.Bean;
@@ -165,8 +167,8 @@ public class GraphQLWebAutoConfigurationTest extends AbstractAutoConfigurationTe
   static class SchemaProviderConfiguration {
 
     @Bean
-    GraphQLSchemaProvider schemaProvider() {
-      return new DefaultGraphQLSchemaProvider(SCHEMA);
+    GraphQLSchemaServletProvider schemaProvider() {
+      return new DefaultGraphQLSchemaServletProvider(SCHEMA);
     }
   }
 
