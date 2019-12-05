@@ -18,9 +18,10 @@ public class GraphQLErrorStartupListener implements ApplicationListener<ContextR
 
   @Override
   public void onApplicationEvent(@NonNull ContextRefreshedEvent event) {
-      ConfigurableApplicationContext context = (ConfigurableApplicationContext) event.getApplicationContext();
-      GraphQLErrorHandler errorHandler = new GraphQLErrorHandlerFactory().create(context, exceptionHandlersEnabled);
-      context.getBeanFactory().registerSingleton(errorHandler.getClass().getCanonicalName(), errorHandler);
-      errorHandlerSupplier.setErrorHandler(errorHandler);
+    ConfigurableApplicationContext context = (ConfigurableApplicationContext) event.getApplicationContext();
+    GraphQLErrorHandler errorHandler = new GraphQLErrorHandlerFactory().create(context, exceptionHandlersEnabled);
+    context.getBeanFactory().registerSingleton(errorHandler.getClass().getCanonicalName(), errorHandler);
+    errorHandlerSupplier.setErrorHandler(errorHandler);
   }
+
 }
