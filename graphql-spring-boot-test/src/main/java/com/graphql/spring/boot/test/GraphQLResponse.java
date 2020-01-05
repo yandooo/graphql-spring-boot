@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 public class GraphQLResponse {
@@ -35,6 +36,11 @@ public class GraphQLResponse {
 
     public <T> T get(String path, Class<T> type) {
         return context.read(path, type);
+    }
+
+    public <T> List<T> getList(String path, Class<T> type) {
+        final List<?> raw = context.read(path, List.class);
+        return mapper.convertValue(raw, mapper.getTypeFactory().constructCollectionType(List.class, type));
     }
 
     public ReadContext context() {
