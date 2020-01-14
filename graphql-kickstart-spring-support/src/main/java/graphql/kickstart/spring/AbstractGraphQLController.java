@@ -2,35 +2,36 @@ package graphql.kickstart.spring;
 
 import graphql.kickstart.execution.GraphQLObjectMapper;
 import graphql.kickstart.execution.GraphQLRequest;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
 
 @RequiredArgsConstructor
 public abstract class AbstractGraphQLController {
 
   private final GraphQLObjectMapper objectMapper;
 
-  @RequestMapping(value = "${graphql.url:graphql}",
-      method = RequestMethod.POST,
-      produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "${graphql.url:graphql}",
+          consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public Object graphqlPOST(
-      @RequestHeader(value = HttpHeaders.CONTENT_TYPE, required = false) String contentType,
-      @RequestParam(value = "query", required = false) String query,
-      @RequestParam(value = "operationName", required = false) String operationName,
-      @RequestParam(value = "variables", required = false) String variablesJson,
-      @RequestBody(required = false) String body,
+      @RequestHeader(HttpHeaders.CONTENT_TYPE) final MediaType contentType,
+      @Nullable @RequestParam(value = "query", required = false) String query,
+      @Nullable @RequestParam(value = "operationName", required = false) String operationName,
+      @Nullable @RequestParam(value = "variables", required = false) String variablesJson,
+      @Nullable @RequestBody(required = false) String body,
       ServerWebExchange serverWebExchange) throws IOException {
 
     if (body == null) {
@@ -48,7 +49,7 @@ public abstract class AbstractGraphQLController {
     //   "variables": { "myVariable": "someValue", ... }
     // }
 
-    if (MediaType.APPLICATION_JSON_VALUE.equals(contentType)) {
+    if (MediaType.APPLICATION_JSON.isCompatibleWith(contentType)) {
       GraphQLRequest request = objectMapper.readGraphQLRequest(body);
       if (request.getQuery() == null) {
         request.setQuery("");
@@ -68,20 +69,19 @@ public abstract class AbstractGraphQLController {
     // * If the "application/graphql" Content-Type header is present,
     //   treat the HTTP POST body contents as the GraphQL query string.
 
-    if ("application/graphql".equals(contentType)) {
-      return executeRequest(body, null, null, serverWebExchange);
+    if ("application/graphql".equals(contentType.toString()) || "application/graphql; charset=utf-8".equals(contentType.toString())) {
+      return executeRequest(body, null, Collections.emptyMap(), serverWebExchange);
     }
 
     throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Could not process GraphQL request");
   }
 
-  @RequestMapping(value = "${graphql.url:graphql}",
-      method = RequestMethod.GET,
+  @GetMapping(value = "${graphql.url:graphql}",
       produces = MediaType.APPLICATION_JSON_VALUE)
   public Object graphqlGET(
-      @RequestParam("query") String query,
-      @RequestParam(value = "operationName", required = false) String operationName,
-      @RequestParam(value = "variables", required = false) String variablesJson,
+      @Nullable @RequestParam("query") String query,
+      @Nullable @RequestParam(value = "operationName", required = false) String operationName,
+      @Nullable @RequestParam(value = "variables", required = false) String variablesJson,
       ServerWebExchange serverWebExchange) {
 
     // https://graphql.org/learn/serving-over-http/#get-request
