@@ -33,7 +33,7 @@
     {
       "name": "graphql.servlet.tracingEnabled",
       "defaultValue": false,
-      "type": "java.lang.Boolean"
+      "type": "java.lang.String"
     },
     {
       "name": "graphql.servlet.maxQueryComplexity",
