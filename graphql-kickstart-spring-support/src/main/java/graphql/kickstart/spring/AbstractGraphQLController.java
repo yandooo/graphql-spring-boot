@@ -18,6 +18,7 @@ import org.springframework.web.server.ServerWebExchange;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public abstract class AbstractGraphQLController {
@@ -34,9 +35,7 @@ public abstract class AbstractGraphQLController {
       @Nullable @RequestBody(required = false) String body,
       ServerWebExchange serverWebExchange) throws IOException {
 
-    if (body == null) {
-      body = "";
-    }
+    body = Optional.ofNullable(body).orElse("");
 
     // https://graphql.org/learn/serving-over-http/#post-request
     //
@@ -107,10 +106,7 @@ public abstract class AbstractGraphQLController {
   }
 
   private Map<String, Object> convertVariablesJson(String jsonMap) {
-    if (jsonMap == null) {
-      return Collections.emptyMap();
-    }
-    return objectMapper.deserializeVariables(jsonMap);
+    return Optional.ofNullable(jsonMap).map(objectMapper::deserializeVariables).orElseGet(Collections::emptyMap);
   }
 
   protected abstract Object executeRequest(
