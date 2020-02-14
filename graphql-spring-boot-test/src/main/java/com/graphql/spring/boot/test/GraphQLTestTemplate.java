@@ -16,20 +16,23 @@ import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class GraphQLTestTemplate {
 
-    @Autowired private ResourceLoader resourceLoader;
-    @Autowired(required = false) private TestRestTemplate restTemplate;
-    @Value("${graphql.servlet.mapping:/graphql}") private String graphqlMapping;
+    @Autowired
+    private ResourceLoader resourceLoader;
+    @Autowired(required = false)
+    private TestRestTemplate restTemplate;
+    @Value("${graphql.servlet.mapping:/graphql}")
+    private String graphqlMapping;
 
     private ObjectMapper objectMapper = new ObjectMapper();
     private HttpHeaders headers = new HttpHeaders();
 
-    private String createJsonQuery(String graphql, ObjectNode variables) throws JsonProcessingException {
+    private String createJsonQuery(String graphql, ObjectNode variables)
+            throws JsonProcessingException {
 
         ObjectNode wrapper = objectMapper.createObjectNode();
         wrapper.put("query", graphql);
@@ -51,7 +54,7 @@ public class GraphQLTestTemplate {
     /**
      * Add an HTTP header that will be sent with each request this sends.
      *
-     * @param name  Name (key) of HTTP header to add.
+     * @param name Name (key) of HTTP header to add.
      * @param value Value of HTTP header to add.
      */
     public void addHeader(String name, String value) {
@@ -75,10 +78,11 @@ public class GraphQLTestTemplate {
     }
 
     /**
+     * @deprecated Use {@link #postForResource(String)} instead
+     *
      * @param graphqlResource path to the classpath resource containing the GraphQL query
      * @return GraphQLResponse containing the result of query execution
      * @throws IOException if the resource cannot be loaded from the classpath
-     * @deprecated Use {@link #postForResource(String)} instead
      */
     public GraphQLResponse perform(String graphqlResource) throws IOException {
         return postForResource(graphqlResource);
