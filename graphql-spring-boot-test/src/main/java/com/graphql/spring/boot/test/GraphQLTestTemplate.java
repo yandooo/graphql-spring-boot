@@ -17,6 +17,7 @@ import org.springframework.util.StreamUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 public class GraphQLTestTemplate {
 
@@ -93,6 +94,16 @@ public class GraphQLTestTemplate {
         return post(payload);
     }
 
+    public GraphQLResponse perform(String graphqlResource, ObjectNode variables, List<String> fragmentResources) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        for (String fragmentResource : fragmentResources) {
+            sb.append(loadQuery(fragmentResource));
+        }
+        String graphql = sb.append(loadQuery(graphqlResource)).toString();
+        String payload = createJsonQuery(graphql, variables);
+        return post(payload);
+    }
+
     /**
      * Loads a GraphQL query from the given classpath resource and sends it to the GraphQL server.
      *
@@ -102,6 +113,19 @@ public class GraphQLTestTemplate {
      */
     public GraphQLResponse postForResource(String graphqlResource) throws IOException {
         return perform(graphqlResource, null);
+    }
+
+    /**
+     * Loads a GraphQL query from the given classpath resource, appending any graphql fragment
+     * resources provided  and sends it to the GraphQL server.
+     *
+     * @param graphqlResource path to the classpath resource containing the GraphQL query
+     * @param fragmentResources an ordered list of classpaths containing GraphQL fragment definitions.
+     * @return GraphQLResponse containing the result of query execution
+     * @throws IOException if the resource cannot be loaded from the classpath
+     */
+    public GraphQLResponse postForResource(String graphqlResource, List<String> fragmentResources) throws IOException {
+        return perform(graphqlResource, null, fragmentResources);
     }
 
     public GraphQLResponse postMultipart(String query, String variables) {
