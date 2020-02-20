@@ -1,0 +1,50 @@
+package com.oembedler.moon.graphiql.boot;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.StrSubstitutor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.MediaType;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+/**
+ * @author Andrew Potter
+ */
+@Slf4j
+@Controller
+public class ServletGraphiQLController extends GraphiQLController{
+
+    @PostConstruct
+    public void onceConstructed() throws IOException {
+        super.onceConstructed();
+    }
+
+    @GetMapping(value = "${graphiql.mapping:/graphiql}")
+    public void graphiql(HttpServletRequest request, HttpServletResponse response,
+                         @PathVariable Map<String, String> params) throws IOException {
+        response.setContentType("text/html; charset=UTF-8");
+        Object csrf = request.getAttribute("_csrf");
+        byte[] graphiqlBytes = super.graphiql(request.getContextPath(), params, csrf);
+        response.getOutputStream().write(graphiqlBytes);
+    }
+
+}

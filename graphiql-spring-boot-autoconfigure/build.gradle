@@ -23,6 +23,7 @@ dependencies{
     compile "org.apache.commons:commons-text:1.1"
     compileOnly "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
     compileOnly "org.springframework.boot:spring-boot-starter-security:$LIB_SPRING_BOOT_VER"
+    compileOnly "io.projectreactor:reactor-core:3.3.0.RELEASE"
 
     testCompile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
     testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
