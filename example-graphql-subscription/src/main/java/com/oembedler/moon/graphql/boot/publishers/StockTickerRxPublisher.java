@@ -23,13 +23,13 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class StockTickerPublisher {
+public class StockTickerRxPublisher {
 
-    private static final Logger LOG = LoggerFactory.getLogger(StockTickerPublisher.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StockTickerRxPublisher.class);
 
     private final Flowable<StockPriceUpdate> publisher;
 
-    public StockTickerPublisher() {
+    public StockTickerRxPublisher() {
         Observable<StockPriceUpdate> stockPriceUpdateObservable = Observable.create(emitter -> {
 
             ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
