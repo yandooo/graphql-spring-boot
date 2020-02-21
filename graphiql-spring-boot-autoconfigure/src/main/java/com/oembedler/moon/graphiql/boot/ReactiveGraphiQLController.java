@@ -35,7 +35,7 @@ public class ReactiveGraphiQLController extends GraphiQLController {
     super.onceConstructed();
   }
 
-  @RequestMapping(value = "${graphiql.mapping:/api}")
+  @RequestMapping(value = "${graphiql.mapping:/graphiql}")
   public Mono<Void> graphiql(ServerHttpRequest request, ServerHttpResponse response,
                              @PathVariable Map<String, String> params) {
     response.getHeaders().setContentType(MediaType.TEXT_HTML);
