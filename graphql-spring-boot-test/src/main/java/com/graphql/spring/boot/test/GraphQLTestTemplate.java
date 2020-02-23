@@ -27,8 +27,9 @@ public class GraphQLTestTemplate {
     private TestRestTemplate restTemplate;
     @Value("${graphql.servlet.mapping:/graphql}")
     private String graphqlMapping;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
     private HttpHeaders headers = new HttpHeaders();
 
     private String createJsonQuery(String graphql, ObjectNode variables)
@@ -138,7 +139,7 @@ public class GraphQLTestTemplate {
 
     private GraphQLResponse postRequest(HttpEntity<Object> request) {
         ResponseEntity<String> response = restTemplate.exchange(graphqlMapping, HttpMethod.POST, request, String.class);
-        return new GraphQLResponse(response);
+        return new GraphQLResponse(response, objectMapper);
     }
 
 }
