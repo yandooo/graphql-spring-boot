@@ -19,11 +19,16 @@
 dependencies {
     compile("org.springframework:spring-web:$LIB_SPRING_CORE_VER")
     compile("org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER")
-    compile("com.fasterxml.jackson.core:jackson-databind:2.5.4")
-    compile("com.jayway.jsonpath:json-path:2.3.0")
+    compile("com.fasterxml.jackson.core:jackson-databind:2.10.2")
+    compile("com.jayway.jsonpath:json-path:2.4.0")
     compileOnly("com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER")
     compileOnly("com.graphql-java-kickstart:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER")
+    testImplementation("org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER")
 }
 repositories {
     mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
 }
