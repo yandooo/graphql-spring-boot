@@ -1,6 +1,6 @@
 package com.oembedler.moon.graphql.boot.resolvers;
 
-import com.coxautodev.graphql.tools.GraphQLSubscriptionResolver;
+import graphql.kickstart.tools.GraphQLSubscriptionResolver;
 import com.oembedler.moon.graphql.boot.publishers.StockTickerPublisher;
 import org.reactivestreams.Publisher;
 import org.springframework.stereotype.Component;

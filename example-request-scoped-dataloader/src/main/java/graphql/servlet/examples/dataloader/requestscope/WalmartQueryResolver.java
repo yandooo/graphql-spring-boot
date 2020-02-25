@@ -1,6 +1,6 @@
 package graphql.servlet.examples.dataloader.requestscope;
 
-import com.coxautodev.graphql.tools.GraphQLQueryResolver;
+import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;

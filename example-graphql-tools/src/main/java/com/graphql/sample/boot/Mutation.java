@@ -1,6 +1,6 @@
 package com.graphql.sample.boot;
 
-import com.coxautodev.graphql.tools.GraphQLMutationResolver;
+import graphql.kickstart.tools.GraphQLMutationResolver;
 import java.util.Random;
 import org.springframework.stereotype.Component;
 

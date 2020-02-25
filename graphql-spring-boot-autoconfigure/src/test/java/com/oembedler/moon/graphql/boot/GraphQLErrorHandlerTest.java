@@ -1,7 +1,7 @@
 package com.oembedler.moon.graphql.boot;
 
-import com.coxautodev.graphql.tools.GraphQLQueryResolver;
-import com.coxautodev.graphql.tools.SchemaParser;
+import graphql.kickstart.tools.GraphQLQueryResolver;
+import graphql.kickstart.tools.SchemaParser;
 import com.graphql.spring.boot.test.TestUtils;
 import com.oembedler.moon.graphql.boot.test.AbstractAutoConfigurationTest;
 import graphql.GraphQL;

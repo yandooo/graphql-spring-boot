@@ -1,6 +1,6 @@
 package graphql.kickstart.tools.boot;
 
-import com.coxautodev.graphql.tools.GraphQLQueryResolver;
+import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
 
 /**
