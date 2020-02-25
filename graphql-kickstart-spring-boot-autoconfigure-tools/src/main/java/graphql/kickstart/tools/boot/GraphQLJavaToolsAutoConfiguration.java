@@ -1,11 +1,15 @@
 package graphql.kickstart.tools.boot;
 
+import com.coxautodev.graphql.tools.CoroutineContextProvider;
 import com.coxautodev.graphql.tools.GraphQLResolver;
+import com.coxautodev.graphql.tools.ObjectMapperConfigurer;
 import com.coxautodev.graphql.tools.PerFieldObjectMapperProvider;
+import com.coxautodev.graphql.tools.ProxyHandler;
 import com.coxautodev.graphql.tools.SchemaParser;
 import com.coxautodev.graphql.tools.SchemaParserBuilder;
 import com.coxautodev.graphql.tools.SchemaParserDictionary;
 import com.coxautodev.graphql.tools.SchemaParserOptions;
+import com.coxautodev.graphql.tools.SchemaParserOptions.GenericWrapper;
 import com.coxautodev.graphql.tools.TypeDefinitionFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
@@ -16,6 +20,8 @@ import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.SchemaDirectiveWiring;
 import java.io.IOException;
 import java.util.List;
+
+import kotlin.coroutines.CoroutineContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -52,6 +58,18 @@ public class GraphQLJavaToolsAutoConfiguration {
   private List<SchemaDirectiveWiring> directiveWirings;
 
   @Autowired(required = false)
+  private List<GenericWrapper> genericWrappers;
+
+  @Autowired(required = false)
+  private ObjectMapperConfigurer objectMapperConfigurer;
+
+  @Autowired(required = false)
+  private List<ProxyHandler> proxyHandlers;
+
+  @Autowired(required = false)
+  private CoroutineContextProvider coroutineContextProvider;
+
+  @Autowired(required = false)
   private List<TypeDefinitionFactory> typeDefinitionFactories;
 
   @Autowired
@@ -73,8 +91,23 @@ public class GraphQLJavaToolsAutoConfiguration {
 
     if (perFieldObjectMapperProvider != null) {
       optionsBuilder.objectMapperProvider(perFieldObjectMapperProvider);
+    } else {
+      optionsBuilder.objectMapperConfigurer(objectMapperConfigurer);
     }
+
     optionsBuilder.introspectionEnabled(props.isIntrospectionEnabled());
+
+    if (genericWrappers != null) {
+      optionsBuilder.genericWrappers(genericWrappers);
+    }
+
+    if (proxyHandlers != null) {
+      proxyHandlers.forEach(optionsBuilder::addProxyHandler);
+    }
+
+    if (coroutineContextProvider != null) {
+      optionsBuilder.coroutineContextProvider(coroutineContextProvider);
+    }
 
     if (typeDefinitionFactories != null) {
       typeDefinitionFactories.forEach(optionsBuilder::typeDefinitionFactory);
