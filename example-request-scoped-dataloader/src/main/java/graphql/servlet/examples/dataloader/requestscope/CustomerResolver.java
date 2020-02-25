@@ -1,6 +1,6 @@
 package graphql.servlet.examples.dataloader.requestscope;
 
-import com.coxautodev.graphql.tools.GraphQLResolver;
+import graphql.kickstart.tools.GraphQLResolver;
 import graphql.kickstart.execution.context.GraphQLContext;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.concurrent.CompletableFuture;

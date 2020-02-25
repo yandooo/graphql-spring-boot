@@ -1,8 +1,8 @@
 package com.graphql.spring.boot.test;
 
-import com.coxautodev.graphql.tools.GraphQLResolver;
-import com.coxautodev.graphql.tools.SchemaParserDictionary;
-import com.coxautodev.graphql.tools.SchemaParserOptions;
+import graphql.kickstart.tools.GraphQLResolver;
+import graphql.kickstart.tools.SchemaParserDictionary;
+import graphql.kickstart.tools.SchemaParserOptions;
 import com.oembedler.moon.graphql.boot.GraphQLInstrumentationAutoConfiguration;
 import com.oembedler.moon.graphql.boot.GraphQLWebAutoConfiguration;
 import graphql.execution.ExecutionStrategy;
