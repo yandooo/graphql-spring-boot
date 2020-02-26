@@ -16,30 +16,21 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-plugins {
-    id 'java'
-}
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
-    compile(project(":graphql-spring-boot-starter"))
-    compile(project(":graphiql-spring-boot-starter"))
-    compile(project(":voyager-spring-boot-starter"))
-    compile "com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
+    implementation(project(":graphql-spring-boot-starter"))
+    implementation(project(":graphiql-spring-boot-starter"))
+    implementation(project(":voyager-spring-boot-starter"))
+    implementation "com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
 
-    compile("org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER")
+    implementation("org.springframework.boot:spring-boot-starter-web")
 
-    testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
 
-    testCompile(project(":graphql-spring-boot-starter-test"))
+    testImplementation(project(":graphql-spring-boot-starter-test"))
 }
 
 jar.enabled = false
 uploadArchives.enabled = false
 bintrayUpload.enabled = false
-install.enabled = false
+publishToMavenLocal.enabled = false

@@ -1,28 +1,16 @@
-plugins {
-    id 'java'
-    id 'org.springframework.boot' version '2.1.3.RELEASE'
-}
-
-sourceCompatibility = 1.8
-
-repositories {
-    jcenter()
-    mavenCentral()
-}
-
 dependencies {
-    compile(project(":graphql-spring-boot-starter"))
-    compile(project(":graphiql-spring-boot-starter"))
-    compile "com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
+    implementation(project(":graphql-spring-boot-starter"))
+    implementation(project(":graphiql-spring-boot-starter"))
+    implementation "com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
 
-    compile "io.reactivex.rxjava2:rxjava:2.1.5"
-    compile "io.projectreactor:reactor-core:3.3.2.RELEASE"
-    compile("org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER")
+    implementation "io.reactivex.rxjava2:rxjava"
+    implementation "io.projectreactor:reactor-core"
+    implementation("org.springframework.boot:spring-boot-starter-web")
 
-    testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
 }
 
 jar.enabled = false
 uploadArchives.enabled = false
 bintrayUpload.enabled = false
-install.enabled = false
+publishToMavenLocal.enabled = false
