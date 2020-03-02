@@ -16,15 +16,39 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-dependencies{
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
-    
-    compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
-    compile "org.apache.commons:commons-text:1.1"
-    compile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
-    compile "org.springframework.boot:spring-boot-starter-webflux:$LIB_SPRING_BOOT_VER"
 
-    testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
+package com.oembedler.moon.graphql.boot.sample;
+
+import graphql.Scalars;
+import graphql.schema.GraphQLObjectType;
+import graphql.schema.GraphQLSchema;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.reactive.config.EnableWebFlux;
+
+/**
+ * @author Max Günther
+ */
+@SpringBootApplication
+@EnableWebFlux
+public class ApplicationWebfluxConfiguration {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ApplicationWebfluxConfiguration.class, args);
+    }
+
+    @Bean
+    GraphQLSchema schema() {
+        return GraphQLSchema.newSchema()
+            .query(GraphQLObjectType.newObject()
+                .name("query")
+                .field(field -> field
+                    .name("test")
+                    .type(Scalars.GraphQLString)
+                    .dataFetcher(environment -> "response")
+                )
+                .build())
+            .build();
+    }
 }
-
-compileJava.dependsOn(processResources)
