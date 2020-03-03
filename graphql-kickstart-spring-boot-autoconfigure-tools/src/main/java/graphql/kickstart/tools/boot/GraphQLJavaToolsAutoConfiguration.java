@@ -1,21 +1,27 @@
 package graphql.kickstart.tools.boot;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.module.kotlin.KotlinModule;
+import graphql.kickstart.tools.CoroutineContextProvider;
 import graphql.kickstart.tools.GraphQLResolver;
+import graphql.kickstart.tools.ObjectMapperConfigurer;
 import graphql.kickstart.tools.PerFieldObjectMapperProvider;
+import graphql.kickstart.tools.ProxyHandler;
 import graphql.kickstart.tools.SchemaParser;
 import graphql.kickstart.tools.SchemaParserBuilder;
 import graphql.kickstart.tools.SchemaParserDictionary;
 import graphql.kickstart.tools.SchemaParserOptions;
+import graphql.kickstart.tools.SchemaParserOptions.GenericWrapper;
 import graphql.kickstart.tools.TypeDefinitionFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import graphql.kickstart.execution.config.GraphQLSchemaProvider;
 import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.SchemaDirectiveWiring;
 import java.io.IOException;
 import java.util.List;
+
+import kotlin.coroutines.CoroutineContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -52,6 +58,18 @@ public class GraphQLJavaToolsAutoConfiguration {
   private List<SchemaDirectiveWiring> directiveWirings;
 
   @Autowired(required = false)
+  private List<GenericWrapper> genericWrappers;
+
+  @Autowired(required = false)
+  private ObjectMapperConfigurer objectMapperConfigurer;
+
+  @Autowired(required = false)
+  private List<ProxyHandler> proxyHandlers;
+
+  @Autowired(required = false)
+  private CoroutineContextProvider coroutineContextProvider;
+
+  @Autowired(required = false)
   private List<TypeDefinitionFactory> typeDefinitionFactories;
 
   @Autowired
@@ -73,8 +91,23 @@ public class GraphQLJavaToolsAutoConfiguration {
 
     if (perFieldObjectMapperProvider != null) {
       optionsBuilder.objectMapperProvider(perFieldObjectMapperProvider);
+    } else {
+      optionsBuilder.objectMapperConfigurer(objectMapperConfigurer);
     }
+
     optionsBuilder.introspectionEnabled(props.isIntrospectionEnabled());
+
+    if (genericWrappers != null) {
+      optionsBuilder.genericWrappers(genericWrappers);
+    }
+
+    if (proxyHandlers != null) {
+      proxyHandlers.forEach(optionsBuilder::addProxyHandler);
+    }
+
+    if (coroutineContextProvider != null) {
+      optionsBuilder.coroutineContextProvider(coroutineContextProvider);
+    }
 
     if (typeDefinitionFactories != null) {
       typeDefinitionFactories.forEach(optionsBuilder::typeDefinitionFactory);
