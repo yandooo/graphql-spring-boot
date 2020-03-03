@@ -13,13 +13,13 @@ import java.util.Objects;
 
 public class GraphQLResponse {
 
-    private ResponseEntity<String> responseEntity;
-    private ObjectMapper mapper;
-    private ReadContext context;
+    private final ResponseEntity<String> responseEntity;
+    private final ObjectMapper mapper;
+    private final ReadContext context;
 
-    public GraphQLResponse(ResponseEntity<String> responseEntity) {
+    public GraphQLResponse(ResponseEntity<String> responseEntity, ObjectMapper objectMapper) {
         this.responseEntity = Objects.requireNonNull(responseEntity);
-        this.mapper = new ObjectMapper();
+        this.mapper = Objects.requireNonNull(objectMapper);
 
         Objects.requireNonNull(responseEntity.getBody(),
                 () -> "Body is empty with status " + responseEntity.getStatusCodeValue());
@@ -31,11 +31,11 @@ public class GraphQLResponse {
     }
 
     public String get(String path) {
-        return context.read(path);
+        return get(path, String.class);
     }
 
     public <T> T get(String path, Class<T> type) {
-        return context.read(path, type);
+        return mapper.convertValue(context.read(path, Object.class), type);
     }
 
     public <T> List<T> getList(String path, Class<T> type) {

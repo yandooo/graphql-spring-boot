@@ -1,12 +1,12 @@
 package graphql.kickstart.tools.boot;
 
-import com.coxautodev.graphql.tools.GraphQLResolver;
-import com.coxautodev.graphql.tools.PerFieldObjectMapperProvider;
-import com.coxautodev.graphql.tools.SchemaParser;
-import com.coxautodev.graphql.tools.SchemaParserBuilder;
-import com.coxautodev.graphql.tools.SchemaParserDictionary;
-import com.coxautodev.graphql.tools.SchemaParserOptions;
-import com.coxautodev.graphql.tools.TypeDefinitionFactory;
+import graphql.kickstart.tools.GraphQLResolver;
+import graphql.kickstart.tools.PerFieldObjectMapperProvider;
+import graphql.kickstart.tools.SchemaParser;
+import graphql.kickstart.tools.SchemaParserBuilder;
+import graphql.kickstart.tools.SchemaParserDictionary;
+import graphql.kickstart.tools.SchemaParserOptions;
+import graphql.kickstart.tools.TypeDefinitionFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;

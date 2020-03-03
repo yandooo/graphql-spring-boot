@@ -30,8 +30,7 @@ import java.util.Properties;
  * @author Andrew Potter
  */
 @Slf4j
-@Controller
-public class GraphiQLController {
+public abstract class GraphiQLController {
 
     private static final String CDNJS_CLOUDFLARE_COM_AJAX_LIBS = "//cdnjs.cloudflare.com/ajax/libs/";
     private static final String CDN_JSDELIVR_NET_NPM = "//cdn.jsdelivr.net/npm/";
@@ -48,7 +47,6 @@ public class GraphiQLController {
     private String props;
     private Properties headerProperties;
 
-    @PostConstruct
     public void onceConstructed() throws IOException {
         loadTemplate();
         loadProps();
@@ -78,23 +76,20 @@ public class GraphiQLController {
         }
     }
 
-    @GetMapping(value = "${graphiql.mapping:/graphiql}")
-    public void graphiql(HttpServletRequest request, HttpServletResponse response, @PathVariable Map<String, String> params) throws IOException {
-        response.setContentType("text/html; charset=UTF-8");
-        Object csrf = request.getAttribute("_csrf");
+    public byte[] graphiql(String contextPath, @PathVariable Map<String, String> params, Object csrf) {
         if (csrf != null) {
             CsrfToken csrfToken = (CsrfToken) csrf;
             headerProperties.setProperty(csrfToken.getHeaderName(), csrfToken.getToken());
         }
 
         Map<String, String> replacements = getReplacements(
-                constructGraphQlEndpoint(request, params),
-                request.getContextPath() + graphiQLProperties.getEndpoint().getSubscriptions(),
-                request.getContextPath() + graphiQLProperties.getSTATIC().getBasePath()
+                constructGraphQlEndpoint(contextPath, params),
+                contextPath + graphiQLProperties.getEndpoint().getSubscriptions(),
+                contextPath + graphiQLProperties.getSTATIC().getBasePath()
         );
 
         String populatedTemplate = StrSubstitutor.replace(template, replacements);
-        response.getOutputStream().write(populatedTemplate.getBytes(Charset.defaultCharset()));
+        return populatedTemplate.getBytes(Charset.defaultCharset());
     }
 
     private Map<String, String> getReplacements(
@@ -169,13 +164,13 @@ public class GraphiQLController {
         return CDN_JSDELIVR_NET_NPM + library + "@" + cdnVersion + "/" + cdnFileName;
     }
 
-    private String constructGraphQlEndpoint(HttpServletRequest request, @RequestParam Map<String, String> params) {
+    private String constructGraphQlEndpoint(String contextPath, @RequestParam Map<String, String> params) {
         String endpoint = graphiQLProperties.getEndpoint().getGraphql();
         for (Map.Entry<String, String> param : params.entrySet()) {
             endpoint = endpoint.replaceAll("\\{" + param.getKey() + "}", param.getValue());
         }
-        if (StringUtils.isNotBlank(request.getContextPath()) && !endpoint.startsWith(request.getContextPath())) {
-            return request.getContextPath() + endpoint;
+        if (StringUtils.isNotBlank(contextPath) && !endpoint.startsWith(contextPath)) {
+            return contextPath + endpoint;
         }
         return endpoint;
     }

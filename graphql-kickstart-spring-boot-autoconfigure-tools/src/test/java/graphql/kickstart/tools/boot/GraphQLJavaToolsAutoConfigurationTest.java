@@ -1,7 +1,7 @@
 package graphql.kickstart.tools.boot;
 
-import com.coxautodev.graphql.tools.GraphQLQueryResolver;
-import com.coxautodev.graphql.tools.SchemaParserDictionary;
+import graphql.kickstart.tools.GraphQLQueryResolver;
+import graphql.kickstart.tools.SchemaParserDictionary;
 import graphql.schema.GraphQLSchema;
 import org.junit.Assert;
 import org.junit.Test;

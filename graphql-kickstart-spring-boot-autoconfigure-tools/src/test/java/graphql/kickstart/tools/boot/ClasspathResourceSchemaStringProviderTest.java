@@ -3,7 +3,7 @@ package graphql.kickstart.tools.boot;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.coxautodev.graphql.tools.GraphQLQueryResolver;
+import graphql.kickstart.tools.GraphQLQueryResolver;
 import java.io.IOException;
 import java.util.List;
 import org.junit.After;

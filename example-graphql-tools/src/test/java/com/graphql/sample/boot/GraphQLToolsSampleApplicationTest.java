@@ -17,6 +17,9 @@ import static graphql.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @GraphQLTest
 public class GraphQLToolsSampleApplicationTest {
@@ -28,6 +31,16 @@ public class GraphQLToolsSampleApplicationTest {
     @Ignore
     public void get_comments() throws IOException {
         GraphQLResponse response = graphQLTestTemplate.postForResource("graphql/post-get-comments.graphql");
+        assertNotNull(response);
+        assertTrue(response.isOk());
+        assertEquals("1", response.get("$.data.post.id"));
+    }
+
+    @Test
+    public void get_comments_withFragments() throws IOException {
+        List<String> fragments = new ArrayList<>();
+        fragments.add("graphql/all-comment-fields-fragment.graphql");
+        GraphQLResponse response = graphQLTestTemplate.postForResource("graphql/post-get-comments-with-fragment.graphql", fragments);
         assertNotNull(response);
         assertTrue(response.isOk());
         assertEquals("1", response.get("$.data.post.id"));
