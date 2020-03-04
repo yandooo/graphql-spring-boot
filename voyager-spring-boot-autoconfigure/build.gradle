@@ -21,9 +21,12 @@ dependencies{
     
     compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
     compile "org.apache.commons:commons-text:1.1"
-    compile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
-    compile "org.springframework.boot:spring-boot-starter-webflux:$LIB_SPRING_BOOT_VER"
 
+    compileOnly "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
+    compileOnly "org.springframework.boot:spring-boot-starter-webflux:$LIB_SPRING_BOOT_VER"
+
+    testCompile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
+    testCompile "org.springframework.boot:spring-boot-starter-webflux:$LIB_SPRING_BOOT_VER"
     testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
 }
 
