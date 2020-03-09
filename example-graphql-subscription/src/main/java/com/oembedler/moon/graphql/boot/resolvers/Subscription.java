@@ -1,7 +1,7 @@
 package com.oembedler.moon.graphql.boot.resolvers;
 
+import com.oembedler.moon.graphql.boot.publishers.StockTickerRxPublisher;
 import graphql.kickstart.tools.GraphQLSubscriptionResolver;
-import com.oembedler.moon.graphql.boot.publishers.StockTickerPublisher;
 import org.reactivestreams.Publisher;
 import org.springframework.stereotype.Component;
 
@@ -10,9 +10,9 @@ import java.util.List;
 @Component
 class Subscription implements GraphQLSubscriptionResolver {
 
-    private StockTickerPublisher stockTickerPublisher;
+    private StockTickerRxPublisher stockTickerPublisher;
 
-    Subscription(StockTickerPublisher stockTickerPublisher) {
+    Subscription(StockTickerRxPublisher stockTickerPublisher) {
         this.stockTickerPublisher = stockTickerPublisher;
     }
 

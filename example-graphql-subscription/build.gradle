@@ -16,7 +16,7 @@ dependencies {
     compile "com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
 
     compile "io.reactivex.rxjava2:rxjava:2.1.5"
-
+    compile "io.projectreactor:reactor-core:3.3.2.RELEASE"
     compile("org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER")
 
     testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
