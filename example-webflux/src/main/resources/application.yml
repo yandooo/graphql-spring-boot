@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: graphql-todo-app
+server:
+  port: 9000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+voyager:
+  enabled: true
+  cdn:
+    enabled: false

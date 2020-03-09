@@ -1,1 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.oembedler.moon.voyager.boot.VoyagerAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.oembedler.moon.voyager.boot.ReactiveVoyagerAutoConfiguration
+
