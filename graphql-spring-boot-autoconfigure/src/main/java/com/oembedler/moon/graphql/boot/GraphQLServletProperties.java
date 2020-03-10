@@ -21,12 +21,10 @@ package com.oembedler.moon.graphql.boot;
 
 import graphql.kickstart.execution.context.ContextSetting;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
  */
-@Configuration
 @ConfigurationProperties(prefix = "graphql.servlet")
 public class GraphQLServletProperties {
 

@@ -69,7 +69,7 @@ subprojects {
     }
 
     compileJava.dependsOn(processResources)
-    
+
     lombok {
         version = "1.18.4"
         sha256 = ""
