@@ -17,16 +17,16 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 dependencies{
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     
-    compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
-    compile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
-    compile "org.springframework.boot:spring-boot-starter-thymeleaf:$LIB_SPRING_BOOT_VER"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
 
-    testCompile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
-    testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
-    testCompile "org.springframework.boot:spring-boot-starter-security:$LIB_SPRING_BOOT_VER"
-    testCompile "org.jsoup:jsoup:1.12.1"
+    testImplementation "org.springframework.boot:spring-boot-starter-web"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.springframework.boot:spring-boot-starter-security"
+    testImplementation "org.jsoup:jsoup:$LIB_JSOUP_VER"
 }
 
 compileJava.dependsOn(processResources)

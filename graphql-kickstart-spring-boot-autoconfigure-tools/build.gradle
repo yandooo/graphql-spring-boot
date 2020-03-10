@@ -1,17 +1,17 @@
 dependencies {
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
-    compileOnly "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    compileOnly "org.springframework.boot:spring-boot-configuration-processor"
 
-    compile "com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
-    compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
+    api "com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
 
     compileOnly "com.graphql-java-kickstart:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
 
-    testCompile "com.graphql-java-kickstart:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
-    testCompile "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
-    testCompile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
-    testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
-    testCompile(project(":graphql-spring-boot-test"))
+    testImplementation "com.graphql-java-kickstart:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
+    testImplementation "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
+    testImplementation "org.springframework.boot:spring-boot-starter-web"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation(project(":graphql-spring-boot-test"))
 }
 
 compileJava.dependsOn(processResources)
