@@ -17,6 +17,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+buildscript {
+    pluginManagement {
+        repositories {
+            gradlePluginPortal()
+        }
+    }
+}
+
 rootProject.name = PROJECT_NAME
 
 include ":altair-spring-boot-autoconfigure"

@@ -1,6 +1,6 @@
 dependencies {
-    compile(project(':graphql-kickstart-spring-support'))
+    api(project(':graphql-kickstart-spring-support'))
 
     compileOnly "com.graphql-java-kickstart:graphql-java-kickstart:$LIB_GRAPHQL_SERVLET_VER"
-    compileOnly "org.springframework.boot:spring-boot-starter-webflux:$LIB_SPRING_BOOT_VER"
+    compileOnly "org.springframework.boot:spring-boot-starter-webflux"
 }

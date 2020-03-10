@@ -16,24 +16,6 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-buildscript {
-    repositories {
-        maven { url "https://plugins.gradle.org/m2/" }
-        maven { url 'https://repo.spring.io/plugins-release' }
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:$LIB_SPRING_BOOT_VER")
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6"
-    }
-}
-
-apply plugin: 'java'
-apply plugin: 'org.springframework.boot'
-
-repositories {
-    mavenLocal()
-    jcenter()
-}
 
 dependencies {
     compile(project(":graphql-kickstart-spring-boot-autoconfigure-webflux"))
@@ -47,4 +29,4 @@ dependencies {
 jar.enabled = false
 uploadArchives.enabled = false
 bintrayUpload.enabled = false
-install.enabled = false
+publishToMavenLocal.enabled = false

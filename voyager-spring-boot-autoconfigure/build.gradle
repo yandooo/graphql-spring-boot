@@ -17,17 +17,16 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 dependencies{
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     
-    compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
-    compile "org.apache.commons:commons-text:1.1"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation "org.apache.commons:commons-text:$LIB_APACHE_COMMONS_TEXT"
+    compileOnly "org.springframework.boot:spring-boot-starter-web"
+    compileOnly "org.springframework.boot:spring-boot-starter-webflux"
 
-    compileOnly "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
-    compileOnly "org.springframework.boot:spring-boot-starter-webflux:$LIB_SPRING_BOOT_VER"
-
-    testCompile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
-    testCompile "org.springframework.boot:spring-boot-starter-webflux:$LIB_SPRING_BOOT_VER"
-    testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
+    testImplementation "org.springframework.boot:spring-boot-starter-web"
+    testImplementation "org.springframework.boot:spring-boot-starter-webflux"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
 }
 
 compileJava.dependsOn(processResources)

@@ -17,35 +17,21 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-buildscript {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        jcenter()
-        maven { url "https://dl.bintray.com/graphql-java-kickstart/releases" }
-        maven { url "https://plugins.gradle.org/m2/" }
-        maven { url 'https://repo.spring.io/plugins-release' }
-    }
-    dependencies {
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
-        classpath 'net.researchgate:gradle-release:2.7.0'
-    }
-}
-
 plugins {
-    id 'net.researchgate.release' version '2.7.0'
-    id 'io.franzbecker.gradle-lombok' version '1.14' apply false
+    id "com.jfrog.bintray" version "$LIB_BINTRAY_PLUGIN_VER"
+    id 'net.researchgate.release' version "$LIB_RELEASE_PLUGIN_VER"
+    id "org.springframework.boot" version "$LIB_SPRING_BOOT_VER" apply false
 }
 
 subprojects {
     apply plugin: 'idea'
     apply plugin: 'java'
-    apply plugin: 'maven'
+    apply plugin: 'java-library'
     apply plugin: 'maven-publish'
     apply plugin: "com.jfrog.bintray"
-    apply plugin: 'io.franzbecker.gradle-lombok'
+    apply plugin: "io.spring.dependency-management"
 
-    group = PROJECT_GROUP
+    group  "$PROJECT_GROUP"
 
     repositories {
         mavenLocal()
@@ -54,6 +40,24 @@ subprojects {
         maven { url "https://dl.bintray.com/graphql-java-kickstart/releases" }
         maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local" }
         maven { url "https://repo.spring.io/libs-milestone" }
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-starter-parent:$LIB_SPRING_BOOT_VER"
+        }
+    }
+
+    dependencies {
+        compileOnly "org.projectlombok:lombok"
+        annotationProcessor "org.projectlombok:lombok"
+
+        testCompileOnly "org.projectlombok:lombok"
+        testAnnotationProcessor "org.projectlombok:lombok"
+    }
+
+    test {
+        useJUnitPlatform()
     }
 
     idea {
@@ -70,79 +74,59 @@ subprojects {
 
     compileJava.dependsOn(processResources)
 
-    lombok {
-        version = "1.18.4"
-        sha256 = ""
-    }
-
-
     if (!it.name.startsWith('example')) {
+
+        //disable Gradle Metadata generation as it may cause unwanted side effects
+        tasks.withType(GenerateModuleMetadata) {
+            enabled = false
+        }
 
         jar {
             from "LICENSE.md"
         }
 
-        task sourcesJar(type: Jar) {
-            dependsOn classes
-            classifier 'sources'
-            from sourceSets.main.allSource
-        }
-
-        task javadocJar(type: Jar, dependsOn: javadoc) {
-            classifier = 'javadoc'
-            from javadoc.destinationDir
-        }
-
-        artifacts {
-            archives sourcesJar
-            archives javadocJar
+        java {
+            withSourcesJar()
+            withJavadocJar()
         }
 
         publishing {
             publications {
                 mainProjectPublication(MavenPublication) {
-                    version version
                     from components.java
 
-                    artifact sourcesJar {
-                        classifier "sources"
-                    }
-                    artifact javadocJar {
-                        classifier "javadoc"
-                    }
-
-                    pom.withXml {
-                        // Fix dependency scoping.
-                        asNode().dependencies.'*'.findAll() {
-                            it.scope.text() == 'runtime' && project.configurations.compile.allDependencies.find { dep ->
-                                dep.name == it.artifactId.text()
-                            }
-                        }.each() {
-                            it.scope*.value = 'compile'
+                    // to avoid "Publication only contains dependencies and/or constraints without a version" error
+                    // see https://docs.gradle.org/6.2.1/userguide/publishing_maven.html#publishing_maven:resolved_dependencies
+                    versionMapping {
+                        usage('java-api') {
+                            fromResolutionOf('runtimeClasspath')
                         }
+                        usage('java-runtime') {
+                            fromResolutionResult()
+                        }
+                    }
 
-                        asNode().children().last() + {
-                            resolveStrategy = Closure.DELEGATE_FIRST
-                            name PROJECT_NAME
-                            description PROJECT_DESC
-                            url PROJECT_GIT_REPO_URL
-                            scm {
-                                url PROJECT_GIT_REPO_URL
-                                connection PROJECT_GIT_REPO_URL
-                                developerConnection PROJECT_GIT_REPO_URL
+                    pom {
+                        resolveStrategy = DELEGATE_FIRST
+                        name = PROJECT_NAME
+                        description = PROJECT_DESC
+                        url = PROJECT_GIT_REPO_URL
+                        scm {
+                            url = PROJECT_GIT_REPO_URL
+                            connection = PROJECT_GIT_REPO_URL
+                            developerConnection = PROJECT_GIT_REPO_URL
+                        }
+                        licenses {
+                            license {
+                                name = PROJECT_LICENSE
+                                url = PROJECT_LICENSE_URL
+                                distribution = 'repo'
                             }
-                            licenses {
-                                license {
-                                    name PROJECT_LICENSE
-                                    url PROJECT_LICENSE_URL
-                                    distribution 'repo'
-                                }
-                            }
-                            developers {
-                                developer {
-                                    id PROJECT_DEV_ID
-                                    name PROJECT_DEV_NAME
-                                }
+                        }
+                        developers {
+                            developer {
+                                id = PROJECT_DEV_ID
+                                name = PROJECT_DEV_NAME
                             }
                         }
                     }
@@ -199,6 +183,6 @@ task build {
     dependsOn subprojects.findResults { it.tasks.findByName('bintray') }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = "${GRADLE_WRAPPER_VER}"
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
 }
