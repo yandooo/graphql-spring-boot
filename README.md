@@ -32,8 +32,9 @@
 
 ## WARNING: NoClassDefFoundError when using GraphQL Java Tools > 5.4.x
 
-If you're using `graphql-java-tools` you need to set the `kotlin.version` in your Spring Boot project explicitly to 
-version 1.3.10, because Spring Boot Starter parent currently overrides it with a 1.2.* version of Kotlin. 
+If you're using `graphql-java-tools` in combination with Spring Boot 2.1.x or below then you need to set the 
+`kotlin.version` in your Spring Boot project explicitly to version 1.3.70, because Spring Boot Starter parent currently 
+overrides it with a 1.2.* version of Kotlin. 
 `graphql-java-tools` requires 1.3.* however because of its coroutine support. If you don't override this version
 you will run into a `NoClassDefFoundError`.
 
@@ -42,14 +43,14 @@ Spring Boot team has indicated the Kotlin version will be upgraded to 1.3 in Spr
 ### Using Gradle
 Set the Kotlin version in your `gradle.properties`
 ```
-kotlin.version=1.3.10
+kotlin.version=1.3.70
 ```
 
 ### Using Maven
 Set the Kotlin version in your `<properties>` section
 ```xml
 <properties>
-  <kotlin.version>1.3.10</kotlin.version>
+  <kotlin.version>1.3.70</kotlin.version>
 </properties>
 ```
 
@@ -80,19 +81,19 @@ repositories {
 }
 
 dependencies {
-  compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:6.0.1'
+  compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:7.0.0'
   
   // to embed Altair tool
-  runtime 'com.graphql-java-kickstart:altair-spring-boot-starter:6.0.1'
+  runtime 'com.graphql-java-kickstart:altair-spring-boot-starter:7.0.0'
 
   // to embed GraphiQL tool
-  runtime 'com.graphql-java-kickstart:graphiql-spring-boot-starter:6.0.1'
+  runtime 'com.graphql-java-kickstart:graphiql-spring-boot-starter:7.0.0'
 
   // to embed Voyager tool
-  runtime 'com.graphql-java-kickstart:voyager-spring-boot-starter:6.0.1'
+  runtime 'com.graphql-java-kickstart:voyager-spring-boot-starter:7.0.0'
   
   // testing facilities
-  testCompile 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:6.0.1'
+  testCompile 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:7.0.0'
 }
 ```
 
@@ -101,14 +102,14 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>6.0.1</version>
+    <version>7.0.0</version>
 </dependency>
 
 <!-- to embed Altair tool -->
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>altair-spring-boot-starter</artifactId>
-    <version>6.0.1</version>
+    <version>7.0.0</version>
     <scope>runtime</scope>
 </dependency>
 
@@ -116,7 +117,7 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>6.0.1</version>
+    <version>7.0.0</version>
     <scope>runtime</scope>
 </dependency>
 
@@ -124,7 +125,7 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>voyager-spring-boot-starter</artifactId>
-    <version>6.0.1</version>
+    <version>7.0.0</version>
     <scope>runtime</scope>
 </dependency>
 
@@ -132,7 +133,7 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphql-spring-boot-starter-test</artifactId>
-    <version>6.0.1</version>
+    <version>7.0.0</version>
     <scope>test</scope>
 </dependency>
 
