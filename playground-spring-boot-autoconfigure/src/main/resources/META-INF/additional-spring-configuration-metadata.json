@@ -4,6 +4,11 @@
       "name": "graphql.playground.mapping",
       "defaultValue": "/playground",
       "type": "java.lang.String"
+    },
+    {
+      "name": "graphql.playground.enabled",
+      "defaultValue": true,
+      "type": "java.lang.Boolean"
     }
   ]
 }
