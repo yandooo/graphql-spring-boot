@@ -1,10 +1,10 @@
 package com.graphql.spring.boot.test;
 
-import org.springframework.boot.autoconfigure.condition.*;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.DispatcherServlet;
 
 @Configuration
 @ConditionalOnWebApplication

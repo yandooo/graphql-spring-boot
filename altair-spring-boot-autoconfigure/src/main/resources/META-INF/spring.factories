@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.oembedler.moon.altair.boot.AltairAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=graphql.kickstart.altair.boot.AltairAutoConfiguration
