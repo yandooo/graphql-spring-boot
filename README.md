@@ -382,7 +382,7 @@ Use the `schemaLocationPattern` property to customize this pattern.
 # Tracing and Metrics
 
 [Apollo style tracing](https://github.com/apollographql/apollo-tracing) along with two levels of metrics based on them are currently configurable.
-Full tracing is based on the GraphQl java implementation, and can be enabled in the application.yml or application.properties file:
+Full tracing is based on the GraphQL java implementation, and can be enabled in the application.yml or application.properties file:
 ```yaml
 graphql:
     servlet:
