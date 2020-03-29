@@ -1,0 +1,23 @@
+package graphql.kickstart.graphql.annotations.test.custom.relay;
+
+import graphql.annotations.annotationTypes.GraphQLField;
+import graphql.annotations.connection.AbstractPaginatedData;
+import graphql.annotations.connection.GraphQLConnection;
+import graphql.annotations.connection.PaginatedData;
+import graphql.kickstart.tools.GraphQLQueryResolver;
+
+import java.util.List;
+
+public class TestQuery implements GraphQLQueryResolver {
+
+    @GraphQLField
+    @GraphQLConnection
+    public static PaginatedData<TestModel> somePaginatedValue() {
+        return new AbstractPaginatedData<>(false, false, List.of(new TestModel("some value"))) {
+            @Override
+            public String getCursor(final TestModel entity) {
+                return "test cursor";
+            }
+        };
+    }
+}

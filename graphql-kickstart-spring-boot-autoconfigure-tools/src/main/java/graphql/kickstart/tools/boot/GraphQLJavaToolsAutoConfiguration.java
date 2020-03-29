@@ -119,7 +119,7 @@ public class GraphQLJavaToolsAutoConfiguration {
 
   @Bean
   @ConditionalOnBean({GraphQLResolver.class})
-  @ConditionalOnMissingBean
+  @ConditionalOnMissingBean({SchemaParser.class, GraphQLSchema.class})
   public SchemaParser schemaParser(
       List<GraphQLResolver<?>> resolvers,
       SchemaStringProvider schemaStringProvider,
