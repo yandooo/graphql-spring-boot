@@ -18,8 +18,8 @@
  */
 
 dependencies {
-    compile(project(":graphql-kickstart-spring-boot-autoconfigure-webflux"))
-    compile(project(":graphql-kickstart-spring-boot-autoconfigure-tools"))
+    compile(project(":graphql-kickstart-spring-boot-starter-webflux"))
+    compile(project(":graphql-kickstart-spring-boot-starter-tools"))
     compile(project(":voyager-spring-boot-starter"))
 
     compile("org.springframework.boot:spring-boot-starter-webflux:$LIB_SPRING_BOOT_VER")

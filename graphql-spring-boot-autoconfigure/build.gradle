@@ -23,6 +23,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     api "com.graphql-java-kickstart:graphql-java-kickstart:$LIB_GRAPHQL_SERVLET_VER"
     api "com.graphql-java-kickstart:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
+    api "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
 
     implementation "org.springframework.boot:spring-boot-starter-websocket"
     implementation "org.springframework.boot:spring-boot-starter-web"

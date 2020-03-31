@@ -3,6 +3,8 @@ dependencies {
     compileOnly "org.springframework.boot:spring-boot-configuration-processor"
 
     api "com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
+    api "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
+
     implementation "org.springframework.boot:spring-boot-autoconfigure"
 
     compileOnly "com.graphql-java-kickstart:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
