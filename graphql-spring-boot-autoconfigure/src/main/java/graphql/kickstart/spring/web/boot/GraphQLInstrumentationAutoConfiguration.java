@@ -1,12 +1,12 @@
 package graphql.kickstart.spring.web.boot;
 
+import graphql.kickstart.servlet.GraphQLWebsocketServlet;
 import graphql.kickstart.spring.web.boot.metrics.MetricsInstrumentation;
 import graphql.kickstart.spring.web.boot.metrics.TracingNoResolversInstrumentation;
 import graphql.kickstart.spring.web.boot.metrics.WebsocketMetrics;
 import graphql.analysis.MaxQueryComplexityInstrumentation;
 import graphql.analysis.MaxQueryDepthInstrumentation;
 import graphql.execution.instrumentation.tracing.TracingInstrumentation;
-import graphql.servlet.GraphQLWebsocketServlet;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;

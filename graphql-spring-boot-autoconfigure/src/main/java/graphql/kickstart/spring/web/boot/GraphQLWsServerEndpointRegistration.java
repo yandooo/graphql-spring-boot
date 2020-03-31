@@ -1,6 +1,6 @@
 package graphql.kickstart.spring.web.boot;
 
-import graphql.servlet.GraphQLWebsocketServlet;
+import graphql.kickstart.servlet.GraphQLWebsocketServlet;
 import org.springframework.context.Lifecycle;
 import org.springframework.web.socket.server.standard.ServerEndpointRegistration;
 

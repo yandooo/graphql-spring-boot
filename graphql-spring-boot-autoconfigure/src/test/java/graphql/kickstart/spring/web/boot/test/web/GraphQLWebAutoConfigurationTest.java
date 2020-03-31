@@ -1,5 +1,8 @@
 package graphql.kickstart.spring.web.boot.test.web;
 
+import graphql.kickstart.servlet.AbstractGraphQLHttpServlet;
+import graphql.kickstart.servlet.config.DefaultGraphQLSchemaServletProvider;
+import graphql.kickstart.servlet.config.GraphQLSchemaServletProvider;
 import graphql.kickstart.spring.web.boot.GraphQLWebAutoConfiguration;
 import graphql.kickstart.spring.web.boot.test.AbstractAutoConfigurationTest;
 import graphql.analysis.MaxQueryComplexityInstrumentation;
@@ -9,9 +12,6 @@ import graphql.execution.ExecutionStrategy;
 import graphql.execution.instrumentation.tracing.TracingInstrumentation;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
-import graphql.servlet.AbstractGraphQLHttpServlet;
-import graphql.servlet.config.DefaultGraphQLSchemaServletProvider;
-import graphql.servlet.config.GraphQLSchemaServletProvider;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.context.annotation.Bean;

@@ -19,23 +19,22 @@
 
 package graphql.kickstart.spring.web.boot.sample.schema;
 
-import graphql.kickstart.spring.web.boot.sample.TodoSimpleListConnection;
-import graphql.kickstart.spring.web.boot.sample.schema.objecttype.RootObjectType;
-import graphql.kickstart.spring.web.boot.sample.schema.objecttype.TodoObjectType;
-import graphql.kickstart.spring.web.boot.sample.schema.objecttype.UserObjectType;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLDescription;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLIn;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLMutation;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLOut;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLSchema;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLSchemaQuery;
-import graphql.servlet.context.GraphQLServletContext;
-
-import javax.servlet.http.Part;
+import graphql.kickstart.servlet.context.GraphQLServletContext;
+import graphql.kickstart.spring.web.boot.sample.TodoSimpleListConnection;
+import graphql.kickstart.spring.web.boot.sample.schema.objecttype.RootObjectType;
+import graphql.kickstart.spring.web.boot.sample.schema.objecttype.TodoObjectType;
+import graphql.kickstart.spring.web.boot.sample.schema.objecttype.UserObjectType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.servlet.http.Part;
 
 @GraphQLSchema
 public class TodoSchema {

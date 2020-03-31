@@ -2,9 +2,9 @@ package graphql.servlet.examples.dataloader.requestscope;
 
 import graphql.kickstart.execution.context.DefaultGraphQLContext;
 import graphql.kickstart.execution.context.GraphQLContext;
-import graphql.servlet.context.DefaultGraphQLServletContext;
-import graphql.servlet.context.DefaultGraphQLWebSocketContext;
-import graphql.servlet.context.GraphQLServletContextBuilder;
+import graphql.kickstart.servlet.context.DefaultGraphQLServletContext;
+import graphql.kickstart.servlet.context.DefaultGraphQLWebSocketContext;
+import graphql.kickstart.servlet.context.GraphQLServletContextBuilder;
 import java.util.concurrent.CompletableFuture;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
