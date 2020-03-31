@@ -23,7 +23,6 @@ import static graphql.kickstart.execution.GraphQLObjectMapper.newBuilder;
 
 import com.fasterxml.jackson.databind.InjectableValues;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import graphql.kickstart.spring.web.boot.metrics.MetricsInstrumentation;
 import graphql.execution.AsyncExecutionStrategy;
 import graphql.execution.ExecutionStrategy;
 import graphql.execution.SubscriptionExecutionStrategy;
@@ -33,23 +32,24 @@ import graphql.kickstart.execution.GraphQLObjectMapper;
 import graphql.kickstart.execution.GraphQLQueryInvoker;
 import graphql.kickstart.execution.config.DefaultExecutionStrategyProvider;
 import graphql.kickstart.execution.config.ExecutionStrategyProvider;
-import graphql.kickstart.execution.config.ObjectMapperConfigurer;
+import graphql.kickstart.execution.config.GraphQLServletObjectMapperConfigurer;
 import graphql.kickstart.execution.config.ObjectMapperProvider;
 import graphql.kickstart.execution.error.GraphQLErrorHandler;
+import graphql.kickstart.servlet.AbstractGraphQLHttpServlet;
+import graphql.kickstart.servlet.GraphQLConfiguration;
+import graphql.kickstart.servlet.GraphQLHttpServlet;
+import graphql.kickstart.servlet.config.DefaultGraphQLSchemaServletProvider;
+import graphql.kickstart.servlet.config.GraphQLSchemaServletProvider;
+import graphql.kickstart.servlet.context.GraphQLServletContextBuilder;
+import graphql.kickstart.servlet.core.GraphQLServletListener;
+import graphql.kickstart.servlet.core.GraphQLServletRootObjectBuilder;
+import graphql.kickstart.servlet.input.BatchInputPreProcessor;
+import graphql.kickstart.servlet.input.GraphQLInvocationInputFactory;
 import graphql.kickstart.spring.error.ErrorHandlerSupplier;
 import graphql.kickstart.spring.error.GraphQLErrorStartupListener;
+import graphql.kickstart.spring.web.boot.metrics.MetricsInstrumentation;
 import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
 import graphql.schema.GraphQLSchema;
-import graphql.servlet.AbstractGraphQLHttpServlet;
-import graphql.servlet.GraphQLConfiguration;
-import graphql.servlet.GraphQLHttpServlet;
-import graphql.servlet.config.DefaultGraphQLSchemaServletProvider;
-import graphql.servlet.config.GraphQLSchemaServletProvider;
-import graphql.servlet.context.GraphQLServletContextBuilder;
-import graphql.servlet.core.GraphQLServletListener;
-import graphql.servlet.core.GraphQLServletRootObjectBuilder;
-import graphql.servlet.input.BatchInputPreProcessor;
-import graphql.servlet.input.GraphQLInvocationInputFactory;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,7 +118,7 @@ public class GraphQLWebAutoConfiguration {
   private GraphQLServletRootObjectBuilder graphQLRootObjectBuilder;
 
   @Autowired(required = false)
-  private ObjectMapperConfigurer objectMapperConfigurer;
+  private GraphQLServletObjectMapperConfigurer objectMapperConfigurer;
 
   @Autowired(required = false)
   private PreparsedDocumentProvider preparsedDocumentProvider;

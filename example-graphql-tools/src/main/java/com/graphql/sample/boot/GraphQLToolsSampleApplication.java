@@ -1,7 +1,7 @@
 package com.graphql.sample.boot;
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import graphql.kickstart.execution.config.ObjectMapperConfigurer;
+import graphql.kickstart.execution.config.GraphQLServletObjectMapperConfigurer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,7 @@ public class GraphQLToolsSampleApplication {
     }
 
     @Bean
-    public ObjectMapperConfigurer objectMapperConfigurer() {
+    public GraphQLServletObjectMapperConfigurer objectMapperConfigurer() {
         return (mapper -> mapper.registerModule(new JavaTimeModule()));
     }
 }
