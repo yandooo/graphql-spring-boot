@@ -18,7 +18,7 @@
  */
 
 plugins {
-    id "com.jfrog.bintray" version "$LIB_BINTRAY_PLUGIN_VER"
+    id "com.jfrog.bintray" version "$LIB_BINTRAY_PLUGIN_VER" apply false
     id 'net.researchgate.release' version "$LIB_RELEASE_PLUGIN_VER"
     id "org.springframework.boot" version "$LIB_SPRING_BOOT_VER" apply false
 }
