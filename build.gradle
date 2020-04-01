@@ -21,6 +21,7 @@ plugins {
     id "com.jfrog.bintray" version "$LIB_BINTRAY_PLUGIN_VER" apply false
     id 'net.researchgate.release' version "$LIB_RELEASE_PLUGIN_VER"
     id "org.springframework.boot" version "$LIB_SPRING_BOOT_VER" apply false
+    id "com.jfrog.artifactory" version "4.15.1" apply false
 }
 
 subprojects {
@@ -153,6 +154,30 @@ subprojects {
                     }
                 }
             }
+        }
+
+        artifactory {
+            contextUrl = 'http://oss.jfrog.org'
+            publish {
+                repository {
+                    if (project.version.endsWith("-SNAPSHOT")) {
+                        repoKey = 'oss-snapshot-local'
+                    } else {
+                        repoKey = 'oss-release-local'
+                    }
+                    username = System.env.BINTRAY_USER ?: project.findProperty('BINTRAY_USER') ?: ''
+                    password = System.env.BINTRAY_PASS ?: project.findProperty('BINTRAY_PASS') ?: ''
+                }
+                defaults {
+                    publications('mainProjectPublication')
+                    publishArtifacts = true
+                    publishPom = true
+                }
+            }
+            resolve {
+                repoKey = 'oss-snapshot-local'
+            }
+            clientConfig.info.setBuildNumber(System.getProperty('build.number'))
         }
     }
 }
