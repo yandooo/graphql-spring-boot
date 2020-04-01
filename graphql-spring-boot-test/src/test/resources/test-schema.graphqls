@@ -1,0 +1,12 @@
+scalar Long
+
+type Subscription {
+    timer: Long!
+    subscriptionWithParameter(param: String!): String!
+    subscriptionWithInitPayload: String!
+    subscriptionThatTimesOut: Long!
+}
+
+type Query {
+    dummy: Boolean!
+}
