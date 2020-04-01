@@ -155,6 +155,23 @@ repositories {
 }
 ```
 
+### Snapshots
+```xml
+<repositories>
+    <repository>
+      <id>jfrog-snapshots</id>
+      <name>oss-jfrog-artifactory-snapshots</name>
+      <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
+    </repository>
+</repositories>
+```
+For gradle:
+```groovy
+repositories {
+    url { https://oss.jfrog.org/artifactory/oss-snapshot-local }
+}
+```
+
 # Enable GraphQL Servlet
 
 The servlet becomes accessible at `/graphql` if `graphql-spring-boot-starter` added as a dependency to a boot application and a `GraphQLSchema` bean is present in the application.  Check out the [simple example](https://github.com/graphql-java-kickstart/graphql-spring-boot/tree/master/example) for the bare minimum required.
