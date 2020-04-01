@@ -1,0 +1,8 @@
+mutation ($createPersonInput: InputCreatePerson!) {
+    createPerson(createPerson: $createPersonInput) {
+        firstName
+        lastName
+        dateOfBirth
+        id
+    }
+}

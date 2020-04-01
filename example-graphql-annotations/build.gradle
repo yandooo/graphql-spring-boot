@@ -1,0 +1,22 @@
+apply plugin: "org.springframework.boot"
+
+dependencies {
+    implementation(project(":graphql-spring-boot-starter"))
+    implementation(project(":graphql-kickstart-spring-boot-starter-graphql-annotations"))
+    implementation "io.reactivex.rxjava2:rxjava"
+    runtimeOnly(project(":graphiql-spring-boot-starter"))
+    runtimeOnly(project(":playground-spring-boot-starter"))
+    runtimeOnly(project(":voyager-spring-boot-starter"))
+
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    runtimeOnly("com.h2database:h2")
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation(project(":graphql-spring-boot-starter-test"))
+}
+
+jar.enabled = false
+uploadArchives.enabled = false
+bintrayUpload.enabled = false
+publishToMavenLocal.enabled = false
