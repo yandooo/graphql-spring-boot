@@ -110,9 +110,8 @@ public abstract class GraphiQLController {
                 joinJsDelivrPath(GRAPHIQL, graphiQLProperties.getCdn().getVersion(), "graphiql.css")));
         replacements.put("graphiqlJsUrl", getResourceUrl(staticBasePath, "graphiql.min.js",
                 joinJsDelivrPath(GRAPHIQL, graphiQLProperties.getCdn().getVersion(), "graphiql.min.js")));
-        replacements.put("subscriptionsTransportWsBrowserClientUrl", getResourceUrl(staticBasePath,
-                "subscriptions-transport-ws-browser-client.js",
-                joinJsDelivrPath("subscriptions-transport-ws", "0.9.15", "browser/client.js")));
+        replacements.put("subscriptionsTransportWsBrowserClientUrl", joinStaticPath(staticBasePath,
+                "subscriptions-transport-ws-browser-client.js"));
         replacements.put("graphiqlSubscriptionsFetcherBrowserClientUrl", getResourceUrl(staticBasePath,
                 "graphiql-subscriptions-fetcher-browser-client.js",
                 joinJsDelivrPath("graphiql-subscriptions-fetcher", "0.0.2", "browser/client.js")));
