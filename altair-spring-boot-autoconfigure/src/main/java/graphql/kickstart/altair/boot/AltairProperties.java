@@ -22,7 +22,7 @@ public class AltairProperties {
 
   @Data
   static class Static {
-    private String basePath = "/";
+    private String basePath = "";
   }
 
   @Data
