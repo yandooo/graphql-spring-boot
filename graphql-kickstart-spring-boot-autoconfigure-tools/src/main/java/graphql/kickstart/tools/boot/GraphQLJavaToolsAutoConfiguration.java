@@ -18,8 +18,10 @@ import graphql.kickstart.tools.TypeDefinitionFactory;
 import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.SchemaDirectiveWiring;
+import graphql.schema.visibility.GraphqlFieldVisibility;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -70,6 +72,9 @@ public class GraphQLJavaToolsAutoConfiguration {
   @Autowired(required = false)
   private List<TypeDefinitionFactory> typeDefinitionFactories;
 
+  @Autowired(required = false)
+  private GraphqlFieldVisibility fieldVisibility;
+
   @Autowired
   private GraphQLToolsProperties props;
 
@@ -93,23 +98,19 @@ public class GraphQLJavaToolsAutoConfiguration {
       optionsBuilder.objectMapperConfigurer(objectMapperConfigurer);
     }
 
-    optionsBuilder.introspectionEnabled(props.isIntrospectionEnabled());
-
-    if (genericWrappers != null) {
-      optionsBuilder.genericWrappers(genericWrappers);
-    }
+    Optional.ofNullable(genericWrappers).ifPresent(optionsBuilder::genericWrappers);
 
     if (proxyHandlers != null) {
       proxyHandlers.forEach(optionsBuilder::addProxyHandler);
     }
 
-    if (coroutineContextProvider != null) {
-      optionsBuilder.coroutineContextProvider(coroutineContextProvider);
-    }
+    Optional.ofNullable(coroutineContextProvider).ifPresent(optionsBuilder::coroutineContextProvider);
 
     if (typeDefinitionFactories != null) {
       typeDefinitionFactories.forEach(optionsBuilder::typeDefinitionFactory);
     }
+
+    Optional.ofNullable(fieldVisibility).ifPresent(optionsBuilder::fieldVisibility);
 
     return optionsBuilder;
   }
