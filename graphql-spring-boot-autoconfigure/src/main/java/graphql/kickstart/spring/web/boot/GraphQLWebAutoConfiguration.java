@@ -65,6 +65,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -143,10 +144,17 @@ public class GraphQLWebAutoConfiguration {
 
   @Bean
   @ConditionalOnClass(CorsFilter.class)
+  @ConfigurationProperties("graphql.servlet.cors")
+  public CorsConfiguration corsConfiguration() {
+    return new CorsConfiguration();
+  }
+
+  @Bean
+  @ConditionalOnClass(CorsFilter.class)
   @ConditionalOnProperty(value = "graphql.servlet.corsEnabled", havingValue = "true", matchIfMissing = true)
-  public CorsFilter corsConfigurer() {
+  public CorsFilter corsConfigurer(CorsConfiguration corsConfiguration) {
     Map<String, CorsConfiguration> corsConfigurations = new LinkedHashMap<>(1);
-    CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+    corsConfiguration.applyPermitDefaultValues();
     corsConfigurations.put(graphQLServletProperties.getCorsMapping(), corsConfiguration);
 
     UrlBasedCorsConfigurationSource configurationSource = new UrlBasedCorsConfigurationSource();
