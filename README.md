@@ -293,7 +293,7 @@ graphql.playground:
     mapping: /playground
     endpoint: /graphql
     subscriptionsEndpoint: /subscriptions
-    staticFolder.basePath: my-playground-resources-folder
+    staticPath.base: my-playground-resources-folder
     enabled: true
     pageTitle: Playground
     cdn:
