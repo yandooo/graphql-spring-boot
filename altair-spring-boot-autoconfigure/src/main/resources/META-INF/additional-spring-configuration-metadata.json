@@ -27,7 +27,7 @@
     },
     {
       "name": "altair.static.basePath",
-      "defaultValue": "/",
+      "defaultValue": "",
       "type": "java.lang.String"
     },
     {
