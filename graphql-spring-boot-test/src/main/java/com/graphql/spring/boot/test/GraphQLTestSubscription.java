@@ -12,6 +12,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.util.DefaultUriBuilderFactory;
+import org.springframework.web.util.UriBuilderFactory;
 
 import javax.websocket.ClientEndpointConfig;
 import javax.websocket.ContainerProvider;
@@ -46,6 +48,7 @@ public class GraphQLTestSubscription {
 
     private static final int SLEEP_INTERVAL_MS = 100;
     private static final AtomicInteger ID_COUNTER = new AtomicInteger(1);
+    private static final UriBuilderFactory URI_BUILDER_FACTORY = new DefaultUriBuilderFactory();
 
     @Getter
     private Session session;
@@ -339,7 +342,8 @@ public class GraphQLTestSubscription {
     private void initClient() throws Exception {
         final WebSocketContainer webSocketContainer = ContainerProvider.getWebSocketContainer();
         final String port = environment.getProperty("local.server.port");
-        final URI uri = URI.create(String.format("ws://localhost:%s/%s", port, subscriptionPath));
+        final URI uri = URI_BUILDER_FACTORY.builder().scheme("ws").host("localhost").port(port).path(subscriptionPath)
+            .build();
         log.debug("Connecting to client at {}", uri);
         final ClientEndpointConfig clientEndpointConfig = ClientEndpointConfig.Builder.create()
             .configurator(new TestWebSocketClientConfigurator())
