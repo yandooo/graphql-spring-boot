@@ -28,7 +28,7 @@ public class AltairProperties {
   @Data
   static class Cdn {
     private boolean enabled = false;
-    private String version = "2.1.7";
+    private String version = "2.4.6";
   }
 
 }
