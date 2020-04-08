@@ -17,13 +17,15 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-dependencies {
-    compile(project(":graphql-kickstart-spring-boot-starter-webflux"))
-    compile(project(":graphql-kickstart-spring-boot-starter-tools"))
-    compile(project(":voyager-spring-boot-starter"))
+apply plugin: "org.springframework.boot"
 
-    compile("org.springframework.boot:spring-boot-starter-webflux:$LIB_SPRING_BOOT_VER")
-    compile("org.springframework.boot:spring-boot-starter-actuator:$LIB_SPRING_BOOT_VER")
+dependencies {
+    implementation(project(":graphql-kickstart-spring-boot-starter-webflux"))
+    implementation(project(":graphql-kickstart-spring-boot-starter-tools"))
+    implementation(project(":voyager-spring-boot-starter"))
+
+    implementation("org.springframework.boot:spring-boot-starter-webflux:$LIB_SPRING_BOOT_VER")
+    implementation("org.springframework.boot:spring-boot-starter-actuator:$LIB_SPRING_BOOT_VER")
 }
 
 jar.enabled = false

@@ -17,6 +17,8 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+apply plugin: "org.springframework.boot"
+
 dependencies {
     implementation(project(":graphql-spring-boot-starter"))
     implementation(project(":graphiql-spring-boot-starter"))
