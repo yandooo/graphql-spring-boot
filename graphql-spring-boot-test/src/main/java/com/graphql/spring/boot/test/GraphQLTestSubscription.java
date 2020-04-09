@@ -382,15 +382,18 @@ public class GraphQLTestSubscription {
             try {
                 log.debug("Received message from web socket: {}", message);
                 final JsonNode jsonNode = objectMapper.readTree(message);
-                final JsonNode type = jsonNode.get("type");
-                if (type.asText().equals("connection_ack")) {
+                final JsonNode typeNode = jsonNode.get("type");
+                assertThat(typeNode.isNull()).as("GraphQL messages should have a type field.").isFalse();
+                final String type = typeNode.asText();
+                if (type.equals("connection_ack")) {
                     acknowledged = true;
                     log.debug("WebSocket connection acknowledged by the GraphQL Server.");
-                } else if (type.asText().equals("data")) {
-                    final JsonNode data = jsonNode.get("payload");
-                    assertThat(data).as("Data message must have a payload.").isNotNull();
-                    final GraphQLResponse graphQLResponse
-                        = new GraphQLResponse(ResponseEntity.ok(objectMapper.writeValueAsString(data)), objectMapper);
+                } else if (type.equals("data") || type.equals("error")) {
+                    final JsonNode payload = jsonNode.get("payload");
+                    assertThat(payload).as("Data/error messages must have a payload.").isNotNull();
+                    final String payloadString = objectMapper.writeValueAsString(payload);
+                    final GraphQLResponse graphQLResponse = new GraphQLResponse(ResponseEntity.ok(payloadString),
+                        objectMapper);
                     synchronized (responses) {
                         responses.add(graphQLResponse);
                     }

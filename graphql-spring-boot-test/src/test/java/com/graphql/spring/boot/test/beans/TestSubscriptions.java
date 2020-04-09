@@ -29,4 +29,8 @@ public class TestSubscriptions implements GraphQLSubscriptionResolver {
     public Flowable<Long> subscriptionThatTimesOut() {
         return Flowable.interval(20000, 20000, TimeUnit.MILLISECONDS);
     }
+
+    public Flowable<Boolean> subscriptionThatThrowsException() {
+        throw new RuntimeException("Test exception.");
+    }
 }

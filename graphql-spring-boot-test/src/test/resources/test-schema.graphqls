@@ -5,6 +5,7 @@ type Subscription {
     subscriptionWithParameter(param: String!): String!
     subscriptionWithInitPayload: String!
     subscriptionThatTimesOut: Long!
+    subscriptionThatThrowsException: Boolean!
 }
 
 type Query {

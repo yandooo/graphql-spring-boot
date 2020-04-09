@@ -17,6 +17,8 @@ public class GraphQLTestSubscriptionTestBase {
         = "subscription-with-init-payload-resource.graphql";
     protected static final String SUBSCRIPTION_THAT_TIMES_OUT_RESOURCE
         = "subscription-that-times-out-resource.graphql";
+    protected static final String SUBSCRIPTION_THAT_THROWS_EXCEPTION
+        = "subscription-that-throws-exception-resource.graphql";
     protected static final String DATA_TIMER_FIELD = "$.data.timer";
     protected static final String DATA_SUBSCRIPTION_WITH_PARAMETER_FIELD = "$.data.subscriptionWithParameter";
     protected static final String DATA_SUBSCRIPTION_WITH_INIT_PAYLOAD_FIELD = "$.data.subscriptionWithInitPayload";
