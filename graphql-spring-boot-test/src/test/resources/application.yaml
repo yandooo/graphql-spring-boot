@@ -1,0 +1,3 @@
+logging.level:
+  graphql.servlet: debug
+  com.graphql.spring.boot.test: debug

@@ -24,4 +24,6 @@ dependencies {
     compileOnly("com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER")
     compileOnly("com.graphql-java-kickstart:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER")
     testImplementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation project(":graphql-spring-boot-starter")
+    testImplementation "io.reactivex.rxjava2:rxjava"
 }
