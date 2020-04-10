@@ -158,7 +158,7 @@ subprojects {
         }
 
         artifactory {
-            contextUrl = 'http://oss.jfrog.org'
+            contextUrl = 'https://oss.jfrog.org'
             publish {
                 repository {
                     if (project.version.endsWith("-SNAPSHOT")) {

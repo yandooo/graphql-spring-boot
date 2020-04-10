@@ -81,19 +81,19 @@ repositories {
 }
 
 dependencies {
-  compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:7.0.1'
+  implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:7.0.1'
   
   // to embed Altair tool
-  runtime 'com.graphql-java-kickstart:altair-spring-boot-starter:7.0.1'
+  runtimeOnly 'com.graphql-java-kickstart:altair-spring-boot-starter:7.0.1'
 
   // to embed GraphiQL tool
-  runtime 'com.graphql-java-kickstart:graphiql-spring-boot-starter:7.0.1'
+  runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:7.0.1'
 
   // to embed Voyager tool
-  runtime 'com.graphql-java-kickstart:voyager-spring-boot-starter:7.0.1'
+  runtimeOnly 'com.graphql-java-kickstart:voyager-spring-boot-starter:7.0.1'
   
   // testing facilities
-  testCompile 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:7.0.1'
+  testImplementation 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:7.0.1'
 }
 ```
 
