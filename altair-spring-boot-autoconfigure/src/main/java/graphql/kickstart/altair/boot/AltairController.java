@@ -16,7 +16,6 @@ import org.apache.commons.lang3.text.StrSubstitutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,16 +61,7 @@ public class AltairController {
     private void loadHeaders() throws JsonProcessingException {
         PropertyGroupReader propertyReader = new PropertyGroupReader(environment, "graphiql.headers.");
         Properties headerProperties = propertyReader.load();
-        addIfAbsent(headerProperties, "Accept");
-        addIfAbsent(headerProperties, "Content-Type");
         this.headers = new ObjectMapper().writeValueAsString(headerProperties);
-    }
-
-
-    private void addIfAbsent(Properties headerProperties, String header) {
-        if (!headerProperties.containsKey(header)) {
-            headerProperties.setProperty(header, MediaType.APPLICATION_JSON_VALUE);
-        }
     }
 
     @RequestMapping(value = "${altair.mapping:/altair}")

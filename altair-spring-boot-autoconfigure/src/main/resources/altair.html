@@ -28,10 +28,6 @@
           /*Prevents the loading screen from showing until CSS is downloaded*/
           display: none;
         }
-
-
-
-
     </style>
     <div class="loading-screen styled">
         <div class="loading-screen-inner">
@@ -46,9 +42,9 @@
         </div>
     </div>
 </app-root>
-<script type="text/javascript" src="${altairRuntimeJsUrl}"></script>
-<script type="text/javascript" src="${altairPolyfillsJsUrl}"></script>
-<script type="text/javascript" src="${altairMainJsUrl}"></script>
+<script rel="preload" as="script" type="text/javascript" src="${altairRuntimeJsUrl}"></script>
+<script rel="preload" as="script" type="text/javascript" src="${altairPolyfillsJsUrl}"></script>
+<script rel="preload" as="script" type="text/javascript" src="${altairMainJsUrl}"></script>
 </body>
 
 </html>
