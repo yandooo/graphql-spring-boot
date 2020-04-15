@@ -168,7 +168,7 @@ repositories {
 For gradle:
 ```groovy
 repositories {
-    url { https://oss.jfrog.org/artifactory/oss-snapshot-local }
+    maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local" }
 }
 ```
 
