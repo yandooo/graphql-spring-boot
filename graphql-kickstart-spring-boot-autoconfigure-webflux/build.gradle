@@ -1,5 +1,5 @@
 dependencies {
-    implementation(project(':graphql-kickstart-spring-webflux'))
+    api(project(':graphql-kickstart-spring-webflux'))
     compileOnly(project(":graphql-kickstart-spring-boot-starter-tools"))
 
     implementation "org.springframework.boot:spring-boot-autoconfigure"
