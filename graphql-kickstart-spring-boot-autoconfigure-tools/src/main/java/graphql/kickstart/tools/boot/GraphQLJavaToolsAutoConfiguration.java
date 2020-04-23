@@ -10,7 +10,6 @@ import graphql.kickstart.tools.ObjectMapperConfigurer;
 import graphql.kickstart.tools.PerFieldObjectMapperProvider;
 import graphql.kickstart.tools.SchemaParser;
 import graphql.kickstart.tools.SchemaParserBuilder;
-import graphql.kickstart.tools.SchemaParserDictionary;
 import graphql.kickstart.tools.SchemaParserOptions;
 import graphql.kickstart.tools.SchemaParserOptions.GenericWrapper;
 import graphql.kickstart.tools.TypeDefinitionFactory;
@@ -46,7 +45,7 @@ import org.springframework.context.annotation.Configuration;
 public class GraphQLJavaToolsAutoConfiguration {
 
   @Autowired(required = false)
-  private SchemaParserDictionary dictionary;
+  private SchemaParserBuilder schemaParserBuilder;
 
   @Autowired(required = false)
   private GraphQLScalarType[] scalars;
@@ -123,7 +122,7 @@ public class GraphQLJavaToolsAutoConfiguration {
       SchemaStringProvider schemaStringProvider,
       SchemaParserOptions.Builder optionsBuilder
   ) throws IOException {
-    SchemaParserBuilder builder = dictionary != null ? new SchemaParserBuilder(dictionary) : new SchemaParserBuilder();
+    SchemaParserBuilder builder = schemaParserBuilder != null ? schemaParserBuilder : new SchemaParserBuilder();
 
     List<String> schemaStrings = schemaStringProvider.schemaStrings();
     schemaStrings.forEach(builder::schemaString);
