@@ -1,3 +1,0 @@
-query ($who: String) {
-    hello(who: $who)
-}

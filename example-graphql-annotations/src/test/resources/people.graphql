@@ -1,9 +1,0 @@
-query {
-    people {
-        id
-        firstName
-        lastName
-        dateOfBirth
-        fullName
-    }
-}
