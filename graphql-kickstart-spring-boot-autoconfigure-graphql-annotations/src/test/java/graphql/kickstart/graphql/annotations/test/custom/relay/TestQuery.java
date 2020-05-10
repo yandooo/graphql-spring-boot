@@ -6,14 +6,14 @@ import graphql.annotations.connection.GraphQLConnection;
 import graphql.annotations.connection.PaginatedData;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 
-import java.util.List;
+import java.util.Collections;
 
 public class TestQuery implements GraphQLQueryResolver {
 
     @GraphQLField
     @GraphQLConnection
     public static PaginatedData<TestModel> somePaginatedValue() {
-        return new AbstractPaginatedData<>(false, false, List.of(new TestModel("some value"))) {
+        return new AbstractPaginatedData<TestModel>(false, false, Collections.singletonList(new TestModel("some value"))) {
             @Override
             public String getCursor(final TestModel entity) {
                 return "test cursor";
