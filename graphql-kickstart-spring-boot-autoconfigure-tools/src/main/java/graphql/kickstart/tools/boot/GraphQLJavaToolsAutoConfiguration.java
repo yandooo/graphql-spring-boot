@@ -35,6 +35,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static java.util.Objects.nonNull;
+
 /**
  * @author Andrew Potter
  */
@@ -123,8 +125,10 @@ public class GraphQLJavaToolsAutoConfiguration {
       SchemaStringProvider schemaStringProvider,
       SchemaParserOptions.Builder optionsBuilder
   ) throws IOException {
-    SchemaParserBuilder builder = dictionary != null ? new SchemaParserBuilder(dictionary) : new SchemaParserBuilder();
-
+    SchemaParserBuilder builder = new SchemaParserBuilder();
+    if (nonNull(dictionary)) {
+      builder.dictionary(dictionary.getDictionary());
+    }
     List<String> schemaStrings = schemaStringProvider.schemaStrings();
     schemaStrings.forEach(builder::schemaString);
 
