@@ -90,7 +90,7 @@ public class GraphQLJavaToolsAutoConfiguration {
   @ConditionalOnMissingBean
   @ConfigurationProperties("graphql.tools.schema-parser-options")
   public SchemaParserOptions.Builder optionsBuilder(
-      PerFieldObjectMapperProvider perFieldObjectMapperProvider
+      @Autowired(required = false) PerFieldObjectMapperProvider perFieldObjectMapperProvider
   ) {
     SchemaParserOptions.Builder optionsBuilder = SchemaParserOptions.newOptions();
 
