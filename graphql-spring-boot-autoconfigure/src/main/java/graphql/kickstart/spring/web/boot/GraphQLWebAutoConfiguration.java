@@ -38,7 +38,7 @@ import graphql.kickstart.execution.error.GraphQLErrorHandler;
 import graphql.kickstart.servlet.AbstractGraphQLHttpServlet;
 import graphql.kickstart.servlet.GraphQLConfiguration;
 import graphql.kickstart.servlet.GraphQLHttpServlet;
-import graphql.kickstart.servlet.cache.GraphQLResponseCache;
+import graphql.kickstart.servlet.cache.GraphQLResponseCacheManager;
 import graphql.kickstart.servlet.config.DefaultGraphQLSchemaServletProvider;
 import graphql.kickstart.servlet.config.GraphQLSchemaServletProvider;
 import graphql.kickstart.servlet.context.GraphQLServletContextBuilder;
@@ -132,7 +132,7 @@ public class GraphQLWebAutoConfiguration {
   private BatchInputPreProcessor batchInputPreProcessor;
 
   @Autowired(required = false)
-  private GraphQLResponseCache graphQLResponseCache;
+  private GraphQLResponseCacheManager responseCacheManager;
 
   @PostConstruct
   void postConstruct() {
@@ -289,7 +289,7 @@ public class GraphQLWebAutoConfiguration {
         .with(graphQLServletProperties.getSubscriptionTimeout())
         .with(batchInputPreProcessor)
         .with(graphQLServletProperties.getContextSetting())
-        .with(graphQLResponseCache)
+        .with(responseCacheManager)
         .build();
   }
 
