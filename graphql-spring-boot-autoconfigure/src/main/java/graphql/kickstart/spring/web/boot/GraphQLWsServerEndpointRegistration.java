@@ -1,6 +1,7 @@
 package graphql.kickstart.spring.web.boot;
 
 import graphql.kickstart.servlet.GraphQLWebsocketServlet;
+import org.apache.tomcat.websocket.PerMessageDeflate;
 import org.springframework.context.Lifecycle;
 import org.springframework.web.socket.server.standard.ServerEndpointRegistration;
 

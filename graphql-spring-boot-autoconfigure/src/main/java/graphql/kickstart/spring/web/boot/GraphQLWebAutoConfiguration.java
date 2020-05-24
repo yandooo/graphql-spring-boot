@@ -230,9 +230,7 @@ public class GraphQLWebAutoConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
-  public GraphQLQueryInvoker queryInvoker(
-      ExecutionStrategyProvider executionStrategyProvider
-  ) {
+  public GraphQLQueryInvoker queryInvoker(ExecutionStrategyProvider executionStrategyProvider) {
     GraphQLQueryInvoker.Builder builder = GraphQLQueryInvoker.newBuilder()
         .withExecutionStrategyProvider(executionStrategyProvider);
 

@@ -10,6 +10,7 @@ import graphql.kickstart.tools.ObjectMapperConfigurer;
 import graphql.kickstart.tools.PerFieldObjectMapperProvider;
 import graphql.kickstart.tools.SchemaParser;
 import graphql.kickstart.tools.SchemaParserBuilder;
+import graphql.kickstart.tools.SchemaParserDictionary;
 import graphql.kickstart.tools.SchemaParserOptions;
 import graphql.kickstart.tools.SchemaParserOptions.GenericWrapper;
 import graphql.kickstart.tools.TypeDefinitionFactory;
@@ -34,6 +35,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static java.util.Objects.nonNull;
+
 /**
  * @author Andrew Potter
  */
@@ -45,7 +48,7 @@ import org.springframework.context.annotation.Configuration;
 public class GraphQLJavaToolsAutoConfiguration {
 
   @Autowired(required = false)
-  private SchemaParserBuilder schemaParserBuilder;
+  private SchemaParserDictionary dictionary;
 
   @Autowired(required = false)
   private GraphQLScalarType[] scalars;
@@ -87,7 +90,7 @@ public class GraphQLJavaToolsAutoConfiguration {
   @ConditionalOnMissingBean
   @ConfigurationProperties("graphql.tools.schema-parser-options")
   public SchemaParserOptions.Builder optionsBuilder(
-      PerFieldObjectMapperProvider perFieldObjectMapperProvider
+      @Autowired(required = false) PerFieldObjectMapperProvider perFieldObjectMapperProvider
   ) {
     SchemaParserOptions.Builder optionsBuilder = SchemaParserOptions.newOptions();
 
@@ -122,8 +125,10 @@ public class GraphQLJavaToolsAutoConfiguration {
       SchemaStringProvider schemaStringProvider,
       SchemaParserOptions.Builder optionsBuilder
   ) throws IOException {
-    SchemaParserBuilder builder = schemaParserBuilder != null ? schemaParserBuilder : new SchemaParserBuilder();
-
+    SchemaParserBuilder builder = new SchemaParserBuilder();
+    if (nonNull(dictionary)) {
+      builder.dictionary(dictionary.getDictionary());
+    }
     List<String> schemaStrings = schemaStringProvider.schemaStrings();
     schemaStrings.forEach(builder::schemaString);
 
