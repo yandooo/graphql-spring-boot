@@ -141,7 +141,8 @@ public class GraphQLAnnotationsAutoConfiguration {
      * {@link ReflectionsException} if there are no types with annotations in the specified package.
      * @param reflections the {@link Reflections} instance
      * @param annotation the annotation class
-     * @return The set of classes annotated with that annotations, or empty set if no annotations found.
+     * @return The set of classes annotated with the specified annotation, or an empty set if no annotated classes
+     * found.
      */
     private Set<Class<?>> getTypesAnnotatedWith(
         final Reflections reflections,
@@ -155,8 +156,8 @@ public class GraphQLAnnotationsAutoConfiguration {
     }
 
     /**
-     * Workaround for a bug in Reflections - {@link Reflections#getSubTypesOf(Class)} )} will throw a
-     * {@link ReflectionsException} if there are no class in the specified package.
+     * Workaround for a bug in Reflections - {@link Reflections#getSubTypesOf(Class)} will throw a
+     * {@link ReflectionsException} if there are no classes in the specified package.
      * @param reflections the {@link Reflections} instance
      * @param aClass a class
      * @return The set of classes that are subclasses of the specified class, or empty set if no annotations found.
