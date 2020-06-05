@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 import org.reflections.ReflectionsException;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +33,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import static graphql.annotations.AnnotationsSchemaCreator.newAnnotationsSchema;
-import static java.util.Objects.isNull;
 
 @Configuration
 @AutoConfigureBefore({GraphQLJavaToolsAutoConfiguration.class})
@@ -43,12 +43,17 @@ public class GraphQLAnnotationsAutoConfiguration {
 
     private final GraphQLAnnotationsProperties graphQLAnnotationsProperties;
     private final Optional<Relay> relay;
-    private final Optional<GraphQLAnnotations> customAnnotationProcessor;
     private final List<TypeFunction> typeFunctions;
     private final List<GraphQLScalarType> customScalarTypes;
 
     @Bean
-    public GraphQLSchema graphQLSchema() {
+    @ConditionalOnMissingBean
+    public GraphQLAnnotations graphQLAnnotations() {
+        return new GraphQLAnnotations();
+    }
+
+    @Bean
+    public GraphQLSchema graphQLSchema(final GraphQLAnnotations graphQLAnnotations) {
         log.info("Using GraphQL Annotations library to build the schema. Schema definition files will be ignored.");
         log.info("GraphQL classes are searched in the following package (including subpackages): {}",
             graphQLAnnotationsProperties.getBasePackage());
@@ -73,14 +78,12 @@ public class GraphQLAnnotationsAutoConfiguration {
         if (!customScalarTypes.isEmpty()) {
             builder.typeFunction(new GraphQLScalarTypeFunction(customScalarTypes));
         }
-        customAnnotationProcessor.ifPresent(graphQLAnnotations -> {
-            log.info("Registering custom GraphQL annotations processor {}", graphQLAnnotations.getClass());
-            builder.setAnnotationsProcessor(graphQLAnnotations);
-        });
-        if (isNull(builder.getGraphQLAnnotations())) {
-            // before setting a relay, we have to set the annotation processor, otherwise a NPE will occur
-            builder.setAnnotationsProcessor(new GraphQLAnnotations());
+        if (graphQLAnnotations.getClass().equals(GraphQLAnnotations.class)) {
+            log.info("Using default GraphQL Annotation processor.");
+        } else {
+            log.info("Using custom annotation process of type {}", graphQLAnnotations.getClass());
         }
+        builder.setAnnotationsProcessor(graphQLAnnotations);
         relay.ifPresent(r -> {
             log.info("Registering relay {}", r.getClass());
             builder.setRelay(r);
