@@ -6,9 +6,6 @@ dependencies {
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
-    testRuntimeOnly  "org.springframework.boot:spring-boot-starter-web"
     testImplementation project(":graphql-spring-boot-starter-test")
-    testImplementation "org.reflections:reflections:$LIB_REFLECTIONS_VER"
-    testImplementation "org.mockito:mockito-core"
     testImplementation "io.reactivex.rxjava2:rxjava"
 }
