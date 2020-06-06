@@ -1,6 +1,7 @@
 package graphql.kickstart.graphql.annotations;
 
 import graphql.annotations.AnnotationsSchemaCreator;
+import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLTypeExtension;
 import graphql.annotations.annotationTypes.directives.definition.GraphQLDirectiveDefinition;
 import graphql.annotations.processor.GraphQLAnnotations;
@@ -20,6 +21,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 import org.reflections.ReflectionsException;
+import org.reflections.scanners.MethodAnnotationsScanner;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.TypeAnnotationsScanner;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -27,6 +31,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +52,11 @@ public class GraphQLAnnotationsAutoConfiguration {
     private final List<GraphQLScalarType> customScalarTypes;
 
     @Bean
+    public GraphQLInterfaceTypeResolver graphQLInterfaceTypeResolver() {
+        return new GraphQLInterfaceTypeResolver();
+    }
+
+    @Bean
     @ConditionalOnMissingBean
     public GraphQLAnnotations graphQLAnnotations() {
         return new GraphQLAnnotations();
@@ -58,7 +68,8 @@ public class GraphQLAnnotationsAutoConfiguration {
         log.info("GraphQL classes are searched in the following package (including subpackages): {}",
             graphQLAnnotationsProperties.getBasePackage());
         final AnnotationsSchemaCreator.Builder builder = newAnnotationsSchema();
-        final Reflections reflections = new Reflections(graphQLAnnotationsProperties.getBasePackage());
+        final Reflections reflections = new Reflections(graphQLAnnotationsProperties.getBasePackage(),
+            new MethodAnnotationsScanner(), new SubTypesScanner(), new TypeAnnotationsScanner());
         builder.setAlwaysPrettify(graphQLAnnotationsProperties.isAlwaysPrettify());
         setQueryResolverClass(builder, reflections);
         setMutationResolverClass(builder, reflections);
@@ -88,6 +99,7 @@ public class GraphQLAnnotationsAutoConfiguration {
             log.info("Registering relay {}", r.getClass());
             builder.setRelay(r);
         });
+        registerGraphQLInterfaceImplementations(reflections, builder);
         return builder.build();
     }
 
@@ -175,5 +187,31 @@ public class GraphQLAnnotationsAutoConfiguration {
         } catch (ReflectionsException e) {
             return Collections.emptySet();
         }
+    }
+
+    /**
+     * This is required, because normally implementations of interfaces are not explicitly returned by any resolver
+     * method, and therefor not added to the schema automatically.
+     *
+     * All interfaces are considered GraphQL interfaces if they are declared in the configured package and
+     * have at least one {@link GraphQLField}-annotated methods.
+     *
+     * @param reflections the reflections instance.
+     * @param builder the schema builder instance.
+     */
+    private void registerGraphQLInterfaceImplementations(
+        final Reflections reflections,
+        final AnnotationsSchemaCreator.Builder builder
+    ) {
+        reflections.getMethodsAnnotatedWith(GraphQLField.class).stream()
+            .map(Method::getDeclaringClass)
+            .filter(Class::isInterface)
+            .forEach(graphQLInterface ->
+                reflections.getSubTypesOf(graphQLInterface)
+                    .forEach(implementation -> {
+                        log.info("Registering {} as an implementation of GraphQL interface {}", implementation,
+                            graphQLInterface);
+                        builder.additionalType(implementation);
+                    }));
     }
 }

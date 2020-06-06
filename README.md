@@ -439,6 +439,12 @@ demonstrates possible workarounds for this issue.
 `GraphQLDirectiveDefinition` and `GraphQLTypeExtension`-annotated classes are subject to the same limitation regarding
 dependency injection - but there can be any number of them.
 
+### Interfaces
+
+Interfaces in the configured package having at least one of their methods marked as `@GraphQLField` are considered a 
+GraphQL interface, and their implementations are automatically added to the schema. Furthermore, you have to add the 
+following annotation to GraphQL interfaces: `@GraphQLTypeResolver(GraphQLInterfaceTypeResolver.class)`
+
 ### Custom scalars and type functions
 
 Custom scalars can be defined in the same way as in the case of using GraphQL Java Tools - just define the 
