@@ -1,9 +1,10 @@
 package graphql.kickstart.graphql.annotations.test.subscription;
 
 import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.kickstart.tools.GraphQLQueryResolver;
+import graphql.kickstart.graphql.annotations.GraphQLQueryResolver;
 
-public class DummyQuery implements GraphQLQueryResolver {
+@GraphQLQueryResolver
+public class DummyQuery {
 
     @GraphQLField
     public static String dummyQuery() {

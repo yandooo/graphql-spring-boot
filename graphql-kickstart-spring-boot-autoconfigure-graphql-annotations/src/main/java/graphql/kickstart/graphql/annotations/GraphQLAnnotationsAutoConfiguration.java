@@ -10,10 +10,6 @@ import graphql.kickstart.graphql.annotations.exceptions.MissingQueryResolverExce
 import graphql.kickstart.graphql.annotations.exceptions.MultipleMutationResolversException;
 import graphql.kickstart.graphql.annotations.exceptions.MultipleQueryResolversException;
 import graphql.kickstart.graphql.annotations.exceptions.MultipleSubscriptionResolversException;
-import graphql.kickstart.tools.GraphQLMutationResolver;
-import graphql.kickstart.tools.GraphQLQueryResolver;
-import graphql.kickstart.tools.GraphQLSubscriptionResolver;
-import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
 import graphql.relay.Relay;
 import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
@@ -24,7 +20,6 @@ import org.reflections.ReflectionsException;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -40,7 +35,6 @@ import java.util.Set;
 import static graphql.annotations.AnnotationsSchemaCreator.newAnnotationsSchema;
 
 @Configuration
-@AutoConfigureBefore({GraphQLJavaToolsAutoConfiguration.class})
 @EnableConfigurationProperties(GraphQLAnnotationsProperties.class)
 @RequiredArgsConstructor
 @Slf4j
@@ -107,8 +101,8 @@ public class GraphQLAnnotationsAutoConfiguration {
         final AnnotationsSchemaCreator.Builder builder,
         final Reflections reflections
     ) {
-        final Set<Class<? extends GraphQLSubscriptionResolver>> subscriptionResolvers
-            = getSubTypesOf(reflections, GraphQLSubscriptionResolver.class);
+        final Set<Class<?>> subscriptionResolvers
+            = getTypesAnnotatedWith(reflections, GraphQLSubscriptionResolver.class);
         if (subscriptionResolvers.size() > 1) {
             throw new MultipleSubscriptionResolversException();
         }
@@ -122,8 +116,8 @@ public class GraphQLAnnotationsAutoConfiguration {
         final AnnotationsSchemaCreator.Builder builder,
         final Reflections reflections
     ) {
-        final Set<Class<? extends GraphQLMutationResolver>> mutationResolvers
-            = getSubTypesOf(reflections, GraphQLMutationResolver.class);
+        final Set<Class<?>> mutationResolvers
+            = getTypesAnnotatedWith(reflections, GraphQLMutationResolver.class);
         if (mutationResolvers.size() > 1) {
             throw new MultipleMutationResolversException();
         }
@@ -137,8 +131,8 @@ public class GraphQLAnnotationsAutoConfiguration {
         final AnnotationsSchemaCreator.Builder builder,
         final Reflections reflections
     ) {
-        final Set<Class<? extends GraphQLQueryResolver>> queryResolvers
-            = getSubTypesOf(reflections, GraphQLQueryResolver.class);
+        final Set<Class<?>> queryResolvers
+            = getTypesAnnotatedWith(reflections, GraphQLQueryResolver.class);
         if (queryResolvers.size() == 0) {
             throw new MissingQueryResolverException();
         }
@@ -165,25 +159,6 @@ public class GraphQLAnnotationsAutoConfiguration {
     ) {
         try {
             return reflections.getTypesAnnotatedWith(annotation);
-        } catch (ReflectionsException e) {
-            return Collections.emptySet();
-        }
-    }
-
-    /**
-     * Workaround for a bug in Reflections - {@link Reflections#getSubTypesOf(Class)} will throw a
-     * {@link ReflectionsException} if there are no classes in the specified package.
-     * @param reflections the {@link Reflections} instance
-     * @param aClass a class
-     * @return The set of classes that are subclasses of the specified class, or empty set if no annotations found.
-     * @see <a href="https://github.com/ronmamo/reflections/issues/273">Issue #273</>
-     */
-    private <T> Set<Class<? extends T>> getSubTypesOf(
-        final Reflections reflections,
-        final Class<T> aClass
-    ) {
-        try {
-            return reflections.getSubTypesOf(aClass);
         } catch (ReflectionsException e) {
             return Collections.emptySet();
         }

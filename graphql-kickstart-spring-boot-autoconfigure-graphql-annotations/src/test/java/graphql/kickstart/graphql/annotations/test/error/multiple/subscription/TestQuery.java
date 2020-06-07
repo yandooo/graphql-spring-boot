@@ -1,6 +1,7 @@
 package graphql.kickstart.graphql.annotations.test.error.multiple.subscription;
 
-import graphql.kickstart.tools.GraphQLQueryResolver;
+import graphql.kickstart.graphql.annotations.GraphQLQueryResolver;
 
-public class TestQuery implements GraphQLQueryResolver {
+@GraphQLQueryResolver
+public class TestQuery {
 }

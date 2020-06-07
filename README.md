@@ -407,9 +407,6 @@ manually, the schema will be constructed based on the Java code. Please see the 
 library for a detailed documentation of the available annotations. This readme focuses on how GraphQL Annotations - 
 GraphQL Spring Boot Starter integration works.
 
-**Note:** *Although the GraphQL Annotations Starter has a dependency on GraphQL Java Tools and uses some interfaces from 
-that project, it will ignore schema definition files. It is not possible to combine schema- and code-first approaches.*
-
 ### Configuration
 
 ```
@@ -425,8 +422,8 @@ removed from GraphQL fields automatically.
 
 ### Root resolvers, directives, type extensions 
 
-The root resolvers must be marked by the `GraphQLQueryResolver`, `GraphQLMutationResolver` and `GraphQLSubscription` 
- interfaces (from the GraphQL Java Tools library). 
+The root resolvers must be marked with the `GraphQLQueryResolver`, `GraphQLMutationResolver` and `GraphQLSubscription` 
+ annotations (not to be confused with the marker interfaces from the GraphQL Java Tools library). 
 
 **Important:**
 

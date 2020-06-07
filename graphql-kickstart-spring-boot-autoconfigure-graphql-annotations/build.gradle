@@ -1,11 +1,17 @@
 dependencies {
-    api project(":graphql-spring-boot-starter")
+    api(project(":graphql-spring-boot-starter")) {
+        exclude module: "graphql-kickstart-spring-boot-starter-tools-autoconfigure"
+        exclude module: "graphql-java-tools"
+    }
     api "io.github.graphql-java:graphql-java-annotations:$LIB_GRAPHQL_ANNOTATIONS_VER"
     implementation "org.reflections:reflections:$LIB_REFLECTIONS_VER"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
-    testImplementation project(":graphql-spring-boot-starter-test")
+    testImplementation(project(":graphql-spring-boot-starter-test")) {
+        exclude module: "graphql-kickstart-spring-boot-starter-tools-autoconfigure"
+        exclude module: "graphql-java-tools"
+    }
     testImplementation "io.reactivex.rxjava2:rxjava"
 }

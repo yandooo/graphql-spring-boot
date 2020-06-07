@@ -3,11 +3,12 @@ package graphql.kickstart.graphql.annotations.test.query;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
-import graphql.kickstart.tools.GraphQLQueryResolver;
+import graphql.kickstart.graphql.annotations.GraphQLQueryResolver;
 
 import java.util.Optional;
 
-public class TestQuery implements GraphQLQueryResolver {
+@GraphQLQueryResolver
+public class TestQuery {
 
     @GraphQLField
     @GraphQLNonNull

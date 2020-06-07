@@ -1,9 +1,10 @@
 package graphql.kickstart.graphql.annotations.test.directive;
 
 import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.kickstart.tools.GraphQLQueryResolver;
+import graphql.kickstart.graphql.annotations.GraphQLQueryResolver;
 
-public class TestQueryWithDirective implements GraphQLQueryResolver {
+@GraphQLQueryResolver
+public class TestQueryWithDirective {
 
     @GraphQLField
     @UpperCaseDirective

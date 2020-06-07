@@ -1,10 +1,11 @@
 package graphql.kickstart.graphql.annotations.test.extend.type;
 
 import graphql.annotations.annotationTypes.GraphQLField;
+import graphql.kickstart.graphql.annotations.GraphQLQueryResolver;
 import graphql.kickstart.graphql.annotations.test.extend.type.model.BaseType;
-import graphql.kickstart.tools.GraphQLQueryResolver;
 
-public class TestQuery implements GraphQLQueryResolver {
+@GraphQLQueryResolver
+public class TestQuery {
 
     @GraphQLField
     public static BaseType someValue() {

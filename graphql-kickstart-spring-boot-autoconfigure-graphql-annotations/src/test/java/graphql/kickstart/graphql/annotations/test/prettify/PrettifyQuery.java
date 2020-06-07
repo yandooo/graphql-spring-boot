@@ -1,9 +1,10 @@
 package graphql.kickstart.graphql.annotations.test.prettify;
 
 import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.kickstart.tools.GraphQLQueryResolver;
+import graphql.kickstart.graphql.annotations.GraphQLQueryResolver;
 
-public class PrettifyQuery implements GraphQLQueryResolver {
+@GraphQLQueryResolver
+public class PrettifyQuery {
 
     @GraphQLField
     public static String getSomeValue() {

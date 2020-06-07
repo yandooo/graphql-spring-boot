@@ -2,9 +2,10 @@ package graphql.kickstart.graphql.annotations.test.subscription;
 
 import graphql.annotations.annotationTypes.GraphQLDataFetcher;
 import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.kickstart.tools.GraphQLSubscriptionResolver;
+import graphql.kickstart.graphql.annotations.GraphQLSubscriptionResolver;
 
-public class TestSubscription implements GraphQLSubscriptionResolver {
+@GraphQLSubscriptionResolver
+public class TestSubscription {
 
     @GraphQLField
     @GraphQLDataFetcher(TestDataFetcher.class)

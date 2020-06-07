@@ -4,11 +4,12 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.connection.AbstractPaginatedData;
 import graphql.annotations.connection.GraphQLConnection;
 import graphql.annotations.connection.PaginatedData;
-import graphql.kickstart.tools.GraphQLQueryResolver;
+import graphql.kickstart.graphql.annotations.GraphQLQueryResolver;
 
 import java.util.Collections;
 
-public class TestQuery implements GraphQLQueryResolver {
+@GraphQLQueryResolver
+public class TestQuery {
 
     @GraphQLField
     @GraphQLConnection

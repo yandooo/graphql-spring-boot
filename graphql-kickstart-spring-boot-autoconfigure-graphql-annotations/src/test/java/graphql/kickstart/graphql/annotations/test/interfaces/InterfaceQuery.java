@@ -3,12 +3,13 @@ package graphql.kickstart.graphql.annotations.test.interfaces;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
-import graphql.kickstart.tools.GraphQLQueryResolver;
+import graphql.kickstart.graphql.annotations.GraphQLQueryResolver;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class InterfaceQuery implements GraphQLQueryResolver {
+@GraphQLQueryResolver
+public class InterfaceQuery {
 
     @GraphQLField
     @GraphQLNonNull
