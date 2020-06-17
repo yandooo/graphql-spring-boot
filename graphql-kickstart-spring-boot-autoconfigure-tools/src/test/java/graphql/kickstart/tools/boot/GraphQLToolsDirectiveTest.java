@@ -4,6 +4,7 @@ import graphql.kickstart.tools.GraphQLQueryResolver;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.idl.SchemaDirectiveWiring;
 import graphql.schema.idl.SchemaDirectiveWiringEnvironment;
+import org.junit.After;
 import org.junit.Test;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,11 @@ public class GraphQLToolsDirectiveTest extends AbstractAutoConfigurationTest {
 
   public GraphQLToolsDirectiveTest() {
     super(GraphQLJavaToolsAutoConfiguration.class);
+  }
+
+  @After
+  public void clear() {
+    System.clearProperty("graphql.tools.schemaLocationPattern");
   }
 
   @Test
