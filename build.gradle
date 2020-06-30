@@ -17,6 +17,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 plugins {
     id "com.jfrog.bintray" version "$LIB_BINTRAY_PLUGIN_VER" apply false
     id 'net.researchgate.release' version "$LIB_RELEASE_PLUGIN_VER"
@@ -60,6 +63,17 @@ subprojects {
 
     test {
         useJUnitPlatform()
+        testLogging {
+            events TestLogEvent.FAILED,
+                    TestLogEvent.PASSED,
+                    TestLogEvent.SKIPPED,
+                    TestLogEvent.STANDARD_ERROR,
+                    TestLogEvent.STANDARD_OUT
+            exceptionFormat TestExceptionFormat.FULL
+            showCauses true
+            showExceptions true
+            showStackTraces true
+        }
     }
 
     idea {
