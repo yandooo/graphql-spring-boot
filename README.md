@@ -294,7 +294,7 @@ Available Spring Boot configuration parameters (either `application.yml` or `app
 graphql.playground:
     mapping: /playground
     endpoint: /graphql
-    subscriptionsEndpoint: /subscriptions
+    subscriptionEndpoint: /subscriptions
     staticPath.base: my-playground-resources-folder
     enabled: true
     pageTitle: Playground
@@ -331,7 +331,7 @@ graphql.playground:
 ```
 ## Basic settings
 
-`mapping`, `endpoint` and `subscriptionsEndpoint` will default to `/playground`, `/graphql` and `/subscriptions`, 
+`mapping`, `endpoint` and `subscriptionEndpoint` will default to `/playground`, `/graphql` and `/subscriptions`, 
 respectively. Note that these values may not be empty.
 
 `enabled` defaults to `true`, and therefor Playground will be available by default if the dependency is added to a
