@@ -3,7 +3,8 @@ package com.graphql.spring.boot.test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Getter;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.io.Resource;
@@ -12,25 +13,38 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 
 public class GraphQLTestTemplate {
 
-    @Autowired
-    private ResourceLoader resourceLoader;
-    @Autowired(required = false)
-    private TestRestTemplate restTemplate;
-    @Value("${graphql.servlet.mapping:/graphql}")
-    private String graphqlMapping;
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ResourceLoader resourceLoader;
+    private final TestRestTemplate restTemplate;
+    private final String graphqlMapping;
+    private final ObjectMapper objectMapper;
+    @Getter
+    private final HttpHeaders headers = new HttpHeaders();
 
-    private HttpHeaders headers = new HttpHeaders();
+    public GraphQLTestTemplate(
+        final ResourceLoader resourceLoader,
+        final TestRestTemplate restTemplate,
+        @Value("${graphql.servlet.mapping:/graphql}")
+        final String graphqlMapping,
+        final ObjectMapper objectMapper
+    ) {
+        this.resourceLoader = resourceLoader;
+        this.restTemplate = restTemplate;
+        this.graphqlMapping = graphqlMapping;
+        this.objectMapper = objectMapper;
+    }
 
     private String createJsonQuery(String graphql, ObjectNode variables)
             throws JsonProcessingException {
@@ -53,13 +67,94 @@ public class GraphQLTestTemplate {
     }
 
     /**
+     * @deprecated use {{@link #withAdditionalHeader(String, String...)}} instead
      * Add an HTTP header that will be sent with each request this sends.
      *
      * @param name Name (key) of HTTP header to add.
      * @param value Value of HTTP header to add.
      */
-    public void addHeader(String name, String value) {
-        headers.add(name, value);
+    @Deprecated
+    public void addHeader(final String name, final String value) {
+        withAdditionalHeader(name, value);
+    }
+
+    /**
+     * Add an HTTP header that will be sent with each request this sends.
+     *
+     * @param name Name (key) of HTTP header to add.
+     * @param value Value(s) of HTTP header to add.
+     */
+    public GraphQLTestTemplate withAdditionalHeader(final String name, final String... value) {
+        headers.addAll(name, Arrays.asList(value));
+        return this;
+    }
+
+    /**
+     * Add multiple HTTP header that will be sent with each request this sends.
+     *
+     * @param additionalHeaders additional headers to add
+     */
+    public GraphQLTestTemplate withAdditionalHeaders(final MultiValueMap<String, String> additionalHeaders) {
+        headers.addAll(additionalHeaders);
+        return this;
+    }
+
+    /**
+     * Adds a bearer token to the authorization header.
+     * @param token the bearer token
+     * @return self
+     */
+    public GraphQLTestTemplate withBearerAuth(@NonNull final String token) {
+        headers.setBearerAuth(token);
+        return this;
+    }
+
+    /**
+     * Adds basic authentication to the authorization header.
+     * @param username the username
+     * @param password the password
+     * @param charset the charset used by the credentials
+     * @return self
+     */
+    public GraphQLTestTemplate withBasicAuth(
+        @NonNull final String username,
+        @NonNull final String password,
+        @Nullable final Charset charset
+    ) {
+        headers.setBasicAuth(username, password, charset);
+        return this;
+    }
+
+    /**
+     * Adds basic authentication to the authorization header.
+     * @param username the username
+     * @param password the password
+     * @return self
+     */
+    public GraphQLTestTemplate withBasicAuth(@NonNull final String username, @NonNull final String password) {
+        headers.setBasicAuth(username, password, null);
+        return this;
+    }
+
+    /**
+     * Adds basic authentication to the authorization header.
+     * @param encodedCredentials the encoded credentials
+     * @return self
+     */
+    public GraphQLTestTemplate withBasicAuth(@NonNull final String encodedCredentials) {
+        headers.setBasicAuth(encodedCredentials);
+        return this;
+    }
+
+    /**
+     * @deprecated use {{@link #withHeaders(HttpHeaders)}} instead.
+     * Replace any associated HTTP headers with the provided headers.
+     *
+     * @param newHeaders Headers to use.
+     */
+    @Deprecated
+    public void setHeaders(HttpHeaders newHeaders) {
+        withHeaders(newHeaders);
     }
 
     /**
@@ -67,15 +162,26 @@ public class GraphQLTestTemplate {
      *
      * @param newHeaders Headers to use.
      */
-    public void setHeaders(HttpHeaders newHeaders) {
-        headers = newHeaders;
+    public GraphQLTestTemplate withHeaders(final HttpHeaders newHeaders) {
+       return withClearHeaders().withAdditionalHeaders(newHeaders);
+    }
+
+    /**
+     * @deprecated use {{@link #withClearHeaders()}} instead
+     * Clear all associated HTTP headers.
+     */
+    @Deprecated
+    public void clearHeaders() {
+        withClearHeaders();
     }
 
     /**
      * Clear all associated HTTP headers.
+     * @return self
      */
-    public void clearHeaders() {
-        setHeaders(new HttpHeaders());
+    public GraphQLTestTemplate withClearHeaders() {
+        headers.clear();
+        return this;
     }
 
     /**

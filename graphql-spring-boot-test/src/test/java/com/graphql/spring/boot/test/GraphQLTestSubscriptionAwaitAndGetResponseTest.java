@@ -18,11 +18,11 @@ public class GraphQLTestSubscriptionAwaitAndGetResponseTest extends GraphQLTestS
     @DisplayName("Should await and get single response.")
     void shouldAwaitAndGetResponse() {
         // WHEN
-        final GraphQLResponse graphQLResponse = graphQLTestSubscription
+        graphQLTestSubscription
             .start(TIMER_SUBSCRIPTION_RESOURCE)
-            .awaitAndGetNextResponse(TIMEOUT);
+            .awaitAndGetNextResponse(TIMEOUT)
+            .assertThatField(DATA_TIMER_FIELD).asLong().isZero();
         // THEN
-        assertThat(graphQLResponse.get(DATA_TIMER_FIELD, Long.class)).isEqualTo(0);
         assertThatSubscriptionWasStopped();
     }
 
@@ -78,9 +78,9 @@ public class GraphQLTestSubscriptionAwaitAndGetResponseTest extends GraphQLTestS
         graphQLTestSubscription.start(TIMER_SUBSCRIPTION_RESOURCE);
 
         // WHEN
-        final GraphQLResponse graphQLResponse = graphQLTestSubscription.awaitAndGetNextResponse(TIMEOUT, false);
+        graphQLTestSubscription.awaitAndGetNextResponse(TIMEOUT, false).assertThatField(DATA_TIMER_FIELD)
+            .asLong().isZero();
         // THEN
-        assertThat(graphQLResponse.get(DATA_TIMER_FIELD, Long.class)).isEqualTo(0);
         assertThatSubscriptionWasNotStopped();
 
         // WHEN
@@ -106,12 +106,11 @@ public class GraphQLTestSubscriptionAwaitAndGetResponseTest extends GraphQLTestS
         // GIVEN
         final String param = String.valueOf(UUID.randomUUID());
         final Map<String, String> startPayload = Collections.singletonMap("param", param);
-        // WHEN
-        final GraphQLResponse graphQLResponse = graphQLTestSubscription
+        // WHEN - THEN
+        graphQLTestSubscription
             .start(SUBSCRIPTION_WITH_PARAMETER_RESOURCE, startPayload)
-            .awaitAndGetNextResponse(TIMEOUT);
-        // THEN
-        assertThat(graphQLResponse.get(DATA_SUBSCRIPTION_WITH_PARAMETER_FIELD)).isEqualTo(param);
+            .awaitAndGetNextResponse(TIMEOUT)
+            .assertThatField(DATA_SUBSCRIPTION_WITH_PARAMETER_FIELD).asString().isEqualTo(param);
     }
 
     @Test
@@ -120,12 +119,11 @@ public class GraphQLTestSubscriptionAwaitAndGetResponseTest extends GraphQLTestS
         // GIVEN
         final String initParamValue = String.valueOf(UUID.randomUUID());
         final Map<String, String> initPayload = Collections.singletonMap("initParamValue", initParamValue);
-        // WHEN
-        final GraphQLResponse graphQLResponse = graphQLTestSubscription
+        // WHEN - THEN
+        graphQLTestSubscription
             .init(initPayload)
             .start(SUBSCRIPTION_WITH_INIT_PAYLOAD_RESOURCE)
-            .awaitAndGetNextResponse(TIMEOUT);
-        // THEN
-        assertThat(graphQLResponse.get(DATA_SUBSCRIPTION_WITH_INIT_PAYLOAD_FIELD)).isEqualTo(initParamValue);
+            .awaitAndGetNextResponse(TIMEOUT)
+            .assertThatField(DATA_SUBSCRIPTION_WITH_INIT_PAYLOAD_FIELD).asString().isEqualTo(initParamValue);
     }
 }
