@@ -1,3 +1,8 @@
+type FooBar {
+    foo: String!
+    bar: String!
+}
+
 type Subscription {
     timer: Float!
     subscriptionWithParameter(param: String!): String!
@@ -8,4 +13,7 @@ type Subscription {
 
 type Query {
     dummy: Boolean!
+    otherQuery: String!
+    fooBar: FooBar!
+    queryWithVariables(input: String!): String!
 }

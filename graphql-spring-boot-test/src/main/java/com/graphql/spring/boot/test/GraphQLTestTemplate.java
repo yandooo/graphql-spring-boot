@@ -24,6 +24,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.util.Objects.nonNull;
+
 public class GraphQLTestTemplate {
 
     private final ResourceLoader resourceLoader;
@@ -46,11 +48,14 @@ public class GraphQLTestTemplate {
         this.objectMapper = objectMapper;
     }
 
-    private String createJsonQuery(String graphql, ObjectNode variables)
+    private String createJsonQuery(String graphql, String operation, ObjectNode variables)
             throws JsonProcessingException {
 
         ObjectNode wrapper = objectMapper.createObjectNode();
         wrapper.put("query", graphql);
+        if (nonNull(operation)) {
+            wrapper.put("operationName", operation);
+        }
         wrapper.set("variables", variables);
         return objectMapper.writeValueAsString(wrapper);
     }
@@ -196,18 +201,30 @@ public class GraphQLTestTemplate {
     }
 
     public GraphQLResponse perform(String graphqlResource, ObjectNode variables) throws IOException {
+        return perform(graphqlResource, null, variables);
+    }
+
+    public GraphQLResponse perform(String graphqlResource, String operationName) throws IOException {
+        return perform(graphqlResource, operationName, null);
+    }
+
+    public GraphQLResponse perform(String graphqlResource, String operation, ObjectNode variables) throws IOException {
         String graphql = loadQuery(graphqlResource);
-        String payload = createJsonQuery(graphql, variables);
+        String payload = createJsonQuery(graphql, operation, variables);
         return post(payload);
     }
 
     public GraphQLResponse perform(String graphqlResource, ObjectNode variables, List<String> fragmentResources) throws IOException {
+        return perform(graphqlResource, null, variables, fragmentResources);
+    }
+
+    public GraphQLResponse perform(String graphqlResource, String operationName, ObjectNode variables, List<String> fragmentResources) throws IOException {
         StringBuilder sb = new StringBuilder();
         for (String fragmentResource : fragmentResources) {
             sb.append(loadQuery(fragmentResource));
         }
         String graphql = sb.append(loadQuery(graphqlResource)).toString();
-        String payload = createJsonQuery(graphql, variables);
+        String payload = createJsonQuery(graphql, operationName, variables);
         return post(payload);
     }
 
@@ -219,7 +236,7 @@ public class GraphQLTestTemplate {
      * @throws IOException if the resource cannot be loaded from the classpath
      */
     public GraphQLResponse postForResource(String graphqlResource) throws IOException {
-        return perform(graphqlResource, null);
+        return perform(graphqlResource, (String) null, null);
     }
 
     /**

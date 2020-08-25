@@ -1,0 +1,7 @@
+query testQuery1 {
+    dummy
+}
+
+query testQuery2 {
+    otherQuery
+}

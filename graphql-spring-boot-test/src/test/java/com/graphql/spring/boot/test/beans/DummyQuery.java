@@ -9,4 +9,16 @@ public class DummyQuery implements GraphQLQueryResolver {
     public boolean dummy() {
         return true;
     }
+
+    public String otherQuery() {
+        return "TEST";
+    }
+
+    public FooBar fooBar() {
+        return FooBar.builder().bar("BAR").foo("FOO").build();
+    }
+
+    public String queryWithVariables(final String input) {
+        return input;
+    }
 }
