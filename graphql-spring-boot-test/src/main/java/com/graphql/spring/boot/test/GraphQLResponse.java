@@ -1,5 +1,6 @@
 package com.graphql.spring.boot.test;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graphql.spring.boot.test.assertions.GraphQLErrorListAssertion;
@@ -44,12 +45,15 @@ public class GraphQLResponse {
     }
 
     public <T> T get(String path, Class<T> type) {
-        return mapper.convertValue(context.read(path, Object.class), type);
+        return mapper.convertValue(context.read(path), type);
+    }
+
+    public <T> T get(String path, JavaType type) {
+        return mapper.convertValue(context.read(path), type);
     }
 
     public <T> List<T> getList(String path, Class<T> type) {
-        final List<?> raw = context.read(path, List.class);
-        return mapper.convertValue(raw, mapper.getTypeFactory().constructCollectionType(List.class, type));
+        return get(path, mapper.getTypeFactory().constructCollectionType(List.class, type));
     }
 
     public ReadContext context() {

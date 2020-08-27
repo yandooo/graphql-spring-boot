@@ -1,5 +1,6 @@
 package com.graphql.spring.boot.test;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graphql.spring.boot.test.assertions.GraphQLErrorListAssertion;
 import com.graphql.spring.boot.test.assertions.GraphQLFieldAssert;
@@ -17,9 +18,14 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JsonContentAssert;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
@@ -119,6 +125,25 @@ public class GraphQLResponseTest {
         final List<T> actual = graphQLResponse.getList(DATA_PATH, clazz);
         //THEN
         assertThat(actual).containsExactlyElementsOf(expected);
+    }
+
+    @DisplayName("Should get field as defined by Jackson's JavaType.")
+    @Test
+    public void testGetAsJavaType() throws IOException {
+        // GIVEN
+        final String dataPath = "$.data.externalList[*].fooList";
+        final String response = loadClassPathResource("response-with-nested-list.json");
+        final List<List<String>> expected = Arrays.asList(Arrays.asList("foo1", "foo2"),
+            Collections.singletonList("foo3"));
+        final JavaType stringList = objectMapper.getTypeFactory().constructCollectionType(List.class, String.class);
+        final JavaType listOfStringLists = objectMapper.getTypeFactory().constructCollectionType(List.class,
+            stringList);
+        // WHEN
+        final List<List<String>> actual = new GraphQLResponse(ResponseEntity.ok(response), objectMapper)
+            .get(dataPath, listOfStringLists);
+        // THEN
+        assertThat(actual).containsExactlyElementsOf(expected);
+
     }
 
     @ParameterizedTest
@@ -242,10 +267,17 @@ public class GraphQLResponseTest {
             .containsExactly(graphQLResponse, path);
     }
 
+    private String loadClassPathResource(String path) throws IOException {
+        try(InputStream resourceStream = new ClassPathResource(path).getInputStream()) {
+            return StreamUtils.copyToString(resourceStream, StandardCharsets.UTF_8);
+        }
+    }
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     private static class FooBar {
+
         private String foo;
         private BigDecimal bar;
     }
