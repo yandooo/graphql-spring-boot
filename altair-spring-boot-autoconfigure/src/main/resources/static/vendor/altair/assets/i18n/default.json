@@ -7,6 +7,7 @@
   "CONVERT_TO_NAMED_QUERY_BUTTON": "Convert to named query",
   "SET_HEADERS_BUTTON": "Set Headers",
   "SET_VARIABLES_BUTTON": "Set Variables",
+  "REFACTOR_QUERY_BUTTON": "Refactor Query",
   "RELOAD_DOCS_BUTTON": "Reload Docs",
   "SHOW_DOCS_BUTTON": "Show Docs",
   "DOCS_TEXT": "Docs",
@@ -17,6 +18,7 @@
   "DONE_BUTTON": "Done",
   "CLICK_HERE_TEXT": "Click here",
   "ADD_NEW_WINDOW_TEXT": "+ Add new",
+  "RESTART_TEXT": "Restart",
 
   "DOCS_GO_BACK_TEXT": "Back",
   "DOCS_EXPORT_SDL": "Export SDL",
@@ -36,6 +38,7 @@
   "DOCS_INTERFACE_TEXT": "Interface",
   "DOCS_IMPLEMENTATIONS_TEXT": "Implementations",
   "DOCS_IMPLEMENTS_TEXT": "Implements",
+  "DOCS_LAST_UPDATED": "Last updated",
 
   "QUERY_RESULT_NO_RESULT_TEXT": "Ezio my friend, how may I be of service?",
   "QUERY_RESULT_STATUS_TEXT": "STATUS",
@@ -45,6 +48,7 @@
 
   "SUBSCRIPTIONS_STOP_TEXT": "Stop",
   "SUBSCRIPTIONS_CLEAR_TEXT": "Clear",
+  "SUBSCRIPTIONS_AUTOSCROLL_TEXT": "Autoscroll",
 
   "VARIABLES_TEXT": "Variables",
   "SET_VARIABLES_DIALOG_SUBTEXT": "Add, edit and remove variables in your request",
@@ -72,6 +76,7 @@
   "SETTINGS_SHOW_EDITOR_HINT": "Press ctrl-space to show hint",
   "SETTINGS_KEYBOARD_SHORTCUTS": "Keyboard shortcuts",
   "SETTINGS_RESET_APPLICATION_DATA": "Reset application data (only use this if you know what you are doing).",
+  "SETTINGS_TOGGLE_ADVANCED_MODE": "Toggle advanced mode",
 
   "VIEW_ON_GITHUB_TEXT": "View on GitHub",
   "STAR_ON_GITHUB_TEXT": "Star on GitHub",
@@ -82,6 +87,7 @@
   "CLOSE_WINDOWS_TO_THE_RIGHT_TEXT": "Close to the Right",
   "CLOSE_OTHER_WINDOWS_TEXT": "Close others",
   "DUPLICATE_WINDOW_TEXT": "Duplicate",
+  "REOPEN_CLOSED_WINDOW_TEXT": "Reopen closed window",
 
   "IMPORT_WINDOW_TEXT": "Import Window...",
   "IMPORT_WINDOW_FROM_CURL_TEXT": "Import from cURL...",
@@ -100,6 +106,7 @@
   "SAVE_TO_COLLECTION_NAME_OF_QUERY": "Name of query",
   "CREATE_COLLECTION_BUTTON": "Create collection",
   "NUMBER_OF_QUERIES": "Number of queries:",
+  "COLLECTIONS_NUMBER_OF_REQUESTS": "Number of requests:",
   "COLLECTIONS_QUERY_MENU_DELETE": "Delete",
   "COLLECTIONS_MENU_DELETE": "Delete",
   "COLLECTIONS_MENU_EDIT": "Edit",
@@ -111,6 +118,7 @@
   "COLLECTIONS_SORT_BY_Z_A": "Z - A",
   "COLLECTIONS_SORT_BY_NEWEST": "Newest",
   "COLLECTIONS_SORT_BY_OLDEST": "Oldest",
+  "COLLECTIONS_DEPRECATED_QUERY_WARNING": "This query is old and not compatible. Please delete and create it again to prevent data loss.",
 
   "EDIT_COLLECTION_TITLE_TEXT": "Edit Collection",
   "EDIT_COLLECTION_TITLE_SUBTEXT": "Update your collection details",
@@ -131,5 +139,18 @@
   "LEARN_MORE_TEXT": "Learn more",
 
   "STREAM_CONNECTION_TRYING": "Trying to connect to server stream...",
-  "STREAM_CONNECTION_CONNECTED": "Connected to server stream"
+  "STREAM_CONNECTION_CONNECTED": "Connected to server stream",
+
+  "PRE_REQUEST_EDITOR_HEADER": "Pre-request Editor",
+  "PRE_REQUEST_EDITOR_SUBTEXT": "Write a script to be executed before the request is sent",
+  "PRE_REQUEST_ENABLE_TEXT": "Enable pre-request script",
+
+  "SCHEMA_FORM_LIST_ADD": "Add",
+  "SCHEMA_FORM_LIST_REMOVE": "Remove",
+
+  "PLUGINS_TEXT": "Available Plugins",
+  "PLUGINS_SUB_TEXT": "Browse through available plugins",
+  "PLUGIN_UNIQUE_NAME_TEXT": "Unique Plugin Name",
+  "PLUGIN_ADD_BUTTON": "Add to Altair",
+  "PLUGIN_REMOVE_BUTTON": "Remove"
 }

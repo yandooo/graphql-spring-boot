@@ -42,6 +42,11 @@
         </div>
     </div>
 </app-root>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        AltairGraphQL.init();
+    });
+</script>
 <script rel="preload" as="script" type="text/javascript" src="${altairRuntimeJsUrl}"></script>
 <script rel="preload" as="script" type="text/javascript" src="${altairPolyfillsJsUrl}"></script>
 <script rel="preload" as="script" type="text/javascript" src="${altairMainJsUrl}"></script>
