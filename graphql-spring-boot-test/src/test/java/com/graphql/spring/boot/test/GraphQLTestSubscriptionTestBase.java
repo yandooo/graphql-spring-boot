@@ -1,6 +1,7 @@
 package com.graphql.spring.boot.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,6 +36,11 @@ public class GraphQLTestSubscriptionTestBase {
     @BeforeEach
     protected void setUp() {
         graphQLTestSubscription = new GraphQLTestSubscription(environment, objectMapper, "subscriptions");
+    }
+
+    @AfterEach
+    protected void tearDown() {
+        graphQLTestSubscription.reset();
     }
 
     protected void assertThatSubscriptionStoppedStatusIs(boolean isStopped) {

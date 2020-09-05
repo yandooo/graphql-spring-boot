@@ -47,6 +47,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GraphQLTestSubscription {
 
     private static final int SLEEP_INTERVAL_MS = 100;
+    private static final int ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT = 6000000;
     private static final AtomicInteger ID_COUNTER = new AtomicInteger(1);
     private static final UriBuilderFactory URI_BUILDER_FACTORY = new DefaultUriBuilderFactory();
 
@@ -97,6 +98,7 @@ public class GraphQLTestSubscription {
         message.set("payload", getFinalPayload(payload));
         sendMessage(message);
         initialized = true;
+        awaitAcknowledgement();
         return this;
     }
 
@@ -141,8 +143,8 @@ public class GraphQLTestSubscription {
      * @return self reference
      */
     public GraphQLTestSubscription stop() {
-        if (!started) {
-            fail("Subscription not yet started.");
+        if (!initialized) {
+            fail("Subscription not yet initialized.");
         }
         if (stopped) {
             fail("Subscription already stopped.");
@@ -177,7 +179,10 @@ public class GraphQLTestSubscription {
         started = false;
         stopped = false;
         acknowledged = false;
-        responses.clear();
+        session = null;
+        synchronized (responses) {
+            responses.clear();
+        }
     }
 
     /**
@@ -348,6 +353,8 @@ public class GraphQLTestSubscription {
         final ClientEndpointConfig clientEndpointConfig = ClientEndpointConfig.Builder.create()
             .configurator(new TestWebSocketClientConfigurator())
             .build();
+        clientEndpointConfig.getUserProperties().put("org.apache.tomcat.websocket.IO_TIMEOUT_MS",
+            String.valueOf(ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT));
         session = webSocketContainer.connectToServer(TestWebSocketClient.class, clientEndpointConfig, uri);
         session.addMessageHandler(new TestMessageHandler());
     }
@@ -373,6 +380,22 @@ public class GraphQLTestSubscription {
             session.getBasicRemote().sendText(objectMapper.writeValueAsString(message));
         } catch (IOException e) {
             fail("Test setup failure - cannot serialize subscription payload.", e);
+        }
+    }
+
+    private void awaitAcknowledgement() {
+        int elapsedTime = 0;
+        while(!acknowledged && elapsedTime < ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT) {
+            try {
+                Thread.sleep(SLEEP_INTERVAL_MS);
+                elapsedTime += SLEEP_INTERVAL_MS;
+            } catch (InterruptedException e) {
+                fail("Test execution error - Thread.sleep failed.", e);
+            }
+        }
+
+        if (!acknowledged) {
+            fail("Timeout: Connection was not acknowledged by the GraphQL server.");
         }
     }
 
