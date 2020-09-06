@@ -1,0 +1,11 @@
+query {
+    vehicles {
+        registrationNumber
+        ... on Car {
+            numberOfSeats
+        }
+        ... on Truck {
+            cargoWeightCapacity
+        }
+    }
+}

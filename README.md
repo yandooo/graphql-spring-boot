@@ -12,6 +12,7 @@
     - [Using Maven](#using-maven)
 - [Documentation](#documentation)
 - [Requirements and Downloads](#requirements-and-downloads)
+    - [Snapshots](#snapshots)
 - [Enable GraphQL Servlet](#enable-graphql-servlet)
 - [Enable Graph*i*QL](#enable-graphiql)
 - [Enable Altair](#enable-altair)
@@ -23,6 +24,12 @@
   - [Tabs](#tabs)
 - [Supported GraphQL-Java Libraries](#supported-graphql-java-libraries)
   - [GraphQL Java Tools](#graphql-java-tools)
+  - [GraphQL Annotations](#graphql-annotations)
+    - [Configuration](#configuration)
+    - [Root resolvers, directives, type extensions](#root-resolvers-directives-type-extensions)
+    - [Interfaces](#interfaces)
+    - [Custom scalars and type functions](#custom-scalars-and-type-functions)
+    - [Custom Relay and GraphQL Annotation Processor](#custom-relay-and-graphql-annotation-processor)
 - [Tracing and Metrics](#tracing-and-metrics)
   - [Usage](#usage)
 - [Contributions](#contributions)
@@ -397,6 +404,65 @@ graphql:
 ```
 By default GraphQL tools uses the location pattern `**/*.graphqls` to scan for GraphQL schemas on the classpath.
 Use the `schemaLocationPattern` property to customize this pattern.
+
+## GraphQL Annotations
+
+https://github.com/Enigmatis/graphql-java-annotations
+
+The schema will be built using the GraphQL Annotations library in a code-first approach - instead of writing it 
+manually, the schema will be constructed based on the Java code. Please see the documentation of the GraphQL Annotations 
+library for a detailed documentation of the available annotations. This readme focuses on how GraphQL Annotations - 
+GraphQL Spring Boot Starter integration works.
+
+### Configuration
+
+```
+graphql:
+    annotations:
+        base-package: com.example.graphl.schema # required
+        always-prettify: true #true is the default value, no need to specify it
+```
+
+The most important parameter is the base package. The starter will look for schema-relevant classes in the specified 
+package and its subpackages. `always-prettify` will "prettify" getter/setter methods - the get/set/is prefix will be 
+removed from GraphQL fields automatically.
+
+### Root resolvers, directives, type extensions 
+
+The root resolvers must be marked with the `GraphQLQueryResolver`, `GraphQLMutationResolver` and `GraphQLSubscription` 
+ annotations (not to be confused with the marker interfaces from the GraphQL Java Tools library). 
+
+**Important:**
+
+Unlike GraphQL Java Tools, GraphQL Annotations only supports *one* of them each. Furthermore, GraphQL Annotations 
+only accepts a *class* as input, *not an instance*. It will either create a new instance of the class itself, or use 
+static methods. This means that Spring dependency injection will not work in the usual way. The companion example 
+project (which can be found in the [samples](https://github.com/graphql-java-kickstart/samples) repository) 
+demonstrates possible workarounds for this issue.
+
+`GraphQLDirectiveDefinition` and `GraphQLTypeExtension`-annotated classes are subject to the same limitation regarding
+dependency injection - but there can be any number of them.
+
+### Interfaces
+
+Interfaces in the configured package having at least one of their methods marked as `@GraphQLField` are considered a 
+GraphQL interface, and their implementations are automatically added to the schema. Furthermore, you have to add the 
+following annotation to GraphQL interfaces: `@GraphQLTypeResolver(GraphQLInterfaceTypeResolver.class)`
+
+### Custom scalars and type functions
+
+Custom scalars can be defined in the same way as in the case of using GraphQL Java Tools - just define the 
+`GraphQLScalarType` beans.
+
+The starter will also pick up `TypeFunction` beans and pass them to the schema builder. 
+
+In these cases the actual beans will be used, not just the classes. Spring dependency injection works as usual. 
+
+### Custom Relay and GraphQL Annotation Processor
+
+It is possible to define a bean implementing `Relay` and/or `GraphQLAnnotations`. If present, these will be passed to 
+the schema builder. Spring dependency injection works as usual. Note that GraphQL Annotations provides default 
+implementation for these which should be sufficient is most cases.
 
 # Tracing and Metrics
 
