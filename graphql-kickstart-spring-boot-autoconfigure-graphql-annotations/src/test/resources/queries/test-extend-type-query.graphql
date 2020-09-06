@@ -1,0 +1,6 @@
+query {
+    someValue {
+        baseTypeField
+        extendTypeField
+    }
+}
