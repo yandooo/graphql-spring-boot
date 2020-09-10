@@ -22,8 +22,8 @@ public class GraphQLFieldAssertAsJavaListTypeTest extends GraphQLFieldAssertTest
         .constructCollectionLikeType(List.class, String.class);
 
     @Test
-    @DisplayName("Should return a String assertion (value at specific path is valid list).")
-    void shouldReturnStringAssertIfFieldIsNonNull() {
+    @DisplayName("Should return a String list assertion (value at specific path is valid list).")
+    void shouldReturnStringListAssertIfFieldIsNonNull() {
         // GIVEN
         final List<String> values = Arrays.asList("value1", "value2");
         given(graphQLResponse.get(MOCK_PATH, STRING_LIST_TYPE)).willReturn(values);
@@ -38,8 +38,8 @@ public class GraphQLFieldAssertAsJavaListTypeTest extends GraphQLFieldAssertTest
     }
 
     @Test
-    @DisplayName("Should return a String assertion (value at specific path is null).")
-    void shouldReturnStringAssertIfFieldIsNull() {
+    @DisplayName("Should return a String list assertion (value at specific path is null).")
+    void shouldReturnStringListAssertIfFieldIsNull() {
         // GIVEN
         given(graphQLResponse.get(MOCK_PATH, STRING_LIST_TYPE)).willReturn(null);
         final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);

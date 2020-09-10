@@ -18,8 +18,8 @@ import static org.mockito.BDDMockito.given;
 public class GraphQLFieldAssertAsListTest extends GraphQLFieldAssertTestBase {
 
     @Test
-    @DisplayName("Should return a String assertion (value at specific path is valid list).")
-    void shouldReturnStringAssertIfFieldIsNonNull() {
+    @DisplayName("Should return a String list assertion (value at specific path is valid list).")
+    void shouldReturnStringListAssertIfFieldIsNonNull() {
         // GIVEN
         final List<String> values = Arrays.asList("value1", "value2");
         given(graphQLResponse.getList(MOCK_PATH, String.class)).willReturn(values);
@@ -34,8 +34,8 @@ public class GraphQLFieldAssertAsListTest extends GraphQLFieldAssertTestBase {
     }
 
     @Test
-    @DisplayName("Should return a String assertion (value at specific path is null).")
-    void shouldReturnStringAssertIfFieldIsNull() {
+    @DisplayName("Should return a String list assertion (value at specific path is null).")
+    void shouldReturnStringListAssertIfFieldIsNull() {
         // GIVEN
         given(graphQLResponse.getList(MOCK_PATH, String.class)).willReturn(null);
         final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
@@ -62,7 +62,7 @@ public class GraphQLFieldAssertAsListTest extends GraphQLFieldAssertTestBase {
 
     @Test
     @DisplayName("Should fail if the value at the provided path cannot be converted.")
-    void shouldFailIfIsNotNull(final @Mock IllegalArgumentException illegalArgumentException) {
+    void shouldFailIfCannotBeConverted(final @Mock IllegalArgumentException illegalArgumentException) {
         // GIVEN
         given(graphQLResponse.getList(MOCK_PATH, String.class)).willThrow(illegalArgumentException);
         final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);

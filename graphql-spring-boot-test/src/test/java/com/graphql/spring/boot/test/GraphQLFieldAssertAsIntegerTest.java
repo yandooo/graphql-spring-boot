@@ -58,7 +58,7 @@ public class GraphQLFieldAssertAsIntegerTest extends GraphQLFieldAssertTestBase 
 
     @Test
     @DisplayName("Should fail if the value at the provided path cannot be converted.")
-    void shouldFailIfIsNotNull(final @Mock IllegalArgumentException illegalArgumentException) {
+    void shouldFailIfCannotBeConverted(final @Mock IllegalArgumentException illegalArgumentException) {
         // GIVEN
         given(graphQLResponse.get(MOCK_PATH, Integer.class)).willThrow(illegalArgumentException);
         final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
