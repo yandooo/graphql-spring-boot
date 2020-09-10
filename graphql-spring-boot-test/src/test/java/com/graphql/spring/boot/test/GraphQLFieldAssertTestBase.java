@@ -1,5 +1,7 @@
 package com.graphql.spring.boot.test;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -12,4 +14,10 @@ public class GraphQLFieldAssertTestBase {
 
     @Mock
     protected GraphQLResponse graphQLResponse;
+
+    @Data
+    @AllArgsConstructor
+    protected static class Foo {
+        private String bar;
+    }
 }

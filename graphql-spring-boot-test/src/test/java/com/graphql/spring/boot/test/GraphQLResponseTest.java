@@ -146,6 +146,21 @@ public class GraphQLResponseTest {
 
     }
 
+    @DisplayName("Should throw illegal argument exception if type is incompatible")
+    @Test
+    public void testGetAsJavaTypeConversionError() throws IOException {
+        // GIVEN
+        final String dataPath = "$.data.externalList[*].fooList";
+        final String response = loadClassPathResource("response-with-nested-list.json");
+        final JavaType stringType = objectMapper.getTypeFactory().constructType(String.class);
+        // WHEN
+        final GraphQLResponse actual = new GraphQLResponse(ResponseEntity.ok(response), objectMapper);
+        // THEN
+        assertThatExceptionOfType(IllegalArgumentException.class)
+            .isThrownBy(() -> actual.get(dataPath, stringType));
+
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {
         "{\"data\": { \"foo\":\"bar\" } }",

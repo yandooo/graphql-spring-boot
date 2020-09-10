@@ -1,5 +1,6 @@
 package com.graphql.spring.boot.test.assertions;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.graphql.spring.boot.test.GraphQLResponse;
 import com.jayway.jsonpath.PathNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -158,11 +159,33 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
 
     /**
      * Returns an assertion for the content of the field as an instance of the specified class.
+     * @param clazz The class of the object. to assert
      * @return a {@link GraphQLGenericObjectAssert} instance
      * @throws AssertionError if the path does not exist or the content could not be converted to the specified class
      */
     public <T> GraphQLGenericObjectAssert<T> as(final Class<T> clazz) {
         return new GraphQLGenericObjectAssert<>(graphQLResponse, getFieldAs(clazz));
+    }
+
+    /**
+     * Returns an assertion for the content of the field as an instance of the specified type.
+     * @param javaType The java type definition.
+     * @return a {@link GraphQLGenericObjectAssert} instance
+     * @throws AssertionError if the path does not exist or the content could not be converted to the specified class
+     */
+    public <T> GraphQLGenericObjectAssert<T> as(final JavaType javaType) {
+        return new GraphQLGenericObjectAssert<>(graphQLResponse, getFieldAs(javaType));
+    }
+
+    /**
+     * Returns an assertion for the content of the field as an instance of the specified list type.
+     * @param javaListType The java type definition. Expected to define a list type.
+     * @return a {@link GraphQLListAssert} instance
+     * @throws AssertionError if the path does not exist or the content could not be converted to the specified class
+     * or if the provided type is not a list type.
+     */
+    public <T> GraphQLListAssert<T> asList(final JavaType javaListType) {
+        return new GraphQLListAssert<>(graphQLResponse, getFieldAs(javaListType));
     }
 
     /**
@@ -191,6 +214,18 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
             return null;
         } catch (IllegalArgumentException e) {
             fail(String.format("Expected that content of field %s can be converted to %s.", jsonPath, targetClass), e);
+            return null;
+        }
+    }
+
+    private <T> T getFieldAs(final JavaType javaType) {
+        try {
+            return graphQLResponse.get(jsonPath, javaType);
+        } catch (PathNotFoundException e) {
+            fail(String.format("Expected field %s to be present.", jsonPath), e);
+            return null;
+        } catch (IllegalArgumentException e) {
+            fail(String.format("Expected that content of field %s can be converted to %s.", jsonPath, javaType), e);
             return null;
         }
     }
