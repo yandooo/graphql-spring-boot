@@ -26,6 +26,9 @@ import java.util.List;
 
 import static java.util.Objects.nonNull;
 
+/**
+ * Helper class to test GraphQL queries and mutations.
+ */
 public class GraphQLTestTemplate {
 
     private final ResourceLoader resourceLoader;
@@ -88,6 +91,7 @@ public class GraphQLTestTemplate {
      *
      * @param name Name (key) of HTTP header to add.
      * @param value Value(s) of HTTP header to add.
+     * @return self
      */
     public GraphQLTestTemplate withAdditionalHeader(final String name, final String... value) {
         headers.addAll(name, Arrays.asList(value));
@@ -98,6 +102,7 @@ public class GraphQLTestTemplate {
      * Add multiple HTTP header that will be sent with each request this sends.
      *
      * @param additionalHeaders additional headers to add
+     * @return self
      */
     public GraphQLTestTemplate withAdditionalHeaders(final MultiValueMap<String, String> additionalHeaders) {
         headers.addAll(additionalHeaders);
@@ -166,6 +171,7 @@ public class GraphQLTestTemplate {
      * Replace any associated HTTP headers with the provided headers.
      *
      * @param newHeaders Headers to use.
+     * @return self
      */
     public GraphQLTestTemplate withHeaders(final HttpHeaders newHeaders) {
        return withClearHeaders().withAdditionalHeaders(newHeaders);
@@ -190,34 +196,80 @@ public class GraphQLTestTemplate {
     }
 
     /**
+     * Loads a GraphQL query or mutation from the given classpath resource and sends it to the GraphQL server.
+     *
      * @deprecated Use {@link #postForResource(String)} instead
      *
      * @param graphqlResource path to the classpath resource containing the GraphQL query
-     * @return GraphQLResponse containing the result of query execution
+     * @return {@link GraphQLResponse} containing the result of query execution
      * @throws IOException if the resource cannot be loaded from the classpath
      */
+    @Deprecated
     public GraphQLResponse perform(String graphqlResource) throws IOException {
         return postForResource(graphqlResource);
     }
 
+    /**
+     * Loads a GraphQL query or mutation from the given classpath resource and sends it to the GraphQL server.
+     *
+     * @param graphqlResource path to the classpath resource containing the GraphQL query
+     * @param variables the input variables for the GraphQL query
+     * @return {@link GraphQLResponse} containing the result of query execution
+     * @throws IOException if the resource cannot be loaded from the classpath
+     */
     public GraphQLResponse perform(String graphqlResource, ObjectNode variables) throws IOException {
         return perform(graphqlResource, null, variables);
     }
 
+    /**
+     * Loads a GraphQL query or mutation from the given classpath resource and sends it to the GraphQL server.
+     *
+     * @param graphqlResource path to the classpath resource containing the GraphQL query
+     * @param operationName the name of the GraphQL operation to be executed
+     * @return {@link GraphQLResponse} containing the result of query execution
+     * @throws IOException if the resource cannot be loaded from the classpath
+     */
     public GraphQLResponse perform(String graphqlResource, String operationName) throws IOException {
         return perform(graphqlResource, operationName, null);
     }
 
+    /**
+     * Loads a GraphQL query or mutation from the given classpath resource and sends it to the GraphQL server.
+     *
+     * @param graphqlResource path to the classpath resource containing the GraphQL query
+     * @param operation the name of the GraphQL operation to be executed
+     * @param variables the input variables for the GraphQL query
+     * @return {@link GraphQLResponse} containing the result of query execution
+     * @throws IOException if the resource cannot be loaded from the classpath
+     */
     public GraphQLResponse perform(String graphqlResource, String operation, ObjectNode variables) throws IOException {
         String graphql = loadQuery(graphqlResource);
         String payload = createJsonQuery(graphql, operation, variables);
         return post(payload);
     }
 
+    /**
+     * Loads a GraphQL query or mutation from the given classpath resource and sends it to the GraphQL server.
+     *
+     * @param graphqlResource path to the classpath resource containing the GraphQL query
+     * @param variables the input variables for the GraphQL query
+     * @param fragmentResources an ordered list of classpath resources containing GraphQL fragment definitions.
+     * @return {@link GraphQLResponse} containing the result of query execution
+     * @throws IOException if the resource cannot be loaded from the classpath
+     */
     public GraphQLResponse perform(String graphqlResource, ObjectNode variables, List<String> fragmentResources) throws IOException {
         return perform(graphqlResource, null, variables, fragmentResources);
     }
 
+    /**
+     * Loads a GraphQL query or mutation from the given classpath resource and sends it to the GraphQL server.
+     *
+     * @param graphqlResource path to the classpath resource containing the GraphQL query
+     * @param variables the input variables for the GraphQL query
+     * @param fragmentResources an ordered list of classpath resources containing GraphQL fragment definitions.
+     * @return {@link GraphQLResponse} containing the result of query execution
+     * @throws IOException if the resource cannot be loaded from the classpath
+     */
     public GraphQLResponse perform(String graphqlResource, String operationName, ObjectNode variables, List<String> fragmentResources) throws IOException {
         StringBuilder sb = new StringBuilder();
         for (String fragmentResource : fragmentResources) {
@@ -229,10 +281,10 @@ public class GraphQLTestTemplate {
     }
 
     /**
-     * Loads a GraphQL query from the given classpath resource and sends it to the GraphQL server.
+     * Loads a GraphQL query or mutation from the given classpath resource and sends it to the GraphQL server.
      *
      * @param graphqlResource path to the classpath resource containing the GraphQL query
-     * @return GraphQLResponse containing the result of query execution
+     * @return {@link GraphQLResponse} containing the result of query execution
      * @throws IOException if the resource cannot be loaded from the classpath
      */
     public GraphQLResponse postForResource(String graphqlResource) throws IOException {
@@ -240,12 +292,12 @@ public class GraphQLTestTemplate {
     }
 
     /**
-     * Loads a GraphQL query from the given classpath resource, appending any graphql fragment
+     * Loads a GraphQL query or mutation from the given classpath resource, appending any graphql fragment
      * resources provided  and sends it to the GraphQL server.
      *
      * @param graphqlResource path to the classpath resource containing the GraphQL query
-     * @param fragmentResources an ordered list of classpaths containing GraphQL fragment definitions.
-     * @return GraphQLResponse containing the result of query execution
+     * @param fragmentResources an ordered list of classpath resources containing GraphQL fragment definitions.
+     * @return {@link GraphQLResponse} containing the result of query execution
      * @throws IOException if the resource cannot be loaded from the classpath
      */
     public GraphQLResponse postForResource(String graphqlResource, List<String> fragmentResources) throws IOException {
