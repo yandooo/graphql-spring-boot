@@ -42,7 +42,7 @@ public class GraphQLFieldAssertAsBigIntegerTest extends GraphQLFieldAssertTestBa
         // THEN
         assertThat(actual).isNotNull();
         assertThat(actual.and()).isSameAs(graphQLResponse);
-        assertThat(actual).extracting("actual").isSameAs(null);
+        assertThat(actual).extracting("actual").isNull();
     }
 
     @Test

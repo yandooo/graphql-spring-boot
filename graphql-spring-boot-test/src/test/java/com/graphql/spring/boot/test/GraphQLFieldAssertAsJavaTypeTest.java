@@ -45,7 +45,7 @@ public class GraphQLFieldAssertAsJavaTypeTest extends GraphQLFieldAssertTestBase
         // THEN
         assertThat(actual).isNotNull();
         assertThat(actual.and()).isSameAs(graphQLResponse);
-        assertThat(actual).extracting("actual").isSameAs(null);
+        assertThat(actual).extracting("actual").isNull();
     }
 
     @Test

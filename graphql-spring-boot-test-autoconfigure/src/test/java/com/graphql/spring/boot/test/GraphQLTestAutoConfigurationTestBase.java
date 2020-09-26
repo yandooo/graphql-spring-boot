@@ -18,23 +18,19 @@ public class GraphQLTestAutoConfigurationTestBase {
 
     void assertThatTestSubscriptionWorksCorrectly() {
         // GIVEN
-        final GraphQLTestSubscription graphQLTestSubscription
-            = applicationContext.getBean(GraphQLTestSubscription.class);
-        // WHEN
-        final GraphQLResponse graphQLResponse
-            = graphQLTestSubscription.start("test-subscription.graphql").awaitAndGetNextResponse(1000);
-        // THEN
-        assertThat(graphQLResponse.get("$.data.testSubscription")).isEqualTo(FOO);
+        final GraphQLTestSubscription testSubscription = applicationContext.getBean(GraphQLTestSubscription.class);
+        // WHEN - THEN
+        testSubscription.start("test-subscription.graphql")
+            .awaitAndGetNextResponse(1000)
+            .assertThatField("$.data.testSubscription").asString().isEqualTo(FOO);
     }
 
     void assertThatTestTemplateAutoConfigurationWorksCorrectly() throws IOException {
         // GIVEN
-        final GraphQLTestTemplate graphQLTestTemplate
-            = applicationContext.getBean(GraphQLTestTemplate.class);
-        // WHEN
-        final GraphQLResponse graphQLResponse
-            = graphQLTestTemplate.postForResource("test-query.graphql");
-        // THEN
-        assertThat(graphQLResponse.get("$.data.testQuery")).isEqualTo(FOO);
+        final GraphQLTestTemplate testTemplate = applicationContext.getBean(GraphQLTestTemplate.class);
+        // WHEN - THEN
+        testTemplate.postForResource("test-query.graphql")
+            .assertThatNumberOfErrors().isZero().and()
+            .assertThatField("$.data.testQuery").asString().isEqualTo(FOO);
     }
 }
