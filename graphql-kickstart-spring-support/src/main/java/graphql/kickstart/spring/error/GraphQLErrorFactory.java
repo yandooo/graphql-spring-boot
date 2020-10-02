@@ -10,7 +10,7 @@ interface GraphQLErrorFactory {
 
     Optional<Class<? extends Throwable>> mostConcrete(Throwable t);
 
-    Collection<GraphQLError> create(Throwable t);
+    Collection<GraphQLError> create(Throwable t, ErrorContext errorContext);
 
     static GraphQLErrorFactory withReflection(Object object, Method method) {
         return new ReflectiveGraphQLErrorFactory(object, method);
