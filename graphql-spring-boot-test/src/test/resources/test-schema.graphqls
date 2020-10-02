@@ -1,10 +1,8 @@
-scalar Long
-
 type Subscription {
-    timer: Long!
+    timer: Float!
     subscriptionWithParameter(param: String!): String!
     subscriptionWithInitPayload: String!
-    subscriptionThatTimesOut: Long!
+    subscriptionThatTimesOut: Float!
     subscriptionThatThrowsException: Boolean!
 }
 
