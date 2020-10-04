@@ -1,5 +1,5 @@
-query {
-    fooBar {
+query($foo: String, $bar: String) {
+    fooBar(foo: $foo, bar: $bar) {
         ...FooBarFragment
     }
 }

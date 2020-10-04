@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Objects.nonNull;
@@ -218,7 +219,7 @@ public class GraphQLTestTemplate {
      * @throws IOException if the resource cannot be loaded from the classpath
      */
     public GraphQLResponse perform(String graphqlResource, ObjectNode variables) throws IOException {
-        return perform(graphqlResource, null, variables);
+        return perform(graphqlResource, null, variables, Collections.emptyList());
     }
 
     /**
@@ -230,7 +231,7 @@ public class GraphQLTestTemplate {
      * @throws IOException if the resource cannot be loaded from the classpath
      */
     public GraphQLResponse perform(String graphqlResource, String operationName) throws IOException {
-        return perform(graphqlResource, operationName, null);
+        return perform(graphqlResource, operationName, null, Collections.emptyList());
     }
 
     /**
@@ -243,9 +244,7 @@ public class GraphQLTestTemplate {
      * @throws IOException if the resource cannot be loaded from the classpath
      */
     public GraphQLResponse perform(String graphqlResource, String operation, ObjectNode variables) throws IOException {
-        String graphql = loadQuery(graphqlResource);
-        String payload = createJsonQuery(graphql, operation, variables);
-        return post(payload);
+        return perform(graphqlResource, operation, variables, Collections.emptyList());
     }
 
     /**
@@ -288,7 +287,7 @@ public class GraphQLTestTemplate {
      * @throws IOException if the resource cannot be loaded from the classpath
      */
     public GraphQLResponse postForResource(String graphqlResource) throws IOException {
-        return perform(graphqlResource, (String) null, null);
+        return perform(graphqlResource, null, null, Collections.emptyList());
     }
 
     /**
@@ -301,7 +300,7 @@ public class GraphQLTestTemplate {
      * @throws IOException if the resource cannot be loaded from the classpath
      */
     public GraphQLResponse postForResource(String graphqlResource, List<String> fragmentResources) throws IOException {
-        return perform(graphqlResource, null, fragmentResources);
+        return perform(graphqlResource, null, null, fragmentResources);
     }
 
     public GraphQLResponse postMultipart(String query, String variables) {

@@ -13,6 +13,7 @@ import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GraphQLTestTemplateIntegrationTest {
@@ -22,6 +23,8 @@ public class GraphQLTestTemplateIntegrationTest {
     private static final String TEST_FRAGMENT_FILE = "foo-bar-fragment.graphql";
     private static final String QUERY_WITH_VARIABLES = "query-with-variables.graphql";
     private static final String MULTIPLE_QUERIES = "multiple-queries.graphql";
+    private static final String INPUT_STRING_VALUE = "input-value";
+    private static final String INPUT_STRING_NAME = "input";
 
     @Autowired
     private ResourceLoader resourceLoader;
@@ -63,13 +66,41 @@ public class GraphQLTestTemplateIntegrationTest {
     @DisplayName("Test perform with variables.")
     void testPerformWithVariables() throws IOException {
         // GIVEN
-        final String inputString = "test-input-string";
         final ObjectNode variables = objectMapper.createObjectNode();
-        variables.put("input", inputString);
+        variables.put(INPUT_STRING_NAME, INPUT_STRING_VALUE);
         // WHEN - THEN
         graphQLTestTemplate.perform(QUERY_WITH_VARIABLES, variables)
             .assertThatNoErrorsArePresent()
-            .assertThatField("$.data.queryWithVariables").asString().isEqualTo(inputString);
+            .assertThatField("$.data.queryWithVariables").asString().isEqualTo(INPUT_STRING_VALUE);
+    }
+
+    @Test
+    @DisplayName("Test perform with variables and operation name")
+    void testPerformWithOperationAndVariables() throws IOException {
+        // GIVEN
+        final ObjectNode variables = objectMapper.createObjectNode();
+        variables.put(INPUT_STRING_NAME, INPUT_STRING_VALUE);
+        // WHEN - THEN
+        graphQLTestTemplate.perform(MULTIPLE_QUERIES, "withVariable", variables)
+                .assertThatNoErrorsArePresent()
+                .assertThatField("$.data.queryWithVariables").asString().isEqualTo(INPUT_STRING_VALUE);
+    }
+
+    @Test
+    @DisplayName("Test perform with variables and fragments")
+    void testPerformWithVariablesAndFragments() throws IOException {
+        // GIVEN
+        final String customFoo = "custom-foo";
+        final String customBar = "custom-bar";
+        final ObjectNode variables = objectMapper.createObjectNode();
+        variables.put("foo", customFoo);
+        variables.put("bar", customBar);
+        final FooBar expected = new FooBar(customFoo, customBar);
+        // WHEN - THEN
+        graphQLTestTemplate.perform(SIMPLE_TEST_QUERY_WITH_FRAGMENTS, variables, List.of(TEST_FRAGMENT_FILE))
+                .assertThatNoErrorsArePresent()
+                .assertThatField("$.data.fooBar")
+                .as(FooBar.class).usingRecursiveComparison().ignoringAllOverriddenEquals().isEqualTo(expected);
     }
 
     @Test

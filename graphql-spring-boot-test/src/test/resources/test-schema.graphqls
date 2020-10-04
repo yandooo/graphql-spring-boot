@@ -14,6 +14,6 @@ type Subscription {
 type Query {
     dummy: Boolean!
     otherQuery: String!
-    fooBar: FooBar!
+    fooBar(foo: String, bar: String): FooBar!
     queryWithVariables(input: String!): String!
 }

@@ -3,6 +3,8 @@ package com.graphql.spring.boot.test.beans;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class DummyQuery implements GraphQLQueryResolver {
 
@@ -14,8 +16,11 @@ public class DummyQuery implements GraphQLQueryResolver {
         return "TEST";
     }
 
-    public FooBar fooBar() {
-        return FooBar.builder().bar("BAR").foo("FOO").build();
+    public FooBar fooBar(String foo, String bar) {
+        return FooBar.builder()
+                .bar(Optional.ofNullable(bar).orElse("BAR"))
+                .foo(Optional.ofNullable(foo).orElse("FOO"))
+                .build();
     }
 
     public String queryWithVariables(final String input) {
