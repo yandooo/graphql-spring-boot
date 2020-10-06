@@ -97,7 +97,8 @@ public class GraphQLTestTemplateIntegrationTest {
         variables.put("bar", customBar);
         final FooBar expected = new FooBar(customFoo, customBar);
         // WHEN - THEN
-        graphQLTestTemplate.perform(SIMPLE_TEST_QUERY_WITH_FRAGMENTS, variables, List.of(TEST_FRAGMENT_FILE))
+        graphQLTestTemplate
+                .perform(SIMPLE_TEST_QUERY_WITH_FRAGMENTS, variables, Collections.singletonList(TEST_FRAGMENT_FILE))
                 .assertThatNoErrorsArePresent()
                 .assertThatField("$.data.fooBar")
                 .as(FooBar.class).usingRecursiveComparison().ignoringAllOverriddenEquals().isEqualTo(expected);
