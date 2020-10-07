@@ -32,7 +32,12 @@ class GraphQLErrorFromExceptionHandler extends DefaultGraphQLErrorHandler {
   }
 
   private Collection<GraphQLError> transform(GraphQLError error) {
-    ErrorContext errorContext = new ErrorContext(error.getLocations(), error.getPath());
+    ErrorContext errorContext = new ErrorContext(
+            error.getLocations(),
+            error.getPath(),
+            error.getExtensions(),
+            error.getErrorType()
+    );
     return extractException(error).map(throwable -> transform(throwable, errorContext))
         .orElse(singletonList(new GenericGraphQLError(error.getMessage())));
   }
