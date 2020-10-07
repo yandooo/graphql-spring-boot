@@ -33,7 +33,7 @@ class ReflectiveGraphQLErrorFactory implements GraphQLErrorFactory {
   }
 
   @Override
-  public Collection<GraphQLError> create(Throwable t) {
+  public Collection<GraphQLError> create(Throwable t, ErrorContext errorContext) {
     try {
       method.setAccessible(true);
       if (singularReturnType) {
