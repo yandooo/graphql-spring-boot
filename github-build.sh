@@ -2,7 +2,7 @@
 set -ev
 
 getVersion() {
-  ./gradlew properties -q | grep "version:" | grep -v "kotlin_version:" | awk '{print $2}' | tr -d '[:space:]'
+  ./gradlew properties -q | grep -E "^version" | awk '{print $2}' | tr -d '[:space:]'
 }
 
 removeSnapshots() {
