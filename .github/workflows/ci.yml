@@ -1,4 +1,4 @@
-name: "Publish snapshot"
+name: ci
 on:
   push:
     branches:

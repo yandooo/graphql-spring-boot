@@ -1,6 +1,5 @@
 # GraphQL and Graph*i*QL Spring Framework Boot Starters
-[![Build Status](https://travis-ci.org/graphql-java-kickstart/graphql-spring-boot.svg?branch=master)](https://travis-ci.org/graphql-java-kickstart/graphql-spring-boot)
-[![GitHub CI Workflow](https://github.com/graphql-java-kickstart/graphql-spring-boot/workflows/CI/badge.svg)](https://github.com/graphql-java-kickstart/graphql-spring-boot/actions?query=workflow%3ACI+branch%3Amaster)
+[![GitHub CI Workflow](https://github.com/graphql-java-kickstart/graphql-spring-boot/workflows/ci/badge.svg)](https://github.com/graphql-java-kickstart/graphql-spring-boot/actions?query=workflow%3ACI+branch%3Amaster)
 [![Maven Central](https://img.shields.io/maven-central/v/com.graphql-java-kickstart/graphql-spring-boot-starter.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java-kickstart/graphql-spring-boot-starter)
 [![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/graphql-java-kickstart/Lobby)
 
@@ -89,19 +88,19 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:7.0.1'
+  implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:8.0.0'
   
   // to embed Altair tool
-  runtimeOnly 'com.graphql-java-kickstart:altair-spring-boot-starter:7.0.1'
+  runtimeOnly 'com.graphql-java-kickstart:altair-spring-boot-starter:8.0.0'
 
   // to embed GraphiQL tool
-  runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:7.0.1'
+  runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:8.0.0'
 
   // to embed Voyager tool
-  runtimeOnly 'com.graphql-java-kickstart:voyager-spring-boot-starter:7.0.1'
+  runtimeOnly 'com.graphql-java-kickstart:voyager-spring-boot-starter:8.0.0'
   
   // testing facilities
-  testImplementation 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:7.0.1'
+  testImplementation 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:8.0.0'
 }
 ```
 
@@ -110,14 +109,14 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>7.0.1</version>
+    <version>8.0.0</version>
 </dependency>
 
 <!-- to embed Altair tool -->
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>altair-spring-boot-starter</artifactId>
-    <version>7.0.1</version>
+    <version>8.0.0</version>
     <scope>runtime</scope>
 </dependency>
 
@@ -125,7 +124,7 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>7.0.1</version>
+    <version>8.0.0</version>
     <scope>runtime</scope>
 </dependency>
 
@@ -133,7 +132,7 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>voyager-spring-boot-starter</artifactId>
-    <version>7.0.1</version>
+    <version>8.0.0</version>
     <scope>runtime</scope>
 </dependency>
 
@@ -141,7 +140,7 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphql-spring-boot-starter-test</artifactId>
-    <version>7.0.1</version>
+    <version>8.0.0</version>
     <scope>test</scope>
 </dependency>
 
