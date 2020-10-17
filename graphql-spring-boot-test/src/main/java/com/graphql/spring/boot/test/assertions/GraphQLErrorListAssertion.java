@@ -33,7 +33,8 @@ public class GraphQLErrorListAssertion extends FactoryBasedNavigableListAssert<
     public GraphQLResponseAssertion hasNoErrors() {
         final List<? extends GraphQLError> graphQLErrors = getGraphQLErrors(graphQLResponse);
         if (nonNull(graphQLErrors) && !graphQLErrors.isEmpty()) {
-            final String combinedMessage = graphQLErrors.stream().map(GraphQLError::getMessage)
+            final String combinedMessage = graphQLErrors.stream()
+                .map(GraphQLError::toString)
                 .collect(Collectors.joining(System.lineSeparator()));
             fail(String.format("Expected no GraphQL errors, but got %s: %s", graphQLErrors.size(), combinedMessage));
         }

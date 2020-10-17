@@ -16,4 +16,5 @@ type Query {
     otherQuery: String!
     fooBar(foo: String, bar: String): FooBar!
     queryWithVariables(input: String!): String!
+    queryWithHeader(headerName: String!): String
 }
