@@ -186,7 +186,7 @@ public class GraphQLResponseTest {
         // THEN
         assertThatExceptionOfType(AssertionError.class)
             .isThrownBy(graphQLResponse::assertThatNoErrorsArePresent)
-            .withMessage("Expected no GraphQL errors, but got 1: Test error.");
+            .withMessage("Expected no GraphQL errors, but got 1: <Unspecified error>: Test error.");
     }
 
     @Test

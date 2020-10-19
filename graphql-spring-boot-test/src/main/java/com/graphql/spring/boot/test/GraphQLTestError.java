@@ -9,10 +9,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.util.NumberUtils;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
 
@@ -35,7 +37,9 @@ public class GraphQLTestError implements GraphQLError {
         @Override
         public String toString() {
             final StringBuilder sb = new StringBuilder();
-            sb.append(Optional.of(message).orElse("Error without error message"));
+            sb.append(Optional.ofNullable(errorType).map(ErrorClassification::toString).orElse("<Unspecified error>"));
+            sb.append(": ");
+            sb.append(Optional.ofNullable(message).orElse("<error message not provided>"));
             if (nonNull(locations) && !locations.isEmpty()) {
                 sb.append(" at line ");
                 locations.forEach(
@@ -43,9 +47,26 @@ public class GraphQLTestError implements GraphQLError {
                         .append(location.getLine())
                         .append(", column ")
                         .append(location.getColumn()).append(" in ")
-                        .append(Optional.ofNullable(location.getSourceName()).orElse("unnamed/unspecified source."))
+                        .append(Optional.ofNullable(location.getSourceName()).orElse("unnamed/unspecified source"))
                 );
+            }
+            if (nonNull(path) && !path.isEmpty()) {
+               sb.append(". Selection path: ");
+               sb.append(path.stream()
+                   .map(Object::toString)
+                   .map(this::toNumericIndexIfPossible)
+                   .collect(Collectors.joining("/"))
+                   .replaceAll("/\\[", "[")
+               );
             }
             return sb.toString();
         }
+
+    private String toNumericIndexIfPossible(final String s) {
+        try {
+            return "[" + NumberUtils.parseNumber(s, Long.class) + "]";
+        } catch (IllegalArgumentException e) {
+            return s;
+        }
+    }
 }
