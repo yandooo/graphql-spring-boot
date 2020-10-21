@@ -33,6 +33,19 @@ public class GraphQLTestTemplateIntegrationTest {
     private static final String INPUT_HEADER_NAME = "headerName";
     private static final String TEST_HEADER_NAME = "x-test";
     private static final String TEST_HEADER_VALUE = String.valueOf(UUID.randomUUID());
+    private static final String FOO = "FOO";
+    private static final String BAR = "BAR";
+    private static final String TEST = "TEST";
+    private static final String DATA_FIELD_FOO_BAR = "$.data.fooBar";
+    private static final String DATA_FIELD_QUERY_WITH_VARIABLES = "$.data.queryWithVariables";
+    private static final String DATA_FIELD_OTHER_QUERY = "$.data.otherQuery";
+    private static final String DATA_FIELD_QUERY_WITH_HEADER = "$.data.queryWithHeader";
+    private static final String DATA_FIELD_DUMMY = "$.data.dummy";
+    private static final String OPERATION_NAME_WITH_VARIABLES = "withVariable";
+    private static final String OPERATION_NAME_TEST_QUERY_1 = "testQuery1";
+    private static final String OPERATION_NAME_TEST_QUERY_2 = "testQuery2";
+    private static final String OPERATION_NAME_COMPLEX_QUERY = "complexQuery";
+    private static final String GRAPHQL_ENDPOINT = "/graphql";
 
     @Autowired
     private ResourceLoader resourceLoader;
@@ -47,7 +60,7 @@ public class GraphQLTestTemplateIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        graphQLTestTemplate = new GraphQLTestTemplate(resourceLoader, testRestTemplate, "/graphql", objectMapper);
+        graphQLTestTemplate = new GraphQLTestTemplate(resourceLoader, testRestTemplate, GRAPHQL_ENDPOINT, objectMapper);
     }
 
     @Test
@@ -55,7 +68,7 @@ public class GraphQLTestTemplateIntegrationTest {
     void testPostForResource() throws IOException {
         graphQLTestTemplate.postForResource(SIMPLE_TEST_QUERY)
             .assertThatNoErrorsArePresent()
-            .assertThatField("$.data.otherQuery").asString().isEqualTo("TEST");
+            .assertThatField(DATA_FIELD_OTHER_QUERY).asString().isEqualTo(TEST);
     }
 
     @Test
@@ -64,10 +77,10 @@ public class GraphQLTestTemplateIntegrationTest {
         graphQLTestTemplate.postForResource(SIMPLE_TEST_QUERY_WITH_FRAGMENTS,
             Collections.singletonList(TEST_FRAGMENT_FILE))
             .assertThatNoErrorsArePresent()
-            .assertThatField("$.data.fooBar").as(FooBar.class)
+            .assertThatField(DATA_FIELD_FOO_BAR).as(FooBar.class)
                 .usingRecursiveComparison()
                 .ignoringAllOverriddenEquals()
-                .isEqualTo(FooBar.builder().foo("FOO").bar("BAR").build());
+                .isEqualTo(FooBar.builder().foo(FOO).bar(BAR).build());
     }
 
     @Test
@@ -79,7 +92,7 @@ public class GraphQLTestTemplateIntegrationTest {
         // WHEN - THEN
         graphQLTestTemplate.perform(QUERY_WITH_VARIABLES, variables)
             .assertThatNoErrorsArePresent()
-            .assertThatField("$.data.queryWithVariables").asString().isEqualTo(INPUT_STRING_VALUE);
+            .assertThatField(DATA_FIELD_QUERY_WITH_VARIABLES).asString().isEqualTo(INPUT_STRING_VALUE);
     }
 
     @Test
@@ -89,26 +102,22 @@ public class GraphQLTestTemplateIntegrationTest {
         final ObjectNode variables = objectMapper.createObjectNode();
         variables.put(INPUT_STRING_NAME, INPUT_STRING_VALUE);
         // WHEN - THEN
-        graphQLTestTemplate.perform(MULTIPLE_QUERIES, "withVariable", variables)
+        graphQLTestTemplate.perform(MULTIPLE_QUERIES, OPERATION_NAME_WITH_VARIABLES, variables)
                 .assertThatNoErrorsArePresent()
-                .assertThatField("$.data.queryWithVariables").asString().isEqualTo(INPUT_STRING_VALUE);
+                .assertThatField(DATA_FIELD_QUERY_WITH_VARIABLES).asString().isEqualTo(INPUT_STRING_VALUE);
     }
 
     @Test
     @DisplayName("Test perform with variables and fragments")
     void testPerformWithVariablesAndFragments() throws IOException {
         // GIVEN
-        final String customFoo = "custom-foo";
-        final String customBar = "custom-bar";
-        final ObjectNode variables = objectMapper.createObjectNode();
-        variables.put("foo", customFoo);
-        variables.put("bar", customBar);
-        final FooBar expected = new FooBar(customFoo, customBar);
+        final FooBar expected = new FooBar(String.valueOf(UUID.randomUUID()), String.valueOf(UUID.randomUUID()));
+        final ObjectNode variables = objectMapper.valueToTree(expected);
         // WHEN - THEN
         graphQLTestTemplate
                 .perform(SIMPLE_TEST_QUERY_WITH_FRAGMENTS, variables, Collections.singletonList(TEST_FRAGMENT_FILE))
                 .assertThatNoErrorsArePresent()
-                .assertThatField("$.data.fooBar")
+                .assertThatField(DATA_FIELD_FOO_BAR)
                 .as(FooBar.class).usingRecursiveComparison().ignoringAllOverriddenEquals().isEqualTo(expected);
     }
 
@@ -116,12 +125,12 @@ public class GraphQLTestTemplateIntegrationTest {
     @DisplayName("Test perform with operation name.")
     void testPerformWithOperationName() throws IOException {
         // WHEN - THEN
-        graphQLTestTemplate.perform(MULTIPLE_QUERIES, "testQuery1")
+        graphQLTestTemplate.perform(MULTIPLE_QUERIES, OPERATION_NAME_TEST_QUERY_1)
             .assertThatNoErrorsArePresent()
-            .assertThatField("$.data.dummy").asBoolean().isTrue();
-        graphQLTestTemplate.perform(MULTIPLE_QUERIES, "testQuery2")
+            .assertThatField(DATA_FIELD_DUMMY).asBoolean().isTrue();
+        graphQLTestTemplate.perform(MULTIPLE_QUERIES, OPERATION_NAME_TEST_QUERY_2)
             .assertThatNoErrorsArePresent()
-            .assertThatField("$.data.otherQuery").asString().isEqualTo("TEST");
+            .assertThatField(DATA_FIELD_OTHER_QUERY).asString().isEqualTo(TEST);
     }
 
     @Test
@@ -146,10 +155,11 @@ public class GraphQLTestTemplateIntegrationTest {
         // WHEN - THEN
         graphQLTestTemplate
             .withHeaders(httpHeaders)
-            .perform(COMPLEX_TEST_QUERY, "complexQuery", variables, Collections.singletonList(TEST_FRAGMENT_FILE))
+            .perform(COMPLEX_TEST_QUERY, OPERATION_NAME_COMPLEX_QUERY, variables,
+                Collections.singletonList(TEST_FRAGMENT_FILE))
             .assertThatNoErrorsArePresent()
-            .assertThatField("$.data.queryWithHeader").asString().isEqualTo(TEST_HEADER_VALUE)
-            .and().assertThatField("$.data.queryWithVariables").asString().isEqualTo(INPUT_STRING_VALUE)
-            .and().assertThatField("$.data.fooBar").as(FooBar.class).isEqualTo(new FooBar("FOO", "BAR"));
+            .assertThatField(DATA_FIELD_QUERY_WITH_HEADER).asString().isEqualTo(TEST_HEADER_VALUE)
+            .and().assertThatField(DATA_FIELD_QUERY_WITH_VARIABLES).asString().isEqualTo(INPUT_STRING_VALUE)
+            .and().assertThatField(DATA_FIELD_FOO_BAR).as(FooBar.class).isEqualTo(new FooBar(FOO, BAR));
     }
 }

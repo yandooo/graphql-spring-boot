@@ -20,10 +20,10 @@ public class GraphQLFieldAssertIsNotPresentTest extends GraphQLFieldAssertTestBa
         return Stream.of(null, NON_NULL_VALUE);
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "value = {0}")
     @MethodSource("valuesThatShouldCauseFailure")
-    @DisplayName("Should fail if the value at the provided path is null.")
-    void shouldFailIfNull(final String value) {
+    @DisplayName("Should fail if the value at the provided path is present.")
+    void shouldFailIfValueIsPresent(final String value) {
         // GIVEN
         given(graphQLResponse.getRaw(MOCK_PATH)).willReturn(value);
         final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);

@@ -32,13 +32,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GraphQLResponseTest {
 
-    private static final String DATA_PATH = "$.data.test";
+    private static final String DATA_PATH_TEST = "$.data.test";
+    private static final String INNER_FOO_LIST_DATA_PATH = "$.data.externalList[*].fooList";
+    private static final String NESTED_LIST_RESPONSE_FILE = "response-with-nested-list.json";
+    private static final String EMPTY_OBJECT_RESPONSE = "{}";
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -80,17 +82,23 @@ public class GraphQLResponseTest {
         );
     }
 
+    private static String loadClassPathResource(final String path) {
+        try(InputStream resourceStream = new ClassPathResource(path).getInputStream()) {
+            return StreamUtils.copyToString(resourceStream, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            fail("Test setup error - failed to load test resource.", e);
+            return "";
+        }
+    }
+
     @DisplayName("Should get the JSON node's value as a String.")
     @ParameterizedTest
     @MethodSource("testGetStringArguments")
-    public void testGetString(
-        final String bodyString,
-        final String expected
-    ) {
+    public void testGetString(final String bodyString, final String expected) {
         //GIVEN
-        final GraphQLResponse graphQLResponse = new GraphQLResponse(ResponseEntity.ok(bodyString), objectMapper);
+        final GraphQLResponse graphQLResponse = createResponse(bodyString);
         //WHEN
-        final String actual = graphQLResponse.get(DATA_PATH);
+        final String actual = graphQLResponse.get(DATA_PATH_TEST);
         //THEN
         assertThat(actual).isEqualTo(expected);
     }
@@ -98,15 +106,11 @@ public class GraphQLResponseTest {
     @DisplayName("Should get the JSON node's value as an instance of a specified class.")
     @ParameterizedTest
     @MethodSource("testGetArguments")
-    public <T> void testGet(
-        final String bodyString,
-        final Class<T> clazz,
-        final T expected
-    ) {
+    public <T> void testGet(final String bodyString, final Class<T> clazz, final T expected) {
         //GIVEN
-        final GraphQLResponse graphQLResponse = new GraphQLResponse(ResponseEntity.ok(bodyString), objectMapper);
+        final GraphQLResponse graphQLResponse = createResponse(bodyString);
         //WHEN
-        final T actual = graphQLResponse.get(DATA_PATH, clazz);
+        final T actual = graphQLResponse.get(DATA_PATH_TEST, clazz);
         //THEN
         assertThat(actual).isInstanceOf(clazz).isEqualTo(expected);
     }
@@ -114,33 +118,27 @@ public class GraphQLResponseTest {
     @DisplayName("Should get the JSON node's value as a List.")
     @ParameterizedTest
     @MethodSource("testGetListArguments")
-    public <T> void testGetList(
-        final String bodyString,
-        final Class<T> clazz,
-        final List<T> expected
-    ) {
+    public <T> void testGetList(final String bodyString, final Class<T> clazz, final List<T> expected) {
         //GIVEN
-        final GraphQLResponse graphQLResponse = new GraphQLResponse(ResponseEntity.ok(bodyString), objectMapper);
+        final GraphQLResponse graphQLResponse = createResponse(bodyString);
         //WHEN
-        final List<T> actual = graphQLResponse.getList(DATA_PATH, clazz);
+        final List<T> actual = graphQLResponse.getList(DATA_PATH_TEST, clazz);
         //THEN
         assertThat(actual).containsExactlyElementsOf(expected);
     }
 
     @DisplayName("Should get field as defined by Jackson's JavaType.")
     @Test
-    public void testGetAsJavaType() throws IOException {
+    public void testGetAsJavaType() {
         // GIVEN
-        final String dataPath = "$.data.externalList[*].fooList";
-        final String response = loadClassPathResource("response-with-nested-list.json");
         final List<List<String>> expected = Arrays.asList(Arrays.asList("foo1", "foo2"),
             Collections.singletonList("foo3"));
         final JavaType stringList = objectMapper.getTypeFactory().constructCollectionType(List.class, String.class);
         final JavaType listOfStringLists = objectMapper.getTypeFactory().constructCollectionType(List.class,
             stringList);
         // WHEN
-        final List<List<String>> actual = new GraphQLResponse(ResponseEntity.ok(response), objectMapper)
-            .get(dataPath, listOfStringLists);
+        final List<List<String>> actual = createResponse(loadClassPathResource(NESTED_LIST_RESPONSE_FILE))
+            .get(INNER_FOO_LIST_DATA_PATH, listOfStringLists);
         // THEN
         assertThat(actual).containsExactlyElementsOf(expected);
 
@@ -148,16 +146,14 @@ public class GraphQLResponseTest {
 
     @DisplayName("Should throw illegal argument exception if type is incompatible")
     @Test
-    public void testGetAsJavaTypeConversionError() throws IOException {
+    public void testGetAsJavaTypeConversionError() {
         // GIVEN
-        final String dataPath = "$.data.externalList[*].fooList";
-        final String response = loadClassPathResource("response-with-nested-list.json");
         final JavaType stringType = objectMapper.getTypeFactory().constructType(String.class);
         // WHEN
-        final GraphQLResponse actual = new GraphQLResponse(ResponseEntity.ok(response), objectMapper);
+        final GraphQLResponse actual = createResponse(loadClassPathResource(NESTED_LIST_RESPONSE_FILE));
         // THEN
         assertThatExceptionOfType(IllegalArgumentException.class)
-            .isThrownBy(() -> actual.get(dataPath, stringType));
+            .isThrownBy(() -> actual.get(INNER_FOO_LIST_DATA_PATH, stringType));
 
     }
 
@@ -170,7 +166,7 @@ public class GraphQLResponseTest {
     @DisplayName("Should pass the assertion if no errors are present.")
     void testExpectNoErrorsPass(final String response) {
         // WHEN
-        final GraphQLResponse graphQLResponse = new GraphQLResponse(ResponseEntity.ok(response), objectMapper);
+        final GraphQLResponse graphQLResponse = createResponse(response);
         // THEN
         assertThat(graphQLResponse.assertThatNoErrorsArePresent())
             .as("Should not throw an exception. Should return GraphQL response instance.")
@@ -180,9 +176,10 @@ public class GraphQLResponseTest {
     @Test
     @DisplayName("Should throw assertion error if an error is present in the response.")
     void testExpectNoErrorsFail() {
-        // WHEN
+        // GIVEN
         final String response = "{\"errors\": [{\"message\": \"Test error.\"}], \"data\": { \"foo\":\"bar\"} }";
-        final GraphQLResponse graphQLResponse = new GraphQLResponse(ResponseEntity.ok(response), objectMapper);
+        // WHEN
+        final GraphQLResponse graphQLResponse = createResponse(response);
         // THEN
         assertThatExceptionOfType(AssertionError.class)
             .isThrownBy(graphQLResponse::assertThatNoErrorsArePresent)
@@ -190,41 +187,42 @@ public class GraphQLResponseTest {
     }
 
     @Test
-    @DisplayName("Should return assertion for the number of errors.")
+    @DisplayName("Should return an assertion for the number of errors.")
     void testNumberOfErrorsAssertion() {
-        // WHEN
+        // GIVEN
         final String response = "{\"errors\": [{\"message\": \"Test error.\"}, {\"message\": \"Test error 2.\"}], "
             + "\"data\": { \"foo\":\"bar\"} }";
-        final GraphQLResponse graphQLResponse = new GraphQLResponse(ResponseEntity.ok(response), objectMapper);
-        // THEN
+        final GraphQLResponse graphQLResponse = createResponse(response);
+        // WHEN
         final NumberOfErrorsAssertion actual = graphQLResponse.assertThatNumberOfErrors();
+        // THEN
         assertThat(actual).extracting("actual").isEqualTo(2);
         assertThat(actual.and()).isSameAs(graphQLResponse);
     }
 
     @Test
-    @DisplayName("Should return assertion for the list of errors.")
+    @DisplayName("Should return an assertion for the list of errors.")
     void testErrorListAssertion() {
         // GIVEN
         final String response = "{\"errors\": [{\"message\": \"Test error.\", \"errorType\": \"DataFetchingException\"}], "
             + "\"data\": { \"foo\":\"bar\"} }";
+        final GraphQLResponse graphQLResponse = createResponse(response);
         // WHEN
-        final GraphQLResponse graphQLResponse = new GraphQLResponse(ResponseEntity.ok(response), objectMapper);
         final GraphQLErrorListAssertion actual = graphQLResponse.assertThatListOfErrors();
         // THEN
         assertThat(actual).isNotNull();
         assertThat(actual).extracting("actual").isEqualTo(Collections.singletonList(GraphQLTestError.builder()
-        .message("Test error.").errorType(ErrorType.DataFetchingException).build()));
+            .message("Test error.").errorType(ErrorType.DataFetchingException).build()));
         assertThat(actual.and()).isSameAs(graphQLResponse);
     }
 
     @Test
-    @DisplayName("Should return a assertion for the json content of the response.")
+    @DisplayName("Should return an assertion for the json content of the response.")
     void testFieldAssertion() {
         // GIVEN
         final String response = "{ \"data\": { \"foo\":\"bar\"} }";
+        final GraphQLResponse graphQLResponse = createResponse(response);
         // WHEN
-        final GraphQLResponse graphQLResponse = new GraphQLResponse(ResponseEntity.ok(response), objectMapper);
         final JsonContentAssert actual = graphQLResponse.assertThatJsonContent();
         // THEN
         assertThat(actual).isNotNull();
@@ -232,60 +230,62 @@ public class GraphQLResponseTest {
     }
 
     @Test
-    @DisplayName("Should return a assertion for the data field.")
+    @DisplayName("Should return an assertion for the data field.")
     void testDataFieldAssertion() {
+        // GIVEN
+        final GraphQLResponse response = createResponse(EMPTY_OBJECT_RESPONSE);
         // WHEN
-        final GraphQLResponse response = new GraphQLResponse(ResponseEntity.ok("{}"), objectMapper);
         final GraphQLFieldAssert actual = response.assertThatDataField();
         // THEN
-        assertThat(actual).isNotNull();
-        assertThat(actual).extracting("graphQLResponse", "jsonPath")
-            .containsExactly(response, "$.data");
+        assertThatAssertionIsCorrect(actual, response, "$.data");
     }
 
     @Test
-    @DisplayName("Should return a assertion for the errors field.")
+    @DisplayName("Should return an assertion for the errors field.")
     void testErrorFieldAssertion() {
+        // GIVEN
+        final GraphQLResponse response = createResponse(EMPTY_OBJECT_RESPONSE);
         // WHEN
-        final GraphQLResponse response = new GraphQLResponse(ResponseEntity.ok("{}"), objectMapper);
         final GraphQLFieldAssert actual = response.assertThatErrorsField();
         // THEN
-        assertThat(actual).isNotNull();
-        assertThat(actual).extracting("graphQLResponse", "jsonPath")
-            .containsExactly(response, "$.errors");
+        assertThatAssertionIsCorrect(actual, response, "$.errors");
     }
 
     @Test
-    @DisplayName("Should return a assertion for the extensions field.")
+    @DisplayName("Should return an assertion for the extensions field.")
     void testErrorExtensionsAssertion() {
+        // GIVEN
+        final GraphQLResponse response = createResponse(EMPTY_OBJECT_RESPONSE);
         // WHEN
-        final GraphQLResponse response = new GraphQLResponse(ResponseEntity.ok("{}"), objectMapper);
         final GraphQLFieldAssert actual = response.assertThatExtensionsField();
         // THEN
-        assertThat(actual).isNotNull();
-        assertThat(actual).extracting("graphQLResponse", "jsonPath")
-            .containsExactly(response, "$.extensions");
+        assertThatAssertionIsCorrect(actual, response, "$.extensions");
     }
 
     @Test
     @DisplayName("Should return a field assertion for the specific field.")
     void testJsonAssertion() {
         // GIVEN
-        final String response = "{}";
         final String path = "$any.path";
+        final GraphQLResponse graphQLResponse = createResponse(EMPTY_OBJECT_RESPONSE);
         // WHEN
-        final GraphQLResponse graphQLResponse = new GraphQLResponse(ResponseEntity.ok(response), objectMapper);
         final GraphQLFieldAssert actual = graphQLResponse.assertThatField(path);
         // THEN
-        assertThat(actual).isNotNull();
-        assertThat(actual).extracting("graphQLResponse", "jsonPath")
-            .containsExactly(graphQLResponse, path);
+        assertThatAssertionIsCorrect(actual, graphQLResponse, path);
     }
 
-    private String loadClassPathResource(String path) throws IOException {
-        try(InputStream resourceStream = new ClassPathResource(path).getInputStream()) {
-            return StreamUtils.copyToString(resourceStream, StandardCharsets.UTF_8);
-        }
+    private GraphQLResponse createResponse(final String s) {
+        return new GraphQLResponse(ResponseEntity.ok(s), objectMapper);
+    }
+
+    private void assertThatAssertionIsCorrect(
+        final GraphQLFieldAssert actual,
+        final GraphQLResponse expectedResponse,
+        final Object expectedPath
+    ) {
+        assertThat(actual).isNotNull();
+        assertThat(actual).extracting("graphQLResponse", "jsonPath")
+            .containsExactly(expectedResponse, expectedPath);
     }
 
     @Data
