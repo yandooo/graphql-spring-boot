@@ -3,7 +3,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/com.graphql-java-kickstart/graphql-spring-boot-starter.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java-kickstart/graphql-spring-boot-starter)
 [![Chat on Spectrum](https://img.shields.io/badge/spectrum-join%20the%20community-%23800080)](https://spectrum.chat/graphql-java-kick)
 
-## We are looking for contributors!
+#### We are looking for contributors!
 Are you interested in improving our documentation, working on the codebase, reviewing PRs?
 
 [Reach out to us on Spectrum](https://spectrum.chat/graphql-java-kick) and join the team!
