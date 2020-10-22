@@ -1,7 +1,13 @@
 # GraphQL and Graph*i*QL Spring Framework Boot Starters
 [![GitHub CI Workflow](https://github.com/graphql-java-kickstart/graphql-spring-boot/workflows/ci/badge.svg)](https://github.com/graphql-java-kickstart/graphql-spring-boot/actions?query=workflow%3ACI+branch%3Amaster)
 [![Maven Central](https://img.shields.io/maven-central/v/com.graphql-java-kickstart/graphql-spring-boot-starter.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java-kickstart/graphql-spring-boot-starter)
-[![Chat on Slack](https://img.shields.io/badge/slack-join%20chat-informational)](https://graphqljavakickstart.slack.com)
+[![Chat on Spectrum](https://img.shields.io/badge/spectrum-join%20the%20community-%23800080)](https://spectrum.chat/graphql-java-kick)
+
+## We are looking for contributors!
+Are you interested in improving our documentation, working on the codebase, reviewing PRs?
+
+[Reach out to us on Spectrum](https://spectrum.chat/graphql-java-kick) and join the team!
+
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
