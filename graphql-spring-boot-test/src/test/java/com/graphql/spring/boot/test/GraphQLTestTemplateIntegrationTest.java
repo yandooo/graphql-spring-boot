@@ -162,4 +162,23 @@ public class GraphQLTestTemplateIntegrationTest {
             .and().assertThatField(DATA_FIELD_QUERY_WITH_VARIABLES).asString().isEqualTo(INPUT_STRING_VALUE)
             .and().assertThatField(DATA_FIELD_FOO_BAR).as(FooBar.class).isEqualTo(new FooBar(FOO, BAR));
     }
+
+    @Test
+    @DisplayName("Test post with custom payload.")
+    void testPost() {
+        // GIVEN
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(TEST_HEADER_NAME, TEST_HEADER_VALUE);
+        final String payload = "{\"query\":"
+            + "\"query ($input: String!, $headerName: String!) "
+            + "{ queryWithVariables(input: $input) queryWithHeader(headerName: $headerName) }\", "
+            + "\"variables\": {\"input\": \"input-value\", \"headerName\": \"x-test\"}}";
+        // WHEN - THEN
+        graphQLTestTemplate
+            .withHeaders(httpHeaders)
+            .post(payload)
+            .assertThatNoErrorsArePresent()
+            .assertThatField(DATA_FIELD_QUERY_WITH_VARIABLES).asString().isEqualTo(INPUT_STRING_VALUE)
+            .and().assertThatField(DATA_FIELD_QUERY_WITH_HEADER).asString().isEqualTo(TEST_HEADER_VALUE);
+    }
 }

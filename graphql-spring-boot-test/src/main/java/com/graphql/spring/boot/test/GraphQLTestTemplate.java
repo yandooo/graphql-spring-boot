@@ -307,7 +307,12 @@ public class GraphQLTestTemplate {
         return postRequest(RequestFactory.forMultipart(query, variables, headers));
     }
 
-    private GraphQLResponse post(String payload) {
+    /**
+     * Performs a GraphQL request with the provided payload.
+     * @param payload the GraphQL payload
+     * @return @return {@link GraphQLResponse} containing the result of query execution
+     */
+    public GraphQLResponse post(String payload) {
         return postRequest(RequestFactory.forJson(payload, headers));
     }
 
