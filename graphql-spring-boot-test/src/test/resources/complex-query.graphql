@@ -1,0 +1,11 @@
+query simpleUnusedQuery {
+    dummy
+}
+
+query complexQuery($input: String!, $headerName: String!) {
+    queryWithHeader(headerName: $headerName)
+    queryWithVariables(input: $input)
+    fooBar {
+        ...FooBarFragment
+    }
+}

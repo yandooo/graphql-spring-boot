@@ -1,0 +1,4 @@
+fragment FooBarFragment on FooBar {
+    foo
+    bar
+}
