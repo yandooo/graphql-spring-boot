@@ -1,10 +1,9 @@
 package graphql.kickstart.spring.web.boot.test;
 
 import graphql.kickstart.spring.web.boot.GraphQLServletProperties;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Andrew Potter
@@ -31,13 +30,17 @@ public class GraphQLServletPropertiesTest {
         GraphQLServletProperties servletProperties = new GraphQLServletProperties();
         servletProperties.setMapping(mapping);
 
-        assertEquals(String.format("Expected mapping '%s' to return cors mapping '%s'", mapping, expected), servletProperties.getCorsMapping(), expected);
+        assertThat(servletProperties.getCorsMapping())
+            .as(String.format("Expected mapping '%s' to return cors mapping '%s'", mapping, expected))
+            .isEqualTo(expected);
     }
 
     private void verifyServletMapping(String mapping, String expected) {
         GraphQLServletProperties servletProperties = new GraphQLServletProperties();
         servletProperties.setMapping(mapping);
 
-        assertEquals(String.format("Expected mapping '%s' to return servlet mapping '%s'", mapping, expected), servletProperties.getServletMapping(), expected);
+        assertThat(servletProperties.getServletMapping())
+            .as(String.format("Expected mapping '%s' to return servlet mapping '%s'", mapping, expected))
+            .isEqualTo(expected);
     }
 }

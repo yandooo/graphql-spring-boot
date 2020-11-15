@@ -2,14 +2,16 @@ package graphql.kickstart.altair.boot.test;
 
 import graphql.kickstart.altair.boot.AltairAutoConfiguration;
 import graphql.kickstart.altair.boot.AltairController;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * @author Andrew Potter
@@ -42,13 +44,14 @@ public class AltairControllerTest extends AbstractAutoConfigurationTest {
     public void altairLoads() {
         load(EnabledConfiguration.class);
 
-        Assert.assertNotNull(this.getContext().getBean(AltairController.class));
+        assertThat(this.getContext().getBean(AltairController.class)).isNotNull();
     }
 
-    @Test(expected = NoSuchBeanDefinitionException.class)
+    @Test
     public void altairDoesNotLoad() {
         load(DisabledConfiguration.class);
 
-        this.getContext().getBean(AltairController.class);
+        assertThatExceptionOfType(NoSuchBeanDefinitionException.class)
+            .isThrownBy(() -> this.getContext().getBean(AltairController.class));
     }
 }

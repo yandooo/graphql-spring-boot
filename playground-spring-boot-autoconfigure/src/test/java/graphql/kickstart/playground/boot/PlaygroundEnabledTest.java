@@ -3,26 +3,27 @@ package graphql.kickstart.playground.boot;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.hamcrest.Matchers.isEmptyString;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.emptyString;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = PlaygroundTestConfig.class)
 @AutoConfigureMockMvc
 public class PlaygroundEnabledTest {
@@ -52,7 +53,7 @@ public class PlaygroundEnabledTest {
         final MvcResult mvcResult = mockMvc.perform(get(PlaygroundTestHelper.DEFAULT_PLAYGROUND_ENDPOINT))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(content().string(not(isEmptyString())))
+                .andExpect(content().string(not(is(emptyString()))))
                 .andExpect(model().attribute(PlaygroundTestHelper.PAGE_TITLE_FIELD_NAME, DEFAULT_TITLE))
                 .andExpect(model().attribute(PlaygroundTestHelper.CSS_URL_FIELD_NAME, DEFAULT_CSS_PATH))
                 .andExpect(model().attribute(PlaygroundTestHelper.SCRIPT_URL_FIELD_NAME, DEFAULT_SCRIPT_PATH))
@@ -69,7 +70,7 @@ public class PlaygroundEnabledTest {
     public void defaultCssShouldBeAvailable() throws Exception {
         mockMvc.perform(get(DEFAULT_CSS_PATH))
                 .andExpect(status().isOk())
-                .andExpect(content().string(not(isEmptyString())))
+                .andExpect(content().string(not(is(emptyString()))))
                 .andExpect(content().contentTypeCompatibleWith("text/css"));
     }
 
@@ -77,7 +78,7 @@ public class PlaygroundEnabledTest {
     public void defaultScriptShouldBeAvailable() throws Exception {
         mockMvc.perform(get(DEFAULT_SCRIPT_PATH))
                 .andExpect(status().isOk())
-                .andExpect(content().string(not(isEmptyString())))
+                .andExpect(content().string(not(is(emptyString()))))
                 .andExpect(content().contentTypeCompatibleWith("application/javascript"));
     }
 
@@ -85,7 +86,7 @@ public class PlaygroundEnabledTest {
     public void defaultFaviconShouldBeAvailable() throws Exception {
         mockMvc.perform(get(DEFAULT_FAVICON_PATH))
                 .andExpect(status().isOk())
-                .andExpect(content().string(not(isEmptyString())))
+                .andExpect(content().string(not(is(emptyString()))))
                 .andExpect(content().contentTypeCompatibleWith("image/png"));
     }
 
@@ -93,7 +94,7 @@ public class PlaygroundEnabledTest {
     public void defaultLogoShouldBeAvailable() throws Exception {
         mockMvc.perform(get(DEFAULT_LOGO_PATH))
                 .andExpect(status().isOk())
-                .andExpect(content().string(not(isEmptyString())))
+                .andExpect(content().string(not(is(emptyString()))))
                 .andExpect(content().contentTypeCompatibleWith("image/png"));
     }
 }

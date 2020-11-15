@@ -1,6 +1,6 @@
 package graphql.kickstart.voyager.boot.test;
 
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigRegistry;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -25,7 +25,7 @@ public abstract class AbstractAutoConfigurationTest {
         this.autoConfiguration = autoConfiguration;
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         if (this.context != null) {
             this.context.close();
