@@ -10,8 +10,8 @@ import graphql.kickstart.execution.GraphQLObjectMapper;
 import graphql.kickstart.execution.error.GraphQLErrorHandler;
 import graphql.kickstart.spring.error.ThrowableGraphQLError;
 import graphql.schema.GraphQLSchema;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,7 +26,7 @@ public class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
     super(AnnotationConfigWebApplicationContext.class, GraphQLWebAutoConfiguration.class);
   }
 
-  @Before
+  @BeforeEach
   public void setUp() {
     System.setProperty("graphql.tools.schemaLocationPattern", "graphql/error-handler-test.graphql");
     load(BaseConfiguration.class);

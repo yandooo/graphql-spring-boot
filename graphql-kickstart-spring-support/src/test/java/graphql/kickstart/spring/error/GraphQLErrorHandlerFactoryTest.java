@@ -1,22 +1,23 @@
 package graphql.kickstart.spring.error;
 
 import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import graphql.GraphQLError;
 import graphql.kickstart.execution.error.GraphQLErrorHandler;
 import java.util.List;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class GraphQLErrorHandlerFactoryTest {
 
   @Mock
@@ -26,7 +27,7 @@ public class GraphQLErrorHandlerFactoryTest {
 
   private GraphQLErrorHandlerFactory errorHandlerFactory;
 
-  @Before
+  @BeforeEach
   public void setup() {
     Mockito.when(applicationContext.getBeanFactory()).thenReturn(beanFactory);
     Mockito.when(beanFactory.getBeanDefinitionNames()).thenReturn(new String[]{"Test"});
@@ -39,9 +40,9 @@ public class GraphQLErrorHandlerFactoryTest {
   @Test
   public void createFindsCollectionHandler() {
     GraphQLErrorHandler handler = errorHandlerFactory.create(applicationContext, true);
-    Assert.assertTrue(handler instanceof GraphQLErrorFromExceptionHandler);
+    assertThat(handler).isInstanceOf(GraphQLErrorFromExceptionHandler.class);
     GraphQLErrorFromExceptionHandler errorHandler = (GraphQLErrorFromExceptionHandler) handler;
-    Assert.assertFalse("handler.factories should not be empty", errorHandler.getFactories().isEmpty());
+    assertThat(errorHandler.getFactories()).as("handler.factories should not be empty").isNotEmpty();
   }
 
   public static class TestClass {

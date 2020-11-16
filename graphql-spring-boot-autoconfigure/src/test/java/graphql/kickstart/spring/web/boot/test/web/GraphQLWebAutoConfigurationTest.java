@@ -12,11 +12,12 @@ import graphql.execution.ExecutionStrategy;
 import graphql.execution.instrumentation.tracing.TracingInstrumentation;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
@@ -34,56 +35,56 @@ public class GraphQLWebAutoConfigurationTest extends AbstractAutoConfigurationTe
   public void appContextLoadsWithNoExecutionStrategy() {
     load(SimpleConfiguration.class);
 
-    Assert.assertNotNull(this.getContext().getBean(AbstractGraphQLHttpServlet.class));
+    assertThat(this.getContext().getBean(AbstractGraphQLHttpServlet.class)).isNotNull();
   }
 
   @Test
   public void appContextLoadsWithOneExecutionStrategy() {
     load(OneExecutionStrategy.class);
 
-    Assert.assertNotNull(this.getContext().getBean(AbstractGraphQLHttpServlet.class));
+    assertThat(this.getContext().getBean(AbstractGraphQLHttpServlet.class)).isNotNull();
   }
 
   @Test
   public void appContextLoadsWithTwoExecutionStrategies() {
     load(TwoExecutionStrategies.class);
 
-    Assert.assertNotNull(this.getContext().getBean(AbstractGraphQLHttpServlet.class));
+    assertThat(this.getContext().getBean(AbstractGraphQLHttpServlet.class)).isNotNull();
   }
 
   @Test
   public void appContextLoadsWithThreeExecutionStrategies() {
     load(ThreeExecutionStrategies.class);
 
-    Assert.assertNotNull(this.getContext().getBean(AbstractGraphQLHttpServlet.class));
+    assertThat(this.getContext().getBean(AbstractGraphQLHttpServlet.class)).isNotNull();
   }
 
   @Test
   public void appContextLoadsWithNoInstrumentation() {
     load(SimpleConfiguration.class);
 
-    Assert.assertNotNull(this.getContext().getBean(AbstractGraphQLHttpServlet.class));
+    assertThat(this.getContext().getBean(AbstractGraphQLHttpServlet.class)).isNotNull();
   }
 
   @Test
   public void appContextLoadsWithOneInstrumentation() {
     load(OneInstrumentationConfiguration.class);
 
-    Assert.assertNotNull(this.getContext().getBean(AbstractGraphQLHttpServlet.class));
+    assertThat(this.getContext().getBean(AbstractGraphQLHttpServlet.class)).isNotNull();
   }
 
   @Test
   public void appContextLoadsWithMultipleInstrumentations() {
     load(MultipleInstrumentationsConfiguration.class);
 
-    Assert.assertNotNull(this.getContext().getBean(AbstractGraphQLHttpServlet.class));
+    assertThat(this.getContext().getBean(AbstractGraphQLHttpServlet.class)).isNotNull();
   }
 
   @Test
   public void appContextLoadsWithCustomSchemaProvider() {
     load(SchemaProviderConfiguration.class);
 
-    Assert.assertNotNull(this.getContext().getBean(AbstractGraphQLHttpServlet.class));
+    assertThat(this.getContext().getBean(AbstractGraphQLHttpServlet.class)).isNotNull();
   }
 
   @Configuration
