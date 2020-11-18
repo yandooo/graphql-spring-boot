@@ -9,3 +9,7 @@ graphql:
     subscriptions:
       websocket:
         path: /subscriptions
+
+graphiql:
+  cdn:
+    enabled: true
