@@ -162,8 +162,12 @@
   props.onEditVariables = onEditVariables
   props.onEditOperationName = onEditOperationName
   props.onEditHeaders = onEditHeaders
+  props.headers = props.headers || {}
+  if (headers) {
+    var newHeaders = Object.assign({}, JSON.parse(props.headers), headers)
+    props.headers = JSON.stringify(newHeaders, undefined, 2)
+  }
 
-  console.debug(props)
   // Render <GraphiQL /> into the body.
   ReactDOM.render(
       React.createElement(GraphiQL, props),
