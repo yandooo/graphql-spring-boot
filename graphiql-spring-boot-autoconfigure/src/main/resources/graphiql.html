@@ -101,6 +101,14 @@
 
   var headers = ${headers}
 
+  function onEditHeaders(newHeaders) {
+    try {
+       headers = JSON.parse(newHeaders)
+    } catch(e) {
+       headers = {}
+    }
+  }
+
   // Defines a GraphQL fetcher using the fetch API. You're not required to
   // use fetch, and could instead implement graphQLFetcher however you like,
   // as long as it returns a Promise or Observable.
@@ -153,6 +161,7 @@
   props.onEditQuery = onEditQuery
   props.onEditVariables = onEditVariables
   props.onEditOperationName = onEditOperationName
+  props.onEditHeaders = onEditHeaders
 
   console.debug(props)
   // Render <GraphiQL /> into the body.
