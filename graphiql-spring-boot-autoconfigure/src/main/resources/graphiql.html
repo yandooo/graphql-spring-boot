@@ -167,6 +167,7 @@
     var newHeaders = Object.assign({}, JSON.parse(props.headers), headers)
     props.headers = JSON.stringify(newHeaders, undefined, 2)
   }
+  onEditHeaders(props.headers)
 
   // Render <GraphiQL /> into the body.
   ReactDOM.render(
