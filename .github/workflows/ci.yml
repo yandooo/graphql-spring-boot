@@ -62,6 +62,7 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - name: Gradle Publish Snapshot
+        if: env.BINTRAY_USER != 'SKIP_BINTRAY_PUBLISH'
         env:
           BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
           BINTRAY_PASS: ${{ secrets.BINTRAY_PASSWORD }}
