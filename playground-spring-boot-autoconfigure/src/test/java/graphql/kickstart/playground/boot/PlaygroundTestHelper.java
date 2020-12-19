@@ -5,15 +5,15 @@ import org.jsoup.nodes.Element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-final class PlaygroundTestHelper {
-    static final String DEFAULT_PLAYGROUND_ENDPOINT = "/playground";
-    static final String CSS_URL_FIELD_NAME = "cssUrl";
-    static final String SCRIPT_URL_FIELD_NAME = "scriptUrl";
-    static final String FAVICON_URL_FIELD_NAME = "faviconUrl";
-    static final String LOGO_URL_FIELD_NAME = "logoUrl";
-    static final String PAGE_TITLE_FIELD_NAME = "pageTitle";
+public final class PlaygroundTestHelper {
+    public static final String DEFAULT_PLAYGROUND_ENDPOINT = "/playground";
+    public static final String CSS_URL_FIELD_NAME = "cssUrl";
+    public static final String SCRIPT_URL_FIELD_NAME = "scriptUrl";
+    public static final String FAVICON_URL_FIELD_NAME = "faviconUrl";
+    public static final String LOGO_URL_FIELD_NAME = "logoUrl";
+    public static final String PAGE_TITLE_FIELD_NAME = "pageTitle";
 
-    static void assertTitle(final Document document, final String title) {
+    public static void assertTitle(final Document document, final String title) {
         assertThat(document.select("head title")).extracting(Element::text).containsExactly(title);
     }
 
@@ -29,7 +29,7 @@ final class PlaygroundTestHelper {
     private static void assertLoadingLogo(final Document document, final String logoUrl) {
         assertThat(document.select(String.format("#root img[src=%s]", logoUrl)).size()).isOne();
     }
-    static void assertStaticResources(final Document document, final String cssUrl, final String scriptUrl,
+    public static void assertStaticResources(final Document document, final String cssUrl, final String scriptUrl,
             final String faviconUrl, final String logoUrl) {
         assertStylesheet(document, cssUrl);
         assertScript(document, scriptUrl);
