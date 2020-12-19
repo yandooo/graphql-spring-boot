@@ -1,5 +1,8 @@
 package graphql.kickstart.graphiql.boot;
 
+import java.io.IOException;
+import java.util.Map;
+import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
@@ -7,28 +10,25 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import reactor.core.publisher.Mono;
-
-import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.util.Map;
 
 @Slf4j
 @Controller
 public class ReactiveGraphiQLController extends GraphiQLController {
 
-  private DataBufferFactory dataBufferFactory = new DefaultDataBufferFactory();
+  private final DataBufferFactory dataBufferFactory = new DefaultDataBufferFactory();
 
+  @Override
   @PostConstruct
   public void onceConstructed() throws IOException {
     super.onceConstructed();
   }
 
-  @RequestMapping(value = "${graphiql.mapping:/graphiql}")
+  @GetMapping(value = "${graphiql.mapping:/graphiql}")
   public Mono<Void> graphiql(ServerHttpRequest request, ServerHttpResponse response,
-                             @PathVariable Map<String, String> params) {
+      @PathVariable Map<String, String> params) {
     response.getHeaders().setContentType(MediaType.TEXT_HTML);
     Object csrf = request.getQueryParams().getFirst("_csrf");
     return response.writeWith(Mono.just(request.getPath().contextPath().value())
