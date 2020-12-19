@@ -59,7 +59,7 @@ public class GraphQLTestError implements GraphQLError {
           .map(Object::toString)
           .map(this::toNumericIndexIfPossible)
           .collect(Collectors.joining("/"))
-          .replace("/\\[", "[")
+          .replace("/[", "[")
       );
     }
     return sb.toString();
