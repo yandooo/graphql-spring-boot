@@ -13,8 +13,9 @@ import graphql.kickstart.execution.config.GraphQLSchemaProvider;
 import graphql.kickstart.execution.config.GraphQLServletObjectMapperConfigurer;
 import graphql.kickstart.execution.context.GraphQLContextBuilder;
 import graphql.kickstart.execution.error.GraphQLErrorHandler;
+import graphql.kickstart.servlet.AbstractGraphQLHttpServlet;
+import graphql.kickstart.servlet.GraphQLHttpServlet;
 import graphql.kickstart.servlet.GraphQLWebsocketServlet;
-import graphql.kickstart.servlet.SimpleGraphQLHttpServlet;
 import graphql.kickstart.servlet.core.GraphQLServletListener;
 import graphql.kickstart.servlet.input.GraphQLInvocationInputFactory;
 import graphql.kickstart.spring.web.boot.GraphQLInstrumentationAutoConfiguration;
@@ -47,8 +48,9 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 /**
- * Annotation that can be specified on a test class in combination with {@code @RunWith(SpringRunner.class)}
- * for running tests that focus <strong>only</strong> on GraphQL components.
+ * Annotation that can be specified on a test class in combination with {@code
+ * @RunWith(SpringRunner.class)} for running tests that focus <strong>only</strong> on GraphQL
+ * components.
  * <p>
  * Provides the following features over the regular <strong>Spring TestContext Framework</strong>:
  * <ul>
@@ -83,69 +85,70 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 @ImportAutoConfiguration
 public @interface GraphQLTest {
 
-    String[] value() default {};
+  String[] value() default {};
 
-    @AliasFor(
-            annotation = ActiveProfiles.class
-    )
-    String[] profiles() default {"test"};
+  @AliasFor(
+      annotation = ActiveProfiles.class
+  )
+  String[] profiles() default {"test"};
 
-    @AliasFor(
-            annotation = SpringBootTest.class
-    )
-    SpringBootTest.WebEnvironment webEnvironment() default SpringBootTest.WebEnvironment.RANDOM_PORT;
+  @AliasFor(
+      annotation = SpringBootTest.class
+  )
+  SpringBootTest.WebEnvironment webEnvironment() default SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-    @AliasFor(
-            annotation = ImportAutoConfiguration.class
-    )
-    Class<?>[] classes() default {
-            GraphQLInstrumentationAutoConfiguration.class,
-            ServletWebServerFactoryAutoConfiguration.class,
-            GraphQLJavaToolsAutoConfiguration.class,
-            GraphQLWebAutoConfiguration.class,
-            GraphQLTestAutoConfiguration.class,
-            PropertySourcesPlaceholderConfigurer.class,
-            WebSocketServletAutoConfiguration.class,
-            MetricsAutoConfiguration.class,
-            SimpleMetricsExportAutoConfiguration.class,
-            JacksonAutoConfiguration.class
-    };
+  @AliasFor(
+      annotation = ImportAutoConfiguration.class
+  )
+  Class<?>[] classes() default {
+      GraphQLInstrumentationAutoConfiguration.class,
+      ServletWebServerFactoryAutoConfiguration.class,
+      GraphQLJavaToolsAutoConfiguration.class,
+      GraphQLWebAutoConfiguration.class,
+      GraphQLTestAutoConfiguration.class,
+      PropertySourcesPlaceholderConfigurer.class,
+      WebSocketServletAutoConfiguration.class,
+      MetricsAutoConfiguration.class,
+      SimpleMetricsExportAutoConfiguration.class,
+      JacksonAutoConfiguration.class
+  };
 
-    @AliasFor(
-            annotation = ComponentScan.class
-    )
-    boolean useDefaultFilters() default false;
+  @AliasFor(
+      annotation = ComponentScan.class
+  )
+  boolean useDefaultFilters() default false;
 
-    @AliasFor(
-            annotation = ComponentScan.class
-    )
-    ComponentScan.Filter[] includeFilters() default {
-            @ComponentScan.Filter(type = ASSIGNABLE_TYPE, classes = {
-                    SchemaParser.class,
-                    GraphQLResolver.class,
-                    SchemaParserDictionary.class,
-                    GraphQLScalarType.class,
-                    SchemaParserOptions.class,
-                    GraphQLSchema.class,
-                    GraphQLSchemaProvider.class,
-                    GraphQLServletListener.class,
-                    Instrumentation.class,
-                    GraphQLErrorHandler.class,
-                    ExecutionStrategy.class,
-                    GraphQLContextBuilder.class,
-                    GraphQLRootObjectBuilder.class,
-                    GraphQLServletObjectMapperConfigurer.class,
-                    PreparsedDocumentProvider.class,
-                    CorsFilter.class,
-                    ExecutionStrategyProvider.class,
-                    GraphQLInvocationInputFactory.class,
-                    GraphQLQueryInvoker.class,
-                    GraphQLObjectMapper.class,
-                    SimpleGraphQLHttpServlet.class,
-                    GraphQLWebsocketServlet.class,
-                    ServerEndpointExporter.class,
-                    MultipartConfigElement.class
-            })
-    };
+  @AliasFor(
+      annotation = ComponentScan.class
+  )
+  ComponentScan.Filter[] includeFilters() default {
+      @ComponentScan.Filter(type = ASSIGNABLE_TYPE, classes = {
+          SchemaParser.class,
+          GraphQLResolver.class,
+          SchemaParserDictionary.class,
+          GraphQLScalarType.class,
+          SchemaParserOptions.class,
+          GraphQLSchema.class,
+          GraphQLSchemaProvider.class,
+          GraphQLServletListener.class,
+          Instrumentation.class,
+          GraphQLErrorHandler.class,
+          ExecutionStrategy.class,
+          GraphQLContextBuilder.class,
+          GraphQLRootObjectBuilder.class,
+          GraphQLServletObjectMapperConfigurer.class,
+          PreparsedDocumentProvider.class,
+          CorsFilter.class,
+          ExecutionStrategyProvider.class,
+          GraphQLInvocationInputFactory.class,
+          GraphQLQueryInvoker.class,
+          GraphQLObjectMapper.class,
+          GraphQLHttpServlet.class,
+          AbstractGraphQLHttpServlet.class,
+          GraphQLWebsocketServlet.class,
+          ServerEndpointExporter.class,
+          MultipartConfigElement.class
+      })
+  };
 
 }
