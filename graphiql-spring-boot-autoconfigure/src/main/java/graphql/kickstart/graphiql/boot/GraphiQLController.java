@@ -61,14 +61,6 @@ public abstract class GraphiQLController {
   private void loadHeaders() {
     PropertyGroupReader propertyReader = new PropertyGroupReader(environment, "graphiql.headers.");
     headerProperties = propertyReader.load();
-    addIfAbsent(headerProperties, "Accept");
-    addIfAbsent(headerProperties, "Content-Type");
-  }
-
-  private void addIfAbsent(Properties headerProperties, String header) {
-    if (!headerProperties.containsKey(header)) {
-      headerProperties.setProperty(header, MediaType.APPLICATION_JSON_VALUE);
-    }
   }
 
   public byte[] graphiql(String contextPath, @PathVariable Map<String, String> params, Object csrf) {
