@@ -281,7 +281,6 @@ public class GraphQLWebAutoConfiguration {
         .with(queryInvoker)
         .with(graphQLObjectMapper)
         .with(listeners)
-        .with(graphQLServletProperties.isAsyncModeEnabled())
         .with(graphQLServletProperties.getSubscriptionTimeout())
         .with(batchInputPreProcessor)
         .with(graphQLServletProperties.getContextSetting())
