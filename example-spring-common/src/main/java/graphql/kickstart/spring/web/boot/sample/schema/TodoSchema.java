@@ -106,7 +106,7 @@ public class TodoSchema {
     return todos.stream()
         .filter(todo -> todo.getId(todo).equals(id))
         .findFirst()
-        .orElseThrow(() -> throw IllegalStateException("No todo found with id " + id));
+        .orElseThrow(() -> new IllegalStateException("No todo found with id " + id));
   }
 
   public List<TodoObjectType> getTodos(List<String> ids) {
