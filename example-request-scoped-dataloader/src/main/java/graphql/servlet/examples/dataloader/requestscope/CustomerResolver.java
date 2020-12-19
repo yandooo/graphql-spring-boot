@@ -12,10 +12,10 @@ public class CustomerResolver implements GraphQLResolver<Customer> {
 
   public CompletableFuture<String> getName(Customer customer, DataFetchingEnvironment dfe) {
     final DataLoader<Integer, String> dataloader = ((GraphQLContext) dfe.getContext())
-        .getDataLoaderRegistry().get()
-        .getDataLoader("customerDataLoader");
-
-    return dataloader.load(customer.getCustomerId());
+        .getDataLoaderRegistry()
+        .map(it -> it.getDataLoader("customerDataLoader"))
+        .map(it -> it.load(customer.getCustomerId()))
+        .orElse(null);
   }
 
 }

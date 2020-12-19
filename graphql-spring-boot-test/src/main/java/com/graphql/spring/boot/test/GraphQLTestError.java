@@ -3,6 +3,7 @@ package com.graphql.spring.boot.test;
 import static java.util.Objects.nonNull;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import graphql.ErrorClassification;
 import graphql.ErrorType;
 import graphql.GraphQLError;
@@ -27,12 +28,12 @@ import org.springframework.util.NumberUtils;
 public class GraphQLTestError implements GraphQLError {
 
   private String message;
-  @JsonTypeInfo(defaultImpl = JacksonFriendlySourceLocation.class, use = JsonTypeInfo.Id.CLASS)
+  @JsonTypeInfo(defaultImpl = JacksonFriendlySourceLocation.class, use = Id.NAME)
   private List<SourceLocation> locations;
-  @JsonTypeInfo(defaultImpl = ErrorType.class, use = JsonTypeInfo.Id.CLASS)
-  private ErrorClassification errorType;
-  private List<Object> path;
-  private Map<String, Object> extensions;
+  @JsonTypeInfo(defaultImpl = ErrorType.class, use = Id.NAME)
+  private transient ErrorClassification errorType;
+  private transient List<Object> path;
+  private transient Map<String, Object> extensions;
 
   @Override
   public String toString() {
@@ -58,7 +59,7 @@ public class GraphQLTestError implements GraphQLError {
           .map(Object::toString)
           .map(this::toNumericIndexIfPossible)
           .collect(Collectors.joining("/"))
-          .replaceAll("/\\[", "[")
+          .replace("/\\[", "[")
       );
     }
     return sb.toString();

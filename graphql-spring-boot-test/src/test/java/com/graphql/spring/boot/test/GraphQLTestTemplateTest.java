@@ -16,7 +16,7 @@ import java.util.Collections;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-public class GraphQLTestTemplateTest {
+class GraphQLTestTemplateTest {
 
     private static final String GRAPHQL_ENDPOINT = "/test-graphql-endpoint";
     private static final String HEADER_NAME_1 = "header-1";
@@ -113,7 +113,7 @@ public class GraphQLTestTemplateTest {
         // WHEN
         final GraphQLTestTemplate actual = graphQLTestTemplate.withClearHeaders();
         // THEN
-        assertThat(actual).isSameAs(actual);
+        assertThat(graphQLTestTemplate).isSameAs(actual);
         assertThat(graphQLTestTemplate.getHeaders()).isEmpty();
     }
 

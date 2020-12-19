@@ -54,6 +54,7 @@ import graphql.schema.GraphQLSchema;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.servlet.MultipartConfigElement;
@@ -181,7 +182,12 @@ public class GraphQLWebAutoConfiguration {
       return new DefaultExecutionStrategyProvider(new AsyncExecutionStrategy(), null,
           new SubscriptionExecutionStrategy());
     } else if (executionStrategies.entrySet().size() == 1) {
-      return new DefaultExecutionStrategyProvider(executionStrategies.entrySet().stream().findFirst().get().getValue());
+      return new DefaultExecutionStrategyProvider(
+          executionStrategies.entrySet().stream()
+              .findFirst()
+              .map(Entry::getValue)
+              .orElseThrow(IllegalStateException::new)
+      );
     } else {
 
       if (!executionStrategies.containsKey(QUERY_EXECUTION_STRATEGY)) {
