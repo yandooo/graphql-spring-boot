@@ -17,15 +17,30 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 plugins {
     id "com.jfrog.bintray" version "$LIB_BINTRAY_PLUGIN_VER" apply false
     id 'net.researchgate.release' version "$LIB_RELEASE_PLUGIN_VER"
     id "org.springframework.boot" version "$LIB_SPRING_BOOT_VER" apply false
     id "com.jfrog.artifactory" version "4.15.1" apply false
+    id "org.sonarqube" version "3.0"
+    id "jacoco"
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "graphql-java-kickstart_graphql-spring-boot"
+        property "sonar.organization", "graphql-java-kickstart"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
 }
 
 subprojects {
     apply plugin: 'idea'
+    apply plugin: 'jacoco'
+    apply plugin: 'org.sonarqube'
     apply plugin: 'java'
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
@@ -60,6 +75,25 @@ subprojects {
 
     test {
         useJUnitPlatform()
+        testLogging {
+            events TestLogEvent.FAILED,
+                    TestLogEvent.PASSED,
+                    TestLogEvent.SKIPPED,
+                    TestLogEvent.STANDARD_ERROR,
+                    TestLogEvent.STANDARD_OUT
+            exceptionFormat TestExceptionFormat.FULL
+            showCauses true
+            showExceptions true
+            showStackTraces true
+        }
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled = true
+            html.enabled = false
+            csv.enabled = false
+        }
     }
 
     idea {
@@ -150,8 +184,12 @@ subprojects {
                 userOrg = 'graphql-java-kickstart'
                 version {
                     name = project.version
+                    gpg {
+                        sign = true
+                    }
                     mavenCentralSync {
-                        close = '1'
+                        user = System.env.OSS_USER_TOKEN_KEY ?: project.findProperty('OSS_USER_TOKEN_KEY') ?: ''
+                        password = System.env.OSS_USER_TOKEN_PASS ?: project.findProperty('OSS_USER_TOKEN_PASS') ?: ''
                     }
                 }
             }
@@ -198,8 +236,8 @@ release {
             'com.graphql-java-kickstart:graphql-spring-boot-test-autoconfigure',
             'com.graphql-java-kickstart:voyager-spring-boot-autoconfigure',
             'com.graphql-java-kickstart:voyager-spring-boot-starter',
-            'com.graphql-java-kickstart:playgroud-spring-boot-autoconfigure',
-            'com.graphql-java-kickstart:playgroud-spring-boot-starter'
+            'com.graphql-java-kickstart:playground-spring-boot-autoconfigure',
+            'com.graphql-java-kickstart:playground-spring-boot-starter'
     ]
 }
 

@@ -4,7 +4,8 @@ import static org.mockito.Mockito.mock;
 
 import javax.servlet.ServletContext;
 import javax.websocket.server.ServerContainer;
-import org.junit.After;
+
+import org.junit.jupiter.api.AfterEach;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -34,7 +35,7 @@ public abstract class AbstractAutoConfigurationTest {
     this.autoConfiguration = autoConfiguration;
   }
 
-  @After
+  @AfterEach
   public void tearDown() {
     if (this.context != null) {
       this.context.close();

@@ -1,7 +1,13 @@
 # GraphQL and Graph*i*QL Spring Framework Boot Starters
-[![Build Status](https://travis-ci.org/graphql-java-kickstart/graphql-spring-boot.svg?branch=master)](https://travis-ci.org/graphql-java-kickstart/graphql-spring-boot)
+[![GitHub CI Workflow](https://github.com/graphql-java-kickstart/graphql-spring-boot/workflows/ci/badge.svg)](https://github.com/graphql-java-kickstart/graphql-spring-boot/actions?query=workflow%3ACI+branch%3Amaster)
 [![Maven Central](https://img.shields.io/maven-central/v/com.graphql-java-kickstart/graphql-spring-boot-starter.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java-kickstart/graphql-spring-boot-starter)
-[![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/graphql-java-kickstart/Lobby)
+[![Chat on Spectrum](https://img.shields.io/badge/spectrum-join%20the%20community-%23800080)](https://spectrum.chat/graphql-java-kick)
+
+#### We are looking for contributors!
+Are you interested in improving our documentation, working on the codebase, reviewing PRs?
+
+[Reach out to us on Spectrum](https://spectrum.chat/graphql-java-kick) and join the team!
+
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -12,6 +18,7 @@
     - [Using Maven](#using-maven)
 - [Documentation](#documentation)
 - [Requirements and Downloads](#requirements-and-downloads)
+    - [Snapshots](#snapshots)
 - [Enable GraphQL Servlet](#enable-graphql-servlet)
 - [Enable Graph*i*QL](#enable-graphiql)
 - [Enable Altair](#enable-altair)
@@ -23,6 +30,12 @@
   - [Tabs](#tabs)
 - [Supported GraphQL-Java Libraries](#supported-graphql-java-libraries)
   - [GraphQL Java Tools](#graphql-java-tools)
+  - [GraphQL Annotations](#graphql-annotations)
+    - [Configuration](#configuration)
+    - [Root resolvers, directives, type extensions](#root-resolvers-directives-type-extensions)
+    - [Interfaces](#interfaces)
+    - [Custom scalars and type functions](#custom-scalars-and-type-functions)
+    - [Custom Relay and GraphQL Annotation Processor](#custom-relay-and-graphql-annotation-processor)
 - [Tracing and Metrics](#tracing-and-metrics)
   - [Usage](#usage)
 - [Contributions](#contributions)
@@ -81,19 +94,19 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:7.0.1'
+  implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:8.0.0'
   
   // to embed Altair tool
-  runtimeOnly 'com.graphql-java-kickstart:altair-spring-boot-starter:7.0.1'
+  runtimeOnly 'com.graphql-java-kickstart:altair-spring-boot-starter:8.0.0'
 
   // to embed GraphiQL tool
-  runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:7.0.1'
+  runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:8.0.0'
 
   // to embed Voyager tool
-  runtimeOnly 'com.graphql-java-kickstart:voyager-spring-boot-starter:7.0.1'
+  runtimeOnly 'com.graphql-java-kickstart:voyager-spring-boot-starter:8.0.0'
   
   // testing facilities
-  testImplementation 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:7.0.1'
+  testImplementation 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:8.0.0'
 }
 ```
 
@@ -102,14 +115,14 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>7.0.1</version>
+    <version>8.0.0</version>
 </dependency>
 
 <!-- to embed Altair tool -->
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>altair-spring-boot-starter</artifactId>
-    <version>7.0.1</version>
+    <version>8.0.0</version>
     <scope>runtime</scope>
 </dependency>
 
@@ -117,7 +130,7 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>7.0.1</version>
+    <version>8.0.0</version>
     <scope>runtime</scope>
 </dependency>
 
@@ -125,7 +138,7 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>voyager-spring-boot-starter</artifactId>
-    <version>7.0.1</version>
+    <version>8.0.0</version>
     <scope>runtime</scope>
 </dependency>
 
@@ -133,7 +146,7 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphql-spring-boot-starter-test</artifactId>
-    <version>7.0.1</version>
+    <version>8.0.0</version>
     <scope>test</scope>
 </dependency>
 
@@ -294,7 +307,7 @@ Available Spring Boot configuration parameters (either `application.yml` or `app
 graphql.playground:
     mapping: /playground
     endpoint: /graphql
-    subscriptionsEndpoint: /subscriptions
+    subscriptionEndpoint: /subscriptions
     staticPath.base: my-playground-resources-folder
     enabled: true
     pageTitle: Playground
@@ -331,7 +344,7 @@ graphql.playground:
 ```
 ## Basic settings
 
-`mapping`, `endpoint` and `subscriptionsEndpoint` will default to `/playground`, `/graphql` and `/subscriptions`, 
+`mapping`, `endpoint` and `subscriptionEndpoint` will default to `/playground`, `/graphql` and `/subscriptions`, 
 respectively. Note that these values may not be empty.
 
 `enabled` defaults to `true`, and therefor Playground will be available by default if the dependency is added to a
@@ -397,6 +410,65 @@ graphql:
 ```
 By default GraphQL tools uses the location pattern `**/*.graphqls` to scan for GraphQL schemas on the classpath.
 Use the `schemaLocationPattern` property to customize this pattern.
+
+## GraphQL Annotations
+
+https://github.com/Enigmatis/graphql-java-annotations
+
+The schema will be built using the GraphQL Annotations library in a code-first approach - instead of writing it 
+manually, the schema will be constructed based on the Java code. Please see the documentation of the GraphQL Annotations 
+library for a detailed documentation of the available annotations. This readme focuses on how GraphQL Annotations - 
+GraphQL Spring Boot Starter integration works.
+
+### Configuration
+
+```
+graphql:
+    annotations:
+        base-package: com.example.graphl.schema # required
+        always-prettify: true #true is the default value, no need to specify it
+```
+
+The most important parameter is the base package. The starter will look for schema-relevant classes in the specified 
+package and its subpackages. `always-prettify` will "prettify" getter/setter methods - the get/set/is prefix will be 
+removed from GraphQL fields automatically.
+
+### Root resolvers, directives, type extensions 
+
+The root resolvers must be marked with the `GraphQLQueryResolver`, `GraphQLMutationResolver` and `GraphQLSubscription` 
+ annotations (not to be confused with the marker interfaces from the GraphQL Java Tools library). 
+
+**Important:**
+
+Unlike GraphQL Java Tools, GraphQL Annotations only supports *one* of them each. Furthermore, GraphQL Annotations 
+only accepts a *class* as input, *not an instance*. It will either create a new instance of the class itself, or use 
+static methods. This means that Spring dependency injection will not work in the usual way. The companion example 
+project (which can be found in the [samples](https://github.com/graphql-java-kickstart/samples) repository) 
+demonstrates possible workarounds for this issue.
+
+`GraphQLDirectiveDefinition` and `GraphQLTypeExtension`-annotated classes are subject to the same limitation regarding
+dependency injection - but there can be any number of them.
+
+### Interfaces
+
+Interfaces in the configured package having at least one of their methods marked as `@GraphQLField` are considered a 
+GraphQL interface, and their implementations are automatically added to the schema. Furthermore, you have to add the 
+following annotation to GraphQL interfaces: `@GraphQLTypeResolver(GraphQLInterfaceTypeResolver.class)`
+
+### Custom scalars and type functions
+
+Custom scalars can be defined in the same way as in the case of using GraphQL Java Tools - just define the 
+`GraphQLScalarType` beans.
+
+The starter will also pick up `TypeFunction` beans and pass them to the schema builder. 
+
+In these cases the actual beans will be used, not just the classes. Spring dependency injection works as usual. 
+
+### Custom Relay and GraphQL Annotation Processor
+
+It is possible to define a bean implementing `Relay` and/or `GraphQLAnnotations`. If present, these will be passed to 
+the schema builder. Spring dependency injection works as usual. Note that GraphQL Annotations provides default 
+implementation for these which should be sufficient is most cases.
 
 # Tracing and Metrics
 

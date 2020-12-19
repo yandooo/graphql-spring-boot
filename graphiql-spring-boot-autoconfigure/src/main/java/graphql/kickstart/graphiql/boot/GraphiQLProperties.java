@@ -48,7 +48,7 @@ class GraphiQLProperties {
     @Data
     static class Cdn {
         private boolean enabled = false;
-        private String version = "0.13.0";
+        private String version = "1.0.6";
     }
 
     @Data

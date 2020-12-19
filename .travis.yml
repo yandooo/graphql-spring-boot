@@ -1,8 +1,0 @@
-language: java
-dist: trusty # https://stackoverflow.com/questions/38912714/travis-failing-junit-tests-for-spring
-jdk:
-  - oraclejdk8
-before_install:
- - chmod +x travis-build.sh
-script:
-  - ./travis-build.sh

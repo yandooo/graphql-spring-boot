@@ -1,10 +1,11 @@
 package graphql.kickstart.voyager.boot;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -36,10 +37,10 @@ public class VoyagerIndexHtmlTemplate {
     @Value("${voyager.cdn.version:1.0.0-rc.26}")
     private String voyagerCdnVersion;
 
-    public String fillIndexTemplate(String contextPath) throws IOException {
+    public String fillIndexTemplate(String contextPath, Map<String, String> params) throws IOException {
         String template = StreamUtils.copyToString(new ClassPathResource("voyager.html").getInputStream(), Charset.defaultCharset());
         Map<String, String> replacements = new HashMap<>();
-        replacements.put("graphqlEndpoint", contextPath + graphqlEndpoint);
+        replacements.put("graphqlEndpoint", constructGraphQlEndpoint(contextPath, params));
         replacements.put("pageTitle", pageTitle);
         replacements.put("pageFavicon", getResourceUrl(staticBasePath, "favicon.ico", FAVICON_APIS_GURU));
         replacements.put("es6PromiseJsUrl", getResourceUrl(staticBasePath, "es6-promise.auto.min.js",
@@ -58,7 +59,18 @@ public class VoyagerIndexHtmlTemplate {
                 joinJsDelivrPath(VOYAGER, voyagerCdnVersion, "dist/voyager.worker.min.js")));
         replacements.put("contextPath", contextPath);
 
-        return StrSubstitutor.replace(template, replacements);
+        return StringSubstitutor.replace(template, replacements);
+    }
+
+    private String constructGraphQlEndpoint(String contextPath, @RequestParam Map<String, String> params) {
+        String endpoint = graphqlEndpoint;
+        for (Map.Entry<String, String> param : params.entrySet()) {
+            endpoint = endpoint.replaceAll("\\{" + param.getKey() + "}", param.getValue());
+        }
+        if (StringUtils.isNotBlank(contextPath) && !endpoint.startsWith(contextPath)) {
+            return contextPath + endpoint;
+        }
+        return endpoint;
     }
 
     private String getResourceUrl(String staticBasePath, String staticFileName, String cdnUrl) {

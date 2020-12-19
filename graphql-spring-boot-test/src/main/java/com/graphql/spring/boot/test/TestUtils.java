@@ -10,12 +10,15 @@ import graphql.kickstart.execution.GraphQLObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TestUtils {
 
-  private static ObjectMapper mapper = new ObjectMapper();
+  private static final ObjectMapper mapper = new ObjectMapper();
 
   public static Map<String, Object> assertNoGraphQLErrors(GraphQL gql, String query) {
     return assertNoGraphQLErrors(gql, new HashMap<>(), new Object(), query);
@@ -64,7 +67,7 @@ public class TestUtils {
 
   private static String toString(GraphQLError error) {
     try {
-      return mapper.writeValueAsString(error);
+      return mapper.writeValueAsString(error.toSpecification());
     } catch (JsonProcessingException e) {
       log.error("Cannot write error {} as string", error, e);
       return null;

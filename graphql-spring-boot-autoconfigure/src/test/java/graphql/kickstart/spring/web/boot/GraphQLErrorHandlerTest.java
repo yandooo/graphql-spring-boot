@@ -10,8 +10,8 @@ import graphql.kickstart.execution.GraphQLObjectMapper;
 import graphql.kickstart.execution.error.GraphQLErrorHandler;
 import graphql.kickstart.spring.error.ThrowableGraphQLError;
 import graphql.schema.GraphQLSchema;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,7 +26,7 @@ public class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
     super(AnnotationConfigWebApplicationContext.class, GraphQLWebAutoConfiguration.class);
   }
 
-  @Before
+  @BeforeEach
   public void setUp() {
     System.setProperty("graphql.tools.schemaLocationPattern", "graphql/error-handler-test.graphql");
     load(BaseConfiguration.class);
@@ -40,22 +40,26 @@ public class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
 
   @Test
   public void illegalArgumentExceptionShouldBeHandledConcretely() {
-    TestUtils.assertGraphQLError(gql, "query { illegalArgumentException }",
-            new ThrowableGraphQLError(new IllegalArgumentException("Illegal argument"), "Illegal argument"),
-            objectMapper);
+    TestUtils.assertGraphQLError(
+        gql,
+        "query { illegalArgumentException }",
+        new ThrowableGraphQLError(new IllegalArgumentException("Illegal argument"), "Illegal argument"),
+        objectMapper
+    );
   }
 
   @Test
   public void illegalStateExceptionShouldBeHandledByCatchAll() {
     TestUtils.assertGraphQLError(gql, "query { illegalStateException }",
-            new ThrowableGraphQLError(new IllegalStateException("Illegal state"), "Catch all handler"),
-            objectMapper);
+        new ThrowableGraphQLError(new IllegalStateException("Illegal state"), "Catch all handler"),
+        objectMapper);
   }
 
   @Configuration
   static class BaseConfiguration {
 
     public class Query implements GraphQLQueryResolver {
+
       boolean illegalArgumentException() {
         throw new IllegalArgumentException("Illegal argument");
       }
@@ -82,9 +86,9 @@ public class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
       @Bean
       GraphQLSchema schema() {
         SchemaParser schemaParser = SchemaParser.newParser()
-                .file("graphql/error-handler-test.graphql")
-                .resolvers(queryResolver())
-                .build();
+            .file("graphql/error-handler-test.graphql")
+            .resolvers(queryResolver())
+            .build();
         return schemaParser.makeExecutableSchema();
       }
     }

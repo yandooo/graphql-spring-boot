@@ -1,13 +1,20 @@
-scalar Long
+type FooBar {
+    foo: String!
+    bar: String!
+}
 
 type Subscription {
-    timer: Long!
+    timer: Float!
     subscriptionWithParameter(param: String!): String!
     subscriptionWithInitPayload: String!
-    subscriptionThatTimesOut: Long!
+    subscriptionThatTimesOut: Float!
     subscriptionThatThrowsException: Boolean!
 }
 
 type Query {
     dummy: Boolean!
+    otherQuery: String!
+    fooBar(foo: String, bar: String): FooBar!
+    queryWithVariables(input: String!): String!
+    queryWithHeader(headerName: String!): String
 }

@@ -19,7 +19,7 @@ public class GraphQLTestSubscriptionResetTest extends GraphQLTestSubscriptionTes
         graphQLTestSubscription.reset();
         // THEN
         assertThatSubscriptionWasReset();
-        assertThatExistingIdWasRetained(firstId);
+        assertThatNewIdWasGenerated(firstId);
     }
 
     @Test
@@ -52,11 +52,18 @@ public class GraphQLTestSubscriptionResetTest extends GraphQLTestSubscriptionTes
     @DisplayName("Should allow starting a new subscription after reset.")
     void shouldAllowStartingNewSubscriptionAfterReset() {
         // GIVEN
-        graphQLTestSubscription.start(TIMER_SUBSCRIPTION_RESOURCE);
+        startAndAssertThatNewSubscriptionWorks();
         // WHEN
         graphQLTestSubscription.reset();
         // THEN
-        graphQLTestSubscription.start(TIMER_SUBSCRIPTION_RESOURCE);
+        startAndAssertThatNewSubscriptionWorks();
+    }
+
+    private void startAndAssertThatNewSubscriptionWorks() {
+        final Integer actual = graphQLTestSubscription.start(TIMER_SUBSCRIPTION_RESOURCE)
+            .awaitAndGetNextResponse(TIMEOUT)
+            .get("$.data.timer", Integer.class);
+        assertThat(actual).isZero();
     }
 
     private void assertThatSubscriptionWasReset() {
@@ -64,8 +71,9 @@ public class GraphQLTestSubscriptionResetTest extends GraphQLTestSubscriptionTes
         assertThat(graphQLTestSubscription.isAcknowledged()).isFalse();
         assertThat(graphQLTestSubscription.isStarted()).isFalse();
         assertThat(graphQLTestSubscription.isStopped()).isFalse();
-        assertThat((Queue<?>) ReflectionTestUtils.getField(graphQLTestSubscription, GraphQLTestSubscription.class,
-            "responses")).isEmpty();
+        assertThat(graphQLTestSubscription.isCompleted()).isFalse();
+        assertThat(((SubscriptionState) ReflectionTestUtils.getField(graphQLTestSubscription, GraphQLTestSubscription.class,
+            "state")).getResponses()).isEmpty();
         assertThat(graphQLTestSubscription.getSession()).isNull();
     }
 
@@ -73,11 +81,7 @@ public class GraphQLTestSubscriptionResetTest extends GraphQLTestSubscriptionTes
         assertThat(getSubscriptionId()).isEqualTo(previousId + 1);
     }
 
-    private void assertThatExistingIdWasRetained(int previousId) {
-        assertThat(getSubscriptionId()).isEqualTo(previousId);
-    }
-
     private int getSubscriptionId() {
-        return (int) ReflectionTestUtils.getField(graphQLTestSubscription, GraphQLTestSubscription.class, "id");
+        return ((SubscriptionState) ReflectionTestUtils.getField(graphQLTestSubscription, GraphQLTestSubscription.class, "state")).getId();
     }
 }
