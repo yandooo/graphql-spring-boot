@@ -16,35 +16,24 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 package graphql.kickstart.spring.web.boot;
 
 import graphql.kickstart.execution.context.ContextSetting;
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
  */
+@Data
 @ConfigurationProperties(prefix = "graphql.servlet")
 public class GraphQLServletProperties {
 
-  private String mapping;
-
-  private boolean asyncModeEnabled = false;
-
+  private String mapping = "/graphql";
   private boolean exceptionHandlersEnabled = false;
-
   private long subscriptionTimeout = 0;
-
   private ContextSetting contextSetting = ContextSetting.PER_QUERY_WITH_INSTRUMENTATION;
-
-  public String getMapping() {
-    return mapping != null ? mapping : "/graphql";
-  }
-
-  public void setMapping(String mapping) {
-    this.mapping = mapping;
-  }
+  private long asyncTimeout = 30000;
 
   private boolean mappingIsServletWildcard() {
     return getMapping().endsWith("/*");
@@ -69,8 +58,8 @@ public class GraphQLServletProperties {
   }
 
   /**
-   * @return the servlet mapping, coercing into an appropriate wildcard for CORS, which uses ant matchers (ending in
-   * /**)
+   * @return the servlet mapping, coercing into an appropriate wildcard for CORS, which uses ant
+   * matchers (ending in /**)
    */
   public String getCorsMapping() {
     final String mapping = getMapping();
@@ -83,35 +72,4 @@ public class GraphQLServletProperties {
     }
   }
 
-  public boolean isAsyncModeEnabled() {
-    return asyncModeEnabled;
-  }
-
-  public void setAsyncModeEnabled(boolean asyncModeEnabled) {
-    this.asyncModeEnabled = asyncModeEnabled;
-  }
-
-  public boolean isExceptionHandlersEnabled() {
-    return exceptionHandlersEnabled;
-  }
-
-  public void setExceptionHandlersEnabled(boolean exceptionHandlersEnabled) {
-    this.exceptionHandlersEnabled = exceptionHandlersEnabled;
-  }
-
-  public long getSubscriptionTimeout() {
-    return subscriptionTimeout;
-  }
-
-  public void setSubscriptionTimeout(long subscriptionTimeout) {
-    this.subscriptionTimeout = subscriptionTimeout;
-  }
-
-  public ContextSetting getContextSetting() {
-    return contextSetting;
-  }
-
-  public void setContextSetting(ContextSetting contextSetting) {
-    this.contextSetting = contextSetting;
-  }
 }

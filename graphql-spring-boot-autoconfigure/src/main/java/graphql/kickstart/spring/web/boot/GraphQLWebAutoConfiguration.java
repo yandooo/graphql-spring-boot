@@ -289,6 +289,7 @@ public class GraphQLWebAutoConfiguration {
         .with(batchInputPreProcessor)
         .with(graphQLServletProperties.getContextSetting())
         .with(responseCacheManager)
+        .asyncTimeout(graphQLServletProperties.getAsyncTimeout())
         .build();
   }
 
