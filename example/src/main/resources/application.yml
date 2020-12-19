@@ -25,8 +25,14 @@ altair:
 graphiql:
   enabled: true
   cdn:
-    enabled: true
+    enabled: false
     version: 0.17.5
+  headers:
+    Test: TestHeader
+  props:
+    variables:
+      headerEditorEnabled: true
+      headers: '{ "Authorization": "SomeValue" }'
 voyager:
   enabled: true
   cdn:

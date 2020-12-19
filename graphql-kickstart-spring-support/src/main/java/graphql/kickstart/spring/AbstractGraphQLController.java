@@ -75,8 +75,7 @@ public abstract class AbstractGraphQLController {
     throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Could not process GraphQL request");
   }
 
-  @GetMapping(value = "${graphql.url:graphql}",
-      produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "${graphql.url:graphql}", produces = MediaType.APPLICATION_JSON_VALUE)
   public Object graphqlGET(
       @Nullable @RequestParam("query") String query,
       @Nullable @RequestParam(value = "operationName", required = false) String operationName,

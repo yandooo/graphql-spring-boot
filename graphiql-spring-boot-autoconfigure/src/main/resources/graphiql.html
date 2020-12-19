@@ -101,12 +101,22 @@
 
   var headers = ${headers}
 
+  function addRequiredHeadersIfAbsent() {
+    if (!headers['Accept']) {
+      headers['Accept'] = 'application/json'
+    }
+    if (!headers['Content-Type']) {
+      headers['Content-Type'] = 'application/json'
+    }
+  }
+
   function onEditHeaders(newHeaders) {
     try {
        headers = JSON.parse(newHeaders)
     } catch(e) {
        headers = {}
     }
+    addRequiredHeadersIfAbsent()
   }
 
   // Defines a GraphQL fetcher using the fetch API. You're not required to
@@ -162,8 +172,13 @@
   props.onEditVariables = onEditVariables
   props.onEditOperationName = onEditOperationName
   props.onEditHeaders = onEditHeaders
+  props.headers = props.headers || '{}'
+  if (headers) {
+    var newHeaders = Object.assign({}, JSON.parse(props.headers), headers)
+    props.headers = JSON.stringify(newHeaders, undefined, 2)
+  }
+  onEditHeaders(props.headers)
 
-  console.debug(props)
   // Render <GraphiQL /> into the body.
   ReactDOM.render(
       React.createElement(GraphiQL, props),

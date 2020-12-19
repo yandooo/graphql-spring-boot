@@ -2,24 +2,22 @@ package graphql.kickstart.graphiql.boot;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.StrSubstitutor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.MediaType;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringSubstitutor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Andrew Potter
@@ -61,17 +59,10 @@ public abstract class GraphiQLController {
   private void loadHeaders() {
     PropertyGroupReader propertyReader = new PropertyGroupReader(environment, "graphiql.headers.");
     headerProperties = propertyReader.load();
-    addIfAbsent(headerProperties, "Accept");
-    addIfAbsent(headerProperties, "Content-Type");
   }
 
-  private void addIfAbsent(Properties headerProperties, String header) {
-    if (!headerProperties.containsKey(header)) {
-      headerProperties.setProperty(header, MediaType.APPLICATION_JSON_VALUE);
-    }
-  }
-
-  public byte[] graphiql(String contextPath, @PathVariable Map<String, String> params, Object csrf) {
+  public byte[] graphiql(String contextPath, @PathVariable Map<String, String> params,
+      Object csrf) {
     if (csrf != null) {
       CsrfToken csrfToken = (CsrfToken) csrf;
       headerProperties.setProperty(csrfToken.getHeaderName(), csrfToken.getToken());
@@ -83,7 +74,7 @@ public abstract class GraphiQLController {
         contextPath + graphiQLProperties.getSTATIC().getBasePath()
     );
 
-    String populatedTemplate = StrSubstitutor.replace(template, replacements);
+    String populatedTemplate = StringSubstitutor.replace(template, replacements);
     return populatedTemplate.getBytes(Charset.defaultCharset());
   }
 
@@ -97,7 +88,8 @@ public abstract class GraphiQLController {
     replacements.put("subscriptionsEndpoint", subscriptionsEndpoint);
     replacements.put("staticBasePath", staticBasePath);
     replacements.put("pageTitle", graphiQLProperties.getPageTitle());
-    replacements.put("pageFavicon", getResourceUrl(staticBasePath, "favicon.ico", FAVICON_GRAPHQL_ORG));
+    replacements
+        .put("pageFavicon", getResourceUrl(staticBasePath, "favicon.ico", FAVICON_GRAPHQL_ORG));
     replacements.put("es6PromiseJsUrl", getResourceUrl(staticBasePath, "es6-promise.auto.min.js",
         joinCdnjsPath("es6-promise", "4.1.1", "es6-promise.auto.min.js")));
     replacements.put("fetchJsUrl", getResourceUrl(staticBasePath, "fetch.min.js",
@@ -123,9 +115,11 @@ public abstract class GraphiQLController {
       log.error("Cannot serialize headers", e);
     }
     replacements
-        .put("subscriptionClientTimeout", String.valueOf(graphiQLProperties.getSubscriptions().getTimeout() * 1000));
+        .put("subscriptionClientTimeout",
+            String.valueOf(graphiQLProperties.getSubscriptions().getTimeout() * 1000));
     replacements
-        .put("subscriptionClientReconnect", String.valueOf(graphiQLProperties.getSubscriptions().isReconnect()));
+        .put("subscriptionClientReconnect",
+            String.valueOf(graphiQLProperties.getSubscriptions().isReconnect()));
     replacements.put("editorThemeCss", getEditorThemeCssURL());
     return replacements;
   }
@@ -161,7 +155,8 @@ public abstract class GraphiQLController {
     return CDN_JSDELIVR_NET_NPM + library + "@" + cdnVersion + "/" + cdnFileName;
   }
 
-  private String constructGraphQlEndpoint(String contextPath, @RequestParam Map<String, String> params) {
+  private String constructGraphQlEndpoint(String contextPath,
+      @RequestParam Map<String, String> params) {
     String endpoint = graphiQLProperties.getEndpoint().getGraphql();
     for (Map.Entry<String, String> param : params.entrySet()) {
       endpoint = endpoint.replaceAll("\\{" + param.getKey() + "}", param.getValue());
