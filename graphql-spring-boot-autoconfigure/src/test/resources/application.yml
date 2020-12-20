@@ -1,1 +1,2 @@
 graphql.servlet.mapping: /test
+debug: true

@@ -6,7 +6,7 @@ server:
 graphql:
   servlet:
     exception-handlers-enabled: true
-    tracing-enabled: "metrics-only"
+    tracing-enabled: metrics-only
 graphiql:
   headers:
     Authorization: "Bearer 05bd9a5f3fe0408f89520946b0fe1b06"
