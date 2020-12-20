@@ -1,20 +1,18 @@
-package graphql.kickstart.playground.boot;
+package graphql.kickstart.playground.boot.webflux;
 
+import graphql.kickstart.playground.boot.PlaygroundTestHelper;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = PlaygroundTestConfig.class)
-@AutoConfigureMockMvc
+@SpringBootTest(classes = PlaygroundWebFluxTestConfig.class)
+@AutoConfigureWebTestClient
 @TestPropertySource("classpath:application-playground-cdn-test.properties")
-public class PlaygroundCdnTest extends PlaygroundResourcesTestBase {
+public class PlaygroundWebFluxCdnTest extends PlaygroundWebFluxResourcesTestBase {
 
     @Test
-    public void shouldLoadLatestVersionFromCdn() throws Exception {
+    public void shouldLoadLatestVersionFromCdn() {
         testPlaygroundResources(
             PlaygroundTestHelper.DEFAULT_CSS_CDN_PATH,
             PlaygroundTestHelper.DEFAULT_SCRIPT_CDN_PATH,
