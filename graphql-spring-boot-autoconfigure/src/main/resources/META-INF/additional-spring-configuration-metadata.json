@@ -5,50 +5,5 @@
     }
   ],
   "properties": [
-    {
-      "name": "graphql.servlet.enabled",
-      "defaultValue": true,
-      "type": "java.lang.Boolean"
-    },
-    {
-      "name": "graphql.servlet.mapping",
-      "defaultValue": "/graphql",
-      "type": "java.lang.String"
-    },
-    {
-      "name": "graphql.servlet.corsEnabled",
-      "defaultValue": true,
-      "type": "java.lang.Boolean"
-    },
-    {
-      "name": "graphql.servlet.asyncModeEnabled",
-      "defaultValue": false,
-      "type": "java.lang.Boolean"
-    },
-    {
-      "name": "graphql.servlet.subscriptions.websocket.path",
-      "defaultValue": "/subscriptions",
-      "type": "java.lang.String"
-    },
-    {
-      "name": "graphql.servlet.tracingEnabled",
-      "defaultValue": false,
-      "type": "java.lang.String"
-    },
-    {
-      "name": "graphql.servlet.maxQueryComplexity",
-      "defaultValue": null,
-      "type": "java.lang.Integer"
-    },
-    {
-      "name": "graphql.servlet.maxQueryDepth",
-      "defaultValue": null,
-      "type": "java.lang.Integer"
-    },
-    {
-      "name": "graphql.servlet.actuator-metrics",
-      "defaultValue": false,
-      "type": "java.lang.Boolean"
-    }
   ]
 }

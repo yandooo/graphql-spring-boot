@@ -29,31 +29,29 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "graphql.servlet")
 public class GraphQLServletProperties {
 
+  private boolean enabled = true;
+  private boolean corsEnabled = true;
   private String mapping = "/graphql";
   private boolean exceptionHandlersEnabled = false;
   private long subscriptionTimeout = 0;
   private ContextSetting contextSetting = ContextSetting.PER_QUERY_WITH_INSTRUMENTATION;
   private long asyncTimeout = 30000;
-
-  private boolean mappingIsServletWildcard() {
-    return getMapping().endsWith("/*");
-  }
-
-  private boolean mappingIsAntWildcard() {
-    return getMapping().endsWith("/**");
-  }
+  private String tracingEnabled = "false";
+  private boolean actuatorMetrics;
+  private Integer maxQueryComplexity;
+  private Integer maxQueryDepth;
 
   /**
    * @return the servlet mapping, coercing into an appropriate wildcard for servlets (ending in /*)
    */
   public String getServletMapping() {
-    final String mapping = getMapping();
+    final String originalMapping = getMapping();
     if (mappingIsAntWildcard()) {
-      return mapping.replaceAll("\\*$", "");
+      return originalMapping.replaceAll("\\*$", "");
     } else if (mappingIsServletWildcard()) {
-      return mapping;
+      return originalMapping;
     } else {
-      return mapping.endsWith("/") ? mapping + "*" : mapping + "/*";
+      return originalMapping.endsWith("/") ? originalMapping + "*" : originalMapping + "/*";
     }
   }
 
@@ -62,14 +60,22 @@ public class GraphQLServletProperties {
    * matchers (ending in /**)
    */
   public String getCorsMapping() {
-    final String mapping = getMapping();
+    final String originalMapping = getMapping();
     if (mappingIsAntWildcard()) {
-      return mapping;
+      return originalMapping;
     } else if (mappingIsServletWildcard()) {
-      return mapping + "*";
+      return originalMapping + "*";
     } else {
-      return mapping.endsWith("/") ? mapping + "**" : mapping + "/**";
+      return originalMapping.endsWith("/") ? originalMapping + "**" : originalMapping + "/**";
     }
+  }
+
+  private boolean mappingIsServletWildcard() {
+    return getMapping().endsWith("/*");
+  }
+
+  private boolean mappingIsAntWildcard() {
+    return getMapping().endsWith("/**");
   }
 
 }

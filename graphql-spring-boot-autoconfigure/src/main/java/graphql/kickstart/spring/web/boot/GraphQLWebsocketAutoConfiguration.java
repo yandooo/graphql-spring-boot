@@ -17,8 +17,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 import javax.websocket.server.ServerContainer;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -33,19 +33,18 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 import org.springframework.web.socket.server.standard.ServerEndpointRegistration;
 
 @Configuration
+@RequiredArgsConstructor
 @ConditionalOnWebApplication
 @ConditionalOnClass(DispatcherServlet.class)
 @Conditional(OnSchemaOrSchemaProviderBean.class)
 @ConditionalOnProperty(value = "graphql.servlet.websocket.enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class})
-@EnableConfigurationProperties(GraphQLSubscriptionApolloProperties.class)
+@EnableConfigurationProperties({GraphQLSubscriptionApolloProperties.class,
+    GraphQLSubscriptionWebsocketProperties.class})
 public class GraphQLWebsocketAutoConfiguration {
 
-  @Value("${graphql.servlet.subscriptions.websocket.path:/subscriptions}")
-  private String websocketPath;
-
-  @Autowired
-  private GraphQLSubscriptionApolloProperties apolloProperties;
+  private final GraphQLSubscriptionApolloProperties apolloProperties;
+  private final GraphQLSubscriptionWebsocketProperties websocketProperties;
 
   @Bean
   @ConditionalOnMissingBean
@@ -80,7 +79,8 @@ public class GraphQLWebsocketAutoConfiguration {
       listeners.addAll(connectionListeners);
     }
     keepAliveListener().ifPresent(listeners::add);
-    return new GraphQLWebsocketServlet(graphQLInvoker, invocationInputFactory, graphQLObjectMapper, listeners);
+    return new GraphQLWebsocketServlet(graphQLInvoker, invocationInputFactory, graphQLObjectMapper,
+        listeners);
   }
 
   private Optional<SubscriptionConnectionListener> keepAliveListener() {
@@ -95,7 +95,7 @@ public class GraphQLWebsocketAutoConfiguration {
   @Bean
   @ConditionalOnClass(ServerContainer.class)
   public ServerEndpointRegistration serverEndpointRegistration(GraphQLWebsocketServlet servlet) {
-    return new GraphQLWsServerEndpointRegistration(websocketPath, servlet);
+    return new GraphQLWsServerEndpointRegistration(websocketProperties.getPath(), servlet);
   }
 
   @Bean
