@@ -14,8 +14,8 @@ import org.springframework.core.env.PropertySource;
 
 class PropertyGroupReader {
 
-  private Environment environment;
-  private String prefix;
+  private final Environment environment;
+  private final String prefix;
   private Properties props;
 
   PropertyGroupReader(Environment environment, String prefix) {
@@ -38,14 +38,15 @@ class PropertyGroupReader {
             .forEach(key -> add(propertySource, key)));
   }
 
-  private Stream<EnumerablePropertySource> streamOfPropertySources() {
+  @SuppressWarnings("unchecked")
+  private Stream<EnumerablePropertySource<Object>> streamOfPropertySources() {
     if (environment instanceof ConfigurableEnvironment) {
       Iterator<PropertySource<?>> iterator = ((ConfigurableEnvironment) environment)
           .getPropertySources().iterator();
       Iterable<PropertySource<?>> iterable = () -> iterator;
       return StreamSupport.stream(iterable.spliterator(), false)
           .filter(EnumerablePropertySource.class::isInstance)
-          .map(EnumerablePropertySource.class::cast);
+          .map(it -> (EnumerablePropertySource<Object>) it);
     }
     return Stream.empty();
   }
@@ -58,10 +59,9 @@ class PropertyGroupReader {
     return key.startsWith(prefix);
   }
 
-  private Object add(EnumerablePropertySource propertySource, String key) {
-    return props.put(withoutPrefix(key), propertySource.getProperty(key));
+  private void add(EnumerablePropertySource<Object> propertySource, String key) {
+    props.put(withoutPrefix(key), propertySource.getProperty(key));
   }
-
 
 }
 

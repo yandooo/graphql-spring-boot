@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.Properties;
+import lombok.SneakyThrows;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -17,7 +18,7 @@ class PropsLoader {
   private static final String ALTAIR_PROPS_RESOURCES_PREFIX = ALTAIR_PROPS_PREFIX + "resources.";
   private static final String ALTAIR_PROPS_VALUES_PREFIX = ALTAIR_PROPS_PREFIX + "values.";
 
-  private Environment environment;
+  private final Environment environment;
 
   PropsLoader(Environment environment) {
     this.environment = environment;
@@ -34,17 +35,15 @@ class PropsLoader {
     return objectMapper.writeValueAsString(props);
   }
 
-  private Optional<String> loadPropFromResource(String prop) throws IOException {
+  private Optional<String> loadPropFromResource(String prop) {
     String property = ALTAIR_PROPS_RESOURCES_PREFIX + prop;
-    if (environment.containsProperty(property)) {
-      String location = environment.getProperty(property);
-      Resource resource = new ClassPathResource(location);
-      return Optional.of(loadResource(resource));
-    }
-    return Optional.empty();
+    return Optional.ofNullable(environment.getProperty(property))
+        .map(ClassPathResource::new)
+        .map(this::loadResource);
   }
 
-  private String loadResource(Resource resource) throws IOException {
+  @SneakyThrows
+  private String loadResource(Resource resource) {
     try (InputStream inputStream = resource.getInputStream()) {
       return StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
     }

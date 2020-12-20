@@ -21,7 +21,7 @@ public class CustomerRepository {
     data.put(106, "Customer Name 6");
   }
 
-  public List getUserNamesForIds(List<Integer> customerIds) {
+  public List<String> getUserNamesForIds(List<Integer> customerIds) {
     return customerIds.parallelStream().map(data::get).collect(Collectors.toList());
   }
 

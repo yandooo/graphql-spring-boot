@@ -1,5 +1,6 @@
 package graphql.kickstart.altair.boot.test;
 
+import lombok.NonNull;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

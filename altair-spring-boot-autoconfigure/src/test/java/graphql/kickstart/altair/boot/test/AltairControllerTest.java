@@ -10,31 +10,33 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 /**
  * @author Andrew Potter
  */
-public class AltairControllerTest extends AbstractAutoConfigurationTest {
+class AltairControllerTest extends AbstractAutoConfigurationTest {
 
   public AltairControllerTest() {
     super(AnnotationConfigWebApplicationContext.class, AltairAutoConfiguration.class);
   }
 
   @Test
-  public void altairLoads() {
+  void altairLoads() {
     load(EnabledConfiguration.class);
 
     assertThat(this.getContext().getBean(AltairController.class)).isNotNull();
   }
 
   @Test
-  public void altairDoesNotLoad() {
+  void altairDoesNotLoad() {
     load(DisabledConfiguration.class);
 
+    AbstractApplicationContext context = getContext();
     assertThatExceptionOfType(NoSuchBeanDefinitionException.class)
-        .isThrownBy(() -> this.getContext().getBean(AltairController.class));
+        .isThrownBy(() -> context.getBean(AltairController.class));
   }
 
   @Configuration
