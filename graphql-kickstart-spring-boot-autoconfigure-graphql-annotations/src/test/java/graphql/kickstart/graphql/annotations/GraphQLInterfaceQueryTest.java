@@ -16,7 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 @DisplayName("Testing interface handling.")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"test", "interface-test"})
-public class GraphQLInterfaceQueryTest {
+class GraphQLInterfaceQueryTest {
 
   @Autowired
   private GraphQLTestTemplate graphQLTestTemplate;

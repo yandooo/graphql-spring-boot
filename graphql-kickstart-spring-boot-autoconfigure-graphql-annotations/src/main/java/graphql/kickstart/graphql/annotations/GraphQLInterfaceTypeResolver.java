@@ -4,7 +4,6 @@ import graphql.TypeResolutionEnvironment;
 import graphql.annotations.processor.GraphQLAnnotations;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.TypeResolver;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -27,8 +26,7 @@ public class GraphQLInterfaceTypeResolver implements TypeResolver, ApplicationCo
   }
 
   @Override
-  public void setApplicationContext(final ApplicationContext applicationContext)
-      throws BeansException {
+  public void setApplicationContext(final ApplicationContext applicationContext) {
     graphQLAnnotations = applicationContext.getBean(GraphQLAnnotations.class);
   }
 }

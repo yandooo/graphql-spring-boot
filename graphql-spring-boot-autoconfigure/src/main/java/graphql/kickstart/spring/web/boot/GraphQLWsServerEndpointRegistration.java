@@ -29,6 +29,7 @@ public class GraphQLWsServerEndpointRegistration extends ServerEndpointRegistrat
 
   @Override
   public void start() {
+    // do nothing
   }
 
   @Override

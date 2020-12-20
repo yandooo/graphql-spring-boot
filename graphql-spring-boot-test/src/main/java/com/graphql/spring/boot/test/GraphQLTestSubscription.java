@@ -53,6 +53,7 @@ public class GraphQLTestSubscription {
   private static final AtomicInteger ID_COUNTER = new AtomicInteger(1);
   private static final UriBuilderFactory URI_BUILDER_FACTORY = new DefaultUriBuilderFactory();
   private static final Object STATE_LOCK = new Object();
+  public static final String PAYLOAD = "payload";
   private final Environment environment;
   private final ObjectMapper objectMapper;
   private final String subscriptionPath;
@@ -109,7 +110,7 @@ public class GraphQLTestSubscription {
     }
     final ObjectNode message = objectMapper.createObjectNode();
     message.put("type", "connection_init");
-    message.set("payload", getFinalPayload(payload));
+    message.set(PAYLOAD, getFinalPayload(payload));
     sendMessage(message);
     state.setInitialized(true);
     awaitAcknowledgement();
@@ -152,7 +153,7 @@ public class GraphQLTestSubscription {
     ObjectNode message = objectMapper.createObjectNode();
     message.put("type", "start");
     message.put("id", state.getId());
-    message.set("payload", payload);
+    message.set(PAYLOAD, payload);
     log.debug("Sending start message.");
     sendMessage(message);
     return this;
@@ -465,7 +466,7 @@ public class GraphQLTestSubscription {
           state.setAcknowledged(true);
           log.debug("WebSocket connection acknowledged by the GraphQL Server.");
         } else if (type.equals("data") || type.equals("error")) {
-          final JsonNode payload = jsonNode.get("payload");
+          final JsonNode payload = jsonNode.get(PAYLOAD);
           assertThat(payload).as("Data/error messages must have a payload.").isNotNull();
           final String payloadString = objectMapper.writeValueAsString(payload);
           final GraphQLResponse graphQLResponse = new GraphQLResponse(

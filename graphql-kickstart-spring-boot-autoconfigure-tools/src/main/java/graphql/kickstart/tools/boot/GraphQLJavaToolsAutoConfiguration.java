@@ -48,42 +48,9 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(GraphQLToolsProperties.class)
 public class GraphQLJavaToolsAutoConfiguration {
 
-  @Autowired(required = false)
-  private SchemaParserDictionary dictionary;
-
-  @Autowired(required = false)
-  private GraphQLScalarType[] scalars;
-
-  @Autowired(required = false)
-  private List<SchemaDirective> directives;
-
-  @Autowired(required = false)
-  private List<SchemaDirectiveWiring> directiveWirings;
-
-  @Autowired(required = false)
-  private List<GenericWrapper> genericWrappers;
-
-  @Autowired(required = false)
-  private ObjectMapperConfigurer objectMapperConfigurer;
-
-  @Autowired(required = false)
-  private List<ProxyHandler> proxyHandlers;
-
-  @Autowired(required = false)
-  private CoroutineContextProvider coroutineContextProvider;
-
-  @Autowired(required = false)
-  private List<TypeDefinitionFactory> typeDefinitionFactories;
-
-  @Autowired(required = false)
-  private GraphqlFieldVisibility fieldVisibility;
-
-  @Autowired
-  private GraphQLToolsProperties props;
-
   @Bean
   @ConditionalOnMissingBean
-  public SchemaStringProvider schemaStringProvider() {
+  public SchemaStringProvider schemaStringProvider(GraphQLToolsProperties props) {
     return new ClasspathResourceSchemaStringProvider(props.getSchemaLocationPattern());
   }
 
@@ -91,7 +58,13 @@ public class GraphQLJavaToolsAutoConfiguration {
   @ConditionalOnMissingBean
   @ConfigurationProperties("graphql.tools.schema-parser-options")
   public SchemaParserOptions.Builder optionsBuilder(
-      @Autowired(required = false) PerFieldObjectMapperProvider perFieldObjectMapperProvider
+      @Autowired(required = false) PerFieldObjectMapperProvider perFieldObjectMapperProvider,
+      @Autowired(required = false) List<GenericWrapper> genericWrappers,
+      @Autowired(required = false) ObjectMapperConfigurer objectMapperConfigurer,
+      @Autowired(required = false) List<ProxyHandler> proxyHandlers,
+      @Autowired(required = false) CoroutineContextProvider coroutineContextProvider,
+      @Autowired(required = false) List<TypeDefinitionFactory> typeDefinitionFactories,
+      @Autowired(required = false) GraphqlFieldVisibility fieldVisibility
   ) {
     SchemaParserOptions.Builder optionsBuilder = SchemaParserOptions.newOptions();
 
@@ -125,7 +98,11 @@ public class GraphQLJavaToolsAutoConfiguration {
   public SchemaParser schemaParser(
       List<GraphQLResolver<?>> resolvers,
       SchemaStringProvider schemaStringProvider,
-      SchemaParserOptions.Builder optionsBuilder
+      SchemaParserOptions.Builder optionsBuilder,
+      @Autowired(required = false) SchemaParserDictionary dictionary,
+      @Autowired(required = false) GraphQLScalarType[] scalars,
+      @Autowired(required = false) List<SchemaDirective> directives,
+      @Autowired(required = false) List<SchemaDirectiveWiring> directiveWirings
   ) throws IOException {
     SchemaParserBuilder builder = new SchemaParserBuilder();
     if (nonNull(dictionary)) {

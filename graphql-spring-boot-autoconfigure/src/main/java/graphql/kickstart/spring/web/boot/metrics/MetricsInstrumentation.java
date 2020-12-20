@@ -22,11 +22,17 @@ public class MetricsInstrumentation extends TracingInstrumentation {
   private static final String UNKNOWN_OPERATION_NAME = "unknown";
   private static final String PARENT = "parent";
   private static final String FIELD = "field";
+  private static final String TRACING = "tracing";
+  private static final String DURATION = "duration";
+  private static final String EXECUTION = "execution";
+  private static final String VALIDATION = "validation";
+  private static final String PARSING = "parsing";
+  private static final String RESOLVERS = "resolvers";
   private static final String TIMER_DESCRIPTION = "Timer that records the time to fetch the data by Operation Name";
-  private MeterRegistry meterRegistry;
-  private Boolean tracingEnabled;
+  private final MeterRegistry meterRegistry;
+  private final boolean tracingEnabled;
 
-  public MetricsInstrumentation(MeterRegistry meterRegistry, Boolean tracingEnabled) {
+  public MetricsInstrumentation(MeterRegistry meterRegistry, boolean tracingEnabled) {
     this.meterRegistry = meterRegistry;
     this.tracingEnabled = tracingEnabled;
   }
@@ -36,44 +42,44 @@ public class MetricsInstrumentation extends TracingInstrumentation {
       ExecutionResult executionResult, InstrumentationExecutionParameters parameters) {
 
     if (executionResult.getExtensions() != null && executionResult.getExtensions()
-        .containsKey("tracing")) {
+        .containsKey(TRACING)) {
 
       Map<String, Object> tracingData = (Map<String, Object>) executionResult.getExtensions()
-          .get("tracing");
-      Timer executionTimer = buildQueryTimer(parameters.getOperation(), "execution");
-      executionTimer.record((long) tracingData.get("duration"), TimeUnit.NANOSECONDS);
+          .get(TRACING);
+      Timer executionTimer = buildQueryTimer(parameters.getOperation(), EXECUTION);
+      executionTimer.record((long) tracingData.get(DURATION), TimeUnit.NANOSECONDS);
 
       //These next 2 ifs might not run if the document is cached on the document provider
-      if (tracingData.containsKey("validation") && ((Map<String, Object>) tracingData
-          .get("validation")).containsKey("duration")) {
-        Timer validationTimer = buildQueryTimer(parameters.getOperation(), "validation");
+      if (tracingData.containsKey(VALIDATION) && ((Map<String, Object>) tracingData
+          .get(VALIDATION)).containsKey(DURATION)) {
+        Timer validationTimer = buildQueryTimer(parameters.getOperation(), VALIDATION);
         validationTimer
-            .record((long) ((Map<String, Object>) tracingData.get("validation")).get("duration"),
+            .record((long) ((Map<String, Object>) tracingData.get(VALIDATION)).get(DURATION),
                 TimeUnit.NANOSECONDS);
       }
-      if (tracingData.containsKey("parsing") && ((Map<String, Object>) tracingData.get("parsing"))
-          .containsKey("duration")) {
-        Timer parsingTimer = buildQueryTimer(parameters.getOperation(), "parsing");
+      if (tracingData.containsKey(PARSING) && ((Map<String, Object>) tracingData.get(PARSING))
+          .containsKey(DURATION)) {
+        Timer parsingTimer = buildQueryTimer(parameters.getOperation(), PARSING);
         parsingTimer
-            .record((long) ((Map<String, Object>) tracingData.get("parsing")).get("duration"),
+            .record((long) ((Map<String, Object>) tracingData.get(PARSING)).get(DURATION),
                 TimeUnit.NANOSECONDS);
       }
 
-      if (((Map<String, String>) tracingData.get("execution")).containsKey("resolvers")) {
+      if (((Map<String, String>) tracingData.get(EXECUTION)).containsKey(RESOLVERS)) {
 
-        ((List<Map<String, Object>>) ((Map<String, Object>) tracingData.get("execution"))
-            .get("resolvers")).forEach(field -> {
+        ((List<Map<String, Object>>) ((Map<String, Object>) tracingData.get(EXECUTION))
+            .get(RESOLVERS)).forEach(field -> {
 
-          Timer fieldTimer = buildFieldTimer(parameters.getOperation(), "resolvers",
+          Timer fieldTimer = buildFieldTimer(parameters.getOperation(), RESOLVERS,
               (String) field.get("parentType"), (String) field.get("fieldName"));
-          fieldTimer.record((long) field.get("duration"), TimeUnit.NANOSECONDS);
+          fieldTimer.record((long) field.get(DURATION), TimeUnit.NANOSECONDS);
 
         });
 
       }
 
       if (!tracingEnabled) {
-        executionResult.getExtensions().remove("tracing");
+        executionResult.getExtensions().remove(TRACING);
       }
     }
 
