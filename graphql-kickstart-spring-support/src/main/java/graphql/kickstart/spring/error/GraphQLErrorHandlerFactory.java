@@ -27,7 +27,8 @@ public class GraphQLErrorHandlerFactory {
         .collect(toList());
 
     if (!factories.isEmpty() || exceptionHandlersEnabled) {
-      log.debug("Handle GraphQL errors using exception handlers defined in {} custom factories", factories.size());
+      log.debug("Handle GraphQL errors using exception handlers defined in {} custom factories",
+          factories.size());
       return new GraphQLErrorFromExceptionHandler(factories);
     }
 
@@ -35,7 +36,8 @@ public class GraphQLErrorHandlerFactory {
     return new DefaultGraphQLErrorHandler();
   }
 
-  private List<GraphQLErrorFactory> scanForExceptionHandlers(ApplicationContext context, String name) {
+  private List<GraphQLErrorFactory> scanForExceptionHandlers(ApplicationContext context,
+      String name) {
     try {
       Class<?> objClz = context.getType(name);
       if (objClz == null) {

@@ -10,12 +10,13 @@ import org.springframework.stereotype.Service;
 @Profile("custom-annotation-processor-test")
 @Service
 public class CustomAnnotationProcessor extends GraphQLAnnotations {
-    public CustomAnnotationProcessor() {
-    }
 
-    public CustomAnnotationProcessor(TypeFunction defaultTypeFunction,
-        GraphQLObjectHandler graphQLObjectHandler,
-        GraphQLExtensionsHandler graphQLExtensionsHandler) {
-        super(defaultTypeFunction, graphQLObjectHandler, graphQLExtensionsHandler);
-    }
+  public CustomAnnotationProcessor() {
+  }
+
+  public CustomAnnotationProcessor(TypeFunction defaultTypeFunction,
+      GraphQLObjectHandler graphQLObjectHandler,
+      GraphQLExtensionsHandler graphQLExtensionsHandler) {
+    super(defaultTypeFunction, graphQLObjectHandler, graphQLExtensionsHandler);
+  }
 }

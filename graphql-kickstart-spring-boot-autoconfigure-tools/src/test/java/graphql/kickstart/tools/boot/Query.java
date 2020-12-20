@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class Query implements GraphQLQueryResolver {
-    public String echo(String string) {
-        return string;
-    }
+
+  public String echo(String string) {
+    return string;
+  }
 }

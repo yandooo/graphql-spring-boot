@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TestQuery implements GraphQLQueryResolver {
 
-    public String testQuery() {
-        return "foo";
-    }
+  public String testQuery() {
+    return "foo";
+  }
 }

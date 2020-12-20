@@ -4,4 +4,5 @@ import graphql.kickstart.graphql.annotations.GraphQLQueryResolver;
 
 @GraphQLQueryResolver
 public class TestQuery {
+
 }

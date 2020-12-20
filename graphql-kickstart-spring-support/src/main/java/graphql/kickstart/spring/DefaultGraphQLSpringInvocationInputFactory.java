@@ -12,7 +12,8 @@ import lombok.Getter;
 import org.springframework.web.server.ServerWebExchange;
 
 @Getter(AccessLevel.PROTECTED)
-public class DefaultGraphQLSpringInvocationInputFactory implements GraphQLSpringInvocationInputFactory {
+public class DefaultGraphQLSpringInvocationInputFactory implements
+    GraphQLSpringInvocationInputFactory {
 
   private final Supplier<GraphQLSchemaProvider> schemaProviderSupplier;
   private Supplier<GraphQLSpringContextBuilder> contextBuilderSupplier = () -> (GraphQLSpringServerWebExchangeContext::new);
@@ -38,7 +39,8 @@ public class DefaultGraphQLSpringInvocationInputFactory implements GraphQLSpring
       Supplier<GraphQLSpringContextBuilder> contextBuilderSupplier,
       Supplier<GraphQLSpringRootObjectBuilder> rootObjectBuilderSupplier
   ) {
-    this.schemaProviderSupplier = Objects.requireNonNull(schemaProviderSupplier, "GraphQLSchemaProvider is required");
+    this.schemaProviderSupplier = Objects
+        .requireNonNull(schemaProviderSupplier, "GraphQLSchemaProvider is required");
     if (contextBuilderSupplier != null) {
       this.contextBuilderSupplier = contextBuilderSupplier;
     }
@@ -48,7 +50,8 @@ public class DefaultGraphQLSpringInvocationInputFactory implements GraphQLSpring
   }
 
   @Override
-  public GraphQLSingleInvocationInput create(GraphQLRequest graphQLRequest, ServerWebExchange serverWebExchange) {
+  public GraphQLSingleInvocationInput create(GraphQLRequest graphQLRequest,
+      ServerWebExchange serverWebExchange) {
     return new GraphQLSingleInvocationInput(
         graphQLRequest,
         schemaProviderSupplier.get().getSchema(),

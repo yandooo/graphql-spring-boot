@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TestSubscription implements GraphQLSubscriptionResolver {
 
-    public Flowable<String> testSubscription() {
-        return Flowable.just("foo");
-    }
+  public Flowable<String> testSubscription() {
+    return Flowable.just("foo");
+  }
 }

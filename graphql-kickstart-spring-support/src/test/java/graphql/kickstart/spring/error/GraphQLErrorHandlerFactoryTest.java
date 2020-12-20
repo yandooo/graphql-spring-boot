@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import graphql.GraphQLError;
 import graphql.kickstart.execution.error.GraphQLErrorHandler;
 import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +41,8 @@ public class GraphQLErrorHandlerFactoryTest {
     GraphQLErrorHandler handler = errorHandlerFactory.create(applicationContext, true);
     assertThat(handler).isInstanceOf(GraphQLErrorFromExceptionHandler.class);
     GraphQLErrorFromExceptionHandler errorHandler = (GraphQLErrorFromExceptionHandler) handler;
-    assertThat(errorHandler.getFactories()).as("handler.factories should not be empty").isNotEmpty();
+    assertThat(errorHandler.getFactories()).as("handler.factories should not be empty")
+        .isNotEmpty();
   }
 
   public static class TestClass {

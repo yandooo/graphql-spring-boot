@@ -8,6 +8,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class BaseType {
 
-    @GraphQLField
-    private String baseTypeField;
+  @GraphQLField
+  private String baseTypeField;
 }

@@ -11,15 +11,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(value = "voyager.enabled", havingValue = "true", matchIfMissing = true)
-public class VoyagerAutoConfiguration
-{
-    @Bean
-    VoyagerController voyagerController() {
-        return new VoyagerController();
-    }
+public class VoyagerAutoConfiguration {
 
-    @Bean
-    VoyagerIndexHtmlTemplate voyagerIndexHtmlTemplate() {
-        return new VoyagerIndexHtmlTemplate();
-    }
+  @Bean
+  VoyagerController voyagerController() {
+    return new VoyagerController();
+  }
+
+  @Bean
+  VoyagerIndexHtmlTemplate voyagerIndexHtmlTemplate() {
+    return new VoyagerIndexHtmlTemplate();
+  }
 }

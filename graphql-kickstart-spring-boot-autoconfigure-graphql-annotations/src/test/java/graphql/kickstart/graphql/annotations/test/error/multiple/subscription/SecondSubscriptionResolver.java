@@ -4,4 +4,5 @@ import graphql.kickstart.graphql.annotations.GraphQLSubscriptionResolver;
 
 @GraphQLSubscriptionResolver
 public class SecondSubscriptionResolver {
+
 }

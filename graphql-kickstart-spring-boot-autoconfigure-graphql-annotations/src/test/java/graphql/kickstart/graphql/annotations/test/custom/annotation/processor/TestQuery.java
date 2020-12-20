@@ -6,8 +6,8 @@ import graphql.kickstart.graphql.annotations.GraphQLQueryResolver;
 @GraphQLQueryResolver
 public class TestQuery {
 
-    @GraphQLField
-    public String someQuery() {
-        return "some value";
-    }
+  @GraphQLField
+  public String someQuery() {
+    return "some value";
+  }
 }

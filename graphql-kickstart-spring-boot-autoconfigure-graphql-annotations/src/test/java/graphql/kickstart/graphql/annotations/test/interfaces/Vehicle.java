@@ -8,7 +8,7 @@ import graphql.kickstart.graphql.annotations.GraphQLInterfaceTypeResolver;
 @GraphQLTypeResolver(GraphQLInterfaceTypeResolver.class)
 public interface Vehicle {
 
-    @GraphQLField
-    @GraphQLNonNull
-    String getRegistrationNumber();
+  @GraphQLField
+  @GraphQLNonNull
+  String getRegistrationNumber();
 }

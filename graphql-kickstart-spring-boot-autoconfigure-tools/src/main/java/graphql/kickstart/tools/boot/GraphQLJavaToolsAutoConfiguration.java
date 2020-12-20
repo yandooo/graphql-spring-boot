@@ -1,5 +1,7 @@
 package graphql.kickstart.tools.boot;
 
+import static java.util.Objects.nonNull;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
@@ -35,8 +37,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import static java.util.Objects.nonNull;
 
 /**
  * @author Andrew Potter
@@ -107,7 +107,8 @@ public class GraphQLJavaToolsAutoConfiguration {
       proxyHandlers.forEach(optionsBuilder::addProxyHandler);
     }
 
-    Optional.ofNullable(coroutineContextProvider).ifPresent(optionsBuilder::coroutineContextProvider);
+    Optional.ofNullable(coroutineContextProvider)
+        .ifPresent(optionsBuilder::coroutineContextProvider);
 
     if (typeDefinitionFactories != null) {
       typeDefinitionFactories.forEach(optionsBuilder::typeDefinitionFactory);

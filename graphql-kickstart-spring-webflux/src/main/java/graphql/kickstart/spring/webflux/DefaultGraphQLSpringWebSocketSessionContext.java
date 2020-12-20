@@ -17,7 +17,8 @@ public class DefaultGraphQLSpringWebSocketSessionContext extends DefaultGraphQLC
   public DefaultGraphQLSpringWebSocketSessionContext(DataLoaderRegistry dataLoaderRegistry,
       WebSocketSession webSocketSession) {
     super(dataLoaderRegistry, null);
-    this.webSocketSession = Objects.requireNonNull(webSocketSession, "WebSocketSession is required");
+    this.webSocketSession = Objects
+        .requireNonNull(webSocketSession, "WebSocketSession is required");
   }
 
   @Override

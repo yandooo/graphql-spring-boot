@@ -47,7 +47,8 @@ class ReflectiveGraphQLErrorFactory implements GraphQLErrorFactory {
     }
   }
 
-  private Object invoke(Throwable t, ErrorContext errorContext) throws IllegalAccessException, InvocationTargetException {
+  private Object invoke(Throwable t, ErrorContext errorContext)
+      throws IllegalAccessException, InvocationTargetException {
     if (withErrorContext) {
       return method.invoke(object, t, errorContext);
     } else {

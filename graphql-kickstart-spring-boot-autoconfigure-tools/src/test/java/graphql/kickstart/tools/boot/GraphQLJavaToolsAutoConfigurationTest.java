@@ -1,13 +1,13 @@
 package graphql.kickstart.tools.boot;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import graphql.kickstart.tools.SchemaParserDictionary;
 import graphql.schema.GraphQLSchema;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
@@ -34,6 +34,7 @@ public class GraphQLJavaToolsAutoConfigurationTest extends AbstractAutoConfigura
 
   @Configuration
   static class BaseConfiguration {
+
     @Bean
     public Query query() {
       return new Query();

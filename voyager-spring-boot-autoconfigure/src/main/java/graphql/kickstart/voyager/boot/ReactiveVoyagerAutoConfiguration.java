@@ -18,24 +18,24 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 @ConditionalOnProperty(value = "voyager.enabled", havingValue = "true", matchIfMissing = true)
 public class ReactiveVoyagerAutoConfiguration {
 
-    @Value("${voyager.mapping:/voyager}")
-    private String voyagerPath;
+  @Value("${voyager.mapping:/voyager}")
+  private String voyagerPath;
 
-    @Bean
-    ReactiveVoyagerController voyagerController() {
-        return new ReactiveVoyagerController();
-    }
+  @Bean
+  ReactiveVoyagerController voyagerController() {
+    return new ReactiveVoyagerController();
+  }
 
-    @Bean
-    public RouterFunction<ServerResponse> voyagerStaticFilesRouter() {
-        return RouterFunctions.resources(
+  @Bean
+  public RouterFunction<ServerResponse> voyagerStaticFilesRouter() {
+    return RouterFunctions.resources(
         "/vendor/voyager/**",
-                new ClassPathResource("static/vendor/voyager/")
-        );
-    }
+        new ClassPathResource("static/vendor/voyager/")
+    );
+  }
 
-    @Bean
-    VoyagerIndexHtmlTemplate voyagerIndexHtmlTemplate() {
-        return new VoyagerIndexHtmlTemplate();
-    }
+  @Bean
+  VoyagerIndexHtmlTemplate voyagerIndexHtmlTemplate() {
+    return new VoyagerIndexHtmlTemplate();
+  }
 }

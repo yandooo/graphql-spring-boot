@@ -25,7 +25,8 @@ public class CustomGraphQLContextBuilder implements GraphQLServletContextBuilder
 
   @Override
   public GraphQLContext build(HttpServletRequest req, HttpServletResponse response) {
-    return DefaultGraphQLServletContext.createServletContext(buildDataLoaderRegistry(), null).with(req).with(response)
+    return DefaultGraphQLServletContext.createServletContext(buildDataLoaderRegistry(), null)
+        .with(req).with(response)
         .build();
   }
 
@@ -36,7 +37,8 @@ public class CustomGraphQLContextBuilder implements GraphQLServletContextBuilder
 
   @Override
   public GraphQLContext build(Session session, HandshakeRequest request) {
-    return DefaultGraphQLWebSocketContext.createWebSocketContext(buildDataLoaderRegistry(), null).with(session)
+    return DefaultGraphQLWebSocketContext.createWebSocketContext(buildDataLoaderRegistry(), null)
+        .with(session)
         .with(request).build();
   }
 
