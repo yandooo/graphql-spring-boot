@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FooBar {
-    private String foo;
-    private String bar;
+
+  private String foo;
+  private String bar;
 }

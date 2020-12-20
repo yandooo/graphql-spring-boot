@@ -1,5 +1,7 @@
 package com.graphql.spring.boot.test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,59 +9,58 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GraphQLTestSubscriptionTestBase {
 
-    protected static final String TIMER_SUBSCRIPTION_RESOURCE = "timer-subscription-resource.graphql";
-    protected static final String SUBSCRIPTION_WITH_PARAMETER_RESOURCE = "subscription-with-param-resource.graphql";
-    protected static final String SUBSCRIPTION_WITH_INIT_PAYLOAD_RESOURCE
-        = "subscription-with-init-payload-resource.graphql";
-    protected static final String SUBSCRIPTION_THAT_TIMES_OUT_RESOURCE
-        = "subscription-that-times-out-resource.graphql";
-    protected static final String SUBSCRIPTION_THAT_THROWS_EXCEPTION
-        = "subscription-that-throws-exception-resource.graphql";
-    protected static final String DATA_TIMER_FIELD = "$.data.timer";
-    protected static final String DATA_SUBSCRIPTION_WITH_PARAMETER_FIELD = "$.data.subscriptionWithParameter";
-    protected static final String DATA_SUBSCRIPTION_WITH_INIT_PAYLOAD_FIELD = "$.data.subscriptionWithInitPayload";
-    protected static final int TIMEOUT = 2000;
+  protected static final String TIMER_SUBSCRIPTION_RESOURCE = "timer-subscription-resource.graphql";
+  protected static final String SUBSCRIPTION_WITH_PARAMETER_RESOURCE = "subscription-with-param-resource.graphql";
+  protected static final String SUBSCRIPTION_WITH_INIT_PAYLOAD_RESOURCE
+      = "subscription-with-init-payload-resource.graphql";
+  protected static final String SUBSCRIPTION_THAT_TIMES_OUT_RESOURCE
+      = "subscription-that-times-out-resource.graphql";
+  protected static final String SUBSCRIPTION_THAT_THROWS_EXCEPTION
+      = "subscription-that-throws-exception-resource.graphql";
+  protected static final String DATA_TIMER_FIELD = "$.data.timer";
+  protected static final String DATA_SUBSCRIPTION_WITH_PARAMETER_FIELD = "$.data.subscriptionWithParameter";
+  protected static final String DATA_SUBSCRIPTION_WITH_INIT_PAYLOAD_FIELD = "$.data.subscriptionWithInitPayload";
+  protected static final int TIMEOUT = 2000;
 
-    @Autowired
-    protected Environment environment;
+  @Autowired
+  protected Environment environment;
 
-    @Autowired
-    protected ObjectMapper objectMapper;
+  @Autowired
+  protected ObjectMapper objectMapper;
 
-    protected GraphQLTestSubscription graphQLTestSubscription;
+  protected GraphQLTestSubscription graphQLTestSubscription;
 
-    @BeforeEach
-    protected void setUp() {
-        graphQLTestSubscription = new GraphQLTestSubscription(environment, objectMapper, "subscriptions");
+  @BeforeEach
+  protected void setUp() {
+    graphQLTestSubscription = new GraphQLTestSubscription(environment, objectMapper,
+        "subscriptions");
+  }
+
+  @AfterEach
+  protected void tearDown() {
+    graphQLTestSubscription.reset();
+  }
+
+  protected void assertThatSubscriptionStoppedStatusIs(boolean isStopped) {
+    if (isStopped) {
+      assertThatSubscriptionWasStopped();
+    } else {
+      assertThatSubscriptionWasNotStopped();
     }
+  }
 
-    @AfterEach
-    protected void tearDown() {
-        graphQLTestSubscription.reset();
-    }
+  protected void assertThatSubscriptionWasStopped() {
+    assertThat(graphQLTestSubscription.isStopped())
+        .as("Subscription should be stopped.")
+        .isTrue();
+  }
 
-    protected void assertThatSubscriptionStoppedStatusIs(boolean isStopped) {
-        if (isStopped) {
-            assertThatSubscriptionWasStopped();
-        } else {
-            assertThatSubscriptionWasNotStopped();
-        }
-    }
-
-    protected void assertThatSubscriptionWasStopped() {
-        assertThat(graphQLTestSubscription.isStopped())
-            .as("Subscription should be stopped.")
-            .isTrue();
-    }
-
-    protected void assertThatSubscriptionWasNotStopped() {
-        assertThat(graphQLTestSubscription.isStopped())
-            .as("Subscription should not be stopped.")
-            .isFalse();
-    }
+  protected void assertThatSubscriptionWasNotStopped() {
+    assertThat(graphQLTestSubscription.isStopped())
+        .as("Subscription should not be stopped.")
+        .isFalse();
+  }
 }

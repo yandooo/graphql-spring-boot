@@ -1,16 +1,17 @@
 {
   "data": {
-      "externalList": [
-        {
-          "fooList": [
-              "foo1", "foo2"
-          ]
-        },
-        {
-          "fooList": [
-              "foo3"
-          ]
-        }
-      ]
+    "externalList": [
+      {
+        "fooList": [
+          "foo1",
+          "foo2"
+        ]
+      },
+      {
+        "fooList": [
+          "foo3"
+        ]
+      }
+    ]
   }
 }

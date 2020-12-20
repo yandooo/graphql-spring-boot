@@ -9,15 +9,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class GraphQLFieldAssertTestBase {
 
-    protected static final String MOCK_PATH = "test.path";
-    protected static final String NON_NULL_VALUE = "non-null";
+  protected static final String MOCK_PATH = "test.path";
+  protected static final String NON_NULL_VALUE = "non-null";
 
-    @Mock
-    protected GraphQLResponse graphQLResponse;
+  @Mock
+  protected GraphQLResponse graphQLResponse;
 
-    @Data
-    @AllArgsConstructor
-    protected static class Foo {
-        private String bar;
-    }
+  @Data
+  @AllArgsConstructor
+  protected static class Foo {
+
+    private String bar;
+  }
 }

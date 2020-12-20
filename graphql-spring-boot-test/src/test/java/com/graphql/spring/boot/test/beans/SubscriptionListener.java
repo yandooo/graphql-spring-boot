@@ -13,19 +13,21 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SubscriptionListener implements ApolloSubscriptionConnectionListener {
 
-    private final ObjectMapper objectMapper;
+  private final ObjectMapper objectMapper;
 
-    @Getter
-    private String expectedConnectionInitParamValue;
+  @Getter
+  private String expectedConnectionInitParamValue;
 
-    @Override
-    public void onConnect(final SubscriptionSession session, final OperationMessage message) {
-        final InitPayload initPayload = objectMapper.convertValue(message.getPayload(), InitPayload.class);
-        expectedConnectionInitParamValue = initPayload.getInitParamValue();
-    }
+  @Override
+  public void onConnect(final SubscriptionSession session, final OperationMessage message) {
+    final InitPayload initPayload = objectMapper
+        .convertValue(message.getPayload(), InitPayload.class);
+    expectedConnectionInitParamValue = initPayload.getInitParamValue();
+  }
 
-    @Data
-    private static class InitPayload {
-        private String initParamValue;
-    }
+  @Data
+  private static class InitPayload {
+
+    private String initParamValue;
+  }
 }

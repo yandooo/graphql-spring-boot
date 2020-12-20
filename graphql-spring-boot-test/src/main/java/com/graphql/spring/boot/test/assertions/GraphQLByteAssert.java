@@ -6,15 +6,15 @@ import org.assertj.core.api.AbstractByteAssert;
 public class GraphQLByteAssert extends AbstractByteAssert<GraphQLByteAssert>
     implements GraphQLResponseAssertion {
 
-    private final GraphQLResponse graphQlResponse;
+  private final GraphQLResponse graphQlResponse;
 
-    public GraphQLByteAssert(final GraphQLResponse graphQLResponse, final Byte actual) {
-        super(actual, GraphQLByteAssert.class);
-        this.graphQlResponse = graphQLResponse;
-    }
+  public GraphQLByteAssert(final GraphQLResponse graphQLResponse, final Byte actual) {
+    super(actual, GraphQLByteAssert.class);
+    this.graphQlResponse = graphQLResponse;
+  }
 
-    @Override
-    public GraphQLResponse and() {
-        return graphQlResponse;
-    }
+  @Override
+  public GraphQLResponse and() {
+    return graphQlResponse;
+  }
 }

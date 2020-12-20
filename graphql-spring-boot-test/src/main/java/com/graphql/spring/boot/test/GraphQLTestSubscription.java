@@ -53,16 +53,14 @@ public class GraphQLTestSubscription {
   private static final AtomicInteger ID_COUNTER = new AtomicInteger(1);
   private static final UriBuilderFactory URI_BUILDER_FACTORY = new DefaultUriBuilderFactory();
   private static final Object STATE_LOCK = new Object();
-
+  private final Environment environment;
+  private final ObjectMapper objectMapper;
+  private final String subscriptionPath;
   @Getter
   private Session session;
   private SubscriptionState state = SubscriptionState.builder()
       .id(ID_COUNTER.incrementAndGet())
       .build();
-
-  private final Environment environment;
-  private final ObjectMapper objectMapper;
-  private final String subscriptionPath;
 
   public boolean isInitialized() {
     return state.isInitialized();

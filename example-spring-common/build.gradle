@@ -19,7 +19,7 @@
 
 apply plugin: 'org.springframework.boot'
 
-dependencies{
+dependencies {
     implementation(project(":graphql-spring-boot-starter"))
     implementation(project(":graphiql-spring-boot-starter"))
 

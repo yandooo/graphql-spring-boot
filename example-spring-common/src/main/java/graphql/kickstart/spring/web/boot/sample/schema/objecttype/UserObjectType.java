@@ -19,11 +19,11 @@
 
 package graphql.kickstart.spring.web.boot.sample.schema.objecttype;
 
-import graphql.kickstart.spring.web.boot.sample.schema.TodoSchema;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLField;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLIgnore;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLIn;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLObject;
+import graphql.kickstart.spring.web.boot.sample.schema.TodoSchema;
 import graphql.schema.DataFetchingEnvironment;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -33,27 +33,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 @GraphQLObject("User")
 public class UserObjectType extends BaseObjectType {
 
-    @Autowired
-    @GraphQLIgnore
-    private TodoSchema todoSchema;
+  @Autowired
+  @GraphQLIgnore
+  private TodoSchema todoSchema;
 
-    private String name = "someId";
+  private String name = "someId";
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    @GraphQLField
-    public TodoObjectType.TodoConnectionObjectType todos(@GraphQLIn("before") String before,
-                                                         @GraphQLIn("after") String after,
-                                                         @GraphQLIn(value = "first", defaultSpel = "1") Integer first,
-                                                         @GraphQLIn(value = "last", defaultProvider = "1") Integer last,
-                                                         DataFetchingEnvironment environment) {
-        return todoSchema.getSimpleConnectionTodo().get(environment);
-    }
+  @GraphQLField
+  public TodoObjectType.TodoConnectionObjectType todos(@GraphQLIn("before") String before,
+      @GraphQLIn("after") String after,
+      @GraphQLIn(value = "first", defaultSpel = "1") Integer first,
+      @GraphQLIn(value = "last", defaultProvider = "1") Integer last,
+      DataFetchingEnvironment environment) {
+    return todoSchema.getSimpleConnectionTodo().get(environment);
+  }
 
 }

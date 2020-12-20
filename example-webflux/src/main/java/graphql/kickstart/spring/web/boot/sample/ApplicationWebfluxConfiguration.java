@@ -34,21 +34,21 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 @EnableWebFlux
 public class ApplicationWebfluxConfiguration {
 
-    public static void main(String[] args) {
-        SpringApplication.run(ApplicationWebfluxConfiguration.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(ApplicationWebfluxConfiguration.class, args);
+  }
 
-    @Bean
-    GraphQLSchema schema() {
-        return GraphQLSchema.newSchema()
-            .query(GraphQLObjectType.newObject()
-                .name("query")
-                .field(field -> field
-                    .name("test")
-                    .type(Scalars.GraphQLString)
-                    .dataFetcher(environment -> "response")
-                )
-                .build())
-            .build();
-    }
+  @Bean
+  GraphQLSchema schema() {
+    return GraphQLSchema.newSchema()
+        .query(GraphQLObjectType.newObject()
+            .name("query")
+            .field(field -> field
+                .name("test")
+                .type(Scalars.GraphQLString)
+                .dataFetcher(environment -> "response")
+            )
+            .build())
+        .build();
+  }
 }

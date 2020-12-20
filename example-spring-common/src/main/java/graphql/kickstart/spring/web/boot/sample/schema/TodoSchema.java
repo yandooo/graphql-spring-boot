@@ -123,21 +123,6 @@ public class TodoSchema {
     return simpleConnectionTodo;
   }
 
-  public static class AddTodoIn {
-
-    private String text;
-
-    public String getText() {
-      return text;
-    }
-
-    public void setText(String text) {
-      this.text = text;
-    }
-  }
-
-  // --- mutations
-
   @GraphQLMutation
   @GraphQLDescription("Mutation to add new todo item")
   public
@@ -155,6 +140,8 @@ public class TodoSchema {
     return todoEdgeObjectType;
   }
 
+  // --- mutations
+
   @GraphQLMutation
   public
   @GraphQLOut("filename")
@@ -166,6 +153,19 @@ public class TodoSchema {
   @GraphQLMutation
   public String updateTodoMutation(@GraphQLIn("updateTodoInput") String newText) {
     return "Simple output string";
+  }
+
+  public static class AddTodoIn {
+
+    private String text;
+
+    public String getText() {
+      return text;
+    }
+
+    public void setText(String text) {
+      this.text = text;
+    }
   }
 
 }

@@ -19,7 +19,6 @@
 
 package graphql.kickstart.spring.web.boot.sample.schema.objecttype;
 
-import graphql.kickstart.spring.web.boot.sample.schema.TodoSchema;
 import com.oembedler.moon.graphql.engine.relay.RelayNode;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLDescription;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLField;
@@ -28,6 +27,7 @@ import com.oembedler.moon.graphql.engine.stereotype.GraphQLIgnore;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLIn;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLNonNull;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLObject;
+import graphql.kickstart.spring.web.boot.sample.schema.TodoSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -36,22 +36,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 @GraphQLObject("Root")
 public class RootObjectType {
 
-    @GraphQLNonNull
-    @GraphQLField("version")
-    @GraphQLDescription("Root query version number")
-    public static final String VERSION = "0.9.0.2";
+  @GraphQLNonNull
+  @GraphQLField("version")
+  @GraphQLDescription("Root query version number")
+  public static final String VERSION = "0.9.0.2";
 
-    @Autowired
-    @GraphQLIgnore
-    private TodoSchema todoSchema;
+  @Autowired
+  @GraphQLIgnore
+  private TodoSchema todoSchema;
 
-    @GraphQLField
-    public UserObjectType viewer() {
-        return todoSchema.getTheOnlyUser();
-    }
+  @GraphQLField
+  public UserObjectType viewer() {
+    return todoSchema.getTheOnlyUser();
+  }
 
-    @GraphQLField
-    public RelayNode node(@GraphQLID @GraphQLNonNull @GraphQLIn("id") final String id) {
-        return new UserObjectType();
-    }
+  @GraphQLField
+  public RelayNode node(@GraphQLID @GraphQLNonNull @GraphQLIn("id") final String id) {
+    return new UserObjectType();
+  }
 }

@@ -48,7 +48,7 @@ subprojects {
     apply plugin: "io.spring.dependency-management"
     apply plugin: 'com.jfrog.artifactory'
 
-    group  "$PROJECT_GROUP"
+    group "$PROJECT_GROUP"
 
     repositories {
         mavenLocal()

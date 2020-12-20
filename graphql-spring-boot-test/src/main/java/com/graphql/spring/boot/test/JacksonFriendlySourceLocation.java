@@ -10,12 +10,12 @@ import org.springframework.lang.Nullable;
  */
 public class JacksonFriendlySourceLocation extends SourceLocation {
 
-    @JsonCreator
-    public JacksonFriendlySourceLocation(
-        final @JsonProperty("line") int line,
-        final @JsonProperty("column") int column,
-        final @Nullable @JsonProperty("sourceName") String sourceName
-    ) {
-        super(line, column, sourceName);
-    }
+  @JsonCreator
+  public JacksonFriendlySourceLocation(
+      final @JsonProperty("line") int line,
+      final @JsonProperty("column") int column,
+      final @Nullable @JsonProperty("sourceName") String sourceName
+  ) {
+    super(line, column, sourceName);
+  }
 }

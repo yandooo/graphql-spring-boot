@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class GraphQLToolsSampleApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(GraphQLToolsSampleApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(GraphQLToolsSampleApplication.class, args);
+  }
 
 }

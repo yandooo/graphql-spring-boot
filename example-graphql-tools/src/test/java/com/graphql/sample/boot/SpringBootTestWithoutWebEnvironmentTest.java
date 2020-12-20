@@ -11,9 +11,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @Disabled
 public class SpringBootTestWithoutWebEnvironmentTest {
 
-    @Test
-    public void loads_without_complaining_about_missing_ServerContainer() {
+  @Test
+  public void loads_without_complaining_about_missing_ServerContainer() {
 
-    }
+  }
 
 }

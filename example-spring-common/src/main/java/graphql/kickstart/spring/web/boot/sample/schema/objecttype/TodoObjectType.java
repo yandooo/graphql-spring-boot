@@ -29,31 +29,35 @@ import com.oembedler.moon.graphql.engine.stereotype.GraphQLObject;
  */
 @GraphQLObject("Todo")
 public class TodoObjectType extends BaseObjectType {
-    private String text;
-    private boolean complete;
 
-    public String getText() {
-        return text;
-    }
+  private String text;
+  private boolean complete;
 
-    public void setText(String text) {
-        this.text = text;
-    }
+  public String getText() {
+    return text;
+  }
 
-    public boolean isComplete() {
-        return complete;
-    }
+  public void setText(String text) {
+    this.text = text;
+  }
 
-    public void setComplete(boolean complete) {
-        this.complete = complete;
-    }
+  public boolean isComplete() {
+    return complete;
+  }
 
-    @GraphQLObject
-    public static class TodoConnectionObjectType extends ConnectionObjectType<TodoEdgeObjectType, PageInfoObjectType> {
-    }
+  public void setComplete(boolean complete) {
+    this.complete = complete;
+  }
 
-    @GraphQLObject
-    public static class TodoEdgeObjectType extends EdgeObjectType<TodoObjectType> {
-    }
+  @GraphQLObject
+  public static class TodoConnectionObjectType extends
+      ConnectionObjectType<TodoEdgeObjectType, PageInfoObjectType> {
+
+  }
+
+  @GraphQLObject
+  public static class TodoEdgeObjectType extends EdgeObjectType<TodoObjectType> {
+
+  }
 
 }
