@@ -108,12 +108,8 @@ public class GraphQLWebAutoConfiguration {
   @Bean
   public GraphQLErrorStartupListener graphQLErrorStartupListener(
       @Autowired(required = false) GraphQLErrorHandler errorHandler) {
-    return new GraphQLErrorStartupListener(toErrorHandlerSupplier(errorHandler),
+    return new GraphQLErrorStartupListener(new ErrorHandlerSupplier(errorHandler),
         graphQLServletProperties.isExceptionHandlersEnabled());
-  }
-
-  private ErrorHandlerSupplier toErrorHandlerSupplier(GraphQLErrorHandler errorHandler) {
-    return new ErrorHandlerSupplier(errorHandler);
   }
 
   @Bean
@@ -265,7 +261,9 @@ public class GraphQLWebAutoConfiguration {
       @Autowired(required = false) GraphQLErrorHandler errorHandler) {
     GraphQLObjectMapper.Builder builder = newBuilder();
 
-    builder.withGraphQLErrorHandler(toErrorHandlerSupplier(errorHandler));
+    if (errorHandler != null) {
+      builder.withGraphQLErrorHandler(new ErrorHandlerSupplier(errorHandler));
+    }
 
     ObjectMapperProvider objectMapperProvider = objectMapperProviderObjectProvider.getIfAvailable();
 
