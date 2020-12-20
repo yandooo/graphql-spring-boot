@@ -1,5 +1,6 @@
 package graphql.kickstart.spring.web.boot.test.web;
 
+import static graphql.Scalars.GraphQLString;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import graphql.analysis.MaxQueryComplexityInstrumentation;
@@ -12,6 +13,7 @@ import graphql.kickstart.servlet.config.DefaultGraphQLSchemaServletProvider;
 import graphql.kickstart.servlet.config.GraphQLSchemaServletProvider;
 import graphql.kickstart.spring.web.boot.GraphQLWebAutoConfiguration;
 import graphql.kickstart.spring.web.boot.test.AbstractAutoConfigurationTest;
+import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
 import org.junit.jupiter.api.Test;
@@ -25,7 +27,11 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 public class GraphQLWebAutoConfigurationTest extends AbstractAutoConfigurationTest {
 
   private static final GraphQLSchema SCHEMA = GraphQLSchema.newSchema()
-      .query(GraphQLObjectType.newObject().name("Query").build()).build();
+      .query(GraphQLObjectType.newObject().name("Query").field(
+          GraphQLFieldDefinition.newFieldDefinition()
+              .name("echo")
+              .type(GraphQLString)
+              .build()).build()).build();
 
   public GraphQLWebAutoConfigurationTest() {
     super(AnnotationConfigWebApplicationContext.class, GraphQLWebAutoConfiguration.class);

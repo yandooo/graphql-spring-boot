@@ -1,5 +1,6 @@
 package graphql.kickstart.spring.web.boot.test.instrumentation;
 
+import static graphql.Scalars.GraphQLString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -11,7 +12,9 @@ import graphql.kickstart.spring.web.boot.GraphQLInstrumentationAutoConfiguration
 import graphql.kickstart.spring.web.boot.metrics.MetricsInstrumentation;
 import graphql.kickstart.spring.web.boot.metrics.TracingNoResolversInstrumentation;
 import graphql.kickstart.spring.web.boot.test.AbstractAutoConfigurationTest;
+import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLObjectType;
+import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -132,7 +135,16 @@ class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoConfigurat
 
     @Bean
     GraphQLSchema schema() {
-      return GraphQLSchema.newSchema().query(GraphQLObjectType.newObject().name("Query").build())
+      return GraphQLSchema.newSchema()
+          .query(
+              GraphQLObjectType.newObject()
+                  .name("Query")
+                  .field(
+                      GraphQLFieldDefinition.newFieldDefinition()
+                          .name("echo")
+                          .type(GraphQLString)
+                          .build()
+                  ).build())
           .build();
     }
 
