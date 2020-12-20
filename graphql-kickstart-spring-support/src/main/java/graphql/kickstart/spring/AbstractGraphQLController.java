@@ -36,17 +36,6 @@ public abstract class AbstractGraphQLController {
 
     body = Optional.ofNullable(body).orElse("");
 
-    // https://graphql.org/learn/serving-over-http/#post-request
-    //
-    // A standard GraphQL POST request should use the application/json content type,
-    // and include a JSON-encoded body of the following form:
-    //
-    // {
-    //   "query": "...",
-    //   "operationName": "...",
-    //   "variables": { "myVariable": "someValue", ... }
-    // }
-
     if (MediaType.APPLICATION_JSON.isCompatibleWith(contentType)) {
       GraphQLRequest request = objectMapper.readGraphQLRequest(body);
       if (request.getQuery() == null) {
@@ -84,25 +73,6 @@ public abstract class AbstractGraphQLController {
       @Nullable @RequestParam(value = "operationName", required = false) String operationName,
       @Nullable @RequestParam(value = "variables", required = false) String variablesJson,
       ServerWebExchange serverWebExchange) {
-
-    // https://graphql.org/learn/serving-over-http/#get-request
-    //
-    // When receiving an HTTP GET request, the GraphQL query should be specified in the "query" query string.
-    // For example, if we wanted to execute the following GraphQL query:
-    //
-    // {
-    //   me {
-    //     name
-    //   }
-    // }
-    //
-    // This request could be sent via an HTTP GET like so:
-    //
-    // http://myapi/graphql?query={me{name}}
-    //
-    // Query variables can be sent as a JSON-encoded string in an additional query parameter called "variables".
-    // If the query contains several named operations,
-    // an "operationName" query parameter can be used to control which one should be executed.
 
     return executeRequest(query, operationName, convertVariablesJson(variablesJson),
         serverWebExchange);

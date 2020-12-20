@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 @DisplayName("Testing mutation resolver registration")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"test", "mutation-test"})
-public class GraphQLAnnotationsMutationTest {
+class GraphQLAnnotationsMutationTest {
 
   @Autowired
   private GraphQLTestTemplate graphQLTestTemplate;

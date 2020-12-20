@@ -9,11 +9,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContextException;
 
 @DisplayName("Test exception if multiple mutation resolvers are defined.")
-public class GraphQLAnnotationsErrorMultipleMutationResolvers {
+class GraphQLAnnotationsMultipleMutationResolversTest {
 
   @Test
   @DisplayName("Assert that MultipleMutationResolversException is thrown when multiple mutation resolvers are found.")
-  public void testMultipleMutationResolversExceptionIsThrown() {
+  void testMultipleMutationResolversExceptionIsThrown() {
     // GIVEN
     final SpringApplication app = new SpringApplication(TestApplication.class);
     app.setAdditionalProfiles("test", "test-multiple-mutation-resolvers-exception");

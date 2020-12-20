@@ -15,14 +15,17 @@ public class ReactiveWebSocketSubscriptionSession extends DefaultSubscriptionSes
     this.webSocketSession = webSocketSession;
   }
 
+  @Override
   public boolean isOpen() {
     return true;
   }
 
+  @Override
   public Map<String, Object> getUserProperties() {
     return webSocketSession.getAttributes();
   }
 
+  @Override
   public String getId() {
     return webSocketSession.getId();
   }

@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 /**
@@ -38,8 +39,9 @@ class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoConfigurat
   void noDefaultInstrumentations() {
     load(DefaultConfiguration.class);
 
+    AbstractApplicationContext context = getContext();
     assertThatExceptionOfType(NoSuchBeanDefinitionException.class)
-        .isThrownBy(() -> this.getContext().getBean(Instrumentation.class));
+        .isThrownBy(() -> context.getBean(Instrumentation.class));
   }
 
   @Test
@@ -68,9 +70,10 @@ class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoConfigurat
     load(DefaultConfiguration.class, "graphql.servlet.tracing-enabled=true",
         "graphql.servlet.actuator-metrics=true");
 
+    AbstractApplicationContext context = getContext();
     assertThat(this.getContext().getBean(MetricsInstrumentation.class)).isNotNull();
     assertThatExceptionOfType(NoSuchBeanDefinitionException.class)
-        .isThrownBy(() -> this.getContext().getBean(TracingNoResolversInstrumentation.class));
+        .isThrownBy(() -> context.getBean(TracingNoResolversInstrumentation.class));
   }
 
   @Test
@@ -104,9 +107,10 @@ class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoConfigurat
     load(DefaultConfiguration.class, "graphql.servlet.tracing-enabled=true",
         "graphql.servlet.actuator-metrics=false");
 
+    AbstractApplicationContext context = getContext();
     assertThat(this.getContext().getBean(TracingInstrumentation.class)).isNotNull();
     assertThatExceptionOfType(NoSuchBeanDefinitionException.class)
-        .isThrownBy(() -> this.getContext().getBean(MetricsInstrumentation.class));
+        .isThrownBy(() -> context.getBean(MetricsInstrumentation.class));
   }
 
   @Test
@@ -114,20 +118,22 @@ class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoConfigurat
     load(DefaultConfiguration.class, "graphql.servlet.tracing-enabled=false",
         "graphql.servlet.actuator-metrics=false");
 
+    AbstractApplicationContext context = getContext();
     assertThatExceptionOfType(NoSuchBeanDefinitionException.class)
-        .isThrownBy(() -> this.getContext().getBean(MetricsInstrumentation.class));
+        .isThrownBy(() -> context.getBean(MetricsInstrumentation.class));
     assertThatExceptionOfType(NoSuchBeanDefinitionException.class)
-        .isThrownBy(() -> this.getContext().getBean(TracingNoResolversInstrumentation.class));
+        .isThrownBy(() -> context.getBean(TracingNoResolversInstrumentation.class));
     assertThatExceptionOfType(NoSuchBeanDefinitionException.class)
-        .isThrownBy(() -> this.getContext().getBean(TracingInstrumentation.class));
+        .isThrownBy(() -> context.getBean(TracingInstrumentation.class));
   }
 
   @Test
   void actuatorMetricsDisabled() {
     load(DefaultConfiguration.class, "graphql.servlet.actuator-metrics=false");
 
+    AbstractApplicationContext context = getContext();
     assertThatExceptionOfType(NoSuchBeanDefinitionException.class)
-        .isThrownBy(() -> this.getContext().getBean(MetricsInstrumentation.class));
+        .isThrownBy(() -> context.getBean(MetricsInstrumentation.class));
   }
 
   @Configuration

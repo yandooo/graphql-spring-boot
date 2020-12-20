@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class ServletGraphiQLController extends GraphiQLController {
 
+  @Override
   @PostConstruct
   public void onceConstructed() throws IOException {
     super.onceConstructed();

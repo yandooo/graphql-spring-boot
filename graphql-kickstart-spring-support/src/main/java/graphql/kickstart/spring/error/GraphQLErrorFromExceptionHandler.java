@@ -22,12 +22,13 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 class GraphQLErrorFromExceptionHandler extends DefaultGraphQLErrorHandler {
 
-  private List<GraphQLErrorFactory> factories;
+  private final List<GraphQLErrorFactory> factories;
 
   GraphQLErrorFromExceptionHandler(List<GraphQLErrorFactory> factories) {
     this.factories = factories;
   }
 
+  @Override
   protected List<GraphQLError> filterGraphQLErrors(List<GraphQLError> errors) {
     return errors.stream().map(this::transform).flatMap(Collection::stream)
         .collect(Collectors.toList());

@@ -13,20 +13,20 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(properties = {"graphql.servlet.mapping=/test",
     "graphql.servlet.contextSetting=PER_REQUEST_WITH_INSTRUMENTATION"})
-public class GraphQLServletPropertiesTest {
+class GraphQLServletPropertiesTest {
 
   @Autowired
   private GraphQLServletProperties properties;
 
   @Test
-  public void contains_custom_servlet_endpoint() {
+  void contains_custom_servlet_endpoint() {
     String mapping = properties.getMapping();
     assertNotNull(mapping);
     assertThat(mapping).isEqualTo("/test");
   }
 
   @Test
-  public void containsCorrectContextSetting() {
+  void containsCorrectContextSetting() {
     ContextSetting contextSetting = properties.getContextSetting();
     assertThat(contextSetting).isEqualTo(ContextSetting.PER_REQUEST_WITH_INSTRUMENTATION);
   }

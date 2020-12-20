@@ -9,7 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContextException;
 
 @DisplayName("Test exception if no query resolver defined.")
-public class GraphQLAnnotationsErrorMissingQueryResolver {
+class GraphQLAnnotationsErrorMissingQueryResolverTest {
 
   @Test
   @DisplayName("Assert that MissingQueryResolverException is throw if no GraphQLQueryResolver classes are found.")

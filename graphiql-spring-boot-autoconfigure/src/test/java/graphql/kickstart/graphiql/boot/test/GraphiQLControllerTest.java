@@ -10,31 +10,33 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 /**
  * @author Andrew Potter
  */
-public class GraphiQLControllerTest extends AbstractAutoConfigurationTest {
+class GraphiQLControllerTest extends AbstractAutoConfigurationTest {
 
   public GraphiQLControllerTest() {
     super(AnnotationConfigWebApplicationContext.class, GraphiQLAutoConfiguration.class);
   }
 
   @Test
-  public void graphiqlLoads() {
+  void graphiqlLoads() {
     load(EnabledConfiguration.class);
 
     assertThat(this.getContext().getBean(GraphiQLController.class)).isNotNull();
   }
 
   @Test
-  public void graphiqlDoesNotLoad() {
+  void graphiqlDoesNotLoad() {
     load(DisabledConfiguration.class);
 
+    AbstractApplicationContext context = getContext();
     assertThatExceptionOfType(NoSuchBeanDefinitionException.class)
-        .isThrownBy(() -> this.getContext().getBean(GraphiQLController.class));
+        .isThrownBy(() -> context.getBean(GraphiQLController.class));
   }
 
   @Configuration

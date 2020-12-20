@@ -1,11 +1,12 @@
 package graphql.servlet.examples.dataloader.requestscope;
 
+import static java.util.concurrent.CompletableFuture.supplyAsync;
+
 import graphql.kickstart.execution.context.DefaultGraphQLContext;
 import graphql.kickstart.execution.context.GraphQLContext;
 import graphql.kickstart.servlet.context.DefaultGraphQLServletContext;
 import graphql.kickstart.servlet.context.DefaultGraphQLWebSocketContext;
 import graphql.kickstart.servlet.context.GraphQLServletContextBuilder;
-import java.util.concurrent.CompletableFuture;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.websocket.Session;
@@ -44,10 +45,10 @@ public class CustomGraphQLContextBuilder implements GraphQLServletContextBuilder
 
   private DataLoaderRegistry buildDataLoaderRegistry() {
     DataLoaderRegistry dataLoaderRegistry = new DataLoaderRegistry();
-    dataLoaderRegistry.register("customerDataLoader",
-        new DataLoader<Integer, String>(customerIds ->
-            CompletableFuture.supplyAsync(() ->
-                customerRepository.getUserNamesForIds(customerIds))));
+    DataLoader<Integer, String> customerLoader = new DataLoader<>(
+        customerIds -> supplyAsync(() -> customerRepository.getUserNamesForIds(customerIds))
+    );
+    dataLoaderRegistry.register("customerDataLoader", customerLoader);
     return dataLoaderRegistry;
   }
 }

@@ -35,7 +35,7 @@ public class ReactiveWebSocketSubscriptionsHandler implements WebSocketHandler {
     Mono<Void> input = webSocketSession.receive()
         .map(WebSocketMessage::getPayloadAsText)
         .doOnNext(consumer)
-        .doFinally((type) -> subscriptionSession.close(null))
+        .doFinally(type -> subscriptionSession.close(null))
         .then();
 
     Mono<Void> sender = webSocketSession.send(

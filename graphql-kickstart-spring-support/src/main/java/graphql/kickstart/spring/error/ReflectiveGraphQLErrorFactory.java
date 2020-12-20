@@ -16,9 +16,9 @@ class ReflectiveGraphQLErrorFactory implements GraphQLErrorFactory {
 
   private final boolean singularReturnType;
   private final boolean withErrorContext;
-  private Object object;
-  private Method method;
-  private Throwables throwables;
+  private final Object object;
+  private final Method method;
+  private final Throwables throwables;
 
   ReflectiveGraphQLErrorFactory(Object object, Method method) {
     this.object = object;

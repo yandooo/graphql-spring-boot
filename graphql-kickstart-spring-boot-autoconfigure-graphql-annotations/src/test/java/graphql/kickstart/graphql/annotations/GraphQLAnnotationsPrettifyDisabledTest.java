@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 @DisplayName("Test prettify settings (disabled)")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"test", "prettify-disabled-test"})
-public class GraphQLAnnotationsPrettifyDisabledTest {
+class GraphQLAnnotationsPrettifyDisabledTest {
 
   @Autowired
   private GraphQLTestTemplate graphQLTestTemplate;

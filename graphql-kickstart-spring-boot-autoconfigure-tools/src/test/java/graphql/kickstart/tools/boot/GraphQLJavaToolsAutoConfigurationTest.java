@@ -12,21 +12,21 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
  */
-public class GraphQLJavaToolsAutoConfigurationTest extends AbstractAutoConfigurationTest {
+class GraphQLJavaToolsAutoConfigurationTest extends AbstractAutoConfigurationTest {
 
   public GraphQLJavaToolsAutoConfigurationTest() {
     super(GraphQLJavaToolsAutoConfiguration.class);
   }
 
   @Test
-  public void appContextLoads() {
+  void appContextLoads() {
     load(BaseConfiguration.class);
 
     assertThat(this.getContext().getBean(GraphQLSchema.class)).isNotNull();
   }
 
   @Test
-  public void schemaWithInterfaceLoads() {
+  void schemaWithInterfaceLoads() {
     load(InterfaceConfiguration.class);
 
     assertThat(this.getContext().getBean(GraphQLSchema.class)).isNotNull();

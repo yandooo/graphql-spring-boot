@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 @DisplayName("Testing custom type function registration")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"test", "custom-type-function-test"})
-public class GraphQLAnnotationsCustomTypeFunctionTest {
+class GraphQLAnnotationsCustomTypeFunctionTest {
 
   @Autowired
   private GraphQLTestTemplate graphQLTestTemplate;

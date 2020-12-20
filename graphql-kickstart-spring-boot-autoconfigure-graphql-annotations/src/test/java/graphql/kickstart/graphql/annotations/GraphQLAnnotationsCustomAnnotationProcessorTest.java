@@ -13,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 @DisplayName("Testing custom annotation processor configuration")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"test", "custom-annotation-processor-test"})
-public class GraphQLAnnotationsCustomAnnotationProcessorTest {
+class GraphQLAnnotationsCustomAnnotationProcessorTest {
 
   @SpyBean
   private CustomAnnotationProcessor customAnnotationProcessor;

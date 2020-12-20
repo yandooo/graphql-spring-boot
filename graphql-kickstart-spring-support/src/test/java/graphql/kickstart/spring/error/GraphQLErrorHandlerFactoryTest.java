@@ -17,7 +17,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ExtendWith(MockitoExtension.class)
-public class GraphQLErrorHandlerFactoryTest {
+class GraphQLErrorHandlerFactoryTest {
 
   @Mock
   private ConfigurableApplicationContext applicationContext;
@@ -37,7 +37,7 @@ public class GraphQLErrorHandlerFactoryTest {
   }
 
   @Test
-  public void createFindsCollectionHandler() {
+  void createFindsCollectionHandler() {
     GraphQLErrorHandler handler = errorHandlerFactory.create(applicationContext, true);
     assertThat(handler).isInstanceOf(GraphQLErrorFromExceptionHandler.class);
     GraphQLErrorFromExceptionHandler errorHandler = (GraphQLErrorFromExceptionHandler) handler;

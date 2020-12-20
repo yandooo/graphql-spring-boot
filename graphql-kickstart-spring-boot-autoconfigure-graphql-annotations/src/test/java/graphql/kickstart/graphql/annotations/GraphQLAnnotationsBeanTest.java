@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"test", "query-test"})
-public class GraphQLAnnotationsBeanTest {
+class GraphQLAnnotationsBeanTest {
 
   @Autowired
   private ApplicationContext applicationContext;

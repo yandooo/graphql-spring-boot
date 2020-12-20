@@ -15,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 @DisplayName("Testing that custom scalar beans are properly registered.")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"test", "custom-scalar-test"})
-public class GraphQLAnnotationsCustomScalarTest {
+class GraphQLAnnotationsCustomScalarTest {
 
   @Autowired
   private GraphQLTestTemplate graphQLTestTemplate;

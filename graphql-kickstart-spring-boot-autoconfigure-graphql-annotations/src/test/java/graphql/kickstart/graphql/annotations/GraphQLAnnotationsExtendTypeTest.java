@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 @DisplayName("Test type extension registration")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"test", "extend-type-test"})
-public class GraphQLAnnotationsExtendTypeTest {
+class GraphQLAnnotationsExtendTypeTest {
 
   @Autowired
   private GraphQLTestTemplate graphQLTestTemplate;

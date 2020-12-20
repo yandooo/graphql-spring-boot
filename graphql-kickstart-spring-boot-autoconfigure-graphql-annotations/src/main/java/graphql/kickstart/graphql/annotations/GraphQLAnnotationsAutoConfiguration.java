@@ -133,7 +133,7 @@ public class GraphQLAnnotationsAutoConfiguration {
   ) {
     final Set<Class<?>> queryResolvers
         = getTypesAnnotatedWith(reflections, GraphQLQueryResolver.class);
-    if (queryResolvers.size() == 0) {
+    if (queryResolvers.isEmpty()) {
       throw new MissingQueryResolverException();
     }
     if (queryResolvers.size() > 1) {

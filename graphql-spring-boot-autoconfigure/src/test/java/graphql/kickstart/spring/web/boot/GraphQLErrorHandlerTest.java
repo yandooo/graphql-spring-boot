@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
-public class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
+class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
 
   private GraphQL gql;
   private GraphQLObjectMapper objectMapper;
@@ -39,7 +39,7 @@ public class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
   }
 
   @Test
-  public void illegalArgumentExceptionShouldBeHandledConcretely() {
+  void illegalArgumentExceptionShouldBeHandledConcretely() {
     TestUtils.assertGraphQLError(
         gql,
         "query { illegalArgumentException }",
@@ -50,7 +50,7 @@ public class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
   }
 
   @Test
-  public void illegalStateExceptionShouldBeHandledByCatchAll() {
+  void illegalStateExceptionShouldBeHandledByCatchAll() {
     TestUtils.assertGraphQLError(gql, "query { illegalStateException }",
         new ThrowableGraphQLError(new IllegalStateException("Illegal state"), "Catch all handler"),
         objectMapper);
@@ -59,7 +59,7 @@ public class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
   @Configuration
   static class BaseConfiguration {
 
-    public class Query implements GraphQLQueryResolver {
+    public static class Query implements GraphQLQueryResolver {
 
       boolean illegalArgumentException() {
         throw new IllegalArgumentException("Illegal argument");

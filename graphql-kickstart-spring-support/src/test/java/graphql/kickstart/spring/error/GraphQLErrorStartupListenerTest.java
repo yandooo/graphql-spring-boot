@@ -8,7 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
-public class GraphQLErrorStartupListenerTest {
+class GraphQLErrorStartupListenerTest {
 
   @Test
   void error_handler_is_not_overridden_when_present() {

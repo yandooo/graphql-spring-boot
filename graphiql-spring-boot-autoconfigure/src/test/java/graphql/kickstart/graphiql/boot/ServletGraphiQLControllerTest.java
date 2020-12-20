@@ -16,13 +16,13 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest
-public class ServletGraphiQLControllerTest {
+class ServletGraphiQLControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
 
   @Test
-  public void shouldBeAbleToAccessGraphiQL() throws Exception {
+  void shouldBeAbleToAccessGraphiQL() throws Exception {
     mockMvc.perform(get("/graphiql"))
         .andExpect(status().is2xxSuccessful())
         .andExpect(content().contentType("text/html; charset=UTF-8"));

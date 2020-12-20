@@ -13,13 +13,13 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 @ExtendWith(SpringExtension.class)
 @WebFluxTest
-public class ReactiveGraphiQLControllerTest {
+class ReactiveGraphiQLControllerTest {
 
   @Autowired
   private WebTestClient webTestClient;
 
   @Test
-  public void shouldBeAbleToAccessGraphiQL() {
+  void shouldBeAbleToAccessGraphiQL() {
     webTestClient.get()
         .uri("/graphiql")
         .exchange()

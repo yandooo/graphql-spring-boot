@@ -16,7 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 @DisplayName("Testing query resolver registration.")
 @ActiveProfiles({"test", "query-test"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = TestApplication.class)
-public class GraphQLAnnotationsQueryTest {
+class GraphQLAnnotationsQueryTest {
 
   @Autowired
   private GraphQLTestTemplate graphQLTestTemplate;

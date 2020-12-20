@@ -13,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 @DisplayName("Testing subscription resolver registration.")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"test", "subscription-test"})
-public class GraphQLAnnotationsSubscriptionTest {
+class GraphQLAnnotationsSubscriptionTest {
 
   @Autowired
   private GraphQLTestSubscription graphQLTestSubscription;

@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 @DisplayName("Testing directive registration")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"test", "directive-test"})
-public class GraphQLAnnotationsDirectiveTest {
+class GraphQLAnnotationsDirectiveTest {
 
   @Autowired
   private GraphQLTestTemplate graphQLTestTemplate;
