@@ -3,13 +3,3 @@ spring:
     name: graphql-subscription-example
 server:
   port: 9001
-
-graphql:
-  servlet:
-    subscriptions:
-      websocket:
-        path: /subscriptions
-
-graphiql:
-  cdn:
-    enabled: true

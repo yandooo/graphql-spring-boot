@@ -18,5 +18,5 @@ type StockPriceUpdate {
     dateTime : String
     stockCode : String
     stockPrice : Float
-    stockPriceChange : Float
+    stockPriceChange : Float!
 }

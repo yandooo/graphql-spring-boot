@@ -18,14 +18,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class StockTickerRxPublisher {
-
-  private static final Logger LOG = LoggerFactory.getLogger(StockTickerRxPublisher.class);
 
   private final Flowable<StockPriceUpdate> publisher;
 
@@ -57,7 +55,7 @@ public class StockTickerRxPublisher {
       try {
         emitter.onNext(stockPriceUpdate);
       } catch (RuntimeException e) {
-        LOG.error("Cannot send StockUpdate", e);
+        log.error("Cannot send StockUpdate", e);
       }
     }
   }

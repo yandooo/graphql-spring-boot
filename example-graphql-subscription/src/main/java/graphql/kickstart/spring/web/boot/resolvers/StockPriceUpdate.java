@@ -31,6 +31,6 @@ public class StockPriceUpdate {
     }
 
     public BigDecimal getStockPriceChange() {
-        return stockPriceChange;
+        return null; //stockPriceChange;
     }
 }
