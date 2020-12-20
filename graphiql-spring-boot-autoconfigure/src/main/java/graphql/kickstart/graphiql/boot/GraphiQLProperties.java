@@ -8,25 +8,19 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 class GraphiQLProperties {
 
   private Endpoint endpoint = new Endpoint();
-  private Static STATIC = new Static();
   private CodeMirror codeMirror = new CodeMirror();
   private Props props = new Props();
   private String pageTitle = "GraphiQL";
   private String mapping = "/graphiql";
   private Subscriptions subscriptions = new Subscriptions();
   private Cdn cdn = new Cdn();
+  private String basePath = "/";
 
   @Data
   static class Endpoint {
 
     private String graphql = "/graphql";
     private String subscriptions = "/subscriptions";
-  }
-
-  @Data
-  static class Static {
-
-    private String basePath = "/";
   }
 
   @Data

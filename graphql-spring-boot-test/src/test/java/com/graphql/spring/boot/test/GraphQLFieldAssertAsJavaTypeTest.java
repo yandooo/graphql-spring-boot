@@ -13,7 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class GraphQLFieldAssertAsJavaTypeTest extends GraphQLFieldAssertTestBase {
+class GraphQLFieldAssertAsJavaTypeTest extends GraphQLFieldAssertTestBase {
 
   private static final JavaType FOO_TYPE = TypeFactory.defaultInstance().constructType(Foo.class);
 

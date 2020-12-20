@@ -1,4 +1,4 @@
-package graphql.kickstart.altair.boot;
+package graphql.kickstart.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -12,20 +12,20 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StreamUtils;
 
-class PropsLoader {
-
-  private static final String ALTAIR_PROPS_PREFIX = "altair.props.";
-  private static final String ALTAIR_PROPS_RESOURCES_PREFIX = ALTAIR_PROPS_PREFIX + "resources.";
-  private static final String ALTAIR_PROPS_VALUES_PREFIX = ALTAIR_PROPS_PREFIX + "values.";
+public class PropsLoader {
 
   private final Environment environment;
+  private final String resourcesPrefix;
+  private final String valuesPrefix;
 
-  PropsLoader(Environment environment) {
+  public PropsLoader(Environment environment, String resourcesPrefix, String valuesPrefix) {
     this.environment = environment;
+    this.resourcesPrefix = resourcesPrefix;
+    this.valuesPrefix = valuesPrefix;
   }
 
-  String load() throws IOException {
-    PropertyGroupReader reader = new PropertyGroupReader(environment, ALTAIR_PROPS_VALUES_PREFIX);
+  public String load() throws IOException {
+    PropertyGroupReader reader = new PropertyGroupReader(environment, valuesPrefix);
     Properties props = reader.load();
 
     ObjectMapper objectMapper = new ObjectMapper();
@@ -36,7 +36,7 @@ class PropsLoader {
   }
 
   private Optional<String> loadPropFromResource(String prop) {
-    String property = ALTAIR_PROPS_RESOURCES_PREFIX + prop;
+    String property = resourcesPrefix + prop;
     return Optional.ofNullable(environment.getProperty(property))
         .map(ClassPathResource::new)
         .map(this::loadResource);

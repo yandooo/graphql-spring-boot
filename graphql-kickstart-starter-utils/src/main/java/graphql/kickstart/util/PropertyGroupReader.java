@@ -1,4 +1,4 @@
-package graphql.kickstart.altair.boot;
+package graphql.kickstart.util;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -12,18 +12,18 @@ import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 
-class PropertyGroupReader {
+public class PropertyGroupReader {
 
   private final Environment environment;
   private final String prefix;
   private Properties props;
 
-  PropertyGroupReader(Environment environment, String prefix) {
+  public PropertyGroupReader(Environment environment, String prefix) {
     this.environment = Objects.requireNonNull(environment);
     this.prefix = Optional.ofNullable(prefix).orElse("");
   }
 
-  Properties load() {
+  public Properties load() {
     if (props == null) {
       props = new Properties();
       loadProps();
@@ -46,7 +46,7 @@ class PropertyGroupReader {
       Iterable<PropertySource<?>> iterable = () -> iterator;
       return StreamSupport.stream(iterable.spliterator(), false)
           .filter(EnumerablePropertySource.class::isInstance)
-          .map(it -> (EnumerablePropertySource<Object>) it);
+          .map(EnumerablePropertySource.class::cast);
     }
     return Stream.empty();
   }

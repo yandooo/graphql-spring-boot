@@ -2,6 +2,8 @@ package graphql.kickstart.graphiql.boot;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import graphql.kickstart.util.PropertyGroupReader;
+import graphql.kickstart.util.PropsLoader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -53,7 +55,8 @@ public abstract class GraphiQLController {
   }
 
   private void loadProps() throws IOException {
-    props = new PropsLoader(environment).load();
+    props = new PropsLoader(environment, "graphiql.props.resources.", "graphiql.props.variables.")
+        .load();
   }
 
   private void loadHeaders() {
@@ -71,7 +74,7 @@ public abstract class GraphiQLController {
     Map<String, String> replacements = getReplacements(
         constructGraphQlEndpoint(contextPath, params),
         contextPath + graphiQLProperties.getEndpoint().getSubscriptions(),
-        contextPath + graphiQLProperties.getSTATIC().getBasePath()
+        contextPath + graphiQLProperties.getBasePath()
     );
 
     String populatedTemplate = StringSubstitutor.replace(template, replacements);

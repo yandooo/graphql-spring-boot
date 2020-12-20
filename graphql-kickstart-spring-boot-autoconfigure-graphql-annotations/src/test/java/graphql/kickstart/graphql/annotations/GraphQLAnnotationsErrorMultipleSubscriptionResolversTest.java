@@ -9,11 +9,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContextException;
 
 @DisplayName("Test exception if multiple subscription resolvers are defined.")
-public class GraphQLAnnotationsErrorMultipleSubscriptionResolvers {
+class GraphQLAnnotationsErrorMultipleSubscriptionResolversTest {
 
   @Test
   @DisplayName("Assert that MultipleSubscriptionResolversException is thrown when multiple subscription resolvers are found.")
-  public void testMultipleSubscriptionResolversExceptionIsThrown() {
+  void testMultipleSubscriptionResolversExceptionIsThrown() {
     // GIVEN
     final SpringApplication app = new SpringApplication(TestApplication.class);
     app.setAdditionalProfiles("test", "test-multiple-subscription-resolvers-exception");
