@@ -1,13 +1,7 @@
 package graphql.kickstart.spring.web.boot;
 
-import graphql.execution.instrumentation.ChainedInstrumentation;
-import graphql.execution.instrumentation.Instrumentation;
-import graphql.execution.instrumentation.dataloader.DataLoaderDispatcherInstrumentationOptions;
-import graphql.kickstart.execution.BatchedDataLoaderGraphQLBuilder;
 import graphql.kickstart.execution.GraphQLInvoker;
 import graphql.kickstart.execution.GraphQLObjectMapper;
-import graphql.kickstart.execution.config.ExecutionStrategyProvider;
-import graphql.kickstart.execution.config.GraphQLBuilder;
 import graphql.kickstart.execution.subscriptions.GraphQLSubscriptionInvocationInputFactory;
 import graphql.kickstart.execution.subscriptions.SubscriptionConnectionListener;
 import graphql.kickstart.execution.subscriptions.apollo.KeepAliveSubscriptionConnectionListener;
@@ -16,10 +10,8 @@ import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Supplier;
 import javax.websocket.server.ServerContainer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,51 +33,15 @@ import org.springframework.web.socket.server.standard.ServerEndpointRegistration
 @ConditionalOnWebApplication
 @ConditionalOnClass(DispatcherServlet.class)
 @Conditional(OnSchemaOrSchemaProviderBean.class)
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ConditionalOnProperty(value = "graphql.servlet.websocket.enabled", havingValue = "true", matchIfMissing = true)
-@AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class})
+@AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class, GraphQLWebAutoConfiguration.class})
 @EnableConfigurationProperties({GraphQLSubscriptionApolloProperties.class,
     GraphQLSubscriptionWebsocketProperties.class})
 public class GraphQLWebsocketAutoConfiguration {
 
   private final GraphQLSubscriptionApolloProperties apolloProperties;
   private final GraphQLSubscriptionWebsocketProperties websocketProperties;
-
-  @Bean
-  @ConditionalOnMissingBean
-  public GraphQLBuilder graphQLBuilder(
-      @Autowired(required = false) ExecutionStrategyProvider executionStrategyProvider,
-      @Autowired(required = false) List<Instrumentation> instrumentations) {
-    GraphQLBuilder graphQLBuilder = new GraphQLBuilder();
-
-    if (executionStrategyProvider != null) {
-      graphQLBuilder.executionStrategyProvider(() -> executionStrategyProvider);
-    }
-
-    if (instrumentations != null && !instrumentations.isEmpty()) {
-      if (instrumentations.size() == 1) {
-        graphQLBuilder.instrumentation(() -> instrumentations.get(0));
-      } else {
-        graphQLBuilder.instrumentation(() -> new ChainedInstrumentation(instrumentations));
-      }
-    }
-
-    return graphQLBuilder;
-  }
-
-  @Bean
-  @ConditionalOnMissingBean
-  public BatchedDataLoaderGraphQLBuilder batchedDataLoaderGraphQLBuilder(
-      @Autowired(required = false) Supplier<DataLoaderDispatcherInstrumentationOptions> optionsSupplier
-  ) {
-    return new BatchedDataLoaderGraphQLBuilder(optionsSupplier);
-  }
-
-  @Bean
-  @ConditionalOnMissingBean
-  public GraphQLInvoker graphQLInvoker(GraphQLBuilder graphQLBuilder,
-      BatchedDataLoaderGraphQLBuilder batchedDataLoaderGraphQLBuilder) {
-    return new GraphQLInvoker(graphQLBuilder, batchedDataLoaderGraphQLBuilder);
-  }
 
   @Bean
   @ConditionalOnMissingBean

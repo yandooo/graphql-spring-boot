@@ -26,12 +26,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.execution.AsyncExecutionStrategy;
 import graphql.execution.ExecutionStrategy;
 import graphql.execution.SubscriptionExecutionStrategy;
+import graphql.execution.instrumentation.ChainedInstrumentation;
 import graphql.execution.instrumentation.Instrumentation;
+import graphql.execution.instrumentation.dataloader.DataLoaderDispatcherInstrumentationOptions;
 import graphql.execution.preparsed.PreparsedDocumentProvider;
+import graphql.kickstart.execution.BatchedDataLoaderGraphQLBuilder;
+import graphql.kickstart.execution.GraphQLInvoker;
 import graphql.kickstart.execution.GraphQLObjectMapper;
-import graphql.kickstart.execution.GraphQLQueryInvoker;
 import graphql.kickstart.execution.config.DefaultExecutionStrategyProvider;
 import graphql.kickstart.execution.config.ExecutionStrategyProvider;
+import graphql.kickstart.execution.config.GraphQLBuilder;
+import graphql.kickstart.execution.config.GraphQLBuilderConfigurer;
 import graphql.kickstart.execution.config.GraphQLServletObjectMapperConfigurer;
 import graphql.kickstart.execution.config.ObjectMapperProvider;
 import graphql.kickstart.execution.error.GraphQLErrorHandler;
@@ -55,9 +60,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
-import javax.annotation.PostConstruct;
+import java.util.function.Supplier;
 import javax.servlet.MultipartConfigElement;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,67 +89,31 @@ import org.springframework.web.servlet.DispatcherServlet;
  */
 @Slf4j
 @Configuration
+@RequiredArgsConstructor
 @ConditionalOnWebApplication
 @ConditionalOnClass(DispatcherServlet.class)
 @Conditional(OnSchemaOrSchemaProviderBean.class)
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class, JacksonAutoConfiguration.class})
 @EnableConfigurationProperties({GraphQLServletProperties.class})
 public class GraphQLWebAutoConfiguration {
 
-
   public static final String QUERY_EXECUTION_STRATEGY = "queryExecutionStrategy";
   public static final String MUTATION_EXECUTION_STRATEGY = "mutationExecutionStrategy";
   public static final String SUBSCRIPTION_EXECUTION_STRATEGY = "subscriptionExecutionStrategy";
 
-  @Autowired
-  private GraphQLServletProperties graphQLServletProperties;
-
-  @Autowired(required = false)
-  private List<GraphQLServletListener> listeners;
-
-  @Autowired(required = false)
-  private List<Instrumentation> instrumentations;
-
-  @Autowired(required = false)
-  private GraphQLErrorHandler errorHandler;
-
-  private ErrorHandlerSupplier errorHandlerSupplier = new ErrorHandlerSupplier(null);
-
-  @Autowired(required = false)
-  private Map<String, ExecutionStrategy> executionStrategies;
-
-  @Autowired(required = false)
-  private GraphQLServletContextBuilder contextBuilder;
-
-  @Autowired(required = false)
-  private GraphQLServletRootObjectBuilder graphQLRootObjectBuilder;
-
-  @Autowired(required = false)
-  private GraphQLServletObjectMapperConfigurer objectMapperConfigurer;
-
-  @Autowired(required = false)
-  private PreparsedDocumentProvider preparsedDocumentProvider;
-
-  @Autowired(required = false)
-  private MultipartConfigElement multipartConfigElement;
-
-  @Autowired(required = false)
-  private BatchInputPreProcessor batchInputPreProcessor;
-
-  @Autowired(required = false)
-  private GraphQLResponseCacheManager responseCacheManager;
-
-  @PostConstruct
-  void postConstruct() {
-    if (errorHandler != null) {
-      errorHandlerSupplier.setErrorHandler(errorHandler);
-    }
-  }
+  private final GraphQLServletProperties graphQLServletProperties;
 
   @Bean
-  public GraphQLErrorStartupListener graphQLErrorStartupListener() {
-    return new GraphQLErrorStartupListener(errorHandlerSupplier, graphQLServletProperties.isExceptionHandlersEnabled());
+  public GraphQLErrorStartupListener graphQLErrorStartupListener(
+      @Autowired(required = false) GraphQLErrorHandler errorHandler) {
+    return new GraphQLErrorStartupListener(toErrorHandlerSupplier(errorHandler),
+        graphQLServletProperties.isExceptionHandlersEnabled());
+  }
+
+  private ErrorHandlerSupplier toErrorHandlerSupplier(GraphQLErrorHandler errorHandler) {
+    return new ErrorHandlerSupplier(errorHandler);
   }
 
   @Bean
@@ -176,7 +145,9 @@ public class GraphQLWebAutoConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
-  public ExecutionStrategyProvider executionStrategyProvider() {
+  public ExecutionStrategyProvider executionStrategyProvider(
+      @Autowired(required = false) Map<String, ExecutionStrategy> executionStrategies
+  ) {
     if (executionStrategies == null || executionStrategies.isEmpty()) {
       return new DefaultExecutionStrategyProvider(new AsyncExecutionStrategy(), null,
           new SubscriptionExecutionStrategy());
@@ -193,13 +164,15 @@ public class GraphQLWebAutoConfiguration {
         throwIncorrectExecutionStrategyNameException();
       }
 
-      if (executionStrategies.size() == 2 && !(executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY)
-          || executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
+      if (executionStrategies.size() == 2 && !(
+          executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY)
+              || executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
         throwIncorrectExecutionStrategyNameException();
       }
 
-      if (executionStrategies.size() >= 3 && !(executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY)
-          && executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
+      if (executionStrategies.size() >= 3 && !(
+          executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY)
+              && executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
         throwIncorrectExecutionStrategyNameException();
       }
 
@@ -214,13 +187,18 @@ public class GraphQLWebAutoConfiguration {
   private void throwIncorrectExecutionStrategyNameException() {
     throw new IllegalStateException(String
         .format("When defining more than one execution strategy, they must be named %s, %s, or %s",
-            QUERY_EXECUTION_STRATEGY, MUTATION_EXECUTION_STRATEGY, SUBSCRIPTION_EXECUTION_STRATEGY));
+            QUERY_EXECUTION_STRATEGY, MUTATION_EXECUTION_STRATEGY,
+            SUBSCRIPTION_EXECUTION_STRATEGY));
   }
 
   @Bean
   @ConditionalOnMissingBean
-  public GraphQLInvocationInputFactory invocationInputFactory(GraphQLSchemaServletProvider schemaProvider) {
-    GraphQLInvocationInputFactory.Builder builder = GraphQLInvocationInputFactory.newBuilder(schemaProvider);
+  public GraphQLInvocationInputFactory invocationInputFactory(
+      GraphQLSchemaServletProvider schemaProvider,
+      @Autowired(required = false) GraphQLServletContextBuilder contextBuilder,
+      @Autowired(required = false) GraphQLServletRootObjectBuilder graphQLRootObjectBuilder) {
+    GraphQLInvocationInputFactory.Builder builder = GraphQLInvocationInputFactory
+        .newBuilder(schemaProvider);
 
     if (graphQLRootObjectBuilder != null) {
       builder.withGraphQLRootObjectBuilder(graphQLRootObjectBuilder);
@@ -235,30 +213,59 @@ public class GraphQLWebAutoConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
-  public GraphQLQueryInvoker queryInvoker(ExecutionStrategyProvider executionStrategyProvider) {
-    GraphQLQueryInvoker.Builder builder = GraphQLQueryInvoker.newBuilder()
-        .withExecutionStrategyProvider(executionStrategyProvider);
+  public GraphQLBuilder graphQLBuilder(
+      ExecutionStrategyProvider executionStrategyProvider,
+      @Autowired(required = false) List<Instrumentation> instrumentations,
+      @Autowired(required = false) PreparsedDocumentProvider preparsedDocumentProvider,
+      @Autowired(required = false) GraphQLBuilderConfigurer graphQLBuilderConfigurer) {
+    GraphQLBuilder graphQLBuilder = new GraphQLBuilder();
+    graphQLBuilder.executionStrategyProvider(() -> executionStrategyProvider);
 
-    if (instrumentations != null) {
-      // Metrics instrumentation should be the last to run (we need that from TracingInstrumentation)
-      instrumentations.sort((a, b) -> a instanceof MetricsInstrumentation ? 1 : 0);
-      builder.with(instrumentations);
+    if (instrumentations != null && !instrumentations.isEmpty()) {
+      if (instrumentations.size() == 1) {
+        graphQLBuilder.instrumentation(() -> instrumentations.get(0));
+      } else {
+        // Metrics instrumentation should be the last to run (we need that from TracingInstrumentation)
+        instrumentations.sort((a, b) -> a instanceof MetricsInstrumentation ? 1 : 0);
+        graphQLBuilder.instrumentation(() -> new ChainedInstrumentation(instrumentations));
+      }
     }
 
     if (preparsedDocumentProvider != null) {
-      builder.withPreparsedDocumentProvider(preparsedDocumentProvider);
+      graphQLBuilder.preparsedDocumentProvider(() -> preparsedDocumentProvider);
     }
 
-    return builder.build();
+    if (graphQLBuilderConfigurer != null) {
+      graphQLBuilder.graphQLBuilderConfigurer(() -> graphQLBuilderConfigurer);
+    }
+
+    return graphQLBuilder;
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public BatchedDataLoaderGraphQLBuilder batchedDataLoaderGraphQLBuilder(
+      @Autowired(required = false) Supplier<DataLoaderDispatcherInstrumentationOptions> optionsSupplier
+  ) {
+    return new BatchedDataLoaderGraphQLBuilder(optionsSupplier);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GraphQLInvoker graphQLInvoker(GraphQLBuilder graphQLBuilder,
+      BatchedDataLoaderGraphQLBuilder batchedDataLoaderGraphQLBuilder) {
+    return new GraphQLInvoker(graphQLBuilder, batchedDataLoaderGraphQLBuilder);
   }
 
   @Bean
   @ConditionalOnMissingBean
   public GraphQLObjectMapper graphQLObjectMapper(
-      ObjectProvider<ObjectMapperProvider> objectMapperProviderObjectProvider) {
+      ObjectProvider<ObjectMapperProvider> objectMapperProviderObjectProvider,
+      @Autowired(required = false) GraphQLServletObjectMapperConfigurer objectMapperConfigurer,
+      @Autowired(required = false) GraphQLErrorHandler errorHandler) {
     GraphQLObjectMapper.Builder builder = newBuilder();
 
-    builder.withGraphQLErrorHandler(errorHandlerSupplier);
+    builder.withGraphQLErrorHandler(toErrorHandlerSupplier(errorHandler));
 
     ObjectMapperProvider objectMapperProvider = objectMapperProviderObjectProvider.getIfAvailable();
 
@@ -284,10 +291,15 @@ public class GraphQLWebAutoConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
-  public GraphQLConfiguration graphQLServletConfiguration(GraphQLInvocationInputFactory invocationInputFactory,
-      GraphQLQueryInvoker queryInvoker, GraphQLObjectMapper graphQLObjectMapper) {
+  public GraphQLConfiguration graphQLServletConfiguration(
+      GraphQLInvocationInputFactory invocationInputFactory,
+      GraphQLInvoker graphQLInvoker,
+      GraphQLObjectMapper graphQLObjectMapper,
+      @Autowired(required = false) List<GraphQLServletListener> listeners,
+      @Autowired(required = false) BatchInputPreProcessor batchInputPreProcessor,
+      @Autowired(required = false) GraphQLResponseCacheManager responseCacheManager) {
     return GraphQLConfiguration.with(invocationInputFactory)
-        .with(queryInvoker)
+        .with(graphQLInvoker)
         .with(graphQLObjectMapper)
         .with(listeners)
         .with(graphQLServletProperties.getSubscriptionTimeout())
@@ -306,14 +318,16 @@ public class GraphQLWebAutoConfiguration {
 
   @Bean
   public ServletRegistrationBean<AbstractGraphQLHttpServlet> graphQLServletRegistrationBean(
-      AbstractGraphQLHttpServlet servlet) {
-    ServletRegistrationBean<AbstractGraphQLHttpServlet> registration = new ServletRegistrationBean<>(servlet,
-        graphQLServletProperties.getServletMapping());
-    registration.setMultipartConfig(multipartConfigElement());
+      AbstractGraphQLHttpServlet servlet,
+      @Autowired(required = false) MultipartConfigElement multipartConfigElement) {
+    ServletRegistrationBean<AbstractGraphQLHttpServlet> registration =
+        new ServletRegistrationBean<>(servlet, graphQLServletProperties.getServletMapping());
+    if (multipartConfigElement != null) {
+      registration.setMultipartConfig(multipartConfigElement);
+    } else {
+      registration.setMultipartConfig(new MultipartConfigElement(""));
+    }
     return registration;
   }
 
-  private MultipartConfigElement multipartConfigElement() {
-    return Optional.ofNullable(multipartConfigElement).orElse(new MultipartConfigElement(""));
-  }
 }
