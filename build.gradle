@@ -51,12 +51,12 @@ subprojects {
     group "$PROJECT_GROUP"
 
     repositories {
-        maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local" }
         mavenLocal()
         mavenCentral()
         jcenter()
         maven { url "https://dl.bintray.com/graphql-java-kickstart/releases" }
         maven { url "https://repo.spring.io/libs-milestone" }
+        maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local" }
     }
 
     dependencyManagement {
