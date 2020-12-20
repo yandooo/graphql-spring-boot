@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Testing if usage errors are properly handled.")
-public class GraphQLTestSubscriptionUsageErrorHandlingTest extends GraphQLTestSubscriptionTestBase {
+class GraphQLTestSubscriptionUsageErrorHandlingTest extends GraphQLTestSubscriptionTestBase {
 
   @Test
   @DisplayName("Should raise an assertion error if init is called after init.")

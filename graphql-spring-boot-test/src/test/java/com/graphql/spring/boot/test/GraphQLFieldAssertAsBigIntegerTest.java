@@ -12,7 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class GraphQLFieldAssertAsBigIntegerTest extends GraphQLFieldAssertTestBase {
+class GraphQLFieldAssertAsBigIntegerTest extends GraphQLFieldAssertTestBase {
 
   @Test
   @DisplayName("Should return a big integer assertion (value at specific path is valid number).")

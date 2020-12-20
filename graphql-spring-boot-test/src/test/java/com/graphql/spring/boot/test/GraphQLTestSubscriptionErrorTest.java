@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Test error message handling.")
-public class GraphQLTestSubscriptionErrorTest extends GraphQLTestSubscriptionTestBase {
+class GraphQLTestSubscriptionErrorTest extends GraphQLTestSubscriptionTestBase {
 
   @Test
   @DisplayName("Should handle error messages.")

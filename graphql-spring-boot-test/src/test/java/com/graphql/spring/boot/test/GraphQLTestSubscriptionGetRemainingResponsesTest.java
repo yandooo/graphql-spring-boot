@@ -7,7 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Testing getRemainingResponses")
-public class GraphQLTestSubscriptionGetRemainingResponsesTest extends
+class GraphQLTestSubscriptionGetRemainingResponsesTest extends
     GraphQLTestSubscriptionTestBase {
 
   @Test

@@ -2,8 +2,10 @@ package com.graphql.spring.boot.test.assertions;
 
 import com.graphql.spring.boot.test.GraphQLResponse;
 import java.math.BigDecimal;
+import lombok.EqualsAndHashCode;
 import org.assertj.core.api.AbstractBigDecimalAssert;
 
+@EqualsAndHashCode(callSuper = true)
 public class GraphQLBigDecimalAssert extends AbstractBigDecimalAssert<GraphQLBigDecimalAssert>
     implements GraphQLResponseAssertion {
 

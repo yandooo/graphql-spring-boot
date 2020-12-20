@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Testing auto-configuration of the GraphQLTestTemplate bean / default servlet endpoint.")
-public class GraphQLTestTemplateAutoConfigurationDefaultConfigTest extends
+class GraphQLTestTemplateAutoConfigurationDefaultConfigTest extends
     GraphQLTestAutoConfigurationTestBase {
 
   @Test

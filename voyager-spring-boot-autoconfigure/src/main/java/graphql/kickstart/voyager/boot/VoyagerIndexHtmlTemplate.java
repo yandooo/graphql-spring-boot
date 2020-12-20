@@ -31,7 +31,7 @@ public class VoyagerIndexHtmlTemplate {
   private String staticBasePath;
 
   @Value("${voyager.cdn.enabled:false}")
-  private Boolean voyagerCdnEnabled;
+  private boolean voyagerCdnEnabled;
 
   @Value("${voyager.cdn.version:1.0.0-rc.26}")
   private String voyagerCdnVersion;
@@ -55,11 +55,11 @@ public class VoyagerIndexHtmlTemplate {
     replacements.put("reactDomJsUrl", getResourceUrl(staticBasePath, "react-dom.min.js",
         joinCdnjsPath("react-dom", "16.8.3", "umd/react-dom.production.min.js")));
     replacements.put("voyagerCssUrl", getResourceUrl(staticBasePath, "voyager.css",
-        joinJsDelivrPath(VOYAGER, voyagerCdnVersion, "dist/voyager.css")));
+        joinJsDelivrPath(voyagerCdnVersion, "dist/voyager.css")));
     replacements.put("voyagerJsUrl", getResourceUrl(staticBasePath, "voyager.min.js",
-        joinJsDelivrPath(VOYAGER, voyagerCdnVersion, "dist/voyager.min.js")));
+        joinJsDelivrPath(voyagerCdnVersion, "dist/voyager.min.js")));
     replacements.put("voyagerWorkerJsUrl", getResourceUrl(staticBasePath, "voyager.worker.js",
-        joinJsDelivrPath(VOYAGER, voyagerCdnVersion, "dist/voyager.worker.min.js")));
+        joinJsDelivrPath(voyagerCdnVersion, "dist/voyager.worker.min.js")));
     replacements.put("contextPath", contextPath);
 
     return StringSubstitutor.replace(template, replacements);
@@ -92,7 +92,7 @@ public class VoyagerIndexHtmlTemplate {
     return CDNJS_CLOUDFLARE_COM_AJAX_LIBS + library + "/" + cdnVersion + "/" + cdnFileName;
   }
 
-  private String joinJsDelivrPath(String library, String cdnVersion, String cdnFileName) {
-    return CDN_JSDELIVR_NET_NPM + library + "@" + cdnVersion + "/" + cdnFileName;
+  private String joinJsDelivrPath(String cdnVersion, String cdnFileName) {
+    return CDN_JSDELIVR_NET_NPM + VoyagerIndexHtmlTemplate.VOYAGER + "@" + cdnVersion + "/" + cdnFileName;
   }
 }

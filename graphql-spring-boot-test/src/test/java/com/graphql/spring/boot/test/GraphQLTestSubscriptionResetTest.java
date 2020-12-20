@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 @DisplayName("Testing reset")
-public class GraphQLTestSubscriptionResetTest extends GraphQLTestSubscriptionTestBase {
+class GraphQLTestSubscriptionResetTest extends GraphQLTestSubscriptionTestBase {
 
   @Test
   @DisplayName("Should work if subscription was not yet started.")

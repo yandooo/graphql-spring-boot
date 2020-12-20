@@ -1,5 +1,9 @@
 package graphql.kickstart.playground.boot;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
@@ -12,29 +16,26 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = PlaygroundTestConfig.class)
 @AutoConfigureMockMvc
 @TestPropertySource("classpath:application-playground-custom-title.properties")
-public class PlaygroundCustomTitleTest {
+class PlaygroundCustomTitleTest {
 
-    private static final String CUSTOM_TITLE = "My CustomTest Title";
+  private static final String CUSTOM_TITLE = "My CustomTest Title";
 
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired
+  private MockMvc mockMvc;
 
-    @Test
-    public void shouldUseTheCustomPageTitle() throws Exception {
-        final MvcResult mvcResult = mockMvc.perform(get(PlaygroundTestHelper.DEFAULT_PLAYGROUND_ENDPOINT))
-                .andExpect(status().isOk())
-                .andExpect(model().attribute(PlaygroundTestHelper.PAGE_TITLE_FIELD_NAME, CUSTOM_TITLE))
-                .andReturn();
+  @Test
+  void shouldUseTheCustomPageTitle() throws Exception {
+    final MvcResult mvcResult = mockMvc
+        .perform(get(PlaygroundTestHelper.DEFAULT_PLAYGROUND_ENDPOINT))
+        .andExpect(status().isOk())
+        .andExpect(model().attribute(PlaygroundTestHelper.PAGE_TITLE_FIELD_NAME, CUSTOM_TITLE))
+        .andReturn();
 
-        final Document document = Jsoup.parse(mvcResult.getResponse().getContentAsString());
-        PlaygroundTestHelper.assertTitle(document, CUSTOM_TITLE);
-    }
+    final Document document = Jsoup.parse(mvcResult.getResponse().getContentAsString());
+    PlaygroundTestHelper.assertTitle(document, CUSTOM_TITLE);
+  }
 }

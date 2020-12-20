@@ -11,12 +11,13 @@ import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWeb
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 /**
  * @author Max Günther
  */
-public class ReactiveVoyagerControllerTest extends AbstractAutoConfigurationTest {
+class ReactiveVoyagerControllerTest extends AbstractAutoConfigurationTest {
 
   public ReactiveVoyagerControllerTest() {
     super(AnnotationConfigReactiveWebApplicationContext.class,
@@ -24,18 +25,19 @@ public class ReactiveVoyagerControllerTest extends AbstractAutoConfigurationTest
   }
 
   @Test
-  public void voyagerLoads() {
+  void voyagerLoads() {
     load(EnabledConfiguration.class);
 
     assertThat(this.getContext().getBean(ReactiveVoyagerController.class)).isNotNull();
   }
 
   @Test
-  public void voyagerDoesNotLoad() {
+  void voyagerDoesNotLoad() {
     load(DisabledConfiguration.class);
 
+    AbstractApplicationContext context = getContext();
     assertThatExceptionOfType(NoSuchBeanDefinitionException.class)
-        .isThrownBy(() -> this.getContext().getBean(ReactiveVoyagerController.class));
+        .isThrownBy(() -> context.getBean(ReactiveVoyagerController.class));
   }
 
   @Configuration

@@ -10,7 +10,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 @ActiveProfiles({"test", "custom-servlet-mapping"})
 @DisplayName("Testing auto-configuration of the GraphQLTestTemplate bean / custom servlet endpoint.")
-public class GraphQLTestTemplateAutoConfigurationCustomConfigTest extends
+class GraphQLTestTemplateAutoConfigurationCustomConfigTest extends
     GraphQLTestAutoConfigurationTestBase {
 
   @Test

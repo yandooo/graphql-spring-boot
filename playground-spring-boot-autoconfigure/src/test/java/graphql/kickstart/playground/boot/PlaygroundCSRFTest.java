@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = PlaygroundTestConfig.class)
 @AutoConfigureMockMvc
-public class PlaygroundCSRFTest {
+class PlaygroundCSRFTest {
 
     private static final String CSRF_ATTRIBUTE_NAME = "_csrf";
 
@@ -30,7 +30,7 @@ public class PlaygroundCSRFTest {
     private ObjectMapper objectMapper;
 
     @Test
-    public void shouldLoadCSRFData() throws Exception {
+    void shouldLoadCSRFData() throws Exception {
         final MvcResult mvcResult = mockMvc.perform(get(PlaygroundTestHelper.DEFAULT_PLAYGROUND_ENDPOINT))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists(CSRF_ATTRIBUTE_NAME))

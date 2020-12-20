@@ -1,8 +1,10 @@
 package com.graphql.spring.boot.test.assertions;
 
 import com.graphql.spring.boot.test.GraphQLResponse;
+import lombok.EqualsAndHashCode;
 import org.assertj.core.api.AbstractObjectAssert;
 
+@EqualsAndHashCode(callSuper = true)
 public class GraphQLGenericObjectAssert<T>
     extends AbstractObjectAssert<GraphQLGenericObjectAssert<T>, T>
     implements GraphQLResponseAssertion {

@@ -23,6 +23,7 @@ import java.util.function.Predicate;
 import javax.websocket.ClientEndpointConfig;
 import javax.websocket.CloseReason;
 import javax.websocket.ContainerProvider;
+import javax.websocket.DeploymentException;
 import javax.websocket.Endpoint;
 import javax.websocket.EndpointConfig;
 import javax.websocket.MessageHandler;
@@ -377,7 +378,7 @@ public class GraphQLTestSubscription {
     return graphQLResponses;
   }
 
-  private void initClient() throws Exception {
+  private void initClient() throws IOException, DeploymentException {
     final String port = environment.getProperty("local.server.port");
     final URI uri = URI_BUILDER_FACTORY.builder().scheme("ws").host("localhost").port(port)
         .path(subscriptionPath)

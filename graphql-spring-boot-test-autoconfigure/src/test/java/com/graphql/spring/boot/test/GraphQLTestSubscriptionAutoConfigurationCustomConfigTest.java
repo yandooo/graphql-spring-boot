@@ -9,7 +9,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 @ActiveProfiles({"test", "custom-subscription-path"})
 @DisplayName("Testing the auto-configuration of the GraphQLTestSubscription bean / custom subscription endpoint.")
-public class GraphQLTestSubscriptionAutoConfigurationCustomConfigTest extends
+class GraphQLTestSubscriptionAutoConfigurationCustomConfigTest extends
     GraphQLTestAutoConfigurationTestBase {
 
   @Test

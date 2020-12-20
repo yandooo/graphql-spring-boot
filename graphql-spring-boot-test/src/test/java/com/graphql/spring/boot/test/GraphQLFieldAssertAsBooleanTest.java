@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class GraphQLFieldAssertAsBooleanTest extends GraphQLFieldAssertTestBase {
+class GraphQLFieldAssertAsBooleanTest extends GraphQLFieldAssertTestBase {
 
   @Test
   @DisplayName("Should return a Boolean assertion (value at specific path is valid Boolean value).")

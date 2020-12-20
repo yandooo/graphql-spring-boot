@@ -36,7 +36,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class GraphQLResponseTest {
+class GraphQLResponseTest {
 
   private static final String DATA_PATH_TEST = "$.data.test";
   private static final String INNER_FOO_LIST_DATA_PATH = "$.data.externalList[*].fooList";
@@ -99,7 +99,7 @@ public class GraphQLResponseTest {
   @DisplayName("Should get the JSON node's value as a String.")
   @ParameterizedTest
   @MethodSource("testGetStringArguments")
-  public void testGetString(final String bodyString, final String expected) {
+  void testGetString(final String bodyString, final String expected) {
     //GIVEN
     final GraphQLResponse graphQLResponse = createResponse(bodyString);
     //WHEN
@@ -111,7 +111,7 @@ public class GraphQLResponseTest {
   @DisplayName("Should get the JSON node's value as an instance of a specified class.")
   @ParameterizedTest
   @MethodSource("testGetArguments")
-  public <T> void testGet(final String bodyString, final Class<T> clazz, final T expected) {
+  <T> void testGet(final String bodyString, final Class<T> clazz, final T expected) {
     //GIVEN
     final GraphQLResponse graphQLResponse = createResponse(bodyString);
     //WHEN
@@ -123,7 +123,7 @@ public class GraphQLResponseTest {
   @DisplayName("Should get the JSON node's value as a List.")
   @ParameterizedTest
   @MethodSource("testGetListArguments")
-  public <T> void testGetList(final String bodyString, final Class<T> clazz,
+  <T> void testGetList(final String bodyString, final Class<T> clazz,
       final List<T> expected) {
     //GIVEN
     final GraphQLResponse graphQLResponse = createResponse(bodyString);
@@ -135,7 +135,7 @@ public class GraphQLResponseTest {
 
   @DisplayName("Should get field as defined by Jackson's JavaType.")
   @Test
-  public void testGetAsJavaType() {
+  void testGetAsJavaType() {
     // GIVEN
     final List<List<String>> expected = Arrays.asList(Arrays.asList("foo1", "foo2"),
         Collections.singletonList("foo3"));
@@ -155,7 +155,7 @@ public class GraphQLResponseTest {
 
   @DisplayName("Should throw illegal argument exception if type is incompatible")
   @Test
-  public void testGetAsJavaTypeConversionError() {
+  void testGetAsJavaTypeConversionError() {
     // GIVEN
     final JavaType stringType = objectMapper.getTypeFactory().constructType(String.class);
     // WHEN

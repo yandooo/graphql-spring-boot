@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class GraphQLFieldAssertAsLongTest extends GraphQLFieldAssertTestBase {
+class GraphQLFieldAssertAsLongTest extends GraphQLFieldAssertTestBase {
 
   @Test
   @DisplayName("Should return a long assertion (value at specific path is valid long value).")

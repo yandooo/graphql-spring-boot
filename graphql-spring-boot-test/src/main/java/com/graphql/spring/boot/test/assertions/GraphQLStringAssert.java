@@ -1,8 +1,10 @@
 package com.graphql.spring.boot.test.assertions;
 
 import com.graphql.spring.boot.test.GraphQLResponse;
+import lombok.EqualsAndHashCode;
 import org.assertj.core.api.AbstractStringAssert;
 
+@EqualsAndHashCode(callSuper = true)
 public class GraphQLStringAssert extends AbstractStringAssert<GraphQLStringAssert>
     implements GraphQLResponseAssertion {
 
