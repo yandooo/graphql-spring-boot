@@ -48,9 +48,9 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 /**
- * Annotation that can be specified on a test class in combination with {@code
- * @RunWith(SpringRunner.class)} for running tests that focus <strong>only</strong> on GraphQL
- * components.
+ * Annotation that can be specified on a test class in combination with
+ * <code>@RunWith(SpringRunner.class)</code> for running tests that focus <strong>only</strong> on
+ * GraphQL components.
  * <p>
  * Provides the following features over the regular <strong>Spring TestContext Framework</strong>:
  * <ul>
