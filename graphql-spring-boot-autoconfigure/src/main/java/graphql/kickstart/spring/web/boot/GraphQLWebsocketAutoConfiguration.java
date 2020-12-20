@@ -1,5 +1,7 @@
 package graphql.kickstart.spring.web.boot;
 
+import graphql.execution.instrumentation.ChainedInstrumentation;
+import graphql.execution.instrumentation.Instrumentation;
 import graphql.execution.instrumentation.dataloader.DataLoaderDispatcherInstrumentationOptions;
 import graphql.kickstart.execution.BatchedDataLoaderGraphQLBuilder;
 import graphql.kickstart.execution.GraphQLInvoker;
@@ -13,6 +15,7 @@ import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -48,8 +51,17 @@ public class GraphQLWebsocketAutoConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
-  public GraphQLBuilder graphQLBuilder() {
-    return new GraphQLBuilder();
+  public GraphQLBuilder graphQLBuilder(
+      @Autowired(required = false) List<Instrumentation> instrumentations) {
+    GraphQLBuilder graphQLBuilder = new GraphQLBuilder();
+    if (instrumentations != null && !instrumentations.isEmpty()) {
+      if (instrumentations.size() == 1) {
+        graphQLBuilder.instrumentation(() -> instrumentations.get(0));
+      } else {
+        graphQLBuilder.instrumentation(() -> new ChainedInstrumentation(instrumentations));
+      }
+    }
+    return graphQLBuilder;
   }
 
   @Bean
