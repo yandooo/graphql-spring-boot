@@ -159,7 +159,6 @@ public class GraphQLWebAutoConfiguration {
   @ConditionalOnProperty(value = "graphql.servlet.corsEnabled", havingValue = "true", matchIfMissing = true)
   public CorsFilter corsConfigurer(CorsConfiguration corsConfiguration) {
     Map<String, CorsConfiguration> corsConfigurations = new LinkedHashMap<>(1);
-    corsConfiguration.applyPermitDefaultValues();
     corsConfigurations.put(graphQLServletProperties.getCorsMapping(), corsConfiguration);
 
     UrlBasedCorsConfigurationSource configurationSource = new UrlBasedCorsConfigurationSource();
