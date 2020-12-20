@@ -16,17 +16,20 @@ public class AltairProperties {
 
   @Data
   static class Endpoint {
+
     private String graphql = "/graphql";
     private String subscriptions = "/subscriptions";
   }
 
   @Data
   static class Static {
+
     private String basePath = "";
   }
 
   @Data
   static class Cdn {
+
     private boolean enabled = false;
     private String version = "2.4.11";
   }

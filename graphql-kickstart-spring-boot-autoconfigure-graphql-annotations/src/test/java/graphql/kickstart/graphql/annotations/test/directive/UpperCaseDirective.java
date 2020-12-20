@@ -5,7 +5,6 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.directives.definition.DirectiveLocations;
 import graphql.annotations.annotationTypes.directives.definition.GraphQLDirectiveDefinition;
 import graphql.introspection.Introspection;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -15,4 +14,5 @@ import java.lang.annotation.RetentionPolicy;
 @DirectiveLocations({Introspection.DirectiveLocation.FIELD_DEFINITION})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UpperCaseDirective {
+
 }

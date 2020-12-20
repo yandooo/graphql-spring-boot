@@ -8,7 +8,8 @@
 
 Are you interested in improving our documentation, working on the codebase, reviewing PRs?
 
-[Reach out to us on Discussions](https://github.com/graphql-java-kickstart/graphql-spring-boot/discussions) and join the team!
+[Reach out to us on Discussions](https://github.com/graphql-java-kickstart/graphql-spring-boot/discussions)
+and join the team!
 
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->

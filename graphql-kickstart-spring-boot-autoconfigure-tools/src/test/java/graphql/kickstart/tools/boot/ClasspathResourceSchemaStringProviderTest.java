@@ -1,15 +1,14 @@
 package graphql.kickstart.tools.boot;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import java.io.IOException;
 import java.util.List;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Configuration;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class ClasspathResourceSchemaStringProviderTest extends AbstractAutoConfigurationTest {
 

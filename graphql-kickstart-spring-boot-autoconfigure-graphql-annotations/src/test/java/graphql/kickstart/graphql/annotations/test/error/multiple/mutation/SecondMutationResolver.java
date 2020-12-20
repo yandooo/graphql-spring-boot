@@ -4,4 +4,5 @@ import graphql.kickstart.graphql.annotations.GraphQLMutationResolver;
 
 @GraphQLMutationResolver
 public class SecondMutationResolver {
+
 }

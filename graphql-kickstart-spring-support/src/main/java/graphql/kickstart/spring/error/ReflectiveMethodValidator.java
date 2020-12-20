@@ -25,7 +25,8 @@ class ReflectiveMethodValidator {
     if (Collection.class.isAssignableFrom(method.getReturnType())) {
       ParameterizedType collectionType = (ParameterizedType) method.getGenericReturnType();
       if (collectionType.getActualTypeArguments().length == 1) {
-        return GraphQLError.class.isAssignableFrom((Class<?>) collectionType.getActualTypeArguments()[0]);
+        return GraphQLError.class
+            .isAssignableFrom((Class<?>) collectionType.getActualTypeArguments()[0]);
       }
     }
     return false;

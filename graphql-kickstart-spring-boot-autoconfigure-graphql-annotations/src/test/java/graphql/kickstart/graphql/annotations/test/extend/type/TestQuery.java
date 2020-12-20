@@ -7,8 +7,8 @@ import graphql.kickstart.graphql.annotations.test.extend.type.model.BaseType;
 @GraphQLQueryResolver
 public class TestQuery {
 
-    @GraphQLField
-    public static BaseType someValue() {
-        return new BaseType("Test value");
-    }
+  @GraphQLField
+  public static BaseType someValue() {
+    return new BaseType("Test value");
+  }
 }

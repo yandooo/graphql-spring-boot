@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TestModel {
 
-    @GraphQLField
-    private String testField;
+  @GraphQLField
+  private String testField;
 }

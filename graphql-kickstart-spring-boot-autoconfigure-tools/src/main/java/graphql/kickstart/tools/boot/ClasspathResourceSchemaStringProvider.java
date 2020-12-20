@@ -42,7 +42,8 @@ public class ClasspathResourceSchemaStringProvider implements SchemaStringProvid
   private String readSchema(Resource resource) {
     try (
         InputStream inputStream = resource.getInputStream();
-        InputStreamReader bufferedInputStream = new InputStreamReader(inputStream, StandardCharsets.UTF_8.name());
+        InputStreamReader bufferedInputStream = new InputStreamReader(inputStream,
+            StandardCharsets.UTF_8.name());
         BufferedReader reader = new BufferedReader(bufferedInputStream)
     ) {
       return reader.lines().collect(joining("\n"));

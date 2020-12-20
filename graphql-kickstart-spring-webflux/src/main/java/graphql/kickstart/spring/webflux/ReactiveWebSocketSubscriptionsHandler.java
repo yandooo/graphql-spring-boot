@@ -28,7 +28,8 @@ public class ReactiveWebSocketSubscriptionsHandler implements WebSocketHandler {
 
   @Override
   public Mono<Void> handle(WebSocketSession webSocketSession) {
-    SubscriptionSession subscriptionSession = subscriptionProtocolFactory.createSession(webSocketSession);
+    SubscriptionSession subscriptionSession = subscriptionProtocolFactory
+        .createSession(webSocketSession);
     Consumer<String> consumer = subscriptionProtocolFactory.createConsumer(subscriptionSession);
 
     Mono<Void> input = webSocketSession.receive()

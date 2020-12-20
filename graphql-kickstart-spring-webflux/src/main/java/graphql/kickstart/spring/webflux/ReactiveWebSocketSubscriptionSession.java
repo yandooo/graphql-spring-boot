@@ -9,7 +9,8 @@ public class ReactiveWebSocketSubscriptionSession extends DefaultSubscriptionSes
 
   private final WebSocketSession webSocketSession;
 
-  public ReactiveWebSocketSubscriptionSession(GraphQLSubscriptionMapper mapper, WebSocketSession webSocketSession) {
+  public ReactiveWebSocketSubscriptionSession(GraphQLSubscriptionMapper mapper,
+      WebSocketSession webSocketSession) {
     super(mapper);
     this.webSocketSession = webSocketSession;
   }

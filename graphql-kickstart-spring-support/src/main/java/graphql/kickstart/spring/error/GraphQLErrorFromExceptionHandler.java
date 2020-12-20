@@ -29,7 +29,8 @@ class GraphQLErrorFromExceptionHandler extends DefaultGraphQLErrorHandler {
   }
 
   protected List<GraphQLError> filterGraphQLErrors(List<GraphQLError> errors) {
-    return errors.stream().map(this::transform).flatMap(Collection::stream).collect(Collectors.toList());
+    return errors.stream().map(this::transform).flatMap(Collection::stream)
+        .collect(Collectors.toList());
   }
 
   private Collection<GraphQLError> transform(GraphQLError error) {
@@ -56,7 +57,8 @@ class GraphQLErrorFromExceptionHandler extends DefaultGraphQLErrorHandler {
 
   private Collection<GraphQLError> transform(Throwable throwable, ErrorContext errorContext) {
     Map<Class<? extends Throwable>, GraphQLErrorFactory> applicables = new HashMap<>();
-    factories.forEach(factory -> factory.mostConcrete(throwable).ifPresent(t -> applicables.put(t, factory)));
+    factories.forEach(
+        factory -> factory.mostConcrete(throwable).ifPresent(t -> applicables.put(t, factory)));
     return applicables.keySet().stream()
         .min(new ThrowableComparator())
         .map(applicables::get)
@@ -65,7 +67,8 @@ class GraphQLErrorFromExceptionHandler extends DefaultGraphQLErrorHandler {
   }
 
   private Collection<GraphQLError> withThrowable(Throwable throwable, ErrorContext errorContext) {
-    Map<String, Object> extensions = Optional.ofNullable(errorContext.getExtensions()).orElseGet(HashMap::new);
+    Map<String, Object> extensions = Optional.ofNullable(errorContext.getExtensions())
+        .orElseGet(HashMap::new);
     extensions.put("type", throwable.getClass().getSimpleName());
     return singletonList(
         GraphqlErrorBuilder.newError()

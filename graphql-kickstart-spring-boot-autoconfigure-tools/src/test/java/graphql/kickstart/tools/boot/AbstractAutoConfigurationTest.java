@@ -4,7 +4,6 @@ import static org.mockito.Mockito.mock;
 
 import javax.servlet.ServletContext;
 import javax.websocket.server.ServerContainer;
-
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.test.util.TestPropertyValues;

@@ -1,23 +1,23 @@
 package graphql.kickstart.spring.web.boot.test.web;
 
-import graphql.kickstart.servlet.AbstractGraphQLHttpServlet;
-import graphql.kickstart.servlet.config.DefaultGraphQLSchemaServletProvider;
-import graphql.kickstart.servlet.config.GraphQLSchemaServletProvider;
-import graphql.kickstart.spring.web.boot.GraphQLWebAutoConfiguration;
-import graphql.kickstart.spring.web.boot.test.AbstractAutoConfigurationTest;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import graphql.analysis.MaxQueryComplexityInstrumentation;
 import graphql.analysis.MaxQueryDepthInstrumentation;
 import graphql.execution.AsyncExecutionStrategy;
 import graphql.execution.ExecutionStrategy;
 import graphql.execution.instrumentation.tracing.TracingInstrumentation;
+import graphql.kickstart.servlet.AbstractGraphQLHttpServlet;
+import graphql.kickstart.servlet.config.DefaultGraphQLSchemaServletProvider;
+import graphql.kickstart.servlet.config.GraphQLSchemaServletProvider;
+import graphql.kickstart.spring.web.boot.GraphQLWebAutoConfiguration;
+import graphql.kickstart.spring.web.boot.test.AbstractAutoConfigurationTest;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
