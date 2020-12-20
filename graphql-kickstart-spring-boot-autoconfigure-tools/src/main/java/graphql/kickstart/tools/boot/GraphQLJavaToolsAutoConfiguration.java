@@ -19,6 +19,7 @@ import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.SchemaDirectiveWiring;
 import graphql.schema.visibility.GraphqlFieldVisibility;
+import graphql.schema.visibility.NoIntrospectionGraphqlFieldVisibility;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -166,5 +167,13 @@ public class GraphQLJavaToolsAutoConfiguration {
   @ConditionalOnMissingBean({GraphQLSchema.class, GraphQLSchemaProvider.class})
   public GraphQLSchema graphQLSchema(SchemaParser schemaParser) {
     return schemaParser.makeExecutableSchema();
+  }
+
+  @Bean
+  @ConditionalOnProperty(value = "graphql.tools.introspection-enabled", havingValue = "false")
+  GraphqlFieldVisibility disableIntrospection() {
+    log.warn("GraphQL introspection query disabled! This puts your server in contravention of the "
+        + "GraphQL specification and expectations of most clients, so use this option with caution");
+    return new NoIntrospectionGraphqlFieldVisibility();
   }
 }

@@ -6,18 +6,5 @@ server:
 graphql:
   servlet:
     exception-handlers-enabled: true
-    tracing-enabled: metrics-only
-graphiql:
-  headers:
-    Authorization: "Bearer 05bd9a5f3fe0408f89520946b0fe1b06"
-  props:
-    variables:
-      headerEditorEnabled: true
-logging:
-  level:
-    com:
-      oembedler:
-        moon:
-          graphql:
-            boot:
-              error: debug
+  tools:
+    introspection-enabled: false
