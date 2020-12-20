@@ -6,6 +6,7 @@ import graphql.execution.instrumentation.dataloader.DataLoaderDispatcherInstrume
 import graphql.kickstart.execution.BatchedDataLoaderGraphQLBuilder;
 import graphql.kickstart.execution.GraphQLInvoker;
 import graphql.kickstart.execution.GraphQLObjectMapper;
+import graphql.kickstart.execution.config.ExecutionStrategyProvider;
 import graphql.kickstart.execution.config.GraphQLBuilder;
 import graphql.kickstart.execution.subscriptions.GraphQLSubscriptionInvocationInputFactory;
 import graphql.kickstart.execution.subscriptions.SubscriptionConnectionListener;
@@ -52,8 +53,14 @@ public class GraphQLWebsocketAutoConfiguration {
   @Bean
   @ConditionalOnMissingBean
   public GraphQLBuilder graphQLBuilder(
+      @Autowired(required = false) ExecutionStrategyProvider executionStrategyProvider,
       @Autowired(required = false) List<Instrumentation> instrumentations) {
     GraphQLBuilder graphQLBuilder = new GraphQLBuilder();
+
+    if (executionStrategyProvider != null) {
+      graphQLBuilder.executionStrategyProvider(() -> executionStrategyProvider);
+    }
+
     if (instrumentations != null && !instrumentations.isEmpty()) {
       if (instrumentations.size() == 1) {
         graphQLBuilder.instrumentation(() -> instrumentations.get(0));
@@ -61,6 +68,7 @@ public class GraphQLWebsocketAutoConfiguration {
         graphQLBuilder.instrumentation(() -> new ChainedInstrumentation(instrumentations));
       }
     }
+
     return graphQLBuilder;
   }
 
