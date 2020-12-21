@@ -7,8 +7,9 @@ import graphql.execution.instrumentation.tracing.TracingInstrumentation;
 
 public class TracingNoResolversInstrumentation extends TracingInstrumentation {
 
-    @Override
-    public InstrumentationContext<Object> beginFieldFetch(InstrumentationFieldFetchParameters parameters) {
-        return new SimpleInstrumentationContext<>();
-    }
+  @Override
+  public InstrumentationContext<Object> beginFieldFetch(
+      InstrumentationFieldFetchParameters parameters) {
+    return new SimpleInstrumentationContext<>();
+  }
 }

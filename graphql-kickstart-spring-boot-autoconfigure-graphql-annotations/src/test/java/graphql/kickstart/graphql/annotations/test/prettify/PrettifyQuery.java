@@ -6,8 +6,8 @@ import graphql.kickstart.graphql.annotations.GraphQLQueryResolver;
 @GraphQLQueryResolver
 public class PrettifyQuery {
 
-    @GraphQLField
-    public static String getSomeValue() {
-        return "some value";
-    }
+  @GraphQLField
+  public static String getSomeValue() {
+    return "some value";
+  }
 }

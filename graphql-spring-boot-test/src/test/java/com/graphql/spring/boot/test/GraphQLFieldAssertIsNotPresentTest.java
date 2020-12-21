@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class GraphQLFieldAssertIsNotPresentTest extends GraphQLFieldAssertTestBase {
+class GraphQLFieldAssertIsNotPresentTest extends GraphQLFieldAssertTestBase {
 
   private static Stream<String> valuesThatShouldCauseFailure() {
     return Stream.of(null, NON_NULL_VALUE);

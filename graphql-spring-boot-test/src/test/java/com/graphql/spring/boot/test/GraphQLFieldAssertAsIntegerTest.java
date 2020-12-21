@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class GraphQLFieldAssertAsIntegerTest extends GraphQLFieldAssertTestBase {
+class GraphQLFieldAssertAsIntegerTest extends GraphQLFieldAssertTestBase {
 
   @Test
   @DisplayName("Should return a Integer assertion (value at specific path is valid Integer value).")

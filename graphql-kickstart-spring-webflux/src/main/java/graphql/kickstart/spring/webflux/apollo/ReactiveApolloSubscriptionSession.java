@@ -10,7 +10,8 @@ public class ReactiveApolloSubscriptionSession extends ApolloSubscriptionSession
 
   private final ReactiveWebSocketSubscriptionSession session;
 
-  public ReactiveApolloSubscriptionSession(GraphQLSubscriptionMapper mapper, WebSocketSession webSocketSession) {
+  public ReactiveApolloSubscriptionSession(GraphQLSubscriptionMapper mapper,
+      WebSocketSession webSocketSession) {
     super(mapper);
     session = new ReactiveWebSocketSubscriptionSession(mapper, webSocketSession);
   }

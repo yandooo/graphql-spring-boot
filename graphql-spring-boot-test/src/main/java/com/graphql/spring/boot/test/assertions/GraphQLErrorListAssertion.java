@@ -10,10 +10,12 @@ import com.jayway.jsonpath.PathNotFoundException;
 import graphql.GraphQLError;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.EqualsAndHashCode;
 import org.assertj.core.api.FactoryBasedNavigableListAssert;
 import org.assertj.core.api.ObjectAssert;
 import org.assertj.core.api.ObjectAssertFactory;
 
+@EqualsAndHashCode(callSuper = true)
 public class GraphQLErrorListAssertion extends FactoryBasedNavigableListAssert<
     GraphQLErrorListAssertion,
     List<? extends GraphQLError>,

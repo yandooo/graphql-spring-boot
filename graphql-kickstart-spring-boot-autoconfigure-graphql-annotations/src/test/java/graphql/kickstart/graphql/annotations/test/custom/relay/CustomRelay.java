@@ -7,4 +7,5 @@ import org.springframework.stereotype.Service;
 @Service
 @Profile("custom-relay-test")
 public class CustomRelay extends Relay {
+
 }

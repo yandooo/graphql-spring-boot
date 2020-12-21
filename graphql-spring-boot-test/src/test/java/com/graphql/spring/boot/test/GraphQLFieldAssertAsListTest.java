@@ -13,7 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class GraphQLFieldAssertAsListTest extends GraphQLFieldAssertTestBase {
+class GraphQLFieldAssertAsListTest extends GraphQLFieldAssertTestBase {
 
   @Test
   @DisplayName("Should return a String list assertion (value at specific path is valid list).")

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class GraphQLAssertIsNotPresentOrNullTest extends GraphQLFieldAssertTestBase {
+class GraphQLAssertIsNotPresentOrNullTest extends GraphQLFieldAssertTestBase {
 
   @Test
   @DisplayName("Should pass if the provided path is not present.")

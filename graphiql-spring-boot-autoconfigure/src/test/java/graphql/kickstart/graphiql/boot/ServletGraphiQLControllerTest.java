@@ -1,5 +1,9 @@
 package graphql.kickstart.graphiql.boot;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,27 +14,24 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @ExtendWith(SpringExtension.class)
 @WebMvcTest
-public class ServletGraphiQLControllerTest {
+class ServletGraphiQLControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired
+  private MockMvc mockMvc;
 
-    @Test
-    public void shouldBeAbleToAccessGraphiQL() throws Exception {
-      mockMvc.perform(get("/graphiql"))
-          .andExpect(status().is2xxSuccessful())
-          .andExpect(content().contentType("text/html; charset=UTF-8"));
-    }
+  @Test
+  void shouldBeAbleToAccessGraphiQL() throws Exception {
+    mockMvc.perform(get("/graphiql"))
+        .andExpect(status().is2xxSuccessful())
+        .andExpect(content().contentType("text/html; charset=UTF-8"));
+  }
 
-    @SpringBootConfiguration
-    @TestPropertySource(properties = "graphiql.enabled=true")
-    @Import(GraphiQLAutoConfiguration.class)
-    public static class ServletTestApplication {
-    }
+  @SpringBootConfiguration
+  @TestPropertySource(properties = "graphiql.enabled=true")
+  @Import(GraphiQLAutoConfiguration.class)
+  public static class ServletTestApplication {
+
+  }
 }

@@ -12,7 +12,7 @@ class RequestFactory {
   }
 
   static HttpEntity<Object> forJson(String json, HttpHeaders headers) {
-    headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+    headers.setContentType(MediaType.APPLICATION_JSON);
     return new HttpEntity<>(json, headers);
   }
 

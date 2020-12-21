@@ -8,6 +8,7 @@ import graphql.relay.DefaultConnectionCursor;
 import graphql.schema.DataFetchingEnvironment;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 /**
@@ -16,18 +17,18 @@ import java.util.List;
 public class SimpleListConnection {
 
   private static final String DUMMY_CURSOR_PREFIX = "simple-cursor";
-  private List<?> data = new ArrayList<Object>();
+  private final List<?> data;
 
   public SimpleListConnection(List<?> data) {
     this.data = data;
   }
 
-  public <T extends EdgeObjectType> T createEdgeObject() {
-    return (T) new EdgeObjectType();
+  public <E extends EdgeObjectType> E createEdgeObject() {
+    return (E) new EdgeObjectType();
   }
 
-  public <T extends ConnectionObjectType> T createConnectionObject() {
-    return (T) new ConnectionObjectType();
+  public <E extends ConnectionObjectType> E createConnectionObject() {
+    return (E) new ConnectionObjectType();
   }
 
   private List<EdgeObjectType> buildEdges() {
@@ -42,7 +43,7 @@ public class SimpleListConnection {
     return edges;
   }
 
-  public <T extends ConnectionObjectType> T get(DataFetchingEnvironment environment) {
+  public <C extends ConnectionObjectType> C get(DataFetchingEnvironment environment) {
 
     List<EdgeObjectType> edges = buildEdges();
 
@@ -52,7 +53,7 @@ public class SimpleListConnection {
     int end = Math.min(beforeOffset, edges.size());
 
     edges = edges.subList(begin, end);
-    if (edges.size() == 0) {
+    if (edges.isEmpty()) {
       return emptyConnection();
     }
 
@@ -69,7 +70,7 @@ public class SimpleListConnection {
       edges = edges.subList(edges.size() - last, edges.size());
     }
 
-    if (edges.size() == 0) {
+    if (edges.isEmpty()) {
       return emptyConnection();
     }
 
@@ -86,13 +87,13 @@ public class SimpleListConnection {
     connection.setEdges(edges);
     connection.setPageInfo(pageInfo);
 
-    return (T) connection;
+    return (C) connection;
   }
 
-  private <T extends ConnectionObjectType> T emptyConnection() {
+  private <E extends ConnectionObjectType> E emptyConnection() {
     ConnectionObjectType connection = createConnectionObject();
     connection.setPageInfo(new PageInfoObjectType());
-    return (T) connection;
+    return (E) connection;
   }
 
   public ConnectionCursor cursorForObjectInConnection(Object object) {
@@ -111,9 +112,8 @@ public class SimpleListConnection {
   }
 
   private String createCursor(int offset) {
-    byte[] lala = (DUMMY_CURSOR_PREFIX + Integer.toString(offset)).getBytes(StandardCharsets.UTF_8);
-    String string = java.util.Base64.getEncoder().encodeToString(lala);
-    return string;
+    byte[] lala = (DUMMY_CURSOR_PREFIX + offset).getBytes(StandardCharsets.UTF_8);
+    return Base64.getEncoder().encodeToString(lala);
   }
 
 }

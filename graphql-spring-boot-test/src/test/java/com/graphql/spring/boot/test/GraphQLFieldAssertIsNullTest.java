@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class GraphQLFieldAssertIsNullTest extends GraphQLFieldAssertTestBase {
+class GraphQLFieldAssertIsNullTest extends GraphQLFieldAssertTestBase {
 
   @Test
   @DisplayName("Should pass if the value at the provided path is null.")

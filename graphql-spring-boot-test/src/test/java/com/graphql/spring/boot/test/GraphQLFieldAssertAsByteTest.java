@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class GraphQLFieldAssertAsByteTest extends GraphQLFieldAssertTestBase {
+class GraphQLFieldAssertAsByteTest extends GraphQLFieldAssertTestBase {
 
   @Test
   @DisplayName("Should return a Byte assertion (value at specific path is valid Byte value).")

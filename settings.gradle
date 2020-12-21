@@ -59,3 +59,4 @@ include ":example-webflux"
 include ':graphql-spring-boot-test'
 include ':graphql-spring-boot-test-autoconfigure'
 
+include ':graphql-kickstart-starter-utils'

@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpperCaseDirectiveWiring implements AnnotationsDirectiveWiring {
 
-    @Override
-    public GraphQLFieldDefinition onField(final AnnotationsWiringEnvironment environment) {
-        final GraphQLFieldDefinition field = (GraphQLFieldDefinition) environment.getElement();
-        CodeRegistryUtil.wrapDataFetcher(field, environment, (((dataFetchingEnvironment, value) -> {
-            if (value instanceof String) {
-                return ((String) value).toUpperCase();
-            }
-            return value;
-        })));
-        return field;
-    }
+  @Override
+  public GraphQLFieldDefinition onField(final AnnotationsWiringEnvironment environment) {
+    final GraphQLFieldDefinition field = (GraphQLFieldDefinition) environment.getElement();
+    CodeRegistryUtil.wrapDataFetcher(field, environment, (((dataFetchingEnvironment, value) -> {
+      if (value instanceof String) {
+        return ((String) value).toUpperCase();
+      }
+      return value;
+    })));
+    return field;
+  }
 }

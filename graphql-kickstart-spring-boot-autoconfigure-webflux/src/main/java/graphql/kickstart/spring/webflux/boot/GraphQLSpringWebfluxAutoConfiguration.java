@@ -47,6 +47,7 @@ import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAdapter;
 
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Slf4j
 @Configuration
 @ConditionalOnBean({GraphQLSchema.class})
@@ -61,7 +62,8 @@ public class GraphQLSpringWebfluxAutoConfiguration {
   }
 
   @Bean
-  public GraphQLErrorStartupListener graphQLErrorStartupListener(ErrorHandlerSupplier errorHandlerSupplier) {
+  public GraphQLErrorStartupListener graphQLErrorStartupListener(
+      ErrorHandlerSupplier errorHandlerSupplier) {
     return new GraphQLErrorStartupListener(errorHandlerSupplier, true);
   }
 
@@ -100,7 +102,8 @@ public class GraphQLSpringWebfluxAutoConfiguration {
       @Autowired(required = false) GraphQLSpringWebfluxContextBuilder contextBuilder,
       @Autowired(required = false) GraphQLSpringWebfluxRootObjectBuilder rootObjectBuilder
   ) {
-    return new GraphQLSpringWebfluxInvocationInputFactory(graphQLSchemaProvider, contextBuilder, rootObjectBuilder);
+    return new GraphQLSpringWebfluxInvocationInputFactory(graphQLSchemaProvider, contextBuilder,
+        rootObjectBuilder);
   }
 
   @Bean

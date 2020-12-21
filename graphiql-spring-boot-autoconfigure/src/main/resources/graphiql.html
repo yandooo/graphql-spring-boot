@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="robots" content="noindex" />
-  <meta name="referrer" content="origin" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta content="noindex" name="robots" />
+  <meta content="origin" name="referrer" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
   <title>${pageTitle}</title>
   <style>
     body {
@@ -30,8 +30,8 @@
   <script src="${reactJsUrl}"></script>
   <script src="${reactDomJsUrl}"></script>
 
-  <link rel="stylesheet" href="${graphiqlCssUrl}" />
-  <link rel="icon" type="image/x-icon" href="${pageFavicon}">
+  <link href="${graphiqlCssUrl}" rel="stylesheet" />
+  <link href="${pageFavicon}" rel="icon" type="image/x-icon">
   <script src="${graphiqlJsUrl}"></script>
   <script src="${subscriptionsTransportWsBrowserClientUrl}"></script>
   <script src="${graphiqlSubscriptionsFetcherBrowserClientUrl}"></script>
@@ -101,20 +101,20 @@
 
   var headers = ${headers}
 
-  function addRequiredHeadersIfAbsent() {
-    if (!headers['Accept']) {
-      headers['Accept'] = 'application/json'
-    }
-    if (!headers['Content-Type']) {
-      headers['Content-Type'] = 'application/json'
-    }
-  }
+      function addRequiredHeadersIfAbsent() {
+        if (!headers['Accept']) {
+          headers['Accept'] = 'application/json'
+        }
+        if (!headers['Content-Type']) {
+          headers['Content-Type'] = 'application/json'
+        }
+      }
 
   function onEditHeaders(newHeaders) {
     try {
-       headers = JSON.parse(newHeaders)
-    } catch(e) {
-       headers = {}
+      headers = JSON.parse(newHeaders)
+    } catch (e) {
+      headers = {}
     }
     addRequiredHeadersIfAbsent()
   }
@@ -155,7 +155,8 @@
     reconnect: ${subscriptionClientReconnect},
     timeout: ${subscriptionClientTimeout}
   })
-  var subscriptionsFetcher = window.GraphiQLSubscriptionsFetcher.graphQLFetcher(subscriptionsClient, graphQLFetcher)
+  var subscriptionsFetcher = window.GraphiQLSubscriptionsFetcher.graphQLFetcher(subscriptionsClient,
+      graphQLFetcher)
 
   var props = ${props}
   if (parameters.query) {

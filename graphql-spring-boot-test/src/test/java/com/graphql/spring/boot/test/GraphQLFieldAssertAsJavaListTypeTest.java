@@ -15,7 +15,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class GraphQLFieldAssertAsJavaListTypeTest extends GraphQLFieldAssertTestBase {
+class GraphQLFieldAssertAsJavaListTypeTest extends GraphQLFieldAssertTestBase {
 
   private static final JavaType STRING_LIST_TYPE = TypeFactory.defaultInstance()
       .constructCollectionLikeType(List.class, String.class);

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class GraphQLFieldAssertAsBigDecimalTest extends GraphQLFieldAssertTestBase {
+class GraphQLFieldAssertAsBigDecimalTest extends GraphQLFieldAssertTestBase {
 
   @Test
   @DisplayName("Should return a big decimal assertion (value at specific path is valid number).")

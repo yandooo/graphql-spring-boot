@@ -17,7 +17,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class GraphQLTestTemplateIntegrationTest {
+class GraphQLTestTemplateIntegrationTest {
 
   private static final String SIMPLE_TEST_QUERY = "simple-test-query.graphql";
   private static final String SIMPLE_TEST_QUERY_WITH_FRAGMENTS = "simple-test-query-with-fragments.graphql";

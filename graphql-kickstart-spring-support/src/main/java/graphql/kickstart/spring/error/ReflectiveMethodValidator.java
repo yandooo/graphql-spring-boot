@@ -17,15 +17,16 @@ class ReflectiveMethodValidator {
     );
   }
 
-  static private boolean isGraphQLErrorReturnType(Method method) {
+  private static boolean isGraphQLErrorReturnType(Method method) {
     return GraphQLError.class.isAssignableFrom(method.getReturnType());
   }
 
-  static private boolean hasGraphQLErrorCollectionReturnType(Method method) {
+  private static boolean hasGraphQLErrorCollectionReturnType(Method method) {
     if (Collection.class.isAssignableFrom(method.getReturnType())) {
       ParameterizedType collectionType = (ParameterizedType) method.getGenericReturnType();
       if (collectionType.getActualTypeArguments().length == 1) {
-        return GraphQLError.class.isAssignableFrom((Class<?>) collectionType.getActualTypeArguments()[0]);
+        return GraphQLError.class
+            .isAssignableFrom((Class<?>) collectionType.getActualTypeArguments()[0]);
       }
     }
     return false;

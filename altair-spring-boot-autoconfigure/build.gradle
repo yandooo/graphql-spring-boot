@@ -17,8 +17,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 dependencies{
+    implementation(project(':graphql-kickstart-starter-utils'))
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-    
+
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation "org.apache.commons:commons-text:$LIB_APACHE_COMMONS_TEXT"
     compileOnly "org.springframework.boot:spring-boot-starter-web"

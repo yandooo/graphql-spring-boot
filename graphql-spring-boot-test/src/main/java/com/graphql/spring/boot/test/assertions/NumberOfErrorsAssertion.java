@@ -7,8 +7,10 @@ import com.graphql.spring.boot.test.GraphQLResponse;
 import com.graphql.spring.boot.test.GraphQLTestError;
 import com.jayway.jsonpath.PathNotFoundException;
 import java.util.List;
+import lombok.EqualsAndHashCode;
 import org.assertj.core.api.AbstractIntegerAssert;
 
+@EqualsAndHashCode(callSuper = true)
 public class NumberOfErrorsAssertion
     extends AbstractIntegerAssert<NumberOfErrorsAssertion>
     implements GraphQLResponseAssertion {

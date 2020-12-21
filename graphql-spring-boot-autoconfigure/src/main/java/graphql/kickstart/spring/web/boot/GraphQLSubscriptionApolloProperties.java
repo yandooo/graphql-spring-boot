@@ -7,8 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("graphql.servlet.subscriptions.apollo")
 class GraphQLSubscriptionApolloProperties {
 
-    private boolean keepAliveEnabled = true;
+  private boolean keepAliveEnabled = true;
 
-    private int keepAliveIntervalSeconds = 15;
+  private int keepAliveIntervalSeconds = 15;
 
 }

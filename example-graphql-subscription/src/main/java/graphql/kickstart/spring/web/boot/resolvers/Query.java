@@ -6,8 +6,10 @@ import org.springframework.stereotype.Component;
 @Component
 class Query implements GraphQLQueryResolver {
 
-  public String hello() {
-    return "Hello world!";
+  private static final String HELLO = "Hello world";
+
+  String hello() {
+    return HELLO;
   }
 
 }

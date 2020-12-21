@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import graphql.GraphQLError;
 import graphql.kickstart.execution.error.GraphQLErrorHandler;
 import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +17,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ExtendWith(MockitoExtension.class)
-public class GraphQLErrorHandlerFactoryTest {
+class GraphQLErrorHandlerFactoryTest {
 
   @Mock
   private ConfigurableApplicationContext applicationContext;
@@ -38,11 +37,12 @@ public class GraphQLErrorHandlerFactoryTest {
   }
 
   @Test
-  public void createFindsCollectionHandler() {
+  void createFindsCollectionHandler() {
     GraphQLErrorHandler handler = errorHandlerFactory.create(applicationContext, true);
     assertThat(handler).isInstanceOf(GraphQLErrorFromExceptionHandler.class);
     GraphQLErrorFromExceptionHandler errorHandler = (GraphQLErrorFromExceptionHandler) handler;
-    assertThat(errorHandler.getFactories()).as("handler.factories should not be empty").isNotEmpty();
+    assertThat(errorHandler.getFactories()).as("handler.factories should not be empty")
+        .isNotEmpty();
   }
 
   public static class TestClass {

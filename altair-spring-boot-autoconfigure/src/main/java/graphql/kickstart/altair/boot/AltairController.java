@@ -2,6 +2,8 @@ package graphql.kickstart.altair.boot;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import graphql.kickstart.util.PropertyGroupReader;
+import graphql.kickstart.util.PropsLoader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -55,11 +57,11 @@ public class AltairController {
   }
 
   private void loadProps() throws IOException {
-    props = new PropsLoader(environment).load();
+    props = new PropsLoader(environment, "altair.props.resources.", "altair.props.values.").load();
   }
 
   private void loadHeaders() throws JsonProcessingException {
-    PropertyGroupReader propertyReader = new PropertyGroupReader(environment, "graphiql.headers.");
+    PropertyGroupReader propertyReader = new PropertyGroupReader(environment, "altair.headers.");
     Properties headerProperties = propertyReader.load();
     this.headers = new ObjectMapper().writeValueAsString(headerProperties);
   }
@@ -86,7 +88,7 @@ public class AltairController {
     replacements.put("pageTitle", altairProperties.getPageTitle());
     replacements.put("pageFavicon", getResourceUrl("favicon.ico", "favicon.ico"));
     replacements.put("altairBaseUrl", getResourceUrl(
-        StringUtils.join(altairProperties.getSTATIC().getBasePath(), "/vendor/altair/"),
+        StringUtils.join(altairProperties.getBasePath(), "/vendor/altair/"),
         joinJsUnpkgPath(ALTAIR, altairProperties.getCdn().getVersion(), "build/dist/")));
     replacements
         .put("altairLogoUrl", getResourceUrl("assets/img/logo_350.svg", "assets/img/logo_350.svg"));

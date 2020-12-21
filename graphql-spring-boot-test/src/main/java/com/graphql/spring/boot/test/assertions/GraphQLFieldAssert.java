@@ -1,5 +1,6 @@
 package com.graphql.spring.boot.test.assertions;
 
+import static java.util.Collections.emptyList;
 import static java.util.Objects.nonNull;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -18,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GraphQLFieldAssert implements GraphQLResponseAssertion {
 
+  public static final String EXPECTED_FIELD_S_TO_BE_PRESENT = "Expected field %s to be present.";
+  public static final String EXPECTED_THAT_CONTENT_OF_FIELD_S_CAN_BE_CONVERTED_TO_S = "Expected that content of field %s can be converted to %s.";
   private final GraphQLResponse graphQLResponse;
   private final String jsonPath;
 
@@ -67,7 +70,7 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
         fail("Expected field %s to be null.", jsonPath);
       }
     } catch (PathNotFoundException e) {
-      fail(String.format("Expected field %s to be present.", jsonPath), e);
+      fail(String.format(EXPECTED_FIELD_S_TO_BE_PRESENT, jsonPath), e);
     }
     return this;
   }
@@ -84,7 +87,7 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
         fail("Expected field %s to be non-null.", jsonPath);
       }
     } catch (PathNotFoundException e) {
-      fail(String.format("Expected field %s to be present.", jsonPath), e);
+      fail(String.format(EXPECTED_FIELD_S_TO_BE_PRESENT, jsonPath), e);
     }
     return this;
   }
@@ -237,10 +240,10 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
     try {
       return graphQLResponse.get(jsonPath, targetClass);
     } catch (PathNotFoundException e) {
-      fail(String.format("Expected field %s to be present.", jsonPath), e);
+      fail(String.format(EXPECTED_FIELD_S_TO_BE_PRESENT, jsonPath), e);
       return null;
     } catch (IllegalArgumentException e) {
-      fail(String.format("Expected that content of field %s can be converted to %s.", jsonPath,
+      fail(String.format(EXPECTED_THAT_CONTENT_OF_FIELD_S_CAN_BE_CONVERTED_TO_S, jsonPath,
           targetClass), e);
       return null;
     }
@@ -250,11 +253,11 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
     try {
       return graphQLResponse.get(jsonPath, javaType);
     } catch (PathNotFoundException e) {
-      fail(String.format("Expected field %s to be present.", jsonPath), e);
+      fail(String.format(EXPECTED_FIELD_S_TO_BE_PRESENT, jsonPath), e);
       return null;
     } catch (IllegalArgumentException e) {
       fail(String
-              .format("Expected that content of field %s can be converted to %s.", jsonPath, javaType),
+              .format(EXPECTED_THAT_CONTENT_OF_FIELD_S_CAN_BE_CONVERTED_TO_S, jsonPath, javaType),
           e);
       return null;
     }
@@ -264,12 +267,12 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
     try {
       return graphQLResponse.getList(jsonPath, targetClass);
     } catch (PathNotFoundException e) {
-      fail(String.format("Expected field %s to be present.", jsonPath), e);
-      return null;
+      fail(String.format(EXPECTED_FIELD_S_TO_BE_PRESENT, jsonPath), e);
+      return emptyList();
     } catch (IllegalArgumentException e) {
-      fail(String.format("Expected that content of field %s can be converted to %s.", jsonPath,
+      fail(String.format(EXPECTED_THAT_CONTENT_OF_FIELD_S_CAN_BE_CONVERTED_TO_S, jsonPath,
           targetClass), e);
-      return null;
+      return emptyList();
     }
   }
 }

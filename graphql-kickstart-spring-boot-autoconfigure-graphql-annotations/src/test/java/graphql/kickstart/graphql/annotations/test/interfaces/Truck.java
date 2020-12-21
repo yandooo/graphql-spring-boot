@@ -13,14 +13,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Truck implements Vehicle {
 
-    /**
-     * Note that you have to repeat the annotations from the interface method!
-     */
-    @GraphQLField
-    @GraphQLNonNull
-    private String registrationNumber;
+  /**
+   * Note that you have to repeat the annotations from the interface method!
+   */
+  @GraphQLField
+  @GraphQLNonNull
+  private String registrationNumber;
 
-    @GraphQLField
-    @GraphQLNonNull
-    private int cargoWeightCapacity;
+  @GraphQLField
+  @GraphQLNonNull
+  private int cargoWeightCapacity;
 }

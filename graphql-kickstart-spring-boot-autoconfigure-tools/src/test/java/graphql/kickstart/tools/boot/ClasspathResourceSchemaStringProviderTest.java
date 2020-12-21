@@ -1,19 +1,16 @@
 package graphql.kickstart.tools.boot;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import java.io.IOException;
 import java.util.List;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Configuration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class ClasspathResourceSchemaStringProviderTest extends AbstractAutoConfigurationTest {
-
-  private ClasspathResourceSchemaStringProvider schemaStringProvider;
+class ClasspathResourceSchemaStringProviderTest extends AbstractAutoConfigurationTest {
 
   public ClasspathResourceSchemaStringProviderTest() {
     super(GraphQLJavaToolsAutoConfiguration.class);
@@ -30,9 +27,10 @@ public class ClasspathResourceSchemaStringProviderTest extends AbstractAutoConfi
   }
 
   @Test
-  public void schemaStrings() throws IOException {
+  void schemaStrings() throws IOException {
     load(BaseConfiguration.class);
-    schemaStringProvider = getContext().getBean(ClasspathResourceSchemaStringProvider.class);
+    ClasspathResourceSchemaStringProvider schemaStringProvider = getContext()
+        .getBean(ClasspathResourceSchemaStringProvider.class);
 
     List<String> schemaStrings = schemaStringProvider.schemaStrings();
     assertThat(schemaStrings).hasSize(1);
@@ -42,7 +40,7 @@ public class ClasspathResourceSchemaStringProviderTest extends AbstractAutoConfi
   @Configuration
   static class BaseConfiguration {
 
-    public class Query implements GraphQLQueryResolver {
+    public static class Query implements GraphQLQueryResolver {
 
       String schemaLocationTest(String id) {
         return id;

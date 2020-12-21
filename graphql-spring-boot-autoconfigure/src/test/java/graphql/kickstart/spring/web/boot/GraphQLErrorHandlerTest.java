@@ -1,14 +1,14 @@
 package graphql.kickstart.spring.web.boot;
 
-import graphql.kickstart.spring.web.boot.test.AbstractAutoConfigurationTest;
-import graphql.kickstart.tools.GraphQLQueryResolver;
-import graphql.kickstart.tools.SchemaParser;
 import com.graphql.spring.boot.test.TestUtils;
 import graphql.GraphQL;
 import graphql.GraphQLError;
 import graphql.kickstart.execution.GraphQLObjectMapper;
 import graphql.kickstart.execution.error.GraphQLErrorHandler;
 import graphql.kickstart.spring.error.ThrowableGraphQLError;
+import graphql.kickstart.spring.web.boot.test.AbstractAutoConfigurationTest;
+import graphql.kickstart.tools.GraphQLQueryResolver;
+import graphql.kickstart.tools.SchemaParser;
 import graphql.schema.GraphQLSchema;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +43,8 @@ class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
     TestUtils.assertGraphQLError(
         gql,
         "query { illegalArgumentException }",
-        new ThrowableGraphQLError(new IllegalArgumentException("Illegal argument"), "Illegal argument"),
+        new ThrowableGraphQLError(new IllegalArgumentException("Illegal argument"),
+            "Illegal argument"),
         objectMapper
     );
   }

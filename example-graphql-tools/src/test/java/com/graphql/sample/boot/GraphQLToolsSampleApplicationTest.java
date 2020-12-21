@@ -11,7 +11,6 @@ import com.graphql.spring.boot.test.GraphQLTestTemplate;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +18,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @GraphQLTest
-public class GraphQLToolsSampleApplicationTest {
+class GraphQLToolsSampleApplicationTest {
 
   @Autowired
   private GraphQLTestTemplate graphQLTestTemplate;
 
   @Test
-  @Disabled
-  public void get_comments() throws IOException {
+  void get_comments() throws IOException {
     GraphQLResponse response = graphQLTestTemplate
         .postForResource("graphql/post-get-comments.graphql");
     assertNotNull(response);
@@ -35,7 +33,7 @@ public class GraphQLToolsSampleApplicationTest {
   }
 
   @Test
-  public void get_comments_withFragments() throws IOException {
+  void get_comments_withFragments() throws IOException {
     List<String> fragments = new ArrayList<>();
     fragments.add("graphql/all-comment-fields-fragment.graphql");
     GraphQLResponse response = graphQLTestTemplate
@@ -46,7 +44,7 @@ public class GraphQLToolsSampleApplicationTest {
   }
 
   @Test
-  public void create_post() throws IOException {
+  void create_post() throws IOException {
     ObjectNode variables = new ObjectMapper().createObjectNode();
     variables.put("text", "lorem ipsum dolor sit amet");
     GraphQLResponse response = graphQLTestTemplate

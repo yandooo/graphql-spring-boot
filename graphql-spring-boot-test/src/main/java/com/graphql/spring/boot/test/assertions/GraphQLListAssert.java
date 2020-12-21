@@ -2,10 +2,12 @@ package com.graphql.spring.boot.test.assertions;
 
 import com.graphql.spring.boot.test.GraphQLResponse;
 import java.util.List;
+import lombok.EqualsAndHashCode;
 import org.assertj.core.api.FactoryBasedNavigableListAssert;
 import org.assertj.core.api.ObjectAssert;
 import org.assertj.core.api.ObjectAssertFactory;
 
+@EqualsAndHashCode(callSuper = true)
 public class GraphQLListAssert<T> extends FactoryBasedNavigableListAssert<
     GraphQLListAssert<T>,
     List<? extends T>,

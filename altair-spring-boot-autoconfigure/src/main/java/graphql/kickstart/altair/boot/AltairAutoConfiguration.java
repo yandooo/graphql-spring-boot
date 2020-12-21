@@ -17,10 +17,10 @@ import org.springframework.web.servlet.DispatcherServlet;
 @ConditionalOnClass(DispatcherServlet.class)
 public class AltairAutoConfiguration {
 
-    @Bean
-    @ConditionalOnProperty(value = "altair.enabled", havingValue = "true", matchIfMissing = true)
-    AltairController altairController() {
-        return new AltairController();
-    }
+  @Bean
+  @ConditionalOnProperty(value = "altair.enabled", havingValue = "true", matchIfMissing = true)
+  AltairController altairController() {
+    return new AltairController();
+  }
 
 }

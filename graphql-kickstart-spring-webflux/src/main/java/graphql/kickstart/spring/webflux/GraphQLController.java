@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 public class GraphQLController extends AbstractGraphQLController {
+
   private final GraphQLObjectMapper objectMapper;
   private final GraphQLInvoker graphQLInvoker;
   private final GraphQLSpringInvocationInputFactory invocationInputFactory;
@@ -33,7 +34,8 @@ public class GraphQLController extends AbstractGraphQLController {
       ServerWebExchange serverWebExchange) {
     GraphQLSingleInvocationInput invocationInput = invocationInputFactory
         .create(new GraphQLRequest(query, variables, operationName), serverWebExchange);
-    Mono<ExecutionResult> executionResult = Mono.fromCompletionStage(graphQLInvoker.executeAsync(invocationInput));
+    Mono<ExecutionResult> executionResult = Mono
+        .fromCompletionStage(graphQLInvoker.executeAsync(invocationInput));
     return executionResult.map(objectMapper::createResultFromExecutionResult);
   }
 

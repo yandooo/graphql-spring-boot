@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class GraphQLFieldAssertAsTest extends GraphQLFieldAssertTestBase {
+class GraphQLFieldAssertAsTest extends GraphQLFieldAssertTestBase {
 
   @Test
   @DisplayName("Should return a generic assertion (value at specific path is non-null).")
