@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 class GraphQLErrorFromExceptionHandler extends DefaultGraphQLErrorHandler {
 
-  private List<GraphQLErrorFactory> factories;
+  private final List<GraphQLErrorFactory> factories;
 
   GraphQLErrorFromExceptionHandler(List<GraphQLErrorFactory> factories) {
     this.factories = factories;
