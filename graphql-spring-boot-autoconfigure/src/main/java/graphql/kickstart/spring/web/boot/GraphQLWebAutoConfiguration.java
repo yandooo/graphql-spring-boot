@@ -104,11 +104,13 @@ public class GraphQLWebAutoConfiguration {
   public static final String SUBSCRIPTION_EXECUTION_STRATEGY = "subscriptionExecutionStrategy";
 
   private final GraphQLServletProperties graphQLServletProperties;
+  private final ErrorHandlerSupplier errorHandlerSupplier = new ErrorHandlerSupplier(null);
 
   @Bean
   public GraphQLErrorStartupListener graphQLErrorStartupListener(
       @Autowired(required = false) GraphQLErrorHandler errorHandler) {
-    return new GraphQLErrorStartupListener(new ErrorHandlerSupplier(errorHandler),
+    errorHandlerSupplier.setErrorHandler(errorHandler);
+    return new GraphQLErrorStartupListener(errorHandlerSupplier,
         graphQLServletProperties.isExceptionHandlersEnabled());
   }
 
@@ -257,13 +259,9 @@ public class GraphQLWebAutoConfiguration {
   @ConditionalOnMissingBean
   public GraphQLObjectMapper graphQLObjectMapper(
       ObjectProvider<ObjectMapperProvider> objectMapperProviderObjectProvider,
-      @Autowired(required = false) GraphQLServletObjectMapperConfigurer objectMapperConfigurer,
-      @Autowired(required = false) GraphQLErrorHandler errorHandler) {
+      @Autowired(required = false) GraphQLServletObjectMapperConfigurer objectMapperConfigurer) {
     GraphQLObjectMapper.Builder builder = newBuilder();
-
-    if (errorHandler != null) {
-      builder.withGraphQLErrorHandler(new ErrorHandlerSupplier(errorHandler));
-    }
+    builder.withGraphQLErrorHandler(errorHandlerSupplier);
 
     ObjectMapperProvider objectMapperProvider = objectMapperProviderObjectProvider.getIfAvailable();
 
@@ -272,7 +270,6 @@ public class GraphQLWebAutoConfiguration {
     } else if (objectMapperConfigurer != null) {
       builder.withObjectMapperConfigurer(objectMapperConfigurer);
     }
-    log.info("Building GraphQLObjectMapper including errorHandler: {}", errorHandler);
     return builder.build();
   }
 

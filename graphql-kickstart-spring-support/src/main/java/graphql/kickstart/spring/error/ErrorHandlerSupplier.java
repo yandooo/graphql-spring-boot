@@ -1,7 +1,6 @@
 package graphql.kickstart.spring.error;
 
 import graphql.kickstart.execution.error.GraphQLErrorHandler;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 public class ErrorHandlerSupplier implements Supplier<GraphQLErrorHandler> {
@@ -22,7 +21,7 @@ public class ErrorHandlerSupplier implements Supplier<GraphQLErrorHandler> {
   }
 
   public void setErrorHandler(GraphQLErrorHandler errorHandler) {
-    this.errorHandler = Objects.requireNonNull(errorHandler);
+    this.errorHandler = errorHandler;
   }
 
 }
