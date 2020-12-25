@@ -473,6 +473,8 @@ public class GraphQLTestSubscription {
               log.debug("New response recorded.");
             }
             break;
+          default:
+            break;
         }
       } catch (JsonProcessingException e) {
         fail("Exception while parsing server response. Response is not a valid GraphQL response.",
