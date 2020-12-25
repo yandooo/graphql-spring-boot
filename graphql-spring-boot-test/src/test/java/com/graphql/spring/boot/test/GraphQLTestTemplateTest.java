@@ -45,15 +45,6 @@ class GraphQLTestTemplateTest {
   }
 
   @Test
-  void testAddHeader() {
-    // WHEN
-    graphQLTestTemplate.addHeader(HEADER_NAME_1, HEADER_VALUE_1);
-    graphQLTestTemplate.addHeader(HEADER_NAME_2, HEADER_VALUE_2);
-    // THEN
-    assertThatContainsAllHeaders();
-  }
-
-  @Test
   void testWithAdditionalHeader() {
     // WHEN
     final GraphQLTestTemplate actual = graphQLTestTemplate
@@ -94,19 +85,6 @@ class GraphQLTestTemplateTest {
   }
 
   @Test
-  void testSetHeaders() {
-    // GIVEN
-    graphQLTestTemplate.getHeaders().add(HEADER_NAME_1, HEADER_VALUE_1);
-    final HttpHeaders newHeaders = new HttpHeaders();
-    newHeaders.add(HEADER_NAME_2, HEADER_VALUE_2);
-    // WHEN
-    graphQLTestTemplate.setHeaders(newHeaders);
-    // THEN
-    assertThat(graphQLTestTemplate.getHeaders()).hasSize(1);
-    assertThatContainsSecondHeader();
-  }
-
-  @Test
   void testWithClearHeaders() {
     // GIVEN
     graphQLTestTemplate.getHeaders().add(HEADER_NAME_1, HEADER_VALUE_1);
@@ -114,16 +92,6 @@ class GraphQLTestTemplateTest {
     final GraphQLTestTemplate actual = graphQLTestTemplate.withClearHeaders();
     // THEN
     assertThat(graphQLTestTemplate).isSameAs(actual);
-    assertThat(graphQLTestTemplate.getHeaders()).isEmpty();
-  }
-
-  @Test
-  void testClearHeaders() {
-    // GIVEN
-    graphQLTestTemplate.getHeaders().add(HEADER_NAME_1, HEADER_VALUE_1);
-    // WHEN
-    graphQLTestTemplate.clearHeaders();
-    // THEN
     assertThat(graphQLTestTemplate.getHeaders()).isEmpty();
   }
 

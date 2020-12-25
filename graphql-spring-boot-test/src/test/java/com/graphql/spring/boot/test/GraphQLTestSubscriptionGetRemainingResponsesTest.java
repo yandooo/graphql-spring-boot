@@ -1,7 +1,9 @@
 package com.graphql.spring.boot.test;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.awaitility.Awaitility.await;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,11 +14,11 @@ class GraphQLTestSubscriptionGetRemainingResponsesTest extends
 
   @Test
   @DisplayName("Should properly return remaining responses after the Subscription was stopped.")
-  void shouldGetRemainingResponses() throws InterruptedException {
+  void shouldGetRemainingResponses() {
     // WHEN
     graphQLTestSubscription.start(TIMER_SUBSCRIPTION_RESOURCE)
         .awaitAndGetNextResponse(TIMEOUT, false);
-    Thread.sleep(TIMEOUT);
+    await().atMost(TIMEOUT, MILLISECONDS);
     graphQLTestSubscription.stop();
     // THEN
     assertThatSubscriptionWasStopped();

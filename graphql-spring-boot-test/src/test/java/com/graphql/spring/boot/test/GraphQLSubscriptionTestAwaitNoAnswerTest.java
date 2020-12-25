@@ -37,8 +37,8 @@ class GraphQLSubscriptionTestAwaitNoAnswerTest extends GraphQLTestSubscriptionTe
   @DisplayName("Should raise assertion error if any response arrived / default stop after.")
   void shouldRaiseAssertionErrorIfResponseArrivedDefaultStopAfter() {
     // WHEN - THEN
+    graphQLTestSubscription.start(TIMER_SUBSCRIPTION_RESOURCE);
     assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> graphQLTestSubscription
-        .start(TIMER_SUBSCRIPTION_RESOURCE)
         .waitAndExpectNoResponse(TIMEOUT));
     assertThatSubscriptionWasStopped();
   }
@@ -50,8 +50,8 @@ class GraphQLSubscriptionTestAwaitNoAnswerTest extends GraphQLTestSubscriptionTe
       final boolean stopAfter
   ) {
     // WHEN - THEN
+    graphQLTestSubscription.start(TIMER_SUBSCRIPTION_RESOURCE);
     assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> graphQLTestSubscription
-        .start(TIMER_SUBSCRIPTION_RESOURCE)
         .waitAndExpectNoResponse(TIMEOUT, stopAfter));
     assertThatSubscriptionStoppedStatusIs(stopAfter);
   }

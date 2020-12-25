@@ -1,6 +1,7 @@
 package com.graphql.spring.boot.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Queue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import javax.websocket.ClientEndpointConfig;
@@ -49,7 +51,6 @@ public class GraphQLTestSubscription {
 
   private static final WebSocketContainer WEB_SOCKET_CONTAINER = ContainerProvider
       .getWebSocketContainer();
-  private static final int SLEEP_INTERVAL_MS = 100;
   private static final int ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT = 60000;
   private static final AtomicInteger ID_COUNTER = new AtomicInteger(1);
   private static final UriBuilderFactory URI_BUILDER_FACTORY = new DefaultUriBuilderFactory();
@@ -298,18 +299,11 @@ public class GraphQLTestSubscription {
     if (isStopped()) {
       fail("Subscription already stopped. Forgot to call reset after test case?");
     }
-    int elapsedTime = 0;
-    while (
-        ((state.getResponses().size() < numExpectedResponses) || numExpectedResponses <= 0)
-            && elapsedTime < timeout
-    ) {
-      try {
-        Thread.sleep(SLEEP_INTERVAL_MS);
-        elapsedTime += SLEEP_INTERVAL_MS;
-      } catch (InterruptedException e) {
-        fail("Test execution error - Thread.sleep failed.", e);
-      }
-    }
+
+    await()
+        .atMost(timeout, TimeUnit.MILLISECONDS)
+        .until(() -> hasReachedExpectedResponses(numExpectedResponses));
+
     if (stopAfter) {
       stop();
     }
@@ -338,6 +332,10 @@ public class GraphQLTestSubscription {
       log.debug("Returning {} responses.", responseList.size());
       return responseList;
     }
+  }
+
+  private boolean hasReachedExpectedResponses(int numExpectedResponses) {
+    return (state.getResponses().size() < numExpectedResponses) || numExpectedResponses <= 0;
   }
 
   /**
@@ -420,29 +418,20 @@ public class GraphQLTestSubscription {
   }
 
   private void awaitAcknowledgement() {
-    await(GraphQLTestSubscription::isAcknowledged,
+    awaitAcknowledgementOrConnection(GraphQLTestSubscription::isAcknowledged,
         "Connection was not acknowledged by the GraphQL server.");
   }
 
   private void awaitStop() {
-    await(GraphQLTestSubscription::isStopped, "Connection was not stopped in time.");
+    awaitAcknowledgementOrConnection(GraphQLTestSubscription::isStopped,
+        "Connection was not stopped in time.");
   }
 
-  private void await(final Predicate<GraphQLTestSubscription> condition,
+  private void awaitAcknowledgementOrConnection(final Predicate<GraphQLTestSubscription> condition,
       final String timeoutDescription) {
-    int elapsedTime = 0;
-    while (!condition.test(this) && elapsedTime < ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT) {
-      try {
-        Thread.sleep(SLEEP_INTERVAL_MS);
-        elapsedTime += SLEEP_INTERVAL_MS;
-      } catch (InterruptedException e) {
-        fail("Test execution error - Thread.sleep failed.", e);
-      }
-    }
-
-    if (!condition.test(this)) {
-      fail("Timeout: " + timeoutDescription);
-    }
+    await(timeoutDescription)
+        .atMost(ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
+        .until(() -> condition.test(this));
   }
 
   @RequiredArgsConstructor
@@ -460,28 +449,34 @@ public class GraphQLTestSubscription {
         assertThat(typeNode).as("GraphQL messages should have a type field.").isNotNull();
         assertThat(typeNode.isNull()).as("GraphQL messages type should not be null.").isFalse();
         final String type = typeNode.asText();
-        if (type.equals("complete")) {
-          state.setCompleted(true);
-          log.debug("Subscription completed.");
-        } else if (type.equals("connection_ack")) {
-          state.setAcknowledged(true);
-          log.debug("WebSocket connection acknowledged by the GraphQL Server.");
-        } else if (type.equals("data") || type.equals("error")) {
-          final JsonNode payload = jsonNode.get(PAYLOAD);
-          assertThat(payload).as("Data/error messages must have a payload.").isNotNull();
-          final String payloadString = objectMapper.writeValueAsString(payload);
-          final GraphQLResponse graphQLResponse = new GraphQLResponse(
-              ResponseEntity.ok(payloadString),
-              objectMapper);
-          if (state.isStopped() || state.isCompleted()) {
-            log.debug(
-                "Response discarded because subscription was stopped or completed in the meanwhile.");
-          } else {
-            synchronized (STATE_LOCK) {
-              state.getResponses().add(graphQLResponse);
+        switch (type) {
+          case "complete":
+            state.setCompleted(true);
+            log.debug("Subscription completed.");
+            break;
+          case "connection_ack":
+            state.setAcknowledged(true);
+            log.debug("WebSocket connection acknowledged by the GraphQL Server.");
+            break;
+          case "data":
+          case "error":
+          default:
+            final JsonNode payload = jsonNode.get(PAYLOAD);
+            assertThat(payload).as("Data/error messages must have a payload.").isNotNull();
+            final String payloadString = objectMapper.writeValueAsString(payload);
+            final GraphQLResponse graphQLResponse = new GraphQLResponse(
+                ResponseEntity.ok(payloadString),
+                objectMapper);
+            if (state.isStopped() || state.isCompleted()) {
+              log.debug(
+                  "Response discarded because subscription was stopped or completed in the meanwhile.");
+            } else {
+              synchronized (STATE_LOCK) {
+                state.getResponses().add(graphQLResponse);
+              }
+              log.debug("New response recorded.");
             }
-            log.debug("New response recorded.");
-          }
+            break;
         }
       } catch (JsonProcessingException e) {
         fail("Exception while parsing server response. Response is not a valid GraphQL response.",

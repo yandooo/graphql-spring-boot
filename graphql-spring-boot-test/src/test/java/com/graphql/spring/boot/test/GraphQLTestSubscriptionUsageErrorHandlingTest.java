@@ -11,24 +11,27 @@ class GraphQLTestSubscriptionUsageErrorHandlingTest extends GraphQLTestSubscript
   @Test
   @DisplayName("Should raise an assertion error if init is called after init.")
   void shouldRaiseAssertionErrorIfInitAfterInit() {
+    graphQLTestSubscription.init();
     assertThatExceptionOfType(AssertionError.class)
-        .isThrownBy(() -> graphQLTestSubscription.init().init());
+        .isThrownBy(() -> graphQLTestSubscription.init());
   }
 
   @Test
   @DisplayName("Should raise an assertion error if awaitAndGet times out.")
   void shouldRaiseAssertionErrorIfAwaitAndGetTimesOut() {
+    graphQLTestSubscription
+        .start(SUBSCRIPTION_THAT_TIMES_OUT_RESOURCE);
     assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(() -> graphQLTestSubscription
-            .start(SUBSCRIPTION_THAT_TIMES_OUT_RESOURCE)
             .awaitAndGetNextResponse(TIMEOUT));
   }
 
   @Test
   @DisplayName("Should raise an assertion error if awaitAndGet methods are called before start.")
   void shouldRaiseAssertionErrorIfGettingResponseWithoutStart() {
+    graphQLTestSubscription.init();
     assertThatExceptionOfType(AssertionError.class)
-        .isThrownBy(() -> graphQLTestSubscription.init().awaitAndGetNextResponse(TIMEOUT));
+        .isThrownBy(() -> graphQLTestSubscription.awaitAndGetNextResponse(TIMEOUT));
   }
 
   @Test
@@ -41,18 +44,19 @@ class GraphQLTestSubscriptionUsageErrorHandlingTest extends GraphQLTestSubscript
   @Test
   @DisplayName("Should raise an assertion error if stop is called after stop.")
   void shouldRaiseAssertionErrorIfStopAfterStop() {
+    graphQLTestSubscription.start(TIMER_SUBSCRIPTION_RESOURCE).stop();
     assertThatExceptionOfType(AssertionError.class)
-        .isThrownBy(() -> graphQLTestSubscription.start(TIMER_SUBSCRIPTION_RESOURCE).stop().stop());
+        .isThrownBy(() -> graphQLTestSubscription.stop());
   }
 
   @Test
   @DisplayName("Should raise an assertion error if awaitAndGet methods are called after stop.")
   void shouldRaiseAssertionErrorIfGettingResponseAfterStop() {
+    graphQLTestSubscription
+        .start(TIMER_SUBSCRIPTION_RESOURCE)
+        .stop();
     assertThatExceptionOfType(AssertionError.class)
-        .isThrownBy(() -> graphQLTestSubscription
-            .start(TIMER_SUBSCRIPTION_RESOURCE)
-            .stop()
-            .awaitAndGetNextResponse(TIMEOUT));
+        .isThrownBy(() -> graphQLTestSubscription.awaitAndGetNextResponse(TIMEOUT));
   }
 
   @Test

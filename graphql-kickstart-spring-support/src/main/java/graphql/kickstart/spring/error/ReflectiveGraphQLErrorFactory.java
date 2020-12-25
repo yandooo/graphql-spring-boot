@@ -36,10 +36,10 @@ class ReflectiveGraphQLErrorFactory implements GraphQLErrorFactory {
   @Override
   public Collection<GraphQLError> create(Throwable t, ErrorContext errorContext) {
     try {
-      method.setAccessible(true);
       if (singularReturnType) {
         return singletonList((GraphQLError) invoke(t, errorContext));
       }
+      //noinspection unchecked
       return (Collection<GraphQLError>) invoke(t, errorContext);
     } catch (IllegalAccessException | InvocationTargetException e) {
       log.error("Cannot create GraphQLError from throwable {}", t.getClass().getSimpleName(), e);
