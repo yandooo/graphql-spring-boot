@@ -302,7 +302,7 @@ public class GraphQLTestSubscription {
 
     await()
         .atMost(timeout, TimeUnit.MILLISECONDS)
-        .until(() -> hasReachedExpectedResponses(numExpectedResponses));
+        .until(() -> state.getResponses().size() >= numExpectedResponses);
 
     if (stopAfter) {
       stop();
@@ -332,10 +332,6 @@ public class GraphQLTestSubscription {
       log.debug("Returning {} responses.", responseList.size());
       return responseList;
     }
-  }
-
-  private boolean hasReachedExpectedResponses(int numExpectedResponses) {
-    return state.getResponses().size() >= numExpectedResponses;
   }
 
   /**
