@@ -8,18 +8,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
  */
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class SimpleListConnection<T> {
 
   private static final String DUMMY_CURSOR_PREFIX = "simple-cursor";
   private final List<T> data;
-
-  protected SimpleListConnection(List<T> data) {
-    this.data = data;
-  }
 
   public abstract <E extends EdgeObjectType<T>> E createEdgeObject();
 
