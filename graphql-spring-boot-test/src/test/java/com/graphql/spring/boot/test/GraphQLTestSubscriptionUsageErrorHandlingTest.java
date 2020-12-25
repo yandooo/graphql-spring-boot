@@ -2,6 +2,7 @@ package com.graphql.spring.boot.test;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+import org.awaitility.core.ConditionTimeoutException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,9 +22,9 @@ class GraphQLTestSubscriptionUsageErrorHandlingTest extends GraphQLTestSubscript
   void shouldRaiseAssertionErrorIfAwaitAndGetTimesOut() {
     graphQLTestSubscription
         .start(SUBSCRIPTION_THAT_TIMES_OUT_RESOURCE);
-    assertThatExceptionOfType(AssertionError.class)
+    assertThatExceptionOfType(ConditionTimeoutException.class)
         .isThrownBy(() -> graphQLTestSubscription
-            .awaitAndGetNextResponse(TIMEOUT));
+            .awaitAndGetNextResponse(110));
   }
 
   @Test
