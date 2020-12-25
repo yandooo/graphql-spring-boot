@@ -43,8 +43,8 @@ class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
     TestUtils.assertGraphQLError(
         gql,
         "query { illegalArgumentException }",
-        new ThrowableGraphQLError(new IllegalArgumentException("Illegal argument"),
-            "Illegal argument"),
+        new ThrowableGraphQLError(new IllegalArgumentException("Some argument"),
+            "Custom illegal argument"),
         objectMapper
     );
   }
@@ -70,12 +70,12 @@ class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
       }
 
       @ExceptionHandler(IllegalArgumentException.class)
-      ThrowableGraphQLError handle(IllegalArgumentException e) {
-        return new ThrowableGraphQLError(e, "Illegal argument");
+      public ThrowableGraphQLError handle(IllegalArgumentException e) {
+        return new ThrowableGraphQLError(e, "Custom illegal argument");
       }
 
       @ExceptionHandler(Throwable.class)
-      GraphQLError handle(Throwable e) {
+      public GraphQLError handle(Throwable e) {
         return new ThrowableGraphQLError(e, "Catch all handler");
       }
 
