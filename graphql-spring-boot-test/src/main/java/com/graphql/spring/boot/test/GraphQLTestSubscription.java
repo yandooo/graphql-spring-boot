@@ -335,7 +335,7 @@ public class GraphQLTestSubscription {
   }
 
   private boolean hasReachedExpectedResponses(int numExpectedResponses) {
-    return (state.getResponses().size() == numExpectedResponses) || numExpectedResponses <= 0;
+    return state.getResponses().size() >= numExpectedResponses;
   }
 
   /**
