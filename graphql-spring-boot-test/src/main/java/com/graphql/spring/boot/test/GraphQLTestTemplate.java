@@ -74,17 +74,6 @@ public class GraphQLTestTemplate {
   }
 
   /**
-   * @param name Name (key) of HTTP header to add.
-   * @param value Value of HTTP header to add.
-   * @deprecated use {{@link #withAdditionalHeader(String, String...)}} instead Add an HTTP header
-   * that will be sent with each request this sends.
-   */
-  @Deprecated
-  public void addHeader(final String name, final String value) {
-    withAdditionalHeader(name, value);
-  }
-
-  /**
    * Add an HTTP header that will be sent with each request this sends.
    *
    * @param name Name (key) of HTTP header to add.
@@ -161,16 +150,6 @@ public class GraphQLTestTemplate {
   }
 
   /**
-   * @param newHeaders Headers to use.
-   * @deprecated use {{@link #withHeaders(HttpHeaders)}} instead. Replace any associated HTTP
-   * headers with the provided headers.
-   */
-  @Deprecated
-  public void setHeaders(HttpHeaders newHeaders) {
-    withHeaders(newHeaders);
-  }
-
-  /**
    * Replace any associated HTTP headers with the provided headers.
    *
    * @param newHeaders Headers to use.
@@ -181,14 +160,6 @@ public class GraphQLTestTemplate {
   }
 
   /**
-   * @deprecated use {{@link #withClearHeaders()}} instead Clear all associated HTTP headers.
-   */
-  @Deprecated
-  public void clearHeaders() {
-    withClearHeaders();
-  }
-
-  /**
    * Clear all associated HTTP headers.
    *
    * @return self
@@ -196,20 +167,6 @@ public class GraphQLTestTemplate {
   public GraphQLTestTemplate withClearHeaders() {
     headers.clear();
     return this;
-  }
-
-  /**
-   * Loads a GraphQL query or mutation from the given classpath resource and sends it to the GraphQL
-   * server.
-   *
-   * @param graphqlResource path to the classpath resource containing the GraphQL query
-   * @return {@link GraphQLResponse} containing the result of query execution
-   * @throws IOException if the resource cannot be loaded from the classpath
-   * @deprecated Use {@link #postForResource(String)} instead
-   */
-  @Deprecated
-  public GraphQLResponse perform(String graphqlResource) throws IOException {
-    return postForResource(graphqlResource);
   }
 
   /**
