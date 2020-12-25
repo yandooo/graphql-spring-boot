@@ -116,7 +116,7 @@ public class GraphQLTestSubscription {
     sendMessage(message);
     state.setInitialized(true);
     awaitAcknowledgement();
-    log.debug("Subscription successfully initialized.");
+    log.debug("Subscription successfully initialized");
     return this;
   }
 
@@ -135,12 +135,12 @@ public class GraphQLTestSubscription {
   /**
    * Sends the "start" message to the GraphQL Subscription.
    *
-   * @param graphGLResource the GraphQL resource, which contains the query for the subscription
+   * @param graphQLResource the GraphQL resource, which contains the query for the subscription
    * start payload.
    * @param variables the variables needed for the query to be evaluated.
    * @return self reference
    */
-  public GraphQLTestSubscription start(@NonNull final String graphGLResource,
+  public GraphQLTestSubscription start(@NonNull final String graphQLResource,
       @Nullable final Object variables) {
     if (!isInitialized()) {
       init();
@@ -150,7 +150,7 @@ public class GraphQLTestSubscription {
     }
     state.setStarted(true);
     ObjectNode payload = objectMapper.createObjectNode();
-    payload.put("query", loadQuery(graphGLResource));
+    payload.put("query", loadQuery(graphQLResource));
     payload.set("variables", getFinalPayload(variables));
     ObjectNode message = objectMapper.createObjectNode();
     message.put("type", "start");
@@ -335,7 +335,7 @@ public class GraphQLTestSubscription {
   }
 
   private boolean hasReachedExpectedResponses(int numExpectedResponses) {
-    return (state.getResponses().size() < numExpectedResponses) || numExpectedResponses <= 0;
+    return (state.getResponses().size() == numExpectedResponses) || numExpectedResponses <= 0;
   }
 
   /**
@@ -419,12 +419,12 @@ public class GraphQLTestSubscription {
 
   private void awaitAcknowledgement() {
     awaitAcknowledgementOrConnection(GraphQLTestSubscription::isAcknowledged,
-        "Connection was not acknowledged by the GraphQL server.");
+        "Connection was acknowledged by the GraphQL server.");
   }
 
   private void awaitStop() {
     awaitAcknowledgementOrConnection(GraphQLTestSubscription::isStopped,
-        "Connection was not stopped in time.");
+        "Connection was stopped in time.");
   }
 
   private void awaitAcknowledgementOrConnection(final Predicate<GraphQLTestSubscription> condition,
@@ -432,6 +432,7 @@ public class GraphQLTestSubscription {
     await(timeoutDescription)
         .atMost(ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
         .until(() -> condition.test(this));
+
   }
 
   @RequiredArgsConstructor
@@ -460,7 +461,6 @@ public class GraphQLTestSubscription {
             break;
           case "data":
           case "error":
-          default:
             final JsonNode payload = jsonNode.get(PAYLOAD);
             assertThat(payload).as("Data/error messages must have a payload.").isNotNull();
             final String payloadString = objectMapper.writeValueAsString(payload);
