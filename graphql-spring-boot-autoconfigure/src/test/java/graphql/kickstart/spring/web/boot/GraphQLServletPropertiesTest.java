@@ -15,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
     "graphql.servlet.contextSetting=PER_REQUEST_WITH_INSTRUMENTATION"})
 class GraphQLServletPropertiesTest {
 
+  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Autowired
   private GraphQLServletProperties properties;
 

@@ -56,6 +56,7 @@ import graphql.kickstart.spring.error.GraphQLErrorStartupListener;
 import graphql.kickstart.spring.web.boot.metrics.MetricsInstrumentation;
 import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
 import graphql.schema.GraphQLSchema;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +79,7 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -126,6 +128,10 @@ public class GraphQLWebAutoConfiguration {
   @ConditionalOnProperty(value = "graphql.servlet.corsEnabled", havingValue = "true", matchIfMissing = true)
   public CorsFilter corsConfigurer(CorsConfiguration corsConfiguration) {
     Map<String, CorsConfiguration> corsConfigurations = new LinkedHashMap<>(1);
+    if (corsConfiguration.getAllowedMethods() == null) {
+      corsConfiguration.setAllowedMethods(
+          Arrays.asList(HttpMethod.GET.name(), HttpMethod.HEAD.name(), HttpMethod.POST.name()));
+    }
     corsConfigurations.put(graphQLServletProperties.getCorsMapping(), corsConfiguration);
 
     UrlBasedCorsConfigurationSource configurationSource = new UrlBasedCorsConfigurationSource();
