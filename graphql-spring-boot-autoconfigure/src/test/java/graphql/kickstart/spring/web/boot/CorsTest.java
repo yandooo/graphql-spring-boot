@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.ResultActions;
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 @ImportAutoConfiguration({JacksonAutoConfiguration.class, GraphQLWebAutoConfiguration.class})
-@SpringBootTest(properties = {"debug=true", "graphql.servlet.mapping=/graphql", "graphql.servlet.cors.allowed-origins=https://trusted.com", "graphql.servlet.cors.allowed-methods=GET,HEAD,POST"})
+@SpringBootTest(properties = {"debug=true", "graphql.servlet.mapping=/graphql", "graphql.servlet.cors.allowed-origins=https://trusted.com"})
 class CorsTest {
 
   @Autowired
