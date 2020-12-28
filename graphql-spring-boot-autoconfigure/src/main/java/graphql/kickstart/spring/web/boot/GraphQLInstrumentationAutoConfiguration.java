@@ -29,8 +29,8 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnClass(MetricsAutoConfiguration.class)
 @AutoConfigureAfter({MetricsAutoConfiguration.class, SimpleMetricsExportAutoConfiguration.class,
     GraphQLWebsocketAutoConfiguration.class})
+@EnableConfigurationProperties(GraphQLServletProperties.class)
 @ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
-@EnableConfigurationProperties({GraphQLServletProperties.class})
 public class GraphQLInstrumentationAutoConfiguration {
 
   private final GraphQLServletProperties graphqlServletProperties;
