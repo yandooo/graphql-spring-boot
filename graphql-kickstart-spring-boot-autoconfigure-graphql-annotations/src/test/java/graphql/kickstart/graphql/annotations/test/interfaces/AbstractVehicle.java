@@ -3,17 +3,15 @@ package graphql.kickstart.graphql.annotations.test.interfaces;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
-@NoArgsConstructor
+@SuperBuilder
 @AllArgsConstructor
-// Truck intentionally does not extend AbstractVehicle in order to have one inheritance
-// hierarchy free from abstract classes.
-public class Truck implements Vehicle {
+@NoArgsConstructor
+public abstract class AbstractVehicle implements Vehicle {
 
   /**
    * Note that you have to repeat the annotations from the interface method!
@@ -21,8 +19,4 @@ public class Truck implements Vehicle {
   @GraphQLField
   @GraphQLNonNull
   private String registrationNumber;
-
-  @GraphQLField
-  @GraphQLNonNull
-  private int cargoWeightCapacity;
 }

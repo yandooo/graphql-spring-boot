@@ -27,4 +27,11 @@ public class GraphQLAnnotationsProperties {
    */
   @Builder.Default
   private boolean alwaysPrettify = true;
+
+  /**
+   * If set to <code>true</code> abstract classes implementing a GraphQL interface will not be added to the schema.
+   * Defaults to <code>false</code> for backward compatibility.
+   */
+  @Builder.Default
+  private boolean ignoreAbstractInterfaceImplementations = false;
 }

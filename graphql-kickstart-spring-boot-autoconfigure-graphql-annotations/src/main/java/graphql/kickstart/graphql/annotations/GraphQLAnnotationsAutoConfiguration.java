@@ -17,10 +17,12 @@ import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
@@ -179,11 +181,15 @@ public class GraphQLAnnotationsAutoConfiguration {
       final Reflections reflections,
       final AnnotationsSchemaCreator.Builder builder
   ) {
+    Predicate<Class<?>> implementationQualifiesForInclusion =
+        type -> !(graphQLAnnotationsProperties.isIgnoreAbstractInterfaceImplementations()
+                && Modifier.isAbstract(type.getModifiers()));
     reflections.getMethodsAnnotatedWith(GraphQLField.class).stream()
         .map(Method::getDeclaringClass)
         .filter(Class::isInterface)
         .forEach(graphQLInterface ->
-            reflections.getSubTypesOf(graphQLInterface)
+            reflections.getSubTypesOf(graphQLInterface).stream()
+                .filter(implementationQualifiesForInclusion)
                 .forEach(implementation -> {
                   log.info("Registering {} as an implementation of GraphQL interface {}",
                       implementation,
