@@ -1,6 +1,7 @@
 package graphql.kickstart.graphql.annotations;
 
 import static graphql.annotations.AnnotationsSchemaCreator.newAnnotationsSchema;
+import static java.util.Objects.nonNull;
 
 import graphql.annotations.AnnotationsSchemaCreator;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -52,7 +53,14 @@ public class GraphQLAnnotationsAutoConfiguration {
   @Bean
   @ConditionalOnMissingBean
   public GraphQLAnnotations graphQLAnnotations() {
-    return new GraphQLAnnotations();
+    GraphQLAnnotations graphQLAnnotations = new GraphQLAnnotations();
+    if (nonNull(graphQLAnnotationsProperties.getInputPrefix())) {
+      graphQLAnnotations.getContainer().setInputPrefix(graphQLAnnotationsProperties.getInputPrefix());
+    }
+    if (nonNull(graphQLAnnotationsProperties.getInputSuffix())) {
+      graphQLAnnotations.getContainer().setInputSuffix(graphQLAnnotationsProperties.getInputSuffix());
+    }
+    return graphQLAnnotations;
   }
 
   @Bean

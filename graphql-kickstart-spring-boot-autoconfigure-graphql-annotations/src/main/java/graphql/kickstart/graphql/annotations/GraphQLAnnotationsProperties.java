@@ -27,4 +27,17 @@ public class GraphQLAnnotationsProperties {
    */
   @Builder.Default
   private boolean alwaysPrettify = true;
+
+  /**
+   * The prefix to use for input type names.
+   * If not configured the default prefix of the GraphQL-Java Annotations library is used.
+   * Configure an empty prefix for clearing the library's default prefix.
+   */
+  private String inputPrefix;
+
+  /**
+   * The suffix to use for input type names.
+   * If not configured the default suffix of the GraphQL-Java Annotations library is used.
+   */
+  private String inputSuffix;
 }

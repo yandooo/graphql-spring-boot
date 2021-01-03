@@ -11,4 +11,9 @@ public class TestMutation {
   public static TestModel performSomeOperation() {
     return new TestModel("Test value");
   }
+
+  @GraphQLField
+  public static TestModel performSomeOperationWithArgument(TestModel input) {
+    return new TestModel("Test value");
+  }
 }
