@@ -473,6 +473,9 @@ the classpath. Use the `schemaLocationPattern` property to customize this patter
 
 https://github.com/Enigmatis/graphql-java-annotations
 
+The GraphQL Annotations library is used instead of GraphQL Java Tools if the `graphql-spring-boot-starter` 
+dependency is replaced by `graphql-kickstart-spring-boot-starter-graphql-annotations`.
+
 The schema will be built using the GraphQL Annotations library in a code-first approach - instead of
 writing it manually, the schema will be constructed based on the Java code. Please see the
 documentation of the GraphQL Annotations library for a detailed documentation of the available
