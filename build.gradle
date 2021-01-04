@@ -37,10 +37,6 @@ sonarqube {
     }
 }
 
-jacoco {
-    toolVersion = "0.8.7.202012290703"
-}
-
 subprojects {
     apply plugin: 'idea'
     apply plugin: 'jacoco'
@@ -90,6 +86,10 @@ subprojects {
             showExceptions true
             showStackTraces true
         }
+    }
+
+    jacoco {
+        toolVersion = "0.8.7.202012290703"
     }
 
     jacocoTestReport {
