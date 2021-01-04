@@ -90,7 +90,7 @@ subprojects {
     }
 
     jacoco {
-        toolVersion = "0.8.7.202012290703"
+        toolVersion = "0.8.7-SNAPSHOT"
     }
 
     jacocoTestReport {
