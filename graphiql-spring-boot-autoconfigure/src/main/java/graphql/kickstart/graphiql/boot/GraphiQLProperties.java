@@ -32,12 +32,27 @@ class GraphiQLProperties {
   @Data
   static class Props {
 
-    private Variables variables = new Variables();
+    private GraphiQLVariables variables = new GraphiQLVariables();
 
+    /**
+     * See https://github.com/graphql/graphiql/tree/main/packages/graphiql#props
+     */
     @Data
-    static class Variables {
+    static class GraphiQLVariables {
 
+      private String query;
+      private String variables;
+      private String headers;
+      private String operationName;
+      private String response;
+      private String defaultQuery;
+      private boolean defaultVariableEditorOpen;
+      private boolean defaultSecondaryEditorOpen;
       private String editorTheme;
+      private boolean readOnly;
+      private boolean docsExplorerOpen;
+      private boolean headerEditorEnabled;
+      private boolean shouldPersistHeaders;
     }
   }
 
