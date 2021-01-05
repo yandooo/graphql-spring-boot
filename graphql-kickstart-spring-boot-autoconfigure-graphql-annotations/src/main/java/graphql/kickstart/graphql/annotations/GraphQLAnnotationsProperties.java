@@ -40,4 +40,12 @@ public class GraphQLAnnotationsProperties {
    * If not configured the default suffix of the GraphQL-Java Annotations library is used.
    */
   private String inputSuffix;
+
+  /**
+   * If set to <code>true</code> abstract classes implementing a GraphQL interface will not be added to the schema.
+   * Defaults to <code>false</code> for backward compatibility.
+   */
+  @Builder.Default
+  private boolean ignoreAbstractInterfaceImplementations = false;
+
 }

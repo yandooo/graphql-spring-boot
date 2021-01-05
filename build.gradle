@@ -56,6 +56,7 @@ subprojects {
         jcenter()
         maven { url "https://dl.bintray.com/graphql-java-kickstart/releases" }
         maven { url "https://repo.spring.io/libs-milestone" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
         maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local" }
     }
 
@@ -86,6 +87,10 @@ subprojects {
             showExceptions true
             showStackTraces true
         }
+    }
+
+    jacoco {
+        toolVersion = "0.8.7-SNAPSHOT"
     }
 
     jacocoTestReport {
