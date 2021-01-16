@@ -50,8 +50,8 @@ and join the team!
 
 If you're using `graphql-java-tools` in combination with Spring Boot 2.1.x or below then you need to
 set the
-`kotlin.version` in your Spring Boot project explicitly to version 1.3.70, because Spring Boot
-Starter parent currently overrides it with a 1.2.* version of Kotlin.
+`kotlin.version` in your Spring Boot project explicitly to version >= 1.3.70, because Spring Boot
+Starter parent of that Spring Boot version overrides it with a 1.2.* version of Kotlin.
 `graphql-java-tools` requires 1.3.* however because of its coroutine support. If you don't override
 this version you will run into a `NoClassDefFoundError`.
 
