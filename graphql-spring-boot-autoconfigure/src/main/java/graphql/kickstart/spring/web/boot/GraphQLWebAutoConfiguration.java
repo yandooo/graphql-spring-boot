@@ -72,6 +72,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -92,7 +93,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-@ConditionalOnWebApplication
+@ConditionalOnWebApplication(type = Type.SERVLET)
 @ConditionalOnClass(DispatcherServlet.class)
 @Conditional(OnSchemaOrSchemaProviderBean.class)
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")

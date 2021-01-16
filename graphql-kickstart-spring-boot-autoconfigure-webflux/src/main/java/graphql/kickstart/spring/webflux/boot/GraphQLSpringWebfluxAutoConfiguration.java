@@ -1,6 +1,7 @@
 package graphql.kickstart.spring.webflux.boot;
 
 import static graphql.kickstart.execution.GraphQLObjectMapper.newBuilder;
+import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.REACTIVE;
 
 import graphql.execution.instrumentation.dataloader.DataLoaderDispatcherInstrumentationOptions;
 import graphql.kickstart.execution.BatchedDataLoaderGraphQLBuilder;
@@ -39,6 +40,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -50,6 +52,7 @@ import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAd
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Slf4j
 @Configuration
+@ConditionalOnWebApplication(type = REACTIVE)
 @ConditionalOnBean(GraphQLSchema.class)
 @AutoConfigureAfter(GraphQLJavaToolsAutoConfiguration.class)
 @Import({GraphQLController.class, ReactiveWebSocketSubscriptionsHandler.class})
