@@ -29,6 +29,11 @@
       "name": "voyager.cdn.version",
       "defaultValue": "v1.x",
       "type": "java.lang.String"
+    },
+    {
+      "name": "voyager.static.basePath",
+      "defaultValue": "/",
+      "type": "java.lang.String"
     }
   ]
 }

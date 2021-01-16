@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.graphql.spring.boot.test.GraphQLResponse;
 import com.graphql.spring.boot.test.GraphQLTestTemplate;
 import java.io.IOException;
+import graphql.schema.GraphQLSchema;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ class GraphQLAnnotationsMutationTest {
   @Autowired
   private GraphQLTestTemplate graphQLTestTemplate;
 
+  @Autowired
+  private GraphQLSchema graphQLSchema;
+
   @Test
   @DisplayName("Assert that mutation resolver is properly registered.")
   void testMutationResolver() throws IOException {
@@ -27,5 +31,12 @@ class GraphQLAnnotationsMutationTest {
         .postForResource("mutations/test-mutation.graphql");
     // THEN
     assertThat(actual.get("$.data.performSomeOperation.testField")).isEqualTo("Test value");
+  }
+
+  @Test
+  @DisplayName("Assert that library's default input prefix and suffix are used.")
+  void testInputPrefix() {
+    // THEN
+    assertThat(graphQLSchema.getType("InputTestModel")).isNotNull();
   }
 }
