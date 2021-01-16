@@ -44,7 +44,7 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 @ConditionalOnClass(SchemaParser.class)
-@AutoConfigureAfter({JacksonAutoConfiguration.class})
+@AutoConfigureAfter(JacksonAutoConfiguration.class)
 @EnableConfigurationProperties(GraphQLToolsProperties.class)
 public class GraphQLJavaToolsAutoConfiguration {
 
