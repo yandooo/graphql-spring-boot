@@ -3,7 +3,6 @@ package graphql.kickstart.spring.webflux.boot;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import graphql.kickstart.tools.SchemaParserOptions.GenericWrapper;
-import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.json.JSONException;
@@ -29,7 +28,7 @@ class MonoGenericWrapperAlreadyDefinedTest {
   private WebTestClient webTestClient;
 
   @Test
-  void monoWrapper() throws IOException, JSONException {
+  void monoWrapper() throws JSONException {
     val result = webTestClient.post()
         .uri("/graphql")
         .contentType(MediaType.APPLICATION_JSON)
