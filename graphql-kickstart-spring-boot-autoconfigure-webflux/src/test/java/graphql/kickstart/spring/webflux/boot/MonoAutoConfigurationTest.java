@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ class MonoAutoConfigurationTest {
   private WebTestClient webTestClient;
 
   @Test
-  void monoWrapper() throws IOException {
+  void monoWrapper() throws IOException, JSONException {
     val result = webTestClient.post()
         .uri("/graphql")
         .contentType(MediaType.APPLICATION_JSON)
@@ -31,7 +33,8 @@ class MonoAutoConfigurationTest {
         .exchange()
         .returnResult(String.class);
     val response = result.getResponseBody().blockFirst();
-    assertThat(response).isEqualTo("{\"data\":{\"hello\":\"Hello world\"}}");
+    val json = new JSONObject(response);
+    assertThat(json.getJSONObject("data").get("hello")).isEqualTo("Hello world");
   }
 
 }
