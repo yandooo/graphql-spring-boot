@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 
 import java.nio.file.Paths;
 
+import static java.util.Objects.nonNull;
+
 @Controller
 @RequiredArgsConstructor
 public class PlaygroundController {
@@ -38,7 +40,9 @@ public class PlaygroundController {
         }
         model.addAttribute("pageTitle", propertiesConfiguration.getPlayground().getPageTitle());
         model.addAttribute("properties", objectMapper.valueToTree(propertiesConfiguration.getPlayground()));
-        model.addAttribute(_CSRF, csrf);
+        if (nonNull(csrf)) {
+            model.addAttribute(_CSRF, csrf);
+        }
         return "playground";
     }
 
