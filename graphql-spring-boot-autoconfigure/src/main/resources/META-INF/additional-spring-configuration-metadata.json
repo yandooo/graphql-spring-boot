@@ -5,5 +5,10 @@
     }
   ],
   "properties": [
+    {
+      "name": "graphql.extended-scalars",
+      "type": "java.util.Set",
+      "description": "List of extended scalars to be used."
+    }
   ]
 }
