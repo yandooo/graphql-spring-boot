@@ -16,7 +16,7 @@ and join the team!
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
 
-- [WARNING: NoClassDefFoundError when using GraphQL Java Tools > 5.4.x](#warning-noclassdeffounderror-when-using-graphql-java-tools--54x)
+  - [WARNING: NoClassDefFoundError when using GraphQL Java Tools > 5.4.x](#warning-noclassdeffounderror-when-using-graphql-java-tools--54x)
     - [Using Gradle](#using-gradle)
     - [Using Maven](#using-maven)
 - [Documentation](#documentation)
@@ -26,21 +26,22 @@ and join the team!
 - [Enable Graph*i*QL](#enable-graphiql)
 - [Enable Altair](#enable-altair)
 - [Enable GraphQL Playground](#enable-graphql-playground)
-    - [Basic settings](#basic-settings)
-    - [CDN](#cdn)
-    - [Custom static resources](#custom-static-resources)
-    - [Customizing GraphQL Playground](#customizing-graphql-playground)
-    - [Tabs](#tabs)
+  - [Basic settings](#basic-settings)
+  - [CDN](#cdn)
+  - [Custom static resources](#custom-static-resources)
+  - [Customizing GraphQL Playground](#customizing-graphql-playground)
+  - [Tabs](#tabs)
 - [Supported GraphQL-Java Libraries](#supported-graphql-java-libraries)
-    - [GraphQL Java Tools](#graphql-java-tools)
-    - [GraphQL Annotations](#graphql-annotations)
-        - [Configuration](#configuration)
-        - [Root resolvers, directives, type extensions](#root-resolvers-directives-type-extensions)
-        - [Interfaces](#interfaces)
-        - [Custom scalars and type functions](#custom-scalars-and-type-functions)
-        - [Custom Relay and GraphQL Annotation Processor](#custom-relay-and-graphql-annotation-processor)
+  - [GraphQL Java Tools](#graphql-java-tools)
+  - [GraphQL Annotations](#graphql-annotations)
+    - [Configuration](#configuration)
+    - [Root resolvers, directives, type extensions](#root-resolvers-directives-type-extensions)
+    - [Interfaces](#interfaces)
+    - [Custom scalars and type functions](#custom-scalars-and-type-functions)
+    - [Custom Relay and GraphQL Annotation Processor](#custom-relay-and-graphql-annotation-processor)
+  - [Extended scalars](#extended-scalars)
 - [Tracing and Metrics](#tracing-and-metrics)
-    - [Usage](#usage)
+  - [Usage](#usage)
 - [Contributions](#contributions)
 - [Licenses](#licenses)
 
@@ -233,6 +234,7 @@ graphql:
            corsEnabled: true
            cors:
               allowed-origins: http://some.domain.com
+              allowed-methods: GET, HEAD, POST
            # if you want to @ExceptionHandler annotation for custom GraphQLErrors
            exception-handlers-enabled: true
            contextSetting: PER_REQUEST_WITH_INSTRUMENTATION
@@ -536,6 +538,31 @@ works as usual.
 It is possible to define a bean implementing `Relay` and/or `GraphQLAnnotations`. If present, these
 will be passed to the schema builder. Spring dependency injection works as usual. Note that GraphQL
 Annotations provides default implementation for these which should be sufficient is most cases.
+
+## Extended scalars
+
+[Extended scalars](https://github.com/graphql-java/graphql-java-extended-scalars) can be enabled by using the 
+`graphql.extended-scalars` configuration property, e. g.:
+
+```yaml
+graphql:
+  extended-scalars: BigDecimal, Date
+```
+
+The available scalars are the following: `BigDecimal`, `BigInteger`, `Byte`, `Char`, `Date`, `DateTime`, `JSON`, 
+`Locale`, `Long`, `NegativeFloat`, `NegativeInt`, `NonNegativeFloat`, `NonNegativeInt`, `NonPositiveFloat`, 
+`NonPositiveInt`, `Object`, `PositiveFloat`, `PositiveInt`, `Short`, `Time`, `Url`.
+
+This setting works with both the [GraphQL Java Tools](#graphql-java-tools) and the
+[GraphQL Annotations](#graphql-annotations) integration.
+
+When using the [GraphQL Java Tools](#graphql-java-tools) integration, the scalars must also be declared in the GraphQL 
+Schema:
+
+```graphql
+scalar BigDecimal
+scalar Date
+```
 
 # Tracing and Metrics
 

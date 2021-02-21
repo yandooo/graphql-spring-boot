@@ -6,6 +6,8 @@ schema {
     subscription : Subscription
 }
 
+scalar BigDecimal
+
 type Query {
     hello : String
 }
@@ -17,6 +19,6 @@ type Subscription {
 type StockPriceUpdate {
     dateTime : String
     stockCode : String
-    stockPrice : Float
-    stockPriceChange : Float!
+    stockPrice : BigDecimal
+    stockPriceChange : BigDecimal!
 }

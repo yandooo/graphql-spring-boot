@@ -31,6 +31,11 @@
       "type": "java.lang.String"
     },
     {
+      "name": "voyager.pageTitle",
+      "defaultValue": "Voyager",
+      "type": "java.lang.String"
+    },
+    {
       "name": "voyager.static.basePath",
       "defaultValue": "/",
       "type": "java.lang.String"
