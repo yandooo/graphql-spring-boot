@@ -36,6 +36,7 @@ public class GraphQLServletProperties {
   private long subscriptionTimeout = 0;
   private ContextSetting contextSetting = ContextSetting.PER_QUERY_WITH_INSTRUMENTATION;
   private long asyncTimeout = 30000;
+  private boolean asyncModeEnabled = true;
   private String tracingEnabled = "false";
   private boolean actuatorMetrics;
   private Integer maxQueryComplexity;

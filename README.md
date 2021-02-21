@@ -228,16 +228,20 @@ or `application.properties`):
 
 ```yaml
 graphql:
-      servlet:
-           mapping: /graphql
-           enabled: true
-           corsEnabled: true
-           cors:
-              allowed-origins: http://some.domain.com
-              allowed-methods: GET, HEAD, POST
-           # if you want to @ExceptionHandler annotation for custom GraphQLErrors
-           exception-handlers-enabled: true
-           contextSetting: PER_REQUEST_WITH_INSTRUMENTATION
+  servlet:
+    # Sets if GraphQL servlet should be created and exposed. If not specified defaults to "true".
+    enabled: true
+    # Sets the path where GraphQL servlet will be exposed. If not specified defaults to "/graphql"
+    mapping: /graphql
+    cors-enabled: true
+    cors:
+      allowed-origins: http://some.domain.com
+      allowed-methods: GET, HEAD, POST
+    # if you want to @ExceptionHandler annotation for custom GraphQLErrors
+    exception-handlers-enabled: true
+    context-setting: PER_REQUEST_WITH_INSTRUMENTATION
+    # Sets if asynchronous operations are supported for GraphQL requests. If not specified defaults to true.
+    async-mode-enabled: true
 ```
 
 By default a global CORS filter is enabled for `/graphql/**` context. The `corsEnabled` can be set
