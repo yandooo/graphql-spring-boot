@@ -234,6 +234,7 @@ graphql:
            corsEnabled: true
            cors:
               allowed-origins: http://some.domain.com
+              allowed-methods: GET, HEAD, POST
            # if you want to @ExceptionHandler annotation for custom GraphQLErrors
            exception-handlers-enabled: true
            contextSetting: PER_REQUEST_WITH_INSTRUMENTATION
