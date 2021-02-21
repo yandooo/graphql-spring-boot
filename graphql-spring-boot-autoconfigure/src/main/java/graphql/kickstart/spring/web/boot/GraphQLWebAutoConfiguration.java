@@ -329,6 +329,7 @@ public class GraphQLWebAutoConfiguration {
     } else {
       registration.setMultipartConfig(new MultipartConfigElement(""));
     }
+    registration.setAsyncSupported(graphQLServletProperties.isAsyncModeEnabled());
     return registration;
   }
 
