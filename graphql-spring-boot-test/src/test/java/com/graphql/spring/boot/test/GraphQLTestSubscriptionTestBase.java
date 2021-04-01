@@ -5,11 +5,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Timeout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 
+import java.time.Duration;
+import java.time.Instant;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Timeout(60)
 public class GraphQLTestSubscriptionTestBase {
 
   protected static final String TIMER_SUBSCRIPTION_RESOURCE = "timer-subscription-resource.graphql";
@@ -62,5 +67,11 @@ public class GraphQLTestSubscriptionTestBase {
     assertThat(graphQLTestSubscription.isStopped())
         .as("Subscription should not be stopped.")
         .isFalse();
+  }
+
+  protected void assertThatMinimumRequiredTimeElapsedSince(final Instant timeBeforeTestStart) {
+    assertThat(Duration.between(timeBeforeTestStart, Instant.now()))
+        .as("Should wait the specified amount of time")
+        .isGreaterThanOrEqualTo(Duration.ofMillis(TIMEOUT));
   }
 }

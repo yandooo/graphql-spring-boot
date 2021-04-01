@@ -2,6 +2,7 @@ package com.graphql.spring.boot.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,8 @@ class GraphQLTestSubscriptionAwaitAndGetResponseTest extends
   @Test
   @DisplayName("Should await and get all responses / default stopAfter.")
   void shouldAwaitAndGetAllResponsesDefaultStopAfter() {
+    // GIVEN
+    final Instant timeBeforeTest = Instant.now();
     // WHEN
     final List<GraphQLResponse> graphQLResponses = graphQLTestSubscription
         .start(TIMER_SUBSCRIPTION_RESOURCE)
@@ -52,6 +55,7 @@ class GraphQLTestSubscriptionAwaitAndGetResponseTest extends
         .extracting(response -> response.get(DATA_TIMER_FIELD, Long.class))
         .containsExactly(0L, 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L);
     assertThatSubscriptionWasStopped();
+    assertThatMinimumRequiredTimeElapsedSince(timeBeforeTest);
   }
 
   @ParameterizedTest
@@ -60,6 +64,8 @@ class GraphQLTestSubscriptionAwaitAndGetResponseTest extends
   void shouldAwaitAndGetAllResponses(
       final boolean stopAfter
   ) {
+    // GIVEN
+    final Instant timeBeforeTest = Instant.now();
     // WHEN
     final List<GraphQLResponse> graphQLResponses = graphQLTestSubscription
         .start(TIMER_SUBSCRIPTION_RESOURCE)
@@ -69,6 +75,7 @@ class GraphQLTestSubscriptionAwaitAndGetResponseTest extends
         .extracting(response -> response.get(DATA_TIMER_FIELD, Long.class))
         .containsExactly(0L, 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L);
     assertThatSubscriptionStoppedStatusIs(stopAfter);
+    assertThatMinimumRequiredTimeElapsedSince(timeBeforeTest);
   }
 
   @Test

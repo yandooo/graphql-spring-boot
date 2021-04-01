@@ -7,17 +7,23 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.time.Instant;
+
 @DisplayName("Testing awaitNoResponse methods")
 class GraphQLSubscriptionTestAwaitNoAnswerTest extends GraphQLTestSubscriptionTestBase {
 
   @Test
   @DisplayName("Should succeed if no responses arrived / default stopAfter.")
   void shouldAwaitNoResponseSucceedIfNoResponsesArrivedDefaultStopAfter() {
-    // WHEN - THEN
+    // GIVEN
+    final Instant timeBeforeTestStart = Instant.now();
+    // WHEN
     graphQLTestSubscription
         .start(SUBSCRIPTION_THAT_TIMES_OUT_RESOURCE)
         .waitAndExpectNoResponse(TIMEOUT);
+    // THEN
     assertThatSubscriptionWasStopped();
+    assertThatMinimumRequiredTimeElapsedSince(timeBeforeTestStart);
   }
 
   @ParameterizedTest
@@ -26,20 +32,25 @@ class GraphQLSubscriptionTestAwaitNoAnswerTest extends GraphQLTestSubscriptionTe
   void shouldAwaitNoResponseSucceedIfNoResponsesArrived(
       final boolean stopAfter
   ) {
-    // WHEN - THEN
+    // GIVEN
+    final Instant timeBeforeTestStart = Instant.now();
+    // WHEN
     graphQLTestSubscription
         .start(SUBSCRIPTION_THAT_TIMES_OUT_RESOURCE)
         .waitAndExpectNoResponse(TIMEOUT, stopAfter);
+    // THEN
     assertThatSubscriptionStoppedStatusIs(stopAfter);
+    assertThatMinimumRequiredTimeElapsedSince(timeBeforeTestStart);
   }
 
   @Test
   @DisplayName("Should raise assertion error if any response arrived / default stop after.")
   void shouldRaiseAssertionErrorIfResponseArrivedDefaultStopAfter() {
-    // WHEN - THEN
+    // WHEN
     graphQLTestSubscription.start(TIMER_SUBSCRIPTION_RESOURCE);
-    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> graphQLTestSubscription
-        .waitAndExpectNoResponse(TIMEOUT));
+    // THEN
+    assertThatExceptionOfType(AssertionError.class)
+        .isThrownBy(() -> graphQLTestSubscription.waitAndExpectNoResponse(TIMEOUT));
     assertThatSubscriptionWasStopped();
   }
 
@@ -49,10 +60,11 @@ class GraphQLSubscriptionTestAwaitNoAnswerTest extends GraphQLTestSubscriptionTe
   void shouldRaiseAssertionErrorIfResponseArrived(
       final boolean stopAfter
   ) {
-    // WHEN - THEN
+    // WHEN
     graphQLTestSubscription.start(TIMER_SUBSCRIPTION_RESOURCE);
-    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> graphQLTestSubscription
-        .waitAndExpectNoResponse(TIMEOUT, stopAfter));
+    // THEN
+    assertThatExceptionOfType(AssertionError.class)
+        .isThrownBy(() -> graphQLTestSubscription.waitAndExpectNoResponse(TIMEOUT, stopAfter));
     assertThatSubscriptionStoppedStatusIs(stopAfter);
   }
 }
