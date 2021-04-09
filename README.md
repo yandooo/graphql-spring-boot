@@ -104,7 +104,6 @@ Gradle:
 
 ```gradle
 repositories {
-    jcenter()
     mavenCentral()
 }
 
@@ -168,25 +167,6 @@ Maven:
 
 ```
 
-New releases will be available faster in the JCenter repository than in Maven Central. Add the
-following to use for Maven
-
-```xml
-<repositories>
-    <repository>
-      <id>jcenter</id>
-      <url>https://jcenter.bintray.com/</url>
-    </repository>
-</repositories>
-```
-
-For Gradle:
-
-```groovy
-repositories {
-    jcenter()
-}
-```
 
 ### Snapshots
 
