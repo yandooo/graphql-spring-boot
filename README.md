@@ -150,6 +150,14 @@ Maven:
     <scope>runtime</scope>
 </dependency>
 
+<!-- to embed GraphQL Playground tool -->
+<dependency>
+    <groupId>com.graphql-java-kickstart</groupId>
+    <artifactId>playground-spring-boot-starter</artifactId>
+    <version>11.0.0</version>
+    <scope>runtime</scope>
+</dependency>
+
 <!-- to embed Voyager tool -->
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
