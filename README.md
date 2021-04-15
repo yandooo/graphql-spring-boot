@@ -1,8 +1,11 @@
 # GraphQL and Graph*i*QL Spring Framework Boot Starters
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.graphql-java-kickstart/graphql-spring-boot-starter.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java-kickstart/graphql-spring-boot-starter)
-[![GitHub CI Workflow](https://github.com/graphql-java-kickstart/graphql-spring-boot/workflows/ci/badge.svg)](https://github.com/graphql-java-kickstart/graphql-spring-boot/actions?query=workflow%3ACI+branch%3Amaster)
+[![GitHub CI Workflow](https://github.com/graphql-java-kickstart/graphql-spring-boot/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/graphql-java-kickstart/graphql-spring-boot/actions/workflows/ci.yml?query=workflow%3ACI+branch%3Amaster)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=graphql-java-kickstart_graphql-spring-boot&metric=alert_status)](https://sonarcloud.io/dashboard?id=graphql-java-kickstart_graphql-spring-boot)
+[![GitHub contributors](https://img.shields.io/github/contributors/graphql-java-kickstart/graphql-spring-boot)](https://github.com/graphql-java-kickstart/graphql-spring-boot/graphs/contributors)
+[![Discuss on GitHub](https://img.shields.io/badge/GitHub-discuss-orange)](https://github.com/graphql-java-kickstart/graphql-spring-boot/discussions)
+
 
 #### We are looking for contributors!
 
@@ -117,6 +120,9 @@ dependencies {
   // to embed GraphiQL tool
   runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:11.0.0'
 
+  // to embed GraphQL Playground tool
+  runtimeOnly 'com.graphql-java-kickstart:playground-spring-boot-starter:11.0.0'
+
   // to embed Voyager tool
   runtimeOnly 'com.graphql-java-kickstart:voyager-spring-boot-starter:11.0.0'
   
@@ -146,6 +152,14 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
+    <version>11.0.0</version>
+    <scope>runtime</scope>
+</dependency>
+
+<!-- to embed GraphQL Playground tool -->
+<dependency>
+    <groupId>com.graphql-java-kickstart</groupId>
+    <artifactId>playground-spring-boot-starter</artifactId>
     <version>11.0.0</version>
     <scope>runtime</scope>
 </dependency>
