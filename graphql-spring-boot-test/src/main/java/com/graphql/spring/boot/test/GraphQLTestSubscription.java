@@ -300,9 +300,17 @@ public class GraphQLTestSubscription {
       fail("Subscription already stopped. Forgot to call reset after test case?");
     }
 
-    await()
-        .atMost(timeout, TimeUnit.MILLISECONDS)
-        .until(() -> state.getResponses().size() >= numExpectedResponses);
+    if (numExpectedResponses > 0) {
+      await()
+          .atMost(timeout, TimeUnit.MILLISECONDS)
+          .until(() -> state.getResponses().size() >= numExpectedResponses);
+    } else {
+      try {
+        Thread.sleep(timeout);
+      } catch (InterruptedException e) {
+        fail("Unable to wait the specified amount of time.", e);
+      }
+    }
 
     if (stopAfter) {
       stop();
