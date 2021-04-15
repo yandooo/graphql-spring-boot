@@ -19,7 +19,7 @@ and join the team!
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
 
-  - [WARNING: NoClassDefFoundError when using GraphQL Java Tools > 5.4.x](#warning-noclassdeffounderror-when-using-graphql-java-tools--54x)
+  - [Quick start](#quick-start)
     - [Using Gradle](#using-gradle)
     - [Using Maven](#using-maven)
 - [Documentation](#documentation)
@@ -45,21 +45,15 @@ and join the team!
   - [Extended scalars](#extended-scalars)
 - [Tracing and Metrics](#tracing-and-metrics)
   - [Usage](#usage)
+- [FAQs](#faqs)
+  - [WARNING: NoClassDefFoundError when using GraphQL Java Tools > 5.4.x](#warning-noclassdeffounderror-when-using-graphql-java-tools--54x)
+
 - [Contributions](#contributions)
 - [Licenses](#licenses)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## WARNING: NoClassDefFoundError when using GraphQL Java Tools > 5.4.x
-
-If you're using `graphql-java-tools` in combination with Spring Boot 2.1.x or below then you need to
-set the
-`kotlin.version` in your Spring Boot project explicitly to version >= 1.3.70, because Spring Boot
-Starter parent of that Spring Boot version overrides it with a 1.2.* version of Kotlin.
-`graphql-java-tools` requires 1.3.* however because of its coroutine support. If you don't override
-this version you will run into a `NoClassDefFoundError`.
-
-Spring Boot team has indicated the Kotlin version will be upgraded to 1.3 in Spring Boot 2.2.
+## Quick start
 
 ### Using Gradle
 
@@ -79,7 +73,7 @@ Set the Kotlin version in your `<properties>` section
 </properties>
 ```
 
-# Documentation
+## Documentation
 
 See our new [Documentation](https://www.graphql-java-kickstart.com/spring-boot/).
 
@@ -87,16 +81,16 @@ Repository contains:
 
 * `graphql-spring-boot-starter` to turn your boot application into GraphQL server (
   see [graphql-java-servlet](https://github.com/graphql-java-kickstart/graphql-java-servlet))
-* `altair-spring-boot-starter`to embed `Altair` tool for schema introspection and query debugging (
+* `altair-spring-boot-starter` to embed `Altair` tool for schema introspection and query debugging (
   see [altair](https://github.com/imolorhe/altair))
-* `graphiql-spring-boot-starter`to embed `GraphiQL` tool for schema introspection and query
+* `graphiql-spring-boot-starter` to embed `GraphiQL` tool for schema introspection and query
   debugging (see [graphiql](https://github.com/graphql/graphiql))
-* `playground-spring-boot-starter`to embed `GraphQL Playground` tool for schema introspection and
+* `playground-spring-boot-starter` to embed `GraphQL Playground` tool for schema introspection and
   query debugging (see [GraphQL Playground](https://github.com/prisma/graphql-playground))
-* `voyager-spring-boot-starter`to embed `Voyager` tool for visually explore GraphQL APIs as an
+* `voyager-spring-boot-starter` to embed `Voyager` tool for visually explore GraphQL APIs as an
   interactive graph (see [voyger](https://github.com/APIs-guru/graphql-voyager))
 
-# Requirements and Downloads
+## Requirements and Downloads
 
 Requirements:
 
@@ -598,6 +592,22 @@ The following metrics are available for exposure:
 * `graphql.timer.query`
 * `graphql.websocket.sessions` - number of active websocket sessions for subscriptions
 * `graphql.websocket.subscriptions` - number of active subscriptions
+
+
+## FAQs
+### WARNING: NoClassDefFoundError when using GraphQL Java Tools > 5.4.x
+
+If you're using `graphql-java-tools` in combination with Spring Boot 2.1.x or below then you need to
+set the
+`kotlin.version` in your Spring Boot project explicitly to version >= 1.3.70, because Spring Boot
+Starter parent of that Spring Boot version overrides it with a 1.2.* version of Kotlin.
+`graphql-java-tools` requires 1.3.* however because of its coroutine support. If you don't override
+this version you will run into a `NoClassDefFoundError`.
+
+Spring Boot team has indicated the Kotlin version will be upgraded to 1.3 in Spring Boot 2.2.
+
+
+
 
 # Contributions
 
