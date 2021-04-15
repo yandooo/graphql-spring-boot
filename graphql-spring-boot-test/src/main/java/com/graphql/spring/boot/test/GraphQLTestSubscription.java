@@ -309,6 +309,8 @@ public class GraphQLTestSubscription {
         Thread.sleep(timeout);
       } catch (InterruptedException e) {
         fail("Unable to wait the specified amount of time.", e);
+        // Restore interrupted state
+        Thread.currentThread().interrupt();
       }
     }
 
