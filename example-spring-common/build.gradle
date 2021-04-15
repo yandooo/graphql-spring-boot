@@ -33,6 +33,6 @@ dependencies {
 }
 
 jar.enabled = false
-uploadArchives.enabled = false
+publish.enabled = false
 bintrayUpload.enabled = false
 publishToMavenLocal.enabled = false
