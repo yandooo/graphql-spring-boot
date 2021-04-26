@@ -71,15 +71,13 @@ class GraphQLErrorFromExceptionHandler extends DefaultGraphQLErrorHandler {
     Map<String, Object> extensions = Optional.ofNullable(errorContext.getExtensions())
         .orElseGet(HashMap::new);
     extensions.put("type", throwable.getClass().getSimpleName());
-    return singletonList(
-        GraphqlErrorBuilder.newError()
-            .message(throwable.getMessage())
-            .errorType(errorContext.getErrorType())
-            .locations(errorContext.getLocations())
-            .path(errorContext.getPath())
-            .extensions(extensions)
-            .build()
-    );
+    GraphqlErrorBuilder builder = GraphqlErrorBuilder.newError()
+        .extensions(extensions);
+    Optional.ofNullable(throwable.getMessage()).ifPresent(builder::message);
+    Optional.ofNullable(errorContext.getErrorType()).ifPresent(builder::errorType);
+    Optional.ofNullable(errorContext.getLocations()).ifPresent(builder::locations);
+    Optional.ofNullable(errorContext.getPath()).ifPresent(builder::path);
+    return singletonList(builder.build());
   }
 
 }
