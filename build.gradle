@@ -37,15 +37,19 @@ sonarqube {
     }
 }
 
+def bomProjectName = "graphql-spring-boot-dependencies"
+
 subprojects {
     apply plugin: 'idea'
-    apply plugin: 'jacoco'
-    apply plugin: 'org.sonarqube'
-    apply plugin: 'java'
-    apply plugin: 'java-library'
+    if (it.name != bomProjectName) {
+        apply plugin: 'jacoco'
+        apply plugin: 'org.sonarqube'
+        apply plugin: 'java'
+        apply plugin: 'java-library'
+        apply plugin: "io.spring.dependency-management"
+    }
     apply plugin: 'maven-publish'
     apply plugin: "com.jfrog.bintray"
-    apply plugin: "io.spring.dependency-management"
     apply plugin: 'com.jfrog.artifactory'
 
     group "$PROJECT_GROUP"
@@ -59,60 +63,62 @@ subprojects {
         maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local" }
     }
 
-    dependencyManagement {
-        imports {
-            mavenBom "org.springframework.boot:spring-boot-starter-parent:$LIB_SPRING_BOOT_VER"
+    if (it.name != bomProjectName) {
+        dependencyManagement {
+            imports {
+                mavenBom "org.springframework.boot:spring-boot-starter-parent:$LIB_SPRING_BOOT_VER"
+            }
         }
-    }
 
-    dependencies {
-        compileOnly "org.projectlombok:lombok"
-        annotationProcessor "org.projectlombok:lombok"
+        dependencies {
+            compileOnly "org.projectlombok:lombok"
+            annotationProcessor "org.projectlombok:lombok"
 
-        testCompileOnly "org.projectlombok:lombok"
-        testAnnotationProcessor "org.projectlombok:lombok"
-    }
-
-    test {
-        useJUnitPlatform()
-        testLogging {
-            events TestLogEvent.FAILED,
-                    TestLogEvent.PASSED,
-                    TestLogEvent.SKIPPED,
-                    TestLogEvent.STANDARD_ERROR,
-                    TestLogEvent.STANDARD_OUT
-            exceptionFormat TestExceptionFormat.FULL
-            showCauses true
-            showExceptions true
-            showStackTraces true
+            testCompileOnly "org.projectlombok:lombok"
+            testAnnotationProcessor "org.projectlombok:lombok"
         }
-    }
 
-    jacoco {
-        toolVersion = "0.8.7-SNAPSHOT"
-    }
-
-    jacocoTestReport {
-        reports {
-            xml.enabled = true
-            html.enabled = false
-            csv.enabled = false
+        test {
+            useJUnitPlatform()
+            testLogging {
+                events TestLogEvent.FAILED,
+                        TestLogEvent.PASSED,
+                        TestLogEvent.SKIPPED,
+                        TestLogEvent.STANDARD_ERROR,
+                        TestLogEvent.STANDARD_OUT
+                exceptionFormat TestExceptionFormat.FULL
+                showCauses true
+                showExceptions true
+                showStackTraces true
+            }
         }
-    }
 
-    idea {
-        module {
-            downloadJavadoc = true
-            downloadSources = true
+        jacoco {
+            toolVersion = "0.8.7-SNAPSHOT"
         }
-    }
 
-    compileJava {
-        sourceCompatibility = SOURCE_COMPATIBILITY
-        targetCompatibility = TARGET_COMPATIBILITY
-    }
+        jacocoTestReport {
+            reports {
+                xml.enabled = true
+                html.enabled = false
+                csv.enabled = false
+            }
+        }
 
-    compileJava.dependsOn(processResources)
+        idea {
+            module {
+                downloadJavadoc = true
+                downloadSources = true
+            }
+        }
+
+        compileJava {
+            sourceCompatibility = SOURCE_COMPATIBILITY
+            targetCompatibility = TARGET_COMPATIBILITY
+        }
+
+        compileJava.dependsOn(processResources)
+    }
 
     if (!it.name.startsWith('example')) {
 
@@ -121,19 +127,23 @@ subprojects {
             enabled = false
         }
 
-        jar {
-            from "LICENSE.md"
-        }
+        if (it.name != bomProjectName) {
+            jar {
+                from "LICENSE.md"
+            }
 
-        java {
-            withSourcesJar()
-            withJavadocJar()
+            java {
+                withSourcesJar()
+                withJavadocJar()
+            }
         }
 
         publishing {
             publications {
                 mainProjectPublication(MavenPublication) {
-                    from components.java
+                    if (project.name != bomProjectName) {
+                        from components.java
+                    }
 
                     // to avoid "Publication only contains dependencies and/or constraints without a version" error
                     // see https://docs.gradle.org/6.2.1/userguide/publishing_maven.html#publishing_maven:resolved_dependencies
