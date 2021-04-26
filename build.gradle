@@ -24,8 +24,8 @@ plugins {
     id "com.jfrog.bintray" version "$LIB_BINTRAY_PLUGIN_VER" apply false
     id 'net.researchgate.release' version "$LIB_RELEASE_PLUGIN_VER"
     id "org.springframework.boot" version "$LIB_SPRING_BOOT_VER" apply false
-    id "com.jfrog.artifactory" version "4.15.1" apply false
-    id "org.sonarqube" version "3.0"
+    id "com.jfrog.artifactory" version "4.21.0" apply false
+    id "org.sonarqube" version "3.1.1"
     id "jacoco"
 }
 
@@ -157,7 +157,6 @@ subprojects {
                     }
 
                     pom {
-                        resolveStrategy = DELEGATE_FIRST
                         name = PROJECT_NAME
                         description = PROJECT_DESC
                         url = PROJECT_GIT_REPO_URL
