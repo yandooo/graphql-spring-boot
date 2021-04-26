@@ -259,7 +259,7 @@ graphiql:
     pageTitle: GraphiQL
     cdn:
         enabled: false
-        version: 1.4.1
+        version: latest
     props:
         resources:
             query: query.graphql
