@@ -5,9 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 
-import javax.servlet.http.HttpServletRequest;
 import java.nio.file.Paths;
+
+import static java.util.Objects.nonNull;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,13 +25,14 @@ public class PlaygroundController {
     private static final String FAVICON_URL_ATTRIBUTE_NAME = "faviconUrl";
     private static final String SCRIPT_URL_ATTRIBUTE_NAME = "scriptUrl";
     private static final String LOGO_URL_ATTRIBUTE_NAME = "logoUrl";
+    private static final String _CSRF = "_csrf";
 
     private final PlaygroundPropertiesConfiguration propertiesConfiguration;
 
     private final ObjectMapper objectMapper;
 
     @GetMapping("${graphql.playground.mapping:/playground}")
-    public String playground(final Model model, final HttpServletRequest request) {
+    public String playground(final Model model, final @RequestAttribute(value = _CSRF, required = false) Object csrf) {
         if (propertiesConfiguration.getPlayground().getCdn().isEnabled()) {
             setCdnUrls(model);
         } else {
@@ -37,7 +40,9 @@ public class PlaygroundController {
         }
         model.addAttribute("pageTitle", propertiesConfiguration.getPlayground().getPageTitle());
         model.addAttribute("properties", objectMapper.valueToTree(propertiesConfiguration.getPlayground()));
-        model.addAttribute("_csrf", request.getAttribute("_csrf"));
+        if (nonNull(csrf)) {
+            model.addAttribute(_CSRF, csrf);
+        }
         return "playground";
     }
 
