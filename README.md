@@ -254,13 +254,12 @@ graphiql:
     subscriptions:
       timeout: 30
       reconnect: false
-    static:
-      basePath: /
+    basePath: /
     enabled: true
     pageTitle: GraphiQL
     cdn:
         enabled: false
-        version: 0.13.0
+        version: 1.4.1
     props:
         resources:
             query: query.graphql
