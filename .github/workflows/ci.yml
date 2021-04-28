@@ -63,11 +63,11 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - name: Gradle Publish Snapshot
-        if: env.BINTRAY_USER != 'SKIP_BINTRAY_PUBLISH' && env.BINTRAY_USER != null
+        if: env.OSS_USER_TOKEN_KEY != null
         env:
-          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-          BINTRAY_PASS: ${{ secrets.BINTRAY_PASSWORD }}
-        run: ./gradlew artifactoryPublish -Dsnapshot=true -Dbuild.number=${{ env.GITHUB_RUN_NUMBER }}
+          OSS_USER_TOKEN_KEY: ${{ secrets.OSS_USER_TOKEN_KEY }}
+          OSS_USER_TOKEN_PASS: ${{ secrets.OSS_USER_TOKEN_PASS }}
+        run: ./gradlew publish
   sonar:
     name: Sonar analysis
     needs: validation

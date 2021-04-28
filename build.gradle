@@ -21,10 +21,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    id "com.jfrog.bintray" version "$LIB_BINTRAY_PLUGIN_VER" apply false
-    id 'net.researchgate.release' version "$LIB_RELEASE_PLUGIN_VER"
     id "org.springframework.boot" version "$LIB_SPRING_BOOT_VER" apply false
-    id "com.jfrog.artifactory" version "4.21.0" apply false
     id "org.sonarqube" version "3.1.1"
     id "jacoco"
 }
@@ -49,7 +46,7 @@ subprojects {
         apply plugin: "io.spring.dependency-management"
     }
     apply plugin: 'maven-publish'
-    apply plugin: "com.jfrog.bintray"
+    apply plugin: 'signing'
     apply plugin: 'com.jfrog.artifactory'
 
     group "$PROJECT_GROUP"
@@ -57,7 +54,6 @@ subprojects {
     repositories {
         mavenLocal()
         mavenCentral()
-        maven { url "https://dl.bintray.com/graphql-java-kickstart/releases" }
         maven { url "https://repo.spring.io/libs-milestone" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
         maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local" }
@@ -138,9 +134,20 @@ subprojects {
             }
         }
 
+        signing {
+//            useInMemoryPgpKeys(System.env.GPG_SIGNING_KEY, System.env.GPG_SIGNING_PASSWORD)
+            required {
+                // signing is required if this is a release version and the artifacts are to be published
+                !version.toString().endsWith('-SNAPSHOT') && tasks.withType(PublishToMavenRepository).find {
+                    gradle.taskGraph.hasTask it
+                }
+            }
+            sign publishing.publications
+        }
+
         publishing {
             publications {
-                mainProjectPublication(MavenPublication) {
+                mavenJava(MavenPublication) {
                     if (project.name != bomProjectName) {
                         from components.java
                     }
@@ -179,85 +186,86 @@ subprojects {
                             }
                         }
                     }
+
+//                    // create the sign pom artifact
+//                    pom.withXml {
+//                        def pomFile = file("${project.buildDir}/generated-pom.xml")
+//                        writeTo(pomFile)
+//                        def pomAscFile = signing.sign(pomFile).signatureFiles[0]
+//                        artifact(pomAscFile) {
+//                            classifier = null
+//                            extension = 'pom.asc'
+//                        }
+//                    }
+//                    // create the signed artifacts
+//                    project.tasks.signArchives.signatureFiles.each {
+//                        artifact(it) {
+//                            def matcher = it.file =~ /-(sources|javadoc)\.jar\.asc$/
+//                            if (matcher.find()) {
+//                                classifier = matcher.group(1)
+//                            } else {
+//                                classifier = null
+//                            }
+//                            extension = 'jar.asc'
+//                        }
+//                    }
                 }
             }
-        }
-
-        bintray {
-            user = System.env.BINTRAY_USER ?: project.findProperty('BINTRAY_USER') ?: ''
-            key = System.env.BINTRAY_PASS ?: project.findProperty('BINTRAY_PASS') ?: ''
-            publications = ['mainProjectPublication']
-            publish = true
-            pkg {
-                repo = 'releases'
-                name = PROJECT_NAME
-                desc = PROJECT_DESC
-                licenses = [PROJECT_LICENSE]
-                vcsUrl = PROJECT_GIT_REPO_URL
-                userOrg = 'graphql-java-kickstart'
-                version {
-                    name = project.version
-                    gpg {
-                        sign = true
+            repositories {
+                maven {
+                    name 'ossrh'
+                    if (version.toString().endsWith("-SNAPSHOT")) {
+                        url "https://oss.sonatype.org/content/repositories/snapshots/"
+                    } else {
+                        url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
                     }
-                    mavenCentralSync {
-                        user = System.env.OSS_USER_TOKEN_KEY ?: project.findProperty('OSS_USER_TOKEN_KEY') ?: ''
+                    credentials {
+                        username = System.env.OSS_USER_TOKEN_KEY ?: project.findProperty('OSS_USER_TOKEN_KEY') ?: ''
                         password = System.env.OSS_USER_TOKEN_PASS ?: project.findProperty('OSS_USER_TOKEN_PASS') ?: ''
                     }
                 }
             }
         }
 
-        artifactory {
-            contextUrl = 'https://oss.jfrog.org'
-            publish {
-                repository {
-                    if (project.version.endsWith("-SNAPSHOT")) {
-                        repoKey = 'oss-snapshot-local'
-                    } else {
-                        repoKey = 'oss-release-local'
-                    }
-                    username = System.env.BINTRAY_USER ?: project.findProperty('BINTRAY_USER') ?: ''
-                    password = System.env.BINTRAY_PASS ?: project.findProperty('BINTRAY_PASS') ?: ''
-                }
-                defaults {
-                    publications('mainProjectPublication')
-                    publishArtifacts = true
-                    publishPom = true
-                }
-            }
-            resolve {
-                repoKey = 'oss-snapshot-local'
-            }
-            clientConfig.info.setBuildNumber(System.getProperty('build.number'))
-        }
-    }
-}
+//        model {
+//            tasks.publishMavenJavaPublicationToMavenLocal {
+//                dependsOn project.tasks.signArchives
+//            }
+//            tasks.publishMavenJavaPublicationToMavenRepository {
+//                dependsOn project.tasks.signArchives
+//            }
+//        }
 
-release {
-    tagTemplate = 'v${version}'
-    failOnPublishNeeded = false
-    ignoredSnapshotDependencies = [
-            'com.graphql-java-kickstart:altair-spring-boot-autoconfigure',
-            'com.graphql-java-kickstart:altair-spring-boot-starter',
-            'com.graphql-java-kickstart:graphiql-spring-boot-autoconfigure',
-            'com.graphql-java-kickstart:graphiql-spring-boot-starter',
-            'com.graphql-java-kickstart:graphql-spring-boot-autoconfigure',
-            'com.graphql-java-kickstart:graphql-spring-boot-starter',
-            'com.graphql-java-kickstart:graphql-spring-boot-starter-test',
-            'com.graphql-java-kickstart:graphql-spring-boot-test',
-            'com.graphql-java-kickstart:graphql-spring-boot-test-autoconfigure',
-            'com.graphql-java-kickstart:voyager-spring-boot-autoconfigure',
-            'com.graphql-java-kickstart:voyager-spring-boot-starter',
-            'com.graphql-java-kickstart:playground-spring-boot-autoconfigure',
-            'com.graphql-java-kickstart:playground-spring-boot-starter'
-    ]
+//        bintray {
+//            user = System.env.BINTRAY_USER ?: project.findProperty('BINTRAY_USER') ?: ''
+//            key = System.env.BINTRAY_PASS ?: project.findProperty('BINTRAY_PASS') ?: ''
+//            publications = ['mainProjectPublication']
+//            publish = true
+//            pkg {
+//                repo = 'releases'
+//                name = PROJECT_NAME
+//                desc = PROJECT_DESC
+//                licenses = [PROJECT_LICENSE]
+//                vcsUrl = PROJECT_GIT_REPO_URL
+//                userOrg = 'graphql-java-kickstart'
+//                version {
+//                    name = project.version
+//                    gpg {
+//                        sign = true
+//                    }
+//                    mavenCentralSync {
+//                        user = System.env.OSS_USER_TOKEN_KEY ?: project.findProperty('OSS_USER_TOKEN_KEY') ?: ''
+//                        password = System.env.OSS_USER_TOKEN_PASS ?: project.findProperty('OSS_USER_TOKEN_PASS') ?: ''
+//                    }
+//                }
+//            }
+//        }
+    }
 }
 
 task build {
     dependsOn subprojects.findResults { it.tasks.findByName('assemble') }
     dependsOn subprojects.findResults { it.tasks.findByName('check') }
-    dependsOn subprojects.findResults { it.tasks.findByName('bintray') }
 }
 
 wrapper {
