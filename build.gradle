@@ -47,7 +47,6 @@ subprojects {
     }
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
-    apply plugin: 'com.jfrog.artifactory'
 
     group "$PROJECT_GROUP"
 
@@ -134,15 +133,10 @@ subprojects {
             }
         }
 
-        signing {
-//            useInMemoryPgpKeys(System.env.GPG_SIGNING_KEY, System.env.GPG_SIGNING_PASSWORD)
-            required {
-                // signing is required if this is a release version and the artifacts are to be published
-                !version.toString().endsWith('-SNAPSHOT') && tasks.withType(PublishToMavenRepository).find {
-                    gradle.taskGraph.hasTask it
-                }
+        if (!version.toString().endsWith('-SNAPSHOT')) {
+            signing {
+                sign publishing.publications
             }
-            sign publishing.publications
         }
 
         publishing {

@@ -67,7 +67,7 @@ jobs:
         env:
           OSS_USER_TOKEN_KEY: ${{ secrets.OSS_USER_TOKEN_KEY }}
           OSS_USER_TOKEN_PASS: ${{ secrets.OSS_USER_TOKEN_PASS }}
-        run: ./gradlew publish
+        run: ./gradlew clean build publish
   sonar:
     name: Sonar analysis
     needs: validation
