@@ -42,7 +42,7 @@ commitNextVersion() {
 git config --global user.email "actions@github.com"
 git config --global user.name "GitHub Actions"
 
-echo "Deploying release to Sonatype"
+echo "Deploying release to Maven Central"
 removeSnapshots
 
 ./gradlew clean build publish closeAndReleaseRepository
