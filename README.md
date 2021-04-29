@@ -181,9 +181,9 @@ Maven:
 ```xml
 <repositories>
     <repository>
-      <id>jfrog-snapshots</id>
-      <name>oss-jfrog-artifactory-snapshots</name>
-      <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
+      <id>osshr-snapshots</id>
+      <name>osshr-sonatype-snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
     </repository>
 </repositories>
 ```
@@ -192,7 +192,7 @@ For gradle:
 
 ```groovy
 repositories {
-    maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local" }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 ```
 
