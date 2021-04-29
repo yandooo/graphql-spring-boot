@@ -210,11 +210,6 @@ nexusStaging {
     password = System.env.OSS_USER_TOKEN_PASS ?: project.findProperty('OSS_USER_TOKEN_PASS') ?: ''
 }
 
-task build {
-    dependsOn subprojects.findResults { it.tasks.findByName('assemble') }
-    dependsOn subprojects.findResults { it.tasks.findByName('check') }
-}
-
 wrapper {
     distributionType = Wrapper.DistributionType.ALL
 }
