@@ -24,6 +24,7 @@ plugins {
     id "org.springframework.boot" version "$LIB_SPRING_BOOT_VER" apply false
     id "org.sonarqube" version "3.1.1"
     id "jacoco"
+    id 'io.codearte.nexus-staging' version '0.30.0'
 }
 
 sonarqube {
@@ -184,29 +185,6 @@ subprojects {
                             }
                         }
                     }
-
-//                    // create the sign pom artifact
-//                    pom.withXml {
-//                        def pomFile = file("${project.buildDir}/generated-pom.xml")
-//                        writeTo(pomFile)
-//                        def pomAscFile = signing.sign(pomFile).signatureFiles[0]
-//                        artifact(pomAscFile) {
-//                            classifier = null
-//                            extension = 'pom.asc'
-//                        }
-//                    }
-//                    // create the signed artifacts
-//                    project.tasks.signArchives.signatureFiles.each {
-//                        artifact(it) {
-//                            def matcher = it.file =~ /-(sources|javadoc)\.jar\.asc$/
-//                            if (matcher.find()) {
-//                                classifier = matcher.group(1)
-//                            } else {
-//                                classifier = null
-//                            }
-//                            extension = 'jar.asc'
-//                        }
-//                    }
                 }
             }
             repositories {
@@ -224,40 +202,11 @@ subprojects {
                 }
             }
         }
+    }
 
-//        model {
-//            tasks.publishMavenJavaPublicationToMavenLocal {
-//                dependsOn project.tasks.signArchives
-//            }
-//            tasks.publishMavenJavaPublicationToMavenRepository {
-//                dependsOn project.tasks.signArchives
-//            }
-//        }
-
-//        bintray {
-//            user = System.env.BINTRAY_USER ?: project.findProperty('BINTRAY_USER') ?: ''
-//            key = System.env.BINTRAY_PASS ?: project.findProperty('BINTRAY_PASS') ?: ''
-//            publications = ['mainProjectPublication']
-//            publish = true
-//            pkg {
-//                repo = 'releases'
-//                name = PROJECT_NAME
-//                desc = PROJECT_DESC
-//                licenses = [PROJECT_LICENSE]
-//                vcsUrl = PROJECT_GIT_REPO_URL
-//                userOrg = 'graphql-java-kickstart'
-//                version {
-//                    name = project.version
-//                    gpg {
-//                        sign = true
-//                    }
-//                    mavenCentralSync {
-//                        user = System.env.OSS_USER_TOKEN_KEY ?: project.findProperty('OSS_USER_TOKEN_KEY') ?: ''
-//                        password = System.env.OSS_USER_TOKEN_PASS ?: project.findProperty('OSS_USER_TOKEN_PASS') ?: ''
-//                    }
-//                }
-//            }
-//        }
+    nexusStaging {
+        username = System.env.OSS_USER_TOKEN_KEY ?: project.findProperty('OSS_USER_TOKEN_KEY') ?: ''
+        password = System.env.OSS_USER_TOKEN_PASS ?: project.findProperty('OSS_USER_TOKEN_PASS') ?: ''
     }
 }
 

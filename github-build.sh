@@ -45,7 +45,7 @@ git config --global user.name "GitHub Actions"
 echo "Deploying release to Sonatype"
 removeSnapshots
 
-./gradlew clean build publish
+./gradlew clean build publish closeAndReleaseRepository
 
 commitRelease
 bumpVersion
