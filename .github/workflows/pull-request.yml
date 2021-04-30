@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest, macos-latest, windows-latest ]
-        java: [ 8, 11, 15 ]
+        java: [ 8, 11, 16 ]
     needs: validation
     runs-on: ${{ matrix.os }}
     steps:
