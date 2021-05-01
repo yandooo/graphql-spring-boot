@@ -33,7 +33,7 @@ public class VoyagerIndexHtmlTemplate {
   @Value("${voyager.cdn.enabled:false}")
   private boolean voyagerCdnEnabled;
 
-  @Value("${voyager.cdn.version:1.0.0-rc.26}")
+  @Value("${voyager.cdn.version:1.0.0-rc.31}")
   private String voyagerCdnVersion;
 
   public String fillIndexTemplate(String contextPath, Map<String, String> params)
