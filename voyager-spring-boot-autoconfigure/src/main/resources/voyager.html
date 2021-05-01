@@ -22,47 +22,13 @@
                height: 100vh;
                overflow: hidden;
              }
-
              #voyager {
                height: 100%;
                position: relative;
              }
-
-             /* START: GraphQL Java Kickstart Enhancements to support Authorization tokens */
-              #voyager {
-                height: 90vh;
-              }
-
-            .authorization {
-              width: 319px;
-              min-width: 319px;
-              border-right: 1px solid rgba(0, 0, 0, .1);
-            }
-
-            .authorization > .contents {
-              padding-left: 15px;
-            }
-
-            .contents > .header {
-              font: 14px 'helvetica neue', helvetica, arial, sans-serif;
-              font-weight: bold;
-              color: #666;
-            }
-            /* END: GraphQL Java Kickstart Enhancements to support Authorization tokens */
         </style>
     </head>
     <body>
-        <!-- START: GraphQL Java Kickstart Enhancements -->
-
-        <div class="authorization">
-            <div class="contents">
-                <div class="header">Authorization (Access Token)</div>
-                <div><input id="access-token" style="width: 90%; padding: 6px 0 7px" /></div>
-                <div><button id="load-token" onclick="loadVoyager()">Load!</button><button id="reset-token" style="display: none" onclick="resetVoyager()">Reset</button></div>
-            </div>
-        </div>
-
-        <!-- END: GraphQL Java Kickstart Enhancements -->
         <div id="voyager">
             <div class="graphql-voyager">
                 <div class="doc-panel">
@@ -88,13 +54,7 @@
                     method: 'post',
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-
-                        /* START: GraphQL Java Kickstart Enhancements */
-
-                        'Authorization': 'Bearer ' + authorizationToken
-
-                        /* END: GraphQL Java Kickstart Enhancements */
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ query: introspectionQuery }),
                     credentials: 'include'
@@ -110,38 +70,12 @@
             }
 
             // Render <Voyager /> into the body.
-<!--            GraphQLVoyager.init(document.getElementById('voyager'), {-->
-<!--                introspection: introspectionProvider,-->
-<!--                displayOptions: {-->
-<!--                    sortByAlphabet: true,-->
-<!--                }-->
-<!--            })-->
-
-            // Render <Voyager /> into the body.
-            function loadVoyager() {
-                document.getElementsByClassName("loading-box")[0].style.display = "none";
-
-                GraphQLVoyager.init(document.getElementById('voyager'), {
-                    introspection: introspectionProvider,
-                    displayOptions: {
-                        sortByAlphabet: true,
-                    }
-                });
-
-                document.getElementById("load-token").style.display = "none";
-                document.getElementById("reset-token").style.display = "block";
-            }
-
-            /* START: START: GraphQL Java Kickstart Enhancements */
-
-            // Reset Voyager
-            function resetVoyager() {
-                document.getElementById('access-token').value = '';
-
-                location.reload();
-            }
-
-            /* END: START: GraphQL Java Kickstart Enhancements */
+            GraphQLVoyager.init(document.getElementById('voyager'), {
+                introspection: introspectionProvider,
+                displayOptions: {
+                    sortByAlphabet: true,
+                }
+            })
         </script>
     </body>
 </html>
