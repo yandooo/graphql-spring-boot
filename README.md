@@ -433,6 +433,62 @@ You can configure the query, variables, headers and even supply sample responses
 , `variables` and `responses` are expected to be resources of the appropriate format (GraphQL
 for `query`, JSON for `variables` and `responses`).
 
+
+# Enable GraphQL Voyager
+
+**GraphQL Voyager** becomes accessible at root `/voyager` (or as configured
+in `voyager.mapping`)
+if `voyager-spring-boot-starter` is added as a dependency to a boot application.
+
+Available Spring Boot configuration parameters (either `application.yml`
+or `application.properties`):
+
+```yaml
+voyager:
+  enabled: true
+  basePath: /
+  mapping: /voyager
+  endpoint: /graphql
+  cdn:
+    enabled: false
+    version: 1.0.0-rc.31
+  pageTitle: Voyager
+  displayOptions:
+    skipRelay: true
+    skipDeprecated: true
+    rootType: Query
+    sortByAlphabet: false
+    showLeafFields: true
+    hideRoot: false
+  hideDocs: false
+  hideSettings: false
+```
+
+## Basic settings
+
+`mapping` and `endpoint` will default to `/voyager` and `/graphql`, respectively. Note that these values may not be empty.
+
+`enabled` defaults to `true`, and therefor **GraphQL Voyager** will be available by default if the dependency
+is added to a Spring Boot Web Application project.
+
+`pageTitle` defaults to `Voyager`.
+
+All other properties default to the same as documented on the official [GraphQL Voyager readme](https://github.com/APIs-guru/graphql-voyager#properties)
+
+## CDN
+
+The currently bundled version is `1.0.0-rc31`, which is - as of writing this - the latest release
+of **GraphQL Voyager**. The CDN option uses `jsDelivr` CDN, if enabled. By default, it will
+load the latest available release. Available CDN versions can be found on the project's
+[jsDelivr page](https://www.jsdelivr.com/package/npm/graphql-voyager). The CDN option is
+disabled by default.
+
+## Customizing GraphQL Voyager
+
+Further **GraphQL Voyager** `displayOptions`, `hideDocs` and `hideSettings` customizations can be configured, as documented in the official
+[GraphQL Voyager readme](https://github.com/APIs-guru/graphql-voyager#properties). 
+
+
 # Supported GraphQL-Java Libraries
 
 The following libraries have auto-configuration classes for creating a `GraphQLSchema`.
