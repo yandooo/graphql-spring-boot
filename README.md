@@ -28,12 +28,16 @@ and join the team!
 - [Enable GraphQL Servlet](#enable-graphql-servlet)
 - [Enable Graph*i*QL](#enable-graphiql)
 - [Enable Altair](#enable-altair)
-- [Enable GraphQL Playground](#enable-graphql-playground)
+- [Enable GraphQL Playground](#enable-graphql-voyager)
   - [Basic settings](#basic-settings)
   - [CDN](#cdn)
   - [Custom static resources](#custom-static-resources)
   - [Customizing GraphQL Playground](#customizing-graphql-playground)
   - [Tabs](#tabs)
+- [Enable GraphQL Voyager](#enable-graphql-playground)
+  - [Basic settings](#graphql-voyager-basic-settings)
+  - [CDN](#graphql-voyager-cdn)
+  - [Customizing GraphQL Voyager](#customizing-graphql-voyager)
 - [Supported GraphQL-Java Libraries](#supported-graphql-java-libraries)
   - [GraphQL Java Tools](#graphql-java-tools)
   - [GraphQL Annotations](#graphql-annotations)
@@ -464,7 +468,7 @@ voyager:
   hideSettings: false
 ```
 
-## Basic settings
+## GraphQL Voyager Basic settings
 
 `mapping` and `endpoint` will default to `/voyager` and `/graphql`, respectively. Note that these values may not be empty.
 
@@ -475,7 +479,7 @@ is added to a Spring Boot Web Application project.
 
 All other properties default to the same as documented on the official [GraphQL Voyager readme](https://github.com/APIs-guru/graphql-voyager#properties)
 
-## CDN
+## GraphQL Voyager CDN
 
 The currently bundled version is `1.0.0-rc31`, which is - as of writing this - the latest release
 of **GraphQL Voyager**. The CDN option uses `jsDelivr` CDN, if enabled. By default, it will
