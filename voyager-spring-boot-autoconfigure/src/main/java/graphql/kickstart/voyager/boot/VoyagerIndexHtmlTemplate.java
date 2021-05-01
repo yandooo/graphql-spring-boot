@@ -27,14 +27,38 @@ public class VoyagerIndexHtmlTemplate {
   @Value("${voyager.pageTitle:Voyager}")
   private String pageTitle;
 
-  @Value("${voyager.static.basePath:/}")
-  private String staticBasePath;
+  @Value("${voyager.basePath:/}")
+  private String basePath;
 
   @Value("${voyager.cdn.enabled:false}")
   private boolean voyagerCdnEnabled;
 
   @Value("${voyager.cdn.version:1.0.0-rc.31}")
   private String voyagerCdnVersion;
+
+  @Value("${voyager.displayOptions.skipRelay:true}")
+  private boolean voyagerDisplayOptionsSkipRelay;
+
+  @Value("${voyager.displayOptions.skipDeprecated:true}")
+  private boolean voyagerDisplayOptionsSkipDeprecated;
+
+  @Value("${voyager.displayOptions.rootType:Query}")
+  private String voyagerDisplayOptionsRootType;
+
+  @Value("${voyager.displayOptions.sortByAlphabet:false}")
+  private boolean voyagerDisplayOptionsSortByAlphabet;
+
+  @Value("${voyager.displayOptions.showLeafFields:true}")
+  private boolean voyagerDisplayOptionsShowLeafFields;
+
+  @Value("${voyager.displayOptions.hideRoot:false}")
+  private boolean voyagerDisplayOptionsHideRoot;
+
+  @Value("${voyager.hideDocs:false}")
+  private boolean voyagerHideDocs;
+
+  @Value("${voyager.hideSettings:false}")
+  private boolean voyagerHideSettings;
 
   public String fillIndexTemplate(String contextPath, Map<String, String> params)
       throws IOException {
@@ -45,22 +69,32 @@ public class VoyagerIndexHtmlTemplate {
     replacements.put("graphqlEndpoint", constructGraphQlEndpoint(contextPath, params));
     replacements.put("pageTitle", pageTitle);
     replacements
-        .put("pageFavicon", getResourceUrl(staticBasePath, "favicon.ico", FAVICON_APIS_GURU));
-    replacements.put("es6PromiseJsUrl", getResourceUrl(staticBasePath, "es6-promise.auto.min.js",
+        .put("pageFavicon", getResourceUrl(basePath, "favicon.ico", FAVICON_APIS_GURU));
+    replacements.put("es6PromiseJsUrl", getResourceUrl(basePath, "es6-promise.auto.min.js",
         joinCdnjsPath("es6-promise", "4.1.1", "es6-promise.auto.min.js")));
-    replacements.put("fetchJsUrl", getResourceUrl(staticBasePath, "fetch.min.js",
+    replacements.put("fetchJsUrl", getResourceUrl(basePath, "fetch.min.js",
         joinCdnjsPath("fetch", "2.0.4", "fetch.min.js")));
-    replacements.put("reactJsUrl", getResourceUrl(staticBasePath, "react.min.js",
+    replacements.put("reactJsUrl", getResourceUrl(basePath, "react.min.js",
         joinCdnjsPath("react", "16.8.3", "umd/react.production.min.js")));
-    replacements.put("reactDomJsUrl", getResourceUrl(staticBasePath, "react-dom.min.js",
+    replacements.put("reactDomJsUrl", getResourceUrl(basePath, "react-dom.min.js",
         joinCdnjsPath("react-dom", "16.8.3", "umd/react-dom.production.min.js")));
-    replacements.put("voyagerCssUrl", getResourceUrl(staticBasePath, "voyager.css",
+    replacements.put("voyagerCssUrl", getResourceUrl(basePath, "voyager.css",
         joinJsDelivrPath(voyagerCdnVersion, "dist/voyager.css")));
-    replacements.put("voyagerJsUrl", getResourceUrl(staticBasePath, "voyager.min.js",
+    replacements.put("voyagerJsUrl", getResourceUrl(basePath, "voyager.min.js",
         joinJsDelivrPath(voyagerCdnVersion, "dist/voyager.min.js")));
-    replacements.put("voyagerWorkerJsUrl", getResourceUrl(staticBasePath, "voyager.worker.js",
+    replacements.put("voyagerWorkerJsUrl", getResourceUrl(basePath, "voyager.worker.js",
         joinJsDelivrPath(voyagerCdnVersion, "dist/voyager.worker.min.js")));
     replacements.put("contextPath", contextPath);
+    replacements.put("voyagerDisplayOptionsSkipRelay", Boolean.toString(voyagerDisplayOptionsSkipRelay));
+    replacements.put("voyagerDisplayOptionsSkipDeprecated", Boolean.toString(voyagerDisplayOptionsSkipDeprecated));
+    replacements.put("voyagerDisplayOptionsRootType", voyagerDisplayOptionsRootType);
+    replacements.put("voyagerDisplayOptionsSortByAlphabet", Boolean.toString(voyagerDisplayOptionsSortByAlphabet));
+    replacements.put("voyagerDisplayOptionsShowLeafFields", Boolean.toString(voyagerDisplayOptionsShowLeafFields));
+    replacements.put("voyagerDisplayOptionsHideRoot", Boolean.toString(voyagerDisplayOptionsHideRoot));
+    replacements.put("voyagerHideDocs", Boolean.toString(voyagerHideDocs));
+    replacements.put("voyagerHideSettings", Boolean.toString(voyagerHideSettings));
+
+
 
     return StringSubstitutor.replace(template, replacements);
   }

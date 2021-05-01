@@ -73,8 +73,15 @@
             GraphQLVoyager.init(document.getElementById('voyager'), {
                 introspection: introspectionProvider,
                 displayOptions: {
-                    sortByAlphabet: true,
-                }
+                    skipRelay: ${voyagerDisplayOptionsSkipRelay},
+                    skipDeprecated: ${voyagerDisplayOptionsSkipDeprecated},
+                    rootType: '${voyagerDisplayOptionsRootType}',
+                    sortByAlphabet: ${voyagerDisplayOptionsSortByAlphabet},
+                    showLeafFields: ${voyagerDisplayOptionsShowLeafFields},
+                    hideRoot: ${voyagerDisplayOptionsHideRoot},
+                },
+                hideDocs: ${voyagerHideDocs},
+                hideSettings: ${voyagerHideSettings},
             })
         </script>
     </body>
