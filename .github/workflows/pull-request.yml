@@ -36,7 +36,7 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - name: Gradle Check
-        run: ./gradlew --info verifyGoogleJavaFormat
+        run: ./gradlew --info build -x test
 
   test:
     name: Test run
