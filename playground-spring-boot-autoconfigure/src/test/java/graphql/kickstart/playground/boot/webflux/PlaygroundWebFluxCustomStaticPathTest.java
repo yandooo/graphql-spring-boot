@@ -11,13 +11,12 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource("classpath:application-playground-custom-static-path.properties")
 public class PlaygroundWebFluxCustomStaticPathTest extends PlaygroundWebFluxResourcesTestBase {
 
-    @Test
-    public void shouldLoadStaticResourcesFromCustomPath() {
-        testPlaygroundResources(
-            PlaygroundTestHelper.CUSTOM_LOCAL_CSS_URL,
-            PlaygroundTestHelper.CUSTOM_LOCAL_SCRIPT_URL,
-            PlaygroundTestHelper.CUSTOM_LOCAL_FAVICON_URL,
-            PlaygroundTestHelper.CUSTOM_LOCAL_LOGO_URL
-        );
-    }
+  @Test
+  public void shouldLoadStaticResourcesFromCustomPath() {
+    testPlaygroundResources(
+        PlaygroundTestHelper.CUSTOM_LOCAL_CSS_URL,
+        PlaygroundTestHelper.CUSTOM_LOCAL_SCRIPT_URL,
+        PlaygroundTestHelper.CUSTOM_LOCAL_FAVICON_URL,
+        PlaygroundTestHelper.CUSTOM_LOCAL_LOGO_URL);
+  }
 }

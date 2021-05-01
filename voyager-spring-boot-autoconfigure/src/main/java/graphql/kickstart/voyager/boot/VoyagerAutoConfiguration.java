@@ -6,9 +6,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * @author Guilherme Blanco
- */
+/** @author Guilherme Blanco */
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(value = "voyager.enabled", havingValue = "true", matchIfMissing = true)

@@ -13,11 +13,11 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 @EnableWebFlux
 @EnableWebFluxSecurity
 @SpringBootApplication
-@EnableAutoConfiguration(exclude = { WebMvcAutoConfiguration.class, SecurityAutoConfiguration.class } )
+@EnableAutoConfiguration(exclude = {WebMvcAutoConfiguration.class, SecurityAutoConfiguration.class})
 class PlaygroundWebFluxTestConfig {
 
-    @Bean
-    public SecurityWebFilterChain securityWebFilterChain(final ServerHttpSecurity http) {
-        return http.authorizeExchange().anyExchange().permitAll().and().build();
-    }
+  @Bean
+  public SecurityWebFilterChain securityWebFilterChain(final ServerHttpSecurity http) {
+    return http.authorizeExchange().anyExchange().permitAll().and().build();
+  }
 }

@@ -10,9 +10,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-/**
- * @author Max David Günther
- */
+/** @author Max David Günther */
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnProperty(value = "voyager.enabled", havingValue = "true", matchIfMissing = true)
@@ -27,9 +25,7 @@ public class ReactiveVoyagerAutoConfiguration {
   @Bean
   public RouterFunction<ServerResponse> voyagerStaticFilesRouter() {
     return RouterFunctions.resources(
-        "/vendor/voyager/**",
-        new ClassPathResource("static/vendor/voyager/")
-    );
+        "/vendor/voyager/**", new ClassPathResource("static/vendor/voyager/"));
   }
 
   @Bean
