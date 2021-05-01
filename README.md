@@ -455,7 +455,7 @@ voyager:
   endpoint: /graphql
   cdn:
     enabled: false
-    version: 1.0.0-rc.31
+    version: latest
   pageTitle: Voyager
   displayOptions:
     skipRelay: true

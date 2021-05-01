@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringSubstitutor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * @author Guilherme Blanco
  */
+@RequiredArgsConstructor
 public class VoyagerIndexHtmlTemplate {
 
   private static final String CDNJS_CLOUDFLARE_COM_AJAX_LIBS = "//cdnjs.cloudflare.com/ajax/libs/";
@@ -21,53 +24,20 @@ public class VoyagerIndexHtmlTemplate {
   private static final String VOYAGER = "graphql-voyager";
   private static final String FAVICON_APIS_GURU = "//apis.guru/graphql-voyager/icons/favicon-16x16.png";
 
-  @Value("${voyager.endpoint:/graphql}")
-  private String graphqlEndpoint;
-
-  @Value("${voyager.pageTitle:Voyager}")
-  private String pageTitle;
-
-  @Value("${voyager.basePath:/}")
-  private String basePath;
-
-  @Value("${voyager.cdn.enabled:false}")
-  private boolean voyagerCdnEnabled;
-
-  @Value("${voyager.cdn.version:1.0.0-rc.31}")
-  private String voyagerCdnVersion;
-
-  @Value("${voyager.displayOptions.skipRelay:true}")
-  private boolean voyagerDisplayOptionsSkipRelay;
-
-  @Value("${voyager.displayOptions.skipDeprecated:true}")
-  private boolean voyagerDisplayOptionsSkipDeprecated;
-
-  @Value("${voyager.displayOptions.rootType:Query}")
-  private String voyagerDisplayOptionsRootType;
-
-  @Value("${voyager.displayOptions.sortByAlphabet:false}")
-  private boolean voyagerDisplayOptionsSortByAlphabet;
-
-  @Value("${voyager.displayOptions.showLeafFields:true}")
-  private boolean voyagerDisplayOptionsShowLeafFields;
-
-  @Value("${voyager.displayOptions.hideRoot:false}")
-  private boolean voyagerDisplayOptionsHideRoot;
-
-  @Value("${voyager.hideDocs:false}")
-  private boolean voyagerHideDocs;
-
-  @Value("${voyager.hideSettings:false}")
-  private boolean voyagerHideSettings;
+  private final VoyagerPropertiesConfiguration voyagerConfiguration;
 
   public String fillIndexTemplate(String contextPath, Map<String, String> params)
       throws IOException {
     String template = StreamUtils
         .copyToString(new ClassPathResource("voyager.html").getInputStream(),
             Charset.defaultCharset());
+
+    String basePath = voyagerConfiguration.getBasePath();
+    String voyagerCdnVersion = voyagerConfiguration.getCdn().getVersion();
+
     Map<String, String> replacements = new HashMap<>();
     replacements.put("graphqlEndpoint", constructGraphQlEndpoint(contextPath, params));
-    replacements.put("pageTitle", pageTitle);
+    replacements.put("pageTitle", voyagerConfiguration.getPageTitle());
     replacements
         .put("pageFavicon", getResourceUrl(basePath, "favicon.ico", FAVICON_APIS_GURU));
     replacements.put("es6PromiseJsUrl", getResourceUrl(basePath, "es6-promise.auto.min.js",
@@ -85,14 +55,15 @@ public class VoyagerIndexHtmlTemplate {
     replacements.put("voyagerWorkerJsUrl", getResourceUrl(basePath, "voyager.worker.js",
         joinJsDelivrPath(voyagerCdnVersion, "dist/voyager.worker.min.js")));
     replacements.put("contextPath", contextPath);
-    replacements.put("voyagerDisplayOptionsSkipRelay", Boolean.toString(voyagerDisplayOptionsSkipRelay));
-    replacements.put("voyagerDisplayOptionsSkipDeprecated", Boolean.toString(voyagerDisplayOptionsSkipDeprecated));
-    replacements.put("voyagerDisplayOptionsRootType", voyagerDisplayOptionsRootType);
-    replacements.put("voyagerDisplayOptionsSortByAlphabet", Boolean.toString(voyagerDisplayOptionsSortByAlphabet));
-    replacements.put("voyagerDisplayOptionsShowLeafFields", Boolean.toString(voyagerDisplayOptionsShowLeafFields));
-    replacements.put("voyagerDisplayOptionsHideRoot", Boolean.toString(voyagerDisplayOptionsHideRoot));
-    replacements.put("voyagerHideDocs", Boolean.toString(voyagerHideDocs));
-    replacements.put("voyagerHideSettings", Boolean.toString(voyagerHideSettings));
+    replacements.put("voyagerDisplayOptionsSkipRelay", Boolean.toString(voyagerConfiguration.getDisplayOptions().isSkipRelay()));
+    replacements.put("voyagerDisplayOptionsSkipDeprecated", Boolean.toString(voyagerConfiguration.getDisplayOptions().isSkipDeprecated()));
+    replacements.put("voyagerDisplayOptionsRootType", voyagerConfiguration.getDisplayOptions().getRootType());
+    replacements.put("voyagerDisplayOptionsSortByAlphabet", Boolean.toString(
+        voyagerConfiguration.getDisplayOptions().isSortByAlphabet()));
+    replacements.put("voyagerDisplayOptionsShowLeafFields", Boolean.toString(voyagerConfiguration.getDisplayOptions().isShowLeafFields()));
+    replacements.put("voyagerDisplayOptionsHideRoot", Boolean.toString(voyagerConfiguration.getDisplayOptions().isHideRoot()));
+    replacements.put("voyagerHideDocs", Boolean.toString(voyagerConfiguration.isHideDocs()));
+    replacements.put("voyagerHideSettings", Boolean.toString(voyagerConfiguration.isHideSettings()));
 
 
 
@@ -101,7 +72,7 @@ public class VoyagerIndexHtmlTemplate {
 
   private String constructGraphQlEndpoint(String contextPath,
       @RequestParam Map<String, String> params) {
-    String endpoint = graphqlEndpoint;
+    String endpoint = voyagerConfiguration.getEndpoint();
     for (Map.Entry<String, String> param : params.entrySet()) {
       endpoint = endpoint.replaceAll("\\{" + param.getKey() + "}", param.getValue());
     }
@@ -112,7 +83,7 @@ public class VoyagerIndexHtmlTemplate {
   }
 
   private String getResourceUrl(String staticBasePath, String staticFileName, String cdnUrl) {
-    if (voyagerCdnEnabled && StringUtils.isNotBlank(cdnUrl)) {
+    if (voyagerConfiguration.getCdn().isEnabled() && StringUtils.isNotBlank(cdnUrl)) {
       return cdnUrl;
     }
     return joinStaticPath(staticBasePath, staticFileName);
