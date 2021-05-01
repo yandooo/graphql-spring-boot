@@ -11,15 +11,14 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/**
- * @author Guilherme Blanco
- */
+/** @author Guilherme Blanco */
 public class VoyagerIndexHtmlTemplate {
 
   private static final String CDNJS_CLOUDFLARE_COM_AJAX_LIBS = "//cdnjs.cloudflare.com/ajax/libs/";
   private static final String CDN_JSDELIVR_NET_NPM = "//cdn.jsdelivr.net/npm/";
   private static final String VOYAGER = "graphql-voyager";
-  private static final String FAVICON_APIS_GURU = "//apis.guru/graphql-voyager/icons/favicon-16x16.png";
+  private static final String FAVICON_APIS_GURU =
+      "//apis.guru/graphql-voyager/icons/favicon-16x16.png";
 
   @Value("${voyager.endpoint:/graphql}")
   private String graphqlEndpoint;
@@ -38,35 +37,61 @@ public class VoyagerIndexHtmlTemplate {
 
   public String fillIndexTemplate(String contextPath, Map<String, String> params)
       throws IOException {
-    String template = StreamUtils
-        .copyToString(new ClassPathResource("voyager.html").getInputStream(),
-            Charset.defaultCharset());
+    String template =
+        StreamUtils.copyToString(
+            new ClassPathResource("voyager.html").getInputStream(), Charset.defaultCharset());
     Map<String, String> replacements = new HashMap<>();
     replacements.put("graphqlEndpoint", constructGraphQlEndpoint(contextPath, params));
     replacements.put("pageTitle", pageTitle);
-    replacements
-        .put("pageFavicon", getResourceUrl(staticBasePath, "favicon.ico", FAVICON_APIS_GURU));
-    replacements.put("es6PromiseJsUrl", getResourceUrl(staticBasePath, "es6-promise.auto.min.js",
-        joinCdnjsPath("es6-promise", "4.1.1", "es6-promise.auto.min.js")));
-    replacements.put("fetchJsUrl", getResourceUrl(staticBasePath, "fetch.min.js",
-        joinCdnjsPath("fetch", "2.0.4", "fetch.min.js")));
-    replacements.put("reactJsUrl", getResourceUrl(staticBasePath, "react.min.js",
-        joinCdnjsPath("react", "16.8.3", "umd/react.production.min.js")));
-    replacements.put("reactDomJsUrl", getResourceUrl(staticBasePath, "react-dom.min.js",
-        joinCdnjsPath("react-dom", "16.8.3", "umd/react-dom.production.min.js")));
-    replacements.put("voyagerCssUrl", getResourceUrl(staticBasePath, "voyager.css",
-        joinJsDelivrPath(voyagerCdnVersion, "dist/voyager.css")));
-    replacements.put("voyagerJsUrl", getResourceUrl(staticBasePath, "voyager.min.js",
-        joinJsDelivrPath(voyagerCdnVersion, "dist/voyager.min.js")));
-    replacements.put("voyagerWorkerJsUrl", getResourceUrl(staticBasePath, "voyager.worker.js",
-        joinJsDelivrPath(voyagerCdnVersion, "dist/voyager.worker.min.js")));
+    replacements.put(
+        "pageFavicon", getResourceUrl(staticBasePath, "favicon.ico", FAVICON_APIS_GURU));
+    replacements.put(
+        "es6PromiseJsUrl",
+        getResourceUrl(
+            staticBasePath,
+            "es6-promise.auto.min.js",
+            joinCdnjsPath("es6-promise", "4.1.1", "es6-promise.auto.min.js")));
+    replacements.put(
+        "fetchJsUrl",
+        getResourceUrl(
+            staticBasePath, "fetch.min.js", joinCdnjsPath("fetch", "2.0.4", "fetch.min.js")));
+    replacements.put(
+        "reactJsUrl",
+        getResourceUrl(
+            staticBasePath,
+            "react.min.js",
+            joinCdnjsPath("react", "16.8.3", "umd/react.production.min.js")));
+    replacements.put(
+        "reactDomJsUrl",
+        getResourceUrl(
+            staticBasePath,
+            "react-dom.min.js",
+            joinCdnjsPath("react-dom", "16.8.3", "umd/react-dom.production.min.js")));
+    replacements.put(
+        "voyagerCssUrl",
+        getResourceUrl(
+            staticBasePath,
+            "voyager.css",
+            joinJsDelivrPath(voyagerCdnVersion, "dist/voyager.css")));
+    replacements.put(
+        "voyagerJsUrl",
+        getResourceUrl(
+            staticBasePath,
+            "voyager.min.js",
+            joinJsDelivrPath(voyagerCdnVersion, "dist/voyager.min.js")));
+    replacements.put(
+        "voyagerWorkerJsUrl",
+        getResourceUrl(
+            staticBasePath,
+            "voyager.worker.js",
+            joinJsDelivrPath(voyagerCdnVersion, "dist/voyager.worker.min.js")));
     replacements.put("contextPath", contextPath);
 
     return StringSubstitutor.replace(template, replacements);
   }
 
-  private String constructGraphQlEndpoint(String contextPath,
-      @RequestParam Map<String, String> params) {
+  private String constructGraphQlEndpoint(
+      String contextPath, @RequestParam Map<String, String> params) {
     String endpoint = graphqlEndpoint;
     for (Map.Entry<String, String> param : params.entrySet()) {
       endpoint = endpoint.replaceAll("\\{" + param.getKey() + "}", param.getValue());
@@ -93,6 +118,11 @@ public class VoyagerIndexHtmlTemplate {
   }
 
   private String joinJsDelivrPath(String cdnVersion, String cdnFileName) {
-    return CDN_JSDELIVR_NET_NPM + VoyagerIndexHtmlTemplate.VOYAGER + "@" + cdnVersion + "/" + cdnFileName;
+    return CDN_JSDELIVR_NET_NPM
+        + VoyagerIndexHtmlTemplate.VOYAGER
+        + "@"
+        + cdnVersion
+        + "/"
+        + cdnFileName;
   }
 }

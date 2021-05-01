@@ -11,13 +11,12 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource("classpath:application-playground-cdn-test.properties")
 public class PlaygroundWebFluxCdnTest extends PlaygroundWebFluxResourcesTestBase {
 
-    @Test
-    public void shouldLoadLatestVersionFromCdn() {
-        testPlaygroundResources(
-            PlaygroundTestHelper.DEFAULT_CSS_CDN_PATH,
-            PlaygroundTestHelper.DEFAULT_SCRIPT_CDN_PATH,
-            PlaygroundTestHelper.DEFAULT_FAVICON_CDN_PATH,
-            PlaygroundTestHelper.DEFAULT_LOGO_CDN_PATH
-        );
-    }
+  @Test
+  public void shouldLoadLatestVersionFromCdn() {
+    testPlaygroundResources(
+        PlaygroundTestHelper.DEFAULT_CSS_CDN_PATH,
+        PlaygroundTestHelper.DEFAULT_SCRIPT_CDN_PATH,
+        PlaygroundTestHelper.DEFAULT_FAVICON_CDN_PATH,
+        PlaygroundTestHelper.DEFAULT_LOGO_CDN_PATH);
+  }
 }

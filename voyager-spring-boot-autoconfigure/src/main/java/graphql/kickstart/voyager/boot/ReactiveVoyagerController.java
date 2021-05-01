@@ -9,14 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-/**
- * @author Max David Günther
- */
+/** @author Max David Günther */
 @Controller
 public class ReactiveVoyagerController {
 
-  @Autowired
-  private VoyagerIndexHtmlTemplate indexTemplate;
+  @Autowired private VoyagerIndexHtmlTemplate indexTemplate;
 
   @GetMapping(path = "${voyager.mapping:/voyager}")
   public ResponseEntity<String> voyager(@PathVariable Map<String, String> params)

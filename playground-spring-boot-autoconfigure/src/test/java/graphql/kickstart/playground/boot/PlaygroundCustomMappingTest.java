@@ -23,15 +23,15 @@ import org.springframework.test.web.servlet.MockMvc;
 @TestPropertySource("classpath:application-playground-mapping-test.properties")
 public class PlaygroundCustomMappingTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-    @Test
-    public void shouldUseTheConfiguredRequestMapping() throws Exception {
-        mockMvc.perform(get(PlaygroundTestHelper.CUSTOM_MAPPING))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(content().encoding(StandardCharsets.UTF_8.name()))
-                .andExpect(content().string(not(isEmptyString())));
-    }
+  @Test
+  public void shouldUseTheConfiguredRequestMapping() throws Exception {
+    mockMvc
+        .perform(get(PlaygroundTestHelper.CUSTOM_MAPPING))
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+        .andExpect(content().encoding(StandardCharsets.UTF_8.name()))
+        .andExpect(content().string(not(isEmptyString())));
+  }
 }

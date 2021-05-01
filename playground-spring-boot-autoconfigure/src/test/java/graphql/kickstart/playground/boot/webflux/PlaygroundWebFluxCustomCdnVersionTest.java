@@ -11,13 +11,12 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource("classpath:application-playground-cdn-custom-version-test.properties")
 public class PlaygroundWebFluxCustomCdnVersionTest extends PlaygroundWebFluxResourcesTestBase {
 
-    @Test
-    public void shouldLoadSpecifiedVersionFromCdn() {
-        testPlaygroundResources(
-            PlaygroundTestHelper.CUSTOM_VERSION_CSS_CDN_PATH,
-            PlaygroundTestHelper.CUSTOM_VERSION_SCRIPT_CDN_PATH,
-            PlaygroundTestHelper.CUSTOM_VERSION_FAVICON_CDN_PATH,
-            PlaygroundTestHelper.CUSTOM_VERSION_LOGO_CDN_PATH
-        );
-    }
+  @Test
+  public void shouldLoadSpecifiedVersionFromCdn() {
+    testPlaygroundResources(
+        PlaygroundTestHelper.CUSTOM_VERSION_CSS_CDN_PATH,
+        PlaygroundTestHelper.CUSTOM_VERSION_SCRIPT_CDN_PATH,
+        PlaygroundTestHelper.CUSTOM_VERSION_FAVICON_CDN_PATH,
+        PlaygroundTestHelper.CUSTOM_VERSION_LOGO_CDN_PATH);
+  }
 }

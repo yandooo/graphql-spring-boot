@@ -12,10 +12,14 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(PlaygroundPropertiesConfiguration.class)
 public class PlaygroundAutoConfiguration {
 
-    @Bean
-    @ConditionalOnProperty(value = "graphql.playground.enabled", havingValue = "true", matchIfMissing = true)
-    public PlaygroundController playgroundController(final PlaygroundPropertiesConfiguration playgroundPropertiesConfiguration,
-            final ObjectMapper objectMapper) {
-        return new PlaygroundController(playgroundPropertiesConfiguration, objectMapper);
-    }
+  @Bean
+  @ConditionalOnProperty(
+      value = "graphql.playground.enabled",
+      havingValue = "true",
+      matchIfMissing = true)
+  public PlaygroundController playgroundController(
+      final PlaygroundPropertiesConfiguration playgroundPropertiesConfiguration,
+      final ObjectMapper objectMapper) {
+    return new PlaygroundController(playgroundPropertiesConfiguration, objectMapper);
+  }
 }

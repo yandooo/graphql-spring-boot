@@ -2,12 +2,11 @@ package com.graphql.spring.boot.test;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+import java.time.Instant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import java.time.Instant;
 
 @DisplayName("Testing awaitNoResponse methods")
 class GraphQLSubscriptionTestAwaitNoAnswerTest extends GraphQLTestSubscriptionTestBase {
@@ -29,9 +28,7 @@ class GraphQLSubscriptionTestAwaitNoAnswerTest extends GraphQLTestSubscriptionTe
   @ParameterizedTest
   @ValueSource(booleans = {true, false})
   @DisplayName("Should succeed if no responses arrive.")
-  void shouldAwaitNoResponseSucceedIfNoResponsesArrived(
-      final boolean stopAfter
-  ) {
+  void shouldAwaitNoResponseSucceedIfNoResponsesArrived(final boolean stopAfter) {
     // GIVEN
     final Instant timeBeforeTestStart = Instant.now();
     // WHEN
@@ -57,9 +54,7 @@ class GraphQLSubscriptionTestAwaitNoAnswerTest extends GraphQLTestSubscriptionTe
   @ParameterizedTest
   @ValueSource(booleans = {true, false})
   @DisplayName("Should raise assertion error if any response arrived.")
-  void shouldRaiseAssertionErrorIfResponseArrived(
-      final boolean stopAfter
-  ) {
+  void shouldRaiseAssertionErrorIfResponseArrived(final boolean stopAfter) {
     // WHEN
     graphQLTestSubscription.start(TIMER_SUBSCRIPTION_RESOURCE);
     // THEN

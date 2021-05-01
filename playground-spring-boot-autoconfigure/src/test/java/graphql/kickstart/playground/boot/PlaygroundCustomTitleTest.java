@@ -22,17 +22,22 @@ import org.springframework.test.web.servlet.MvcResult;
 @TestPropertySource("classpath:application-playground-custom-title.properties")
 public class PlaygroundCustomTitleTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-    @Test
-    public void shouldUseTheCustomPageTitle() throws Exception {
-        final MvcResult mvcResult = mockMvc.perform(get(PlaygroundTestHelper.DEFAULT_PLAYGROUND_ENDPOINT))
-                .andExpect(status().isOk())
-                .andExpect(model().attribute(PlaygroundTestHelper.PAGE_TITLE_FIELD_NAME, PlaygroundTestHelper.CUSTOM_TITLE))
-                .andReturn();
+  @Test
+  public void shouldUseTheCustomPageTitle() throws Exception {
+    final MvcResult mvcResult =
+        mockMvc
+            .perform(get(PlaygroundTestHelper.DEFAULT_PLAYGROUND_ENDPOINT))
+            .andExpect(status().isOk())
+            .andExpect(
+                model()
+                    .attribute(
+                        PlaygroundTestHelper.PAGE_TITLE_FIELD_NAME,
+                        PlaygroundTestHelper.CUSTOM_TITLE))
+            .andReturn();
 
-        final Document document = Jsoup.parse(mvcResult.getResponse().getContentAsString());
-        PlaygroundTestHelper.assertTitle(document, PlaygroundTestHelper.CUSTOM_TITLE);
-    }
+    final Document document = Jsoup.parse(mvcResult.getResponse().getContentAsString());
+    PlaygroundTestHelper.assertTitle(document, PlaygroundTestHelper.CUSTOM_TITLE);
+  }
 }
