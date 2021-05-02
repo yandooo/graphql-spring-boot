@@ -19,7 +19,8 @@ public class VoyagerAutoConfiguration {
   }
 
   @Bean
-  VoyagerIndexHtmlTemplate voyagerIndexHtmlTemplate(final VoyagerPropertiesConfiguration voyagerPropertiesConfiguration) {
+  VoyagerIndexHtmlTemplate voyagerIndexHtmlTemplate(
+      final VoyagerPropertiesConfiguration voyagerPropertiesConfiguration) {
     return new VoyagerIndexHtmlTemplate(voyagerPropertiesConfiguration);
   }
 }

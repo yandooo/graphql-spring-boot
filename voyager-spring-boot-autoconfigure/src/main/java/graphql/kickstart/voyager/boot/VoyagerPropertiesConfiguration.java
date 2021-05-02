@@ -8,30 +8,23 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
 
-
 @Data
 @ConfigurationProperties(prefix = "voyager")
 @Validated
 public class VoyagerPropertiesConfiguration {
 
-    private String endpoint = "/graphql";
+  private String endpoint = "/graphql";
 
-    private String pageTitle = "Voyager";
+  private String pageTitle = "Voyager";
 
-    private String basePath = "/";
+  private String basePath = "/";
 
-    @NestedConfigurationProperty
-    @JsonIgnore
-    private VoyagerCdn cdn = new VoyagerCdn();
+  @NestedConfigurationProperty @JsonIgnore private VoyagerCdn cdn = new VoyagerCdn();
 
-    @NestedConfigurationProperty
-    @JsonIgnore
-    private VoyagerDisplayOptions displayOptions = new VoyagerDisplayOptions();
+  @NestedConfigurationProperty @JsonIgnore
+  private VoyagerDisplayOptions displayOptions = new VoyagerDisplayOptions();
 
-    @JsonIgnore
-    private boolean hideDocs;
+  @JsonIgnore private boolean hideDocs;
 
-    @JsonIgnore
-    private boolean hideSettings;
-
+  @JsonIgnore private boolean hideSettings;
 }
