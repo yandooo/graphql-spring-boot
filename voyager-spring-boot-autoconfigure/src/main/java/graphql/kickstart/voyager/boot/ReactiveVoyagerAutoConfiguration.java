@@ -1,8 +1,8 @@
 package graphql.kickstart.voyager.boot;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -16,10 +16,8 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnProperty(value = "voyager.enabled", havingValue = "true", matchIfMissing = true)
+@EnableConfigurationProperties(VoyagerPropertiesConfiguration.class)
 public class ReactiveVoyagerAutoConfiguration {
-
-  @Value("${voyager.mapping:/voyager}")
-  private String voyagerPath;
 
   @Bean
   ReactiveVoyagerController voyagerController() {
@@ -35,7 +33,7 @@ public class ReactiveVoyagerAutoConfiguration {
   }
 
   @Bean
-  VoyagerIndexHtmlTemplate voyagerIndexHtmlTemplate() {
-    return new VoyagerIndexHtmlTemplate();
+  VoyagerIndexHtmlTemplate voyagerIndexHtmlTemplate(final VoyagerPropertiesConfiguration voyagerPropertiesConfiguration) {
+    return new VoyagerIndexHtmlTemplate(voyagerPropertiesConfiguration);
   }
 }
