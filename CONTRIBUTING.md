@@ -3,14 +3,14 @@
 We're really glad you're reading this, because we need more volunteer developers to help with this
 project!
 
-We can use all the help we can get on all
+We can use all the help we can get on each of
 our [GraphQL Java Kickstart](https://github.com/graphql-java-kickstart)
 projects. This work ranges from adding new features, fixing bugs, and answering questions to writing
 documentation.
 
 ## Answering questions and writing documentation
 
-A lot of the questions asked on Spectrum or Github are caused by a lack of documentation. We should
+A lot of the questions asked on GitHub are caused by a lack of documentation. We should
 strive from now on to answer questions by adding content to
 our [documentation](https://github.com/graphql-java-kickstart/documentation) and referring them to
 the newly created content.
@@ -21,7 +21,7 @@ https://www.graphql-java-kickstart.com.
 ## Submitting changes
 
 Please send a Pull Request with a clear list of what you've done using the
-[Github flow](https://guides.github.com/introduction/flow/). We can always use more test coverage,
+[GitHub flow](https://guides.github.com/introduction/flow/). We can always use more test coverage,
 so we'd love to see that in the pull requests too. And make sure to follow our coding conventions (
 below) and make sure all your commits are atomic
 (one feature per commit).
