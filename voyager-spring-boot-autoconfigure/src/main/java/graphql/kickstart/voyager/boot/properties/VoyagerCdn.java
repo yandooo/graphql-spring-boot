@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class VoyagerCdn {
 
-    private boolean enabled;
-    private String version = "latest";
+  private boolean enabled;
+  private String version = "latest";
 }

@@ -14,14 +14,17 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @TestPropertySource("classpath:application-playground-mapping-test.properties")
 public class PlaygroundWebFluxCustomMappingTest {
 
-    @Autowired
-    private WebTestClient webTestClient;
+  @Autowired private WebTestClient webTestClient;
 
-    @Test
-    public void shouldUseTheConfiguredRequestMapping() {
-        webTestClient.get().uri(PlaygroundTestHelper.CUSTOM_MAPPING)
-            .exchange()
-            .expectStatus().isOk()
-            .expectHeader().contentTypeCompatibleWith(MediaType.TEXT_HTML);
-    }
+  @Test
+  public void shouldUseTheConfiguredRequestMapping() {
+    webTestClient
+        .get()
+        .uri(PlaygroundTestHelper.CUSTOM_MAPPING)
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectHeader()
+        .contentTypeCompatibleWith(MediaType.TEXT_HTML);
+  }
 }

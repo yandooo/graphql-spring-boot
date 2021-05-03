@@ -13,13 +13,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @TestPropertySource("classpath:application-playground-cdn-test.properties")
 public class PlaygroundCdnTest extends PlaygroundResourcesTestBase {
 
-    @Test
-    public void shouldLoadLatestVersionFromCdn() throws Exception {
-        testPlaygroundResources(
-            PlaygroundTestHelper.DEFAULT_CSS_CDN_PATH,
-            PlaygroundTestHelper.DEFAULT_SCRIPT_CDN_PATH,
-            PlaygroundTestHelper.DEFAULT_FAVICON_CDN_PATH,
-            PlaygroundTestHelper.DEFAULT_LOGO_CDN_PATH
-        );
-    }
+  @Test
+  public void shouldLoadLatestVersionFromCdn() throws Exception {
+    testPlaygroundResources(
+        PlaygroundTestHelper.DEFAULT_CSS_CDN_PATH,
+        PlaygroundTestHelper.DEFAULT_SCRIPT_CDN_PATH,
+        PlaygroundTestHelper.DEFAULT_FAVICON_CDN_PATH,
+        PlaygroundTestHelper.DEFAULT_LOGO_CDN_PATH);
+  }
 }

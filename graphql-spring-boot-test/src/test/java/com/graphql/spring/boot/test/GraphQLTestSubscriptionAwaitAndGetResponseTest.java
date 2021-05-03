@@ -12,8 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class GraphQLTestSubscriptionAwaitAndGetResponseTest extends
-    GraphQLTestSubscriptionTestBase {
+class GraphQLTestSubscriptionAwaitAndGetResponseTest extends GraphQLTestSubscriptionTestBase {
 
   @Test
   @DisplayName("Should await and get single response.")
@@ -22,7 +21,9 @@ class GraphQLTestSubscriptionAwaitAndGetResponseTest extends
     graphQLTestSubscription
         .start(TIMER_SUBSCRIPTION_RESOURCE)
         .awaitAndGetNextResponse(TIMEOUT)
-        .assertThatField(DATA_TIMER_FIELD).asLong().isZero();
+        .assertThatField(DATA_TIMER_FIELD)
+        .asLong()
+        .isZero();
     // THEN
     assertThatSubscriptionWasStopped();
   }
@@ -31,9 +32,10 @@ class GraphQLTestSubscriptionAwaitAndGetResponseTest extends
   @DisplayName("Should await and get multiple responses.")
   void shouldAwaitAndGetMultipleResponses() {
     // WHEN
-    final List<GraphQLResponse> graphQLResponses = graphQLTestSubscription
-        .start(TIMER_SUBSCRIPTION_RESOURCE)
-        .awaitAndGetNextResponses(TIMEOUT, 5);
+    final List<GraphQLResponse> graphQLResponses =
+        graphQLTestSubscription
+            .start(TIMER_SUBSCRIPTION_RESOURCE)
+            .awaitAndGetNextResponses(TIMEOUT, 5);
     // THEN
     assertThat(graphQLResponses)
         .extracting(response -> response.get(DATA_TIMER_FIELD, Long.class))
@@ -47,9 +49,8 @@ class GraphQLTestSubscriptionAwaitAndGetResponseTest extends
     // GIVEN
     final Instant timeBeforeTest = Instant.now();
     // WHEN
-    final List<GraphQLResponse> graphQLResponses = graphQLTestSubscription
-        .start(TIMER_SUBSCRIPTION_RESOURCE)
-        .awaitAndGetAllResponses(TIMEOUT);
+    final List<GraphQLResponse> graphQLResponses =
+        graphQLTestSubscription.start(TIMER_SUBSCRIPTION_RESOURCE).awaitAndGetAllResponses(TIMEOUT);
     // THEN
     assertThat(graphQLResponses)
         .extracting(response -> response.get(DATA_TIMER_FIELD, Long.class))
@@ -61,15 +62,14 @@ class GraphQLTestSubscriptionAwaitAndGetResponseTest extends
   @ParameterizedTest
   @ValueSource(booleans = {true, false})
   @DisplayName("Should await and get all responses.")
-  void shouldAwaitAndGetAllResponses(
-      final boolean stopAfter
-  ) {
+  void shouldAwaitAndGetAllResponses(final boolean stopAfter) {
     // GIVEN
     final Instant timeBeforeTest = Instant.now();
     // WHEN
-    final List<GraphQLResponse> graphQLResponses = graphQLTestSubscription
-        .start(TIMER_SUBSCRIPTION_RESOURCE)
-        .awaitAndGetAllResponses(TIMEOUT, stopAfter);
+    final List<GraphQLResponse> graphQLResponses =
+        graphQLTestSubscription
+            .start(TIMER_SUBSCRIPTION_RESOURCE)
+            .awaitAndGetAllResponses(TIMEOUT, stopAfter);
     // THEN
     assertThat(graphQLResponses)
         .extracting(response -> response.get(DATA_TIMER_FIELD, Long.class))
@@ -79,21 +79,24 @@ class GraphQLTestSubscriptionAwaitAndGetResponseTest extends
   }
 
   @Test
-  @DisplayName("Should handle multiple subsequent await and get calls, assuming stopAfter was false.")
+  @DisplayName(
+      "Should handle multiple subsequent await and get calls, assuming stopAfter was false.")
   void shouldWorkWithMultipleAwaitAndGetCalls() {
     // GIVEN
     graphQLTestSubscription.start(TIMER_SUBSCRIPTION_RESOURCE);
 
     // WHEN
-    graphQLTestSubscription.awaitAndGetNextResponse(TIMEOUT, false)
+    graphQLTestSubscription
+        .awaitAndGetNextResponse(TIMEOUT, false)
         .assertThatField(DATA_TIMER_FIELD)
-        .asLong().isZero();
+        .asLong()
+        .isZero();
     // THEN
     assertThatSubscriptionWasNotStopped();
 
     // WHEN
-    final List<GraphQLResponse> graphQLResponses = graphQLTestSubscription
-        .awaitAndGetNextResponses(TIMEOUT, 3, false);
+    final List<GraphQLResponse> graphQLResponses =
+        graphQLTestSubscription.awaitAndGetNextResponses(TIMEOUT, 3, false);
     // THEN
     assertThat(graphQLResponses)
         .extracting(response -> response.get(DATA_TIMER_FIELD, Long.class))
@@ -101,8 +104,8 @@ class GraphQLTestSubscriptionAwaitAndGetResponseTest extends
     assertThatSubscriptionWasNotStopped();
 
     // WHEN
-    final List<GraphQLResponse> graphQLResponses2 = graphQLTestSubscription
-        .awaitAndGetAllResponses(TIMEOUT);
+    final List<GraphQLResponse> graphQLResponses2 =
+        graphQLTestSubscription.awaitAndGetAllResponses(TIMEOUT);
     // THEN
     assertThat(graphQLResponses2)
         .extracting(response -> response.get(DATA_TIMER_FIELD, Long.class))
@@ -120,7 +123,9 @@ class GraphQLTestSubscriptionAwaitAndGetResponseTest extends
     graphQLTestSubscription
         .start(SUBSCRIPTION_WITH_PARAMETER_RESOURCE, startPayload)
         .awaitAndGetNextResponse(TIMEOUT)
-        .assertThatField(DATA_SUBSCRIPTION_WITH_PARAMETER_FIELD).asString().isEqualTo(param);
+        .assertThatField(DATA_SUBSCRIPTION_WITH_PARAMETER_FIELD)
+        .asString()
+        .isEqualTo(param);
   }
 
   @Test
@@ -128,14 +133,15 @@ class GraphQLTestSubscriptionAwaitAndGetResponseTest extends
   void shouldSubscriptionWithInitPayload() {
     // GIVEN
     final String initParamValue = String.valueOf(UUID.randomUUID());
-    final Map<String, String> initPayload = Collections
-        .singletonMap("initParamValue", initParamValue);
+    final Map<String, String> initPayload =
+        Collections.singletonMap("initParamValue", initParamValue);
     // WHEN - THEN
     graphQLTestSubscription
         .init(initPayload)
         .start(SUBSCRIPTION_WITH_INIT_PAYLOAD_RESOURCE)
         .awaitAndGetNextResponse(TIMEOUT)
-        .assertThatField(DATA_SUBSCRIPTION_WITH_INIT_PAYLOAD_FIELD).asString()
+        .assertThatField(DATA_SUBSCRIPTION_WITH_INIT_PAYLOAD_FIELD)
+        .asString()
         .isEqualTo(initParamValue);
   }
 }
