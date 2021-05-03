@@ -2,7 +2,7 @@ apply plugin: "java-platform"
 
 dependencies {
     constraints {
-        api "com.graphql-java:graphql-java-extended-scalars:$LIB_EXTENDED_SCALARS_VERSION"
+        api "com.graphql-java:graphql-java-extended-scalars:$LIB_EXTENDED_SCALARS_VER"
         api "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
         api "com.graphql-java-kickstart:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
         api "com.graphql-java-kickstart:graphql-java-kickstart:$LIB_GRAPHQL_SERVLET_VER"
