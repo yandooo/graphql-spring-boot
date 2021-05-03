@@ -22,10 +22,10 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     id "org.springframework.boot" version "$LIB_SPRING_BOOT_VER" apply false
-    id "org.sonarqube" version "3.2.0"
+    id "org.sonarqube" version "$PLUGIN_SONARQUBE_VER"
     id "jacoco"
-    id 'io.codearte.nexus-staging' version '0.30.0'
-    id 'com.github.sherter.google-java-format' version '0.9' apply false
+    id 'io.codearte.nexus-staging' version "$PLUGIN_NEXUS_STAGING_VER"
+    id 'com.github.sherter.google-java-format' version "$PLUGIN_GOOGLE_JAVA_FORMAT_VER" apply false
 }
 
 sonarqube {
@@ -92,7 +92,7 @@ subprojects {
         }
 
         jacoco {
-            toolVersion = "0.8.7-SNAPSHOT"
+            toolVersion = "$PLUGIN_JACOCO_VER"
         }
 
         jacocoTestReport {
