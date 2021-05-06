@@ -8,7 +8,6 @@ import graphql.GraphQLException;
 import graphql.GraphqlErrorBuilder;
 import graphql.SerializationError;
 import graphql.kickstart.execution.error.DefaultGraphQLErrorHandler;
-import graphql.kickstart.execution.error.GenericGraphQLError;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +41,7 @@ class GraphQLErrorFromExceptionHandler extends DefaultGraphQLErrorHandler {
             error.getLocations(), error.getPath(), error.getExtensions(), error.getErrorType());
     return extractException(error)
         .map(throwable -> transform(throwable, errorContext))
-        .orElse(singletonList(new GenericGraphQLError(error.getMessage())));
+        .orElse(singletonList(error));
   }
 
   private Optional<Throwable> extractException(GraphQLError error) {

@@ -51,10 +51,11 @@ jobs:
         name: Setup Node
         with:
           node-version: 14
-      - run: cd commitlint && npm audit
-        name: Security audit of NPM packages
+      #      - run: cd commitlint && npm audit
+      #        name: Security audit of NPM packages
       - run: cd commitlint && npm ci && git ls-remote https://github.com/graphql-java-kickstart/graphql-spring-boot.git HEAD | grep -o '[0-9a-f]*' | xargs -I{} npx commitlint --from {} --verbose
         name: Run commitlint
+
   test:
     name: Test run
     strategy:
@@ -62,7 +63,7 @@ jobs:
       matrix:
         os: [ ubuntu-latest, macos-latest, windows-latest ]
         java: [ 8, 11, 16 ]
-    needs: [validation, commitlint, verify-google-java-format]
+    needs: [ validation, commitlint, verify-google-java-format ]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
