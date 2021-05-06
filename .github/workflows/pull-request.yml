@@ -47,7 +47,7 @@ jobs:
         name: Checkout
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         name: Setup Node
         with:
           node-version: 14
