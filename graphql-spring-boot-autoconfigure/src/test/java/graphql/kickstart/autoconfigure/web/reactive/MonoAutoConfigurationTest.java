@@ -1,4 +1,4 @@
-package graphql.kickstart.spring.webflux.boot;
+package graphql.kickstart.autoconfigure.web.reactive;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,7 +17,9 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @RequiredArgsConstructor
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    properties = {"spring.main.web-application-type=reactive"})
 class MonoAutoConfigurationTest {
 
   @Autowired private WebTestClient webTestClient;

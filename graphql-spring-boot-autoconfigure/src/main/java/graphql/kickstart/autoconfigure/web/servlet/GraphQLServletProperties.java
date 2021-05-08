@@ -22,7 +22,7 @@ import graphql.kickstart.execution.context.ContextSetting;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/** @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a> */
+/** @author Michiel Oliemans */
 @Data
 @ConfigurationProperties(prefix = "graphql.servlet")
 public class GraphQLServletProperties {

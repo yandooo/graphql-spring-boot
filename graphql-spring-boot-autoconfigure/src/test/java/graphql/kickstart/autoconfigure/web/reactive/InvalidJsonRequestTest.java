@@ -1,4 +1,4 @@
-package graphql.kickstart.spring.webflux.boot;
+package graphql.kickstart.autoconfigure.web.reactive;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -13,8 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class InvalidJsonRequestTest {
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    properties = "spring.main.web-application-type=reactive")
+class InvalidJsonRequestTest {
 
   @Autowired private WebTestClient webTestClient;
 

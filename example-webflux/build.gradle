@@ -20,8 +20,7 @@
 apply plugin: "org.springframework.boot"
 
 dependencies {
-    implementation(project(":graphql-kickstart-spring-boot-starter-webflux"))
-    implementation(project(":graphql-kickstart-spring-boot-starter-tools"))
+    implementation(project(":graphql-spring-boot-starter"))
     implementation(project(":voyager-spring-boot-starter"))
     implementation(project(":playground-spring-boot-starter"))
 
