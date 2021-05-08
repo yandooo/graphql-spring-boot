@@ -25,13 +25,14 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 import org.springframework.web.socket.server.standard.ServerEndpointRegistration;
 
 @Configuration
 @RequiredArgsConstructor
 @ConditionalOnWebApplication(type = Type.SERVLET)
-@ConditionalOnClass({ServerContainer.class})
+@ConditionalOnClass(DispatcherServlet.class)
 @Conditional(OnSchemaOrSchemaProviderBean.class)
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ConditionalOnProperty(
@@ -74,14 +75,14 @@ public class GraphQLWebsocketAutoConfiguration {
   }
 
   @Bean
-  @ConditionalOnClass(ServerEndpointRegistration.class)
+  @ConditionalOnClass(ServerContainer.class)
   public ServerEndpointRegistration serverEndpointRegistration(GraphQLWebsocketServlet servlet) {
     return new GraphQLWsServerEndpointRegistration(websocketProperties.getPath(), servlet);
   }
 
   @Bean
   @ConditionalOnMissingBean
-  @ConditionalOnClass(ServerEndpointExporter.class)
+  @ConditionalOnClass(ServerContainer.class)
   public ServerEndpointExporter serverEndpointExporter() {
     return new ServerEndpointExporter();
   }
