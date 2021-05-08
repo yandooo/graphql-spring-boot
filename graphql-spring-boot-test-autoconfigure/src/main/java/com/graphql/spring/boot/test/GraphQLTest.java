@@ -23,7 +23,7 @@ import graphql.kickstart.autoconfigure.web.servlet.GraphQLWebAutoConfiguration;
 import graphql.kickstart.tools.GraphQLResolver;
 import graphql.kickstart.tools.SchemaParserDictionary;
 import graphql.kickstart.tools.SchemaParserOptions;
-import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
+import graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration;
 import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.SchemaParser;

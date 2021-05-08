@@ -1,4 +1,4 @@
-package graphql.kickstart.tools.boot;
+package graphql.kickstart.autoconfigure.tools;
 
 import java.io.IOException;
 import java.util.ArrayList;

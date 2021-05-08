@@ -1,9 +1,10 @@
-package graphql.kickstart.tools.boot;
+package graphql.kickstart.autoconfigure.tools;
 
 import static org.mockito.Mockito.mock;
 
 import javax.servlet.ServletContext;
 import javax.websocket.server.ServerContainer;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -40,9 +41,10 @@ public abstract class AbstractAutoConfigurationTest {
     }
   }
 
+  @SneakyThrows
   protected void load(Class<?> config, String... environment) {
     try {
-      this.context = contextClass.newInstance();
+      this.context = contextClass.getDeclaredConstructor().newInstance();
     } catch (InstantiationException | IllegalAccessException e) {
       throw new RuntimeException("Failed to instantiate testing context", e);
     }

@@ -1,4 +1,4 @@
-package graphql.kickstart.tools.boot;
+package graphql.kickstart.autoconfigure.tools;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/** @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a> */
 class GraphQLJavaToolsAutoConfigurationTest extends AbstractAutoConfigurationTest {
 
   public GraphQLJavaToolsAutoConfigurationTest() {
@@ -18,6 +17,7 @@ class GraphQLJavaToolsAutoConfigurationTest extends AbstractAutoConfigurationTes
 
   @Test
   void appContextLoads() {
+    System.setProperty("graphql.tools.schemaLocationPattern", "graphql-tools-schema.graphql");
     load(BaseConfiguration.class);
 
     assertThat(this.getContext().getBean(GraphQLSchema.class)).isNotNull();
@@ -73,7 +73,7 @@ class GraphQLJavaToolsAutoConfigurationTest extends AbstractAutoConfigurationTes
       String method();
     }
 
-    class Query implements GraphQLQueryResolver {
+    static class Query implements GraphQLQueryResolver {
 
       Interface theInterface() {
         return new Implementation();
@@ -84,7 +84,7 @@ class GraphQLJavaToolsAutoConfigurationTest extends AbstractAutoConfigurationTes
       }
     }
 
-    class Implementation implements Interface {
+    static class Implementation implements Interface {
 
       public String method() {
         return "method";

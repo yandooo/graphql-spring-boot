@@ -4,7 +4,7 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
 
 import graphql.kickstart.tools.SchemaParser;
 import graphql.kickstart.tools.SchemaParserOptions.GenericWrapper;
-import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
+import graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
