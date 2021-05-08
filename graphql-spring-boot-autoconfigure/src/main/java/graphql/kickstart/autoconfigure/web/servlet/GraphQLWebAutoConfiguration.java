@@ -54,7 +54,7 @@ import graphql.kickstart.servlet.input.BatchInputPreProcessor;
 import graphql.kickstart.servlet.input.GraphQLInvocationInputFactory;
 import graphql.kickstart.spring.error.ErrorHandlerSupplier;
 import graphql.kickstart.spring.error.GraphQLErrorStartupListener;
-import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
+import graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration;
 import graphql.schema.GraphQLSchema;
 import java.util.Arrays;
 import java.util.LinkedHashMap;

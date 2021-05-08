@@ -1,4 +1,4 @@
-package graphql.kickstart.tools.boot;
+package graphql.kickstart.autoconfigure.tools;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

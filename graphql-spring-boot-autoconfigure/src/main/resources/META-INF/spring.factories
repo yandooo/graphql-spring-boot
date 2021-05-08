@@ -5,5 +5,6 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
     graphql.kickstart.autoconfigure.web.servlet.GraphQLWebsocketAutoConfiguration,\
     graphql.kickstart.autoconfigure.web.servlet.GraphQLInstrumentationAutoConfiguration,\
     graphql.kickstart.autoconfigure.web.reactive.GraphQLSpringWebfluxAutoConfiguration,\
-    graphql.kickstart.autoconfigure.web.reactive.MonoAutoConfiguration
+    graphql.kickstart.autoconfigure.web.reactive.MonoAutoConfiguration,\
+    graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration
 

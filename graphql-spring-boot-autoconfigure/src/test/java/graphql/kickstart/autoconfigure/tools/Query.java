@@ -1,10 +1,8 @@
-package graphql.kickstart.tools.boot;
+package graphql.kickstart.autoconfigure.tools;
 
 import graphql.kickstart.tools.GraphQLQueryResolver;
-import org.springframework.stereotype.Component;
 
 /** @author Andrew Potter */
-@Component
 public class Query implements GraphQLQueryResolver {
 
   public String echo(String string) {

@@ -6,7 +6,7 @@ import graphql.kickstart.execution.subscriptions.GraphQLSubscriptionInvocationIn
 import graphql.kickstart.execution.subscriptions.SubscriptionConnectionListener;
 import graphql.kickstart.execution.subscriptions.apollo.KeepAliveSubscriptionConnectionListener;
 import graphql.kickstart.servlet.GraphQLWebsocketServlet;
-import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
+import graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.HashSet;

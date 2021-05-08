@@ -25,7 +25,7 @@ import graphql.kickstart.spring.webflux.GraphQLSpringWebfluxRootObjectBuilder;
 import graphql.kickstart.spring.webflux.ReactiveSubscriptionsProtocolFactory;
 import graphql.kickstart.spring.webflux.ReactiveWebSocketSubscriptionsHandler;
 import graphql.kickstart.spring.webflux.apollo.ReactiveApolloSubscriptionProtocolFactory;
-import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
+import graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration;
 import graphql.schema.GraphQLSchema;
 import java.util.Collection;
 import java.util.HashMap;
