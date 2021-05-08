@@ -21,7 +21,6 @@ apply plugin: 'org.springframework.boot'
 
 dependencies {
     implementation(project(":graphql-spring-boot-starter"))
-    implementation(project(":graphiql-spring-boot-starter"))
 
     implementation "com.embedler.moon.graphql:spring-graphql-common:2.1.0-2016-05-22T16-50-32"
     implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'

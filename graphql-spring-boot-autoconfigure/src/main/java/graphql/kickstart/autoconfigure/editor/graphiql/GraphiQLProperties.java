@@ -1,4 +1,4 @@
-package graphql.kickstart.graphiql.boot;
+package graphql.kickstart.autoconfigure.editor.graphiql;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

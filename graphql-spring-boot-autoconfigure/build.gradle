@@ -25,11 +25,18 @@ dependencies {
     api "com.graphql-java-kickstart:graphql-java-kickstart:$LIB_GRAPHQL_SERVLET_VER"
     api "com.graphql-java-kickstart:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
     api "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
+
     implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation(project(':graphql-kickstart-starter-utils'))
+
     // annotations
     api "io.github.graphql-java:graphql-java-annotations:$LIB_GRAPHQL_ANNOTATIONS_VER"
     implementation "org.reflections:reflections:$LIB_REFLECTIONS_VER"
     implementation "org.springframework.boot:spring-boot-starter-validation"
+
+    // graphiql
+    implementation "org.apache.commons:commons-text:$LIB_APACHE_COMMONS_TEXT"
+    compileOnly "org.springframework.boot:spring-boot-starter-security"
 
     compileOnly "org.springframework.boot:spring-boot-starter-websocket"
     compileOnly "org.springframework.boot:spring-boot-starter-web"

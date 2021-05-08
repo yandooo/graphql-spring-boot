@@ -1,4 +1,4 @@
-package graphql.kickstart.graphiql.boot;
+package graphql.kickstart.autoconfigure.editor.graphiql;
 
 import java.io.IOException;
 import java.util.Map;

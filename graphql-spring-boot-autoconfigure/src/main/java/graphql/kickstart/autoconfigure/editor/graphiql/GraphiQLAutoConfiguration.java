@@ -1,4 +1,4 @@
-package graphql.kickstart.graphiql.boot;
+package graphql.kickstart.autoconfigure.editor.graphiql;
 
 import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.REACTIVE;
 import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.SERVLET;
@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Ronny Bräunlich
  */
 @Configuration
-@ConditionalOnProperty(value = "graphiql.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(value = "graphiql.enabled", havingValue = "true")
 @EnableConfigurationProperties(GraphiQLProperties.class)
 public class GraphiQLAutoConfiguration {
 

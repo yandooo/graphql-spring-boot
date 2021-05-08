@@ -20,11 +20,7 @@
 apply plugin: "org.springframework.boot"
 
 dependencies {
-    implementation(project(":altair-spring-boot-starter"))
     implementation(project(":graphql-spring-boot-starter"))
-    implementation(project(":graphiql-spring-boot-starter"))
-    implementation(project(":voyager-spring-boot-starter"))
-    implementation(project(":playground-spring-boot-starter"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")

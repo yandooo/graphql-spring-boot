@@ -8,5 +8,6 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
     graphql.kickstart.autoconfigure.web.reactive.MonoAutoConfiguration,\
     graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration,\
     graphql.kickstart.autoconfigure.annotations.GraphQLAnnotationsAutoConfiguration,\
-    graphql.kickstart.autoconfigure.GraphQLProperties
+    graphql.kickstart.autoconfigure.GraphQLProperties,\
+    graphql.kickstart.autoconfigure.editor.graphiql.GraphiQLAutoConfiguration
 

@@ -21,8 +21,6 @@ apply plugin: "org.springframework.boot"
 
 dependencies {
     implementation(project(":graphql-spring-boot-starter"))
-    implementation(project(":graphiql-spring-boot-starter"))
-    implementation(project(":voyager-spring-boot-starter"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
 

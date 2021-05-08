@@ -5,6 +5,8 @@ spring:
     multipart:
       enabled: true
       location: /tmp
+  main:
+    allow-bean-definition-overriding: true
 server:
   port: 9000
 management:
