@@ -29,6 +29,7 @@ class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
   @BeforeEach
   public void setUp() {
     System.setProperty("graphql.tools.schemaLocationPattern", "graphql/error-handler-test.graphql");
+    System.setProperty("graphql.servlet.exception-handlers-enabled", "true");
     load(BaseConfiguration.class);
 
     GraphQLSchema schema = getContext().getBean(GraphQLSchema.class);
