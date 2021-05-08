@@ -1,4 +1,4 @@
-package graphql.kickstart.util;
+package graphql.kickstart.autoconfigure.editor;
 
 import java.util.Arrays;
 import java.util.Iterator;

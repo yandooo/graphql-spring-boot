@@ -1,4 +1,4 @@
-package graphql.kickstart.util;
+package graphql.kickstart.autoconfigure.editor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;

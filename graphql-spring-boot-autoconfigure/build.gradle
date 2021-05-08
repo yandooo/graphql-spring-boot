@@ -27,7 +27,6 @@ dependencies {
     api "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
 
     implementation "org.springframework.boot:spring-boot-autoconfigure"
-    implementation(project(':graphql-kickstart-starter-utils'))
 
     // annotations
     api "io.github.graphql-java:graphql-java-annotations:$LIB_GRAPHQL_ANNOTATIONS_VER"
