@@ -93,7 +93,6 @@ import org.springframework.web.servlet.DispatcherServlet;
 @ConditionalOnWebApplication(type = Type.SERVLET)
 @ConditionalOnClass(DispatcherServlet.class)
 @Conditional(OnSchemaOrSchemaProviderBean.class)
-@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ConditionalOnProperty(
     value = "graphql.servlet.enabled",
     havingValue = "true",

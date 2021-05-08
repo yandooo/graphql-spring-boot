@@ -54,7 +54,6 @@ import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAd
 @ConditionalOnBean(GraphQLSchema.class)
 @ConditionalOnWebApplication(type = REACTIVE)
 @AutoConfigureAfter(GraphQLJavaToolsAutoConfiguration.class)
-@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Import({GraphQLController.class, ReactiveWebSocketSubscriptionsHandler.class})
 public class GraphQLSpringWebfluxAutoConfiguration {
 
