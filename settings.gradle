@@ -33,7 +33,6 @@ include ":graphql-spring-boot-starter"
 include ':graphql-spring-boot-dependencies'
 
 include ':graphql-kickstart-spring-support'
-include ':graphql-kickstart-starter-utils'
 include ':graphql-kickstart-spring-webflux'
 
 // test library

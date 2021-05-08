@@ -2,8 +2,8 @@ package graphql.kickstart.autoconfigure.editor.graphiql;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import graphql.kickstart.util.PropertyGroupReader;
-import graphql.kickstart.util.PropsLoader;
+import graphql.kickstart.autoconfigure.editor.PropertyGroupReader;
+import graphql.kickstart.autoconfigure.editor.PropsLoader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
