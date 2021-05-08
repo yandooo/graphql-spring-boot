@@ -16,12 +16,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 
 @SpringBootTest(classes = PlaygroundWebFluxTestConfig.class)
 @AutoConfigureWebTestClient
+@ActiveProfiles("playground")
 class PlaygroundWebFluxEnabledTest {
 
   private static final int MAX_IN_MEMORY_SIZE = 3 * 1024 * 1024;

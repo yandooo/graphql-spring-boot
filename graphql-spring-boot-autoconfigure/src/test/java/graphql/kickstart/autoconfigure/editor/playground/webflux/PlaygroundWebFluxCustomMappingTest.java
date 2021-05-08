@@ -6,18 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(classes = PlaygroundWebFluxTestConfig.class)
 @AutoConfigureWebTestClient
+@ActiveProfiles("playground")
 @TestPropertySource("classpath:application-playground-mapping-test.properties")
-public class PlaygroundWebFluxCustomMappingTest {
+class PlaygroundWebFluxCustomMappingTest {
 
   @Autowired private WebTestClient webTestClient;
 
   @Test
-  public void shouldUseTheConfiguredRequestMapping() {
+  void shouldUseTheConfiguredRequestMapping() {
     webTestClient
         .get()
         .uri(PlaygroundTestHelper.CUSTOM_MAPPING)

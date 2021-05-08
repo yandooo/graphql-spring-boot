@@ -12,8 +12,9 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.text.StringSubstitutor;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -39,12 +40,12 @@ public class PlaygroundController {
   private final ObjectMapper objectMapper;
 
   @GetMapping("${graphql.playground.mapping:/playground}")
-  public String playground(
-      final Model model, final @RequestAttribute(value = CSRF, required = false) Object csrf)
-      throws IOException {
+  public ResponseEntity<String> playground(
+      final @RequestAttribute(value = CSRF, required = false) Object csrf) throws IOException {
     String template =
         StreamUtils.copyToString(
-            new ClassPathResource("templates/playground.html").getInputStream(), Charset.defaultCharset());
+            new ClassPathResource("templates/playground.html").getInputStream(),
+            Charset.defaultCharset());
     Map<String, String> replacements = new HashMap<>();
     if (properties.getCdn().isEnabled()) {
       addCdnUrls(replacements);
@@ -56,21 +57,19 @@ public class PlaygroundController {
     if (nonNull(csrf)) {
       replacements.put(CSRF, objectMapper.writeValueAsString(csrf));
     } else {
-      replacements.put(CSRF, null);
+      replacements.put(CSRF, "null");
     }
-    return StringSubstitutor.replace(template, replacements);
+    return ResponseEntity.ok()
+        .contentType(MediaType.valueOf("text/html; charset=UTF-8"))
+        .body(StringSubstitutor.replace(template, replacements));
   }
 
   private String getCdnUrl(final String assetPath) {
-    return String.format(
-        "%s@%s/build/%s",
-        CDN_ROOT, properties.getCdn().getVersion(), assetPath);
+    return String.format("%s@%s/build/%s", CDN_ROOT, properties.getCdn().getVersion(), assetPath);
   }
 
   private String getLocalUrl(final String assetPath) {
-    return Paths.get(properties.getStaticPath().getBase(), assetPath)
-        .toString()
-        .replace('\\', '/');
+    return Paths.get(properties.getStaticPath().getBase(), assetPath).toString().replace('\\', '/');
   }
 
   private void addCdnUrls(final Map<String, String> replacements) {
