@@ -42,6 +42,10 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 @ConditionalOnClass(SchemaParser.class)
+@ConditionalOnProperty(
+    value = "graphql.schema-strategy",
+    havingValue = "TOOLS",
+    matchIfMissing = true)
 @AutoConfigureAfter(JacksonAutoConfiguration.class)
 @EnableConfigurationProperties(GraphQLToolsProperties.class)
 public class GraphQLJavaToolsAutoConfiguration {
