@@ -1,12 +1,15 @@
 package graphql.kickstart.spring;
 
+import graphql.ExecutionResultImpl;
 import graphql.kickstart.execution.GraphQLObjectMapper;
 import graphql.kickstart.execution.GraphQLRequest;
+import graphql.kickstart.execution.error.GenericGraphQLError;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,7 +23,10 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 
 @RequiredArgsConstructor
+@Slf4j
 public abstract class AbstractGraphQLController {
+
+  private static final String INVALID_REQUEST_BODY_MESSAGE = "Bad request - invalid request body.";
 
   private final GraphQLObjectMapper objectMapper;
 
@@ -34,13 +40,17 @@ public abstract class AbstractGraphQLController {
       @Nullable @RequestParam(value = "operationName", required = false) String operationName,
       @Nullable @RequestParam(value = "variables", required = false) String variablesJson,
       @Nullable @RequestBody(required = false) String body,
-      ServerWebExchange serverWebExchange)
-      throws IOException {
+      ServerWebExchange serverWebExchange) {
 
     body = Optional.ofNullable(body).orElse("");
 
     if (MediaType.APPLICATION_JSON.isCompatibleWith(contentType)) {
-      GraphQLRequest request = objectMapper.readGraphQLRequest(body);
+      GraphQLRequest request;
+      try {
+        request = objectMapper.readGraphQLRequest(body);
+      } catch (IOException e) {
+        return handleBodyParsingException(e, serverWebExchange);
+      }
       if (request.getQuery() == null) {
         request.setQuery("");
       }
@@ -95,4 +105,11 @@ public abstract class AbstractGraphQLController {
       String operationName,
       Map<String, Object> variables,
       ServerWebExchange serverWebExchange);
+
+  protected Object handleBodyParsingException(
+      Exception exception, ServerWebExchange serverWebExchange) {
+    log.error("{} {}", INVALID_REQUEST_BODY_MESSAGE, exception.getMessage());
+    return objectMapper.createResultFromExecutionResult(
+        new ExecutionResultImpl(new GenericGraphQLError(INVALID_REQUEST_BODY_MESSAGE)));
+  }
 }
