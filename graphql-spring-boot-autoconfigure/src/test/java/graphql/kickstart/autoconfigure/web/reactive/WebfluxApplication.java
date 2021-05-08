@@ -1,4 +1,4 @@
-package graphql.kickstart.spring.webflux.boot;
+package graphql.kickstart.autoconfigure.web.reactive;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package graphql.kickstart.spring.webflux.boot;
+package graphql.kickstart.autoconfigure.web.reactive;
 
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
