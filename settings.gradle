@@ -30,14 +30,10 @@ rootProject.name = PROJECT_NAME
 include ":graphql-spring-boot-autoconfigure"
 include ":graphql-spring-boot-starter"
 
-include ":voyager-spring-boot-autoconfigure"
-include ":voyager-spring-boot-starter"
-include ":playground-spring-boot-autoconfigure"
-include ":playground-spring-boot-starter"
-
 include ':graphql-spring-boot-dependencies'
 
 include ':graphql-kickstart-spring-support'
+include ':graphql-kickstart-starter-utils'
 include ':graphql-kickstart-spring-webflux'
 
 // test library
@@ -51,7 +47,3 @@ include ':example-graphql-tools'
 include ':example-graphql-subscription'
 include ':example-request-scoped-dataloader'
 include ":example-webflux"
-
-
-
-include ':graphql-kickstart-starter-utils'
