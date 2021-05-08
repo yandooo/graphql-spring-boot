@@ -21,11 +21,11 @@ dependencies {
     api "com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
     api(project(":graphql-kickstart-spring-support"))
     api(project(':graphql-kickstart-spring-webflux'))
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
     api "com.graphql-java:graphql-java-extended-scalars:$LIB_EXTENDED_SCALARS_VER"
     api "com.graphql-java-kickstart:graphql-java-kickstart:$LIB_GRAPHQL_SERVLET_VER"
     api "com.graphql-java-kickstart:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
     api "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
     // annotations
     api "io.github.graphql-java:graphql-java-annotations:$LIB_GRAPHQL_ANNOTATIONS_VER"
     implementation "org.reflections:reflections:$LIB_REFLECTIONS_VER"
