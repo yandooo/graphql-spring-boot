@@ -3,12 +3,10 @@ package graphql.kickstart.autoconfigure.editor.playground.webflux;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import graphql.kickstart.autoconfigure.editor.playground.PlaygroundTestHelper;
-import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.web.csrf.DefaultCsrfToken;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
@@ -34,8 +32,8 @@ class PlaygroundWebFluxCSRFTest {
             .getResponseBody();
     // THEN
     assertThat(actual).isNotNull();
-//    assertThat(new String(actual, StandardCharsets.UTF_8))
-//        .contains("let csrf = {\"token\":")
-//        .contains("\"parameterName\":\"_csrf\",\"headerName\":\"X-CSRF-TOKEN\"}");
+    //    assertThat(new String(actual, StandardCharsets.UTF_8))
+    //        .contains("let csrf = {\"token\":")
+    //        .contains("\"parameterName\":\"_csrf\",\"headerName\":\"X-CSRF-TOKEN\"}");
   }
 }

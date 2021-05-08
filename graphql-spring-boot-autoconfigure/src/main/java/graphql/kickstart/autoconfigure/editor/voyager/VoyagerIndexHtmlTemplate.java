@@ -27,7 +27,8 @@ public class VoyagerIndexHtmlTemplate {
       throws IOException {
     String template =
         StreamUtils.copyToString(
-            new ClassPathResource("templates/voyager.html").getInputStream(), Charset.defaultCharset());
+            new ClassPathResource("templates/voyager.html").getInputStream(),
+            Charset.defaultCharset());
 
     String basePath = voyagerConfiguration.getBasePath();
     String voyagerCdnVersion = voyagerConfiguration.getCdn().getVersion();

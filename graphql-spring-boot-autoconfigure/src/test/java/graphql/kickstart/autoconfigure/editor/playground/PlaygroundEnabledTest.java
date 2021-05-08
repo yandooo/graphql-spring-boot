@@ -6,7 +6,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,15 +54,20 @@ class PlaygroundEnabledTest {
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(content().string(not(is(emptyString()))))
-//            .andExpect(model().attribute(PlaygroundTestHelper.PAGE_TITLE_FIELD_NAME, DEFAULT_TITLE))
-//            .andExpect(model().attribute(PlaygroundTestHelper.CSS_URL_FIELD_NAME, DEFAULT_CSS_PATH))
-//            .andExpect(
-//                model().attribute(PlaygroundTestHelper.SCRIPT_URL_FIELD_NAME, DEFAULT_SCRIPT_PATH))
-//            .andExpect(
-//                model()
-//                    .attribute(PlaygroundTestHelper.FAVICON_URL_FIELD_NAME, DEFAULT_FAVICON_PATH))
-//            .andExpect(
-//                model().attribute(PlaygroundTestHelper.LOGO_URL_FIELD_NAME, DEFAULT_LOGO_PATH))
+            //            .andExpect(model().attribute(PlaygroundTestHelper.PAGE_TITLE_FIELD_NAME,
+            // DEFAULT_TITLE))
+            //            .andExpect(model().attribute(PlaygroundTestHelper.CSS_URL_FIELD_NAME,
+            // DEFAULT_CSS_PATH))
+            //            .andExpect(
+            //                model().attribute(PlaygroundTestHelper.SCRIPT_URL_FIELD_NAME,
+            // DEFAULT_SCRIPT_PATH))
+            //            .andExpect(
+            //                model()
+            //                    .attribute(PlaygroundTestHelper.FAVICON_URL_FIELD_NAME,
+            // DEFAULT_FAVICON_PATH))
+            //            .andExpect(
+            //                model().attribute(PlaygroundTestHelper.LOGO_URL_FIELD_NAME,
+            // DEFAULT_LOGO_PATH))
             .andReturn();
 
     final Document document = Jsoup.parse(mvcResult.getResponse().getContentAsString());

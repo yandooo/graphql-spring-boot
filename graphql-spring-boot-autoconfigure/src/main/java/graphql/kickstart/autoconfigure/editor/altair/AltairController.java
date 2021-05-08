@@ -47,7 +47,8 @@ public class AltairController {
   }
 
   private void loadTemplate() throws IOException {
-    try (InputStream inputStream = new ClassPathResource("templates/altair.html").getInputStream()) {
+    try (InputStream inputStream =
+        new ClassPathResource("templates/altair.html").getInputStream()) {
       template = StreamUtils.copyToString(inputStream, Charset.defaultCharset());
     }
   }

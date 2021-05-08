@@ -1,7 +1,6 @@
 package graphql.kickstart.autoconfigure.editor.playground;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -71,7 +70,7 @@ class PlaygroundSettingsTest {
     mockMvc
         .perform(get(PlaygroundTestHelper.DEFAULT_PLAYGROUND_ENDPOINT))
         .andExpect(status().isOk())
-//        .andExpect(model().attribute("properties", expectedNode))
+    //        .andExpect(model().attribute("properties", expectedNode))
     ;
   }
 }
