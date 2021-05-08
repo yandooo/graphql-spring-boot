@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.support.GenericApplicationContext;
@@ -19,7 +20,7 @@ public class GraphQLExtendedScalarsInitializer
     implements ApplicationContextInitializer<GenericApplicationContext> {
 
   @Override
-  public void initialize(final GenericApplicationContext applicationContext) {
+  public void initialize(@NonNull final GenericApplicationContext applicationContext) {
     final Collection<String> enabledExtendedScalars = getEnabledExtendedScalars(applicationContext);
     final Collection<String> validScalarNames = new HashSet<>();
     ReflectionUtils.doWithFields(
