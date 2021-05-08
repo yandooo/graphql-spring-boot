@@ -17,6 +17,8 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "graphql.playground")
 public class PlaygroundProperties {
 
+  private boolean enabled = false;
+
   @NotBlank private String endpoint = "/graphql";
 
   @NotBlank private String subscriptionEndpoint = "/subscriptions";

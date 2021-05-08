@@ -1,3 +1,6 @@
 graphql.servlet.mapping: /test
 server:
   forward-headers-strategy: framework
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration

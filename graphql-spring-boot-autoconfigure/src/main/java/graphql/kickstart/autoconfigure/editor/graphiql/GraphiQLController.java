@@ -45,7 +45,7 @@ public abstract class GraphiQLController {
   }
 
   private void loadTemplate() throws IOException {
-    try (InputStream inputStream = new ClassPathResource("graphiql.html").getInputStream()) {
+    try (InputStream inputStream = new ClassPathResource("templates/graphiql.html").getInputStream()) {
       template = StreamUtils.copyToString(inputStream, Charset.defaultCharset());
     }
   }

@@ -4,15 +4,17 @@ import graphql.kickstart.autoconfigure.editor.playground.PlaygroundTestHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(classes = PlaygroundWebFluxTestConfig.class)
 @AutoConfigureWebTestClient
+@ActiveProfiles("playground")
 @TestPropertySource("classpath:application-playground-custom-static-path.properties")
-public class PlaygroundWebFluxCustomStaticPathTest extends PlaygroundWebFluxResourcesTestBase {
+class PlaygroundWebFluxCustomStaticPathTest extends PlaygroundWebFluxResourcesTestBase {
 
   @Test
-  public void shouldLoadStaticResourcesFromCustomPath() {
+  void shouldLoadStaticResourcesFromCustomPath() {
     testPlaygroundResources(
         PlaygroundTestHelper.CUSTOM_LOCAL_CSS_URL,
         PlaygroundTestHelper.CUSTOM_LOCAL_SCRIPT_URL,

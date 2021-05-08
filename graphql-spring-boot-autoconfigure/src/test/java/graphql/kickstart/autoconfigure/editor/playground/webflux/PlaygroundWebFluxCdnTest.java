@@ -4,15 +4,17 @@ import graphql.kickstart.autoconfigure.editor.playground.PlaygroundTestHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(classes = PlaygroundWebFluxTestConfig.class)
 @AutoConfigureWebTestClient
+@ActiveProfiles("playground")
 @TestPropertySource("classpath:application-playground-cdn-test.properties")
-public class PlaygroundWebFluxCdnTest extends PlaygroundWebFluxResourcesTestBase {
+class PlaygroundWebFluxCdnTest extends PlaygroundWebFluxResourcesTestBase {
 
   @Test
-  public void shouldLoadLatestVersionFromCdn() {
+  void shouldLoadLatestVersionFromCdn() {
     testPlaygroundResources(
         PlaygroundTestHelper.DEFAULT_CSS_CDN_PATH,
         PlaygroundTestHelper.DEFAULT_SCRIPT_CDN_PATH,
