@@ -27,7 +27,7 @@ public class GraphQLErrorHandlerFactory {
             .flatMap(List::stream)
             .collect(toList());
 
-    if (!factories.isEmpty() || exceptionHandlersEnabled) {
+    if (exceptionHandlersEnabled) {
       log.debug(
           "Handle GraphQL errors using exception handlers defined in {} custom factories",
           factories.size());
@@ -43,7 +43,7 @@ public class GraphQLErrorHandlerFactory {
     try {
       Class<?> objClz = context.getType(name);
       if (objClz == null) {
-        log.info("Cannot load class " + name);
+        log.info("Cannot load class {}", name);
         return emptyList();
       }
       return Arrays.stream(objClz.getDeclaredMethods())
