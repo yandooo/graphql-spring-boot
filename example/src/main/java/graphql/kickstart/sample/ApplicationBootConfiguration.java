@@ -16,6 +16,39 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-dependencies {
-    implementation(project(':graphiql-spring-boot-autoconfigure'))
+
+package graphql.kickstart.sample;
+
+import graphql.Scalars;
+import graphql.schema.DataFetcher;
+import graphql.schema.FieldCoordinates;
+import graphql.schema.GraphQLCodeRegistry;
+import graphql.schema.GraphQLObjectType;
+import graphql.schema.GraphQLSchema;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+@SpringBootApplication
+public class ApplicationBootConfiguration {
+
+  public static void main(String[] args) {
+    SpringApplication.run(ApplicationBootConfiguration.class, args);
+  }
+
+  @Bean
+  GraphQLSchema schema() {
+    DataFetcher<String> test = env -> "response";
+    return GraphQLSchema.newSchema()
+        .query(
+            GraphQLObjectType.newObject()
+                .name("query")
+                .field(field -> field.name("test").type(Scalars.GraphQLString))
+                .build())
+        .codeRegistry(
+            GraphQLCodeRegistry.newCodeRegistry()
+                .dataFetcher(FieldCoordinates.coordinates("query", "test"), test)
+                .build())
+        .build();
+  }
 }

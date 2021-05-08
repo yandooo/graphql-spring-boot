@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("graphiql")
 class GraphiQLProperties {
 
+  private boolean enabled = false;
   private Endpoint endpoint = new Endpoint();
   private CodeMirror codeMirror = new CodeMirror();
   private Props props = new Props();

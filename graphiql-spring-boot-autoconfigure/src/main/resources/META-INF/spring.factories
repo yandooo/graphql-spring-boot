@@ -1,1 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=graphql.kickstart.autoconfigure.editor.graphiql.GraphiQLAutoConfiguration
