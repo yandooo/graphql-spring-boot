@@ -4,6 +4,7 @@ import static graphql.kickstart.execution.GraphQLObjectMapper.newBuilder;
 import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.REACTIVE;
 
 import graphql.execution.instrumentation.dataloader.DataLoaderDispatcherInstrumentationOptions;
+import graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration;
 import graphql.kickstart.execution.BatchedDataLoaderGraphQLBuilder;
 import graphql.kickstart.execution.GraphQLInvoker;
 import graphql.kickstart.execution.GraphQLObjectMapper;
@@ -25,7 +26,6 @@ import graphql.kickstart.spring.webflux.GraphQLSpringWebfluxRootObjectBuilder;
 import graphql.kickstart.spring.webflux.ReactiveSubscriptionsProtocolFactory;
 import graphql.kickstart.spring.webflux.ReactiveWebSocketSubscriptionsHandler;
 import graphql.kickstart.spring.webflux.apollo.ReactiveApolloSubscriptionProtocolFactory;
-import graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration;
 import graphql.schema.GraphQLSchema;
 import java.util.Collection;
 import java.util.HashMap;

@@ -2,9 +2,9 @@ package graphql.kickstart.autoconfigure.web.reactive;
 
 import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.REACTIVE;
 
+import graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration;
 import graphql.kickstart.tools.SchemaParser;
 import graphql.kickstart.tools.SchemaParserOptions.GenericWrapper;
-import graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;

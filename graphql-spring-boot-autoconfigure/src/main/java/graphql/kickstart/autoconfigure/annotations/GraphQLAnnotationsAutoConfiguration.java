@@ -1,6 +1,5 @@
 package graphql.kickstart.autoconfigure.annotations;
 
-import static graphql.annotations.AnnotationsSchemaCreator.newAnnotationsSchema;
 import static java.util.Objects.nonNull;
 
 import graphql.annotations.AnnotationsSchemaCreator;

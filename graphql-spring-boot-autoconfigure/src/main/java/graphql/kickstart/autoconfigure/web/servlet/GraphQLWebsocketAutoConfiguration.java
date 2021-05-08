@@ -1,12 +1,12 @@
 package graphql.kickstart.autoconfigure.web.servlet;
 
+import graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration;
 import graphql.kickstart.execution.GraphQLInvoker;
 import graphql.kickstart.execution.GraphQLObjectMapper;
 import graphql.kickstart.execution.subscriptions.GraphQLSubscriptionInvocationInputFactory;
 import graphql.kickstart.execution.subscriptions.SubscriptionConnectionListener;
 import graphql.kickstart.execution.subscriptions.apollo.KeepAliveSubscriptionConnectionListener;
 import graphql.kickstart.servlet.GraphQLWebsocketServlet;
-import graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.HashSet;
