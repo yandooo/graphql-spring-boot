@@ -26,18 +26,21 @@ dependencies {
     api "com.graphql-java-kickstart:graphql-java-kickstart:$LIB_GRAPHQL_SERVLET_VER"
     api "com.graphql-java-kickstart:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
     api "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
+    // annotations
+    api "io.github.graphql-java:graphql-java-annotations:$LIB_GRAPHQL_ANNOTATIONS_VER"
+    implementation "org.reflections:reflections:$LIB_REFLECTIONS_VER"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
 
     compileOnly "org.springframework.boot:spring-boot-starter-websocket"
     compileOnly "org.springframework.boot:spring-boot-starter-web"
     compileOnly "org.springframework.boot:spring-boot-starter-actuator"
     compileOnly "org.springframework:spring-webflux"
-    compileOnly "io.projectreactor:reactor-core"
 
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     compileOnly "org.springframework.boot:spring-boot-configuration-processor"
     compileOnly "org.springframework.boot:spring-boot-starter-web"
 
-    testImplementation(project(":graphql-spring-boot-test"))
+    testImplementation(project(":graphql-spring-boot-starter-test"))
     testImplementation "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
     testImplementation "org.springframework.boot:spring-boot-starter-web"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
@@ -46,6 +49,7 @@ dependencies {
     testImplementation "org.springframework.boot:spring-boot-starter-actuator"
     testImplementation "org.springframework.boot:spring-boot-starter-webflux"
     testImplementation "io.projectreactor:reactor-core"
+    testImplementation "io.reactivex.rxjava2:rxjava"
 }
 
 compileJava.dependsOn(processResources)

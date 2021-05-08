@@ -14,7 +14,6 @@ dependencies {
         runtime project(":voyager-spring-boot-starter")
         runtime project(":playground-spring-boot-starter")
         api project(":graphql-spring-boot-starter-test")
-        api project(":graphql-kickstart-spring-boot-starter-graphql-annotations")
     }
 }
 

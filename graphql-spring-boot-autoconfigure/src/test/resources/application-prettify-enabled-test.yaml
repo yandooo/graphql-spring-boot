@@ -1,0 +1,2 @@
+graphql.annotations.base-package: graphql.kickstart.autoconfigure.annotations.test.prettify
+graphql.annotations.always-prettify: true
