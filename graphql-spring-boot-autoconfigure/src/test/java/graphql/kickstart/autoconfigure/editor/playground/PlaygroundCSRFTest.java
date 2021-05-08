@@ -1,8 +1,6 @@
 package graphql.kickstart.autoconfigure.editor.playground;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,7 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -35,12 +32,12 @@ class PlaygroundCSRFTest {
         mockMvc
             .perform(get(PlaygroundTestHelper.DEFAULT_PLAYGROUND_ENDPOINT))
             .andExpect(status().isOk())
-//            .andExpect(model().attributeExists(CSRF_ATTRIBUTE_NAME))
+            //            .andExpect(model().attributeExists(CSRF_ATTRIBUTE_NAME))
             .andReturn();
 
-//    assertThat(mvcResult.getModelAndView()).isNotNull();
-//    assertThat(mvcResult.getModelAndView().getModel()).isNotNull();
-//    assertThat(mvcResult.getModelAndView().getModel().get(CSRF_ATTRIBUTE_NAME))
-//        .isInstanceOf(CsrfToken.class);
+    //    assertThat(mvcResult.getModelAndView()).isNotNull();
+    //    assertThat(mvcResult.getModelAndView().getModel()).isNotNull();
+    //    assertThat(mvcResult.getModelAndView().getModel().get(CSRF_ATTRIBUTE_NAME))
+    //        .isInstanceOf(CsrfToken.class);
   }
 }

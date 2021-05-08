@@ -1,7 +1,6 @@
 package graphql.kickstart.autoconfigure.editor.playground;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.jsoup.Jsoup;
@@ -32,11 +31,11 @@ class PlaygroundCustomTitleTest {
         mockMvc
             .perform(get(PlaygroundTestHelper.DEFAULT_PLAYGROUND_ENDPOINT))
             .andExpect(status().isOk())
-//            .andExpect(
-//                model()
-//                    .attribute(
-//                        PlaygroundTestHelper.PAGE_TITLE_FIELD_NAME,
-//                        PlaygroundTestHelper.CUSTOM_TITLE))
+            //            .andExpect(
+            //                model()
+            //                    .attribute(
+            //                        PlaygroundTestHelper.PAGE_TITLE_FIELD_NAME,
+            //                        PlaygroundTestHelper.CUSTOM_TITLE))
             .andReturn();
 
     final Document document = Jsoup.parse(mvcResult.getResponse().getContentAsString());
