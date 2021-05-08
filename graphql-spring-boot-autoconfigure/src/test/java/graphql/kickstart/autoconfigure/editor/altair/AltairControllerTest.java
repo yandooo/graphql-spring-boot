@@ -1,4 +1,4 @@
-package graphql.kickstart.altair.boot.test;
+package graphql.kickstart.autoconfigure.editor.altair;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;

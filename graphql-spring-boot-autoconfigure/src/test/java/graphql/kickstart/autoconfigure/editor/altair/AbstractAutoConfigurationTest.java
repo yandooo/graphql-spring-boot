@@ -1,4 +1,4 @@
-package graphql.kickstart.altair.boot.test;
+package graphql.kickstart.autoconfigure.editor.altair;
 
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.boot.test.util.TestPropertyValues;

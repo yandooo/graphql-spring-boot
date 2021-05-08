@@ -1,4 +1,4 @@
-package graphql.kickstart.altair.boot;
+package graphql.kickstart.autoconfigure.editor.altair;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

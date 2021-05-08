@@ -17,9 +17,6 @@ management:
 graphql:
   servlet:
     actuator-metrics: true
-  playground:
-    cdn:
-      version: latest
 altair:
   enabled: true
   cdn:
@@ -43,3 +40,4 @@ graphql.playground:
   enabled: true
   cdn:
     enabled: false
+    version: latest
