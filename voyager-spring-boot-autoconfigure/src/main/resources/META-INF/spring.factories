@@ -1,4 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  graphql.kickstart.voyager.boot.VoyagerAutoConfiguration,\
-  graphql.kickstart.voyager.boot.ReactiveVoyagerAutoConfiguration
-

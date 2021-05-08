@@ -1,4 +1,4 @@
-package graphql.kickstart.autoconfigure.editor.altair;
+package graphql.kickstart.autoconfigure.editor.voyager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -13,26 +13,26 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 /** @author Andrew Potter */
-class AltairControllerTest extends AbstractAutoConfigurationTest {
+class VoyagerControllerTest extends AbstractAutoConfigurationTest {
 
-  public AltairControllerTest() {
-    super(AnnotationConfigWebApplicationContext.class, AltairAutoConfiguration.class);
+  public VoyagerControllerTest() {
+    super(AnnotationConfigWebApplicationContext.class, VoyagerAutoConfiguration.class);
   }
 
   @Test
-  void altairLoads() {
+  void graphiqlLoads() {
     load(EnabledConfiguration.class);
 
-    assertThat(this.getContext().getBean(AltairController.class)).isNotNull();
+    assertThat(this.getContext().getBean(VoyagerController.class)).isNotNull();
   }
 
   @Test
-  void altairDoesNotLoad() {
+  void graphiqlDoesNotLoad() {
     load(DisabledConfiguration.class);
 
     AbstractApplicationContext context = getContext();
     assertThatExceptionOfType(NoSuchBeanDefinitionException.class)
-        .isThrownBy(() -> context.getBean(AltairController.class));
+        .isThrownBy(() -> context.getBean(VoyagerController.class));
   }
 
   @Configuration
