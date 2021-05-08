@@ -17,7 +17,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package graphql.kickstart.autoconfigure.web.servlet.sample;
+package graphql.kickstart;
 
 import graphql.Scalars;
 import graphql.schema.DataFetcher;

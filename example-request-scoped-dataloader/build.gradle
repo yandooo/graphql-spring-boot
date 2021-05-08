@@ -3,9 +3,6 @@ apply plugin: "org.springframework.boot"
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation(project(":graphql-spring-boot-starter"))
-    implementation(project(":graphiql-spring-boot-starter"))
-
-    implementation "com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation(project(":graphql-spring-boot-starter-test"))

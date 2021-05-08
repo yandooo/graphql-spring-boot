@@ -1,4 +1,4 @@
-package graphql.kickstart.graphiql.boot;
+package graphql.kickstart.autoconfigure.editor.graphiql;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
