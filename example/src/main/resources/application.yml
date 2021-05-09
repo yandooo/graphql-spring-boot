@@ -27,6 +27,11 @@ graphql:
     cdn:
       enabled: false
       version: 4.0.2
+    options:
+      initial-settings:
+        theme: dracula
+
+
   graphiql:
     enabled: true
     cdn:

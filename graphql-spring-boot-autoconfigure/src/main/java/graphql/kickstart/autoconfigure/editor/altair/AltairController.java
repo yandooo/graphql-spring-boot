@@ -4,6 +4,7 @@ import static java.lang.Integer.parseInt;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.kickstart.autoconfigure.editor.PropertyGroupReader;
@@ -17,6 +18,7 @@ import java.util.Properties;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
@@ -39,6 +41,8 @@ public class AltairController {
   private static final String ALTAIR = "altair-static";
 
   @Autowired private AltairProperties altairProperties;
+  @Autowired private AltairOptions altairOptions;
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Autowired private Environment environment;
 
@@ -48,6 +52,7 @@ public class AltairController {
 
   @PostConstruct
   public void onceConstructed() throws IOException {
+    objectMapper.setSerializationInclusion(Include.NON_NULL);
     loadTemplate();
     loadProps();
     loadHeaders();
@@ -61,7 +66,7 @@ public class AltairController {
   }
 
   private void loadProps() throws IOException {
-    props = new PropsLoader(environment, "graphql.altair.props.resources.", "graphql.altair.props.values.").load();
+    props = new PropsLoader(environment, "graphql.altair.props.resources.", "graphql.altair.props.variables.").load();
   }
 
   private void loadHeaders() throws JsonProcessingException {
@@ -87,6 +92,7 @@ public class AltairController {
     response.getOutputStream().write(populatedTemplate.getBytes(Charset.defaultCharset()));
   }
 
+  @SneakyThrows
   private Map<String, String> getReplacements(
       String graphqlEndpoint, String subscriptionsEndpoint) {
     Map<String, String> replacements = new HashMap<>();
@@ -108,6 +114,7 @@ public class AltairController {
     replacements.put("altairPolyfillsJsUrl", getResourceUrl("polyfills-es2018.js", "polyfills" + suffix));
     replacements.put("altairRuntimeJsUrl", getResourceUrl("runtime-es2018.js", "runtime" + suffix));
     replacements.put("props", props);
+    replacements.put("options", objectMapper.writeValueAsString(altairOptions));
     replacements.put("headers", headers);
     return replacements;
   }

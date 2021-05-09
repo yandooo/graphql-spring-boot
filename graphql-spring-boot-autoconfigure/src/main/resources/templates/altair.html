@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
@@ -12,16 +12,6 @@
 </head>
 
 <body>
-<script>
-  var properties = JSON.parse(`${props}`)
-
-  window.__ALTAIR_ENDPOINT_URL__ = `${graphqlEndpoint}`
-  window.__ALTAIR_SUBSCRIPTIONS_ENDPOINT__ = `${subscriptionsEndpoint}`
-  window.__ALTAIR_INITIAL_QUERY__ = `${properties.defaultQuery}`
-  window.__ALTAIR_INITIAL_VARIABLES__ = `${properties.variables}`
-  window.__ALTAIR_INITIAL_HEADERS__ = JSON.parse(`${headers}`)
-
-</script>
 <app-root>
   <style>
     .loading-screen {
@@ -43,13 +33,22 @@
   </div>
 </app-root>
 <script>
+  let properties = JSON.parse(`${props}`)
+  let options = JSON.parse(`${options}`)
+  let altairConfig = Object.assign({
+    endpointURL: `${graphqlEndpoint}`,
+    subscriptionsEndpoint: `${subscriptionsEndpoint}`,
+    initialQuery: properties.defaultQuery || '',
+    initialVariables: properties.variables || '',
+    initialHeaders: JSON.parse(`${headers}`)
+  }, options || {})
   document.addEventListener('DOMContentLoaded', () => {
-    AltairGraphQL.init()
+    AltairGraphQL.init(altairConfig)
   })
 </script>
-<script as="script" rel="preload" src="${altairRuntimeJsUrl}" type="text/javascript"></script>
-<script as="script" rel="preload" src="${altairPolyfillsJsUrl}" type="text/javascript"></script>
-<script as="script" rel="preload" src="${altairMainJsUrl}" type="text/javascript"></script>
+<script src="${altairRuntimeJsUrl}" type="text/javascript"></script>
+<script src="${altairPolyfillsJsUrl}" type="text/javascript"></script>
+<script src="${altairMainJsUrl}" type="text/javascript"></script>
 </body>
 
 </html>
