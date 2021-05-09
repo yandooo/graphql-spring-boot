@@ -109,22 +109,22 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:11.0.0'
+  implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:12.0.0'
   
   // to embed Altair tool
-  runtimeOnly 'com.graphql-java-kickstart:altair-spring-boot-starter:11.0.0'
+  runtimeOnly 'com.graphql-java-kickstart:altair-spring-boot-starter:12.0.0'
 
   // to embed GraphiQL tool
-  runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:11.0.0'
+  runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:12.0.0'
 
   // to embed GraphQL Playground tool
-  runtimeOnly 'com.graphql-java-kickstart:playground-spring-boot-starter:11.0.0'
+  runtimeOnly 'com.graphql-java-kickstart:playground-spring-boot-starter:12.0.0'
 
   // to embed Voyager tool
-  runtimeOnly 'com.graphql-java-kickstart:voyager-spring-boot-starter:11.0.0'
+  runtimeOnly 'com.graphql-java-kickstart:voyager-spring-boot-starter:12.0.0'
   
   // testing facilities
-  testImplementation 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:11.0.0'
+  testImplementation 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:12.0.0'
 }
 ```
 
@@ -134,14 +134,14 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>11.0.0</version>
+    <version>12.0.0</version>
 </dependency>
 
 <!-- to embed Altair tool -->
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>altair-spring-boot-starter</artifactId>
-    <version>11.0.0</version>
+    <version>12.0.0</version>
     <scope>runtime</scope>
 </dependency>
 
@@ -149,7 +149,7 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>11.0.0</version>
+    <version>12.0.0</version>
     <scope>runtime</scope>
 </dependency>
 
@@ -157,7 +157,7 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>playground-spring-boot-starter</artifactId>
-    <version>11.0.0</version>
+    <version>12.0.0</version>
     <scope>runtime</scope>
 </dependency>
 
@@ -165,7 +165,7 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>voyager-spring-boot-starter</artifactId>
-    <version>11.0.0</version>
+    <version>12.0.0</version>
     <scope>runtime</scope>
 </dependency>
 
@@ -173,7 +173,7 @@ Maven:
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
     <artifactId>graphql-spring-boot-starter-test</artifactId>
-    <version>11.0.0</version>
+    <version>12.0.0</version>
     <scope>test</scope>
 </dependency>
 
@@ -298,37 +298,37 @@ or `application.properties`):
 
 ```yaml
 altair:
-    mapping: /altair
-    endpoint:
-      graphql: /graphql
-      subscriptions: /subscriptions
-    subscriptions:
-      timeout: 30
-      reconnect: false
-    static:
-      basePath: /
-    enabled: true
-    pageTitle: Altair
-    cdn:
-        enabled: false
-        version: 4.0.2
-    options:
-      initial-settings:
-        theme: dracula
-    props:
-        resources:
-            defaultQuery: defaultQuery.graphql
-            variables: variables.graphql
-    headers:
-        Authorization: "Bearer <your-token>"
+  enabled: true
+  mapping: /altair
+  subscriptions:
+    timeout: 30
+    reconnect: false
+  static:
+    base-path: /
+  page-title: Altair
+  cdn:
+    enabled: false
+    version: 4.0.2
+  options:
+    endpoint-url: /graphql
+    subscriptions-endpoint: /subscriptions
+    initial-settings:
+      theme: dracula
+    initial-headers:
+      Authorization: "Bearer <your-token>"
+  resources:
+    initial-query: defaultQuery.graphql
+    initial-variables: variables.graphql
+    initial-pre-request-script: pre-request.graphql
+    initial-post-request-script: post-request.graphql
 ```
 
 By default Altair is served from within the package. This can be configured to be served from CDN
-instead, by setting the property `altair.cdn.enabled` to `true`.
+instead, by setting the property `graphql.altair.cdn.enabled` to `true`.
 
-You are able to set the Altair options as well using the `altair.options` group. Since setting (
+You are able to set the Altair options as well using the `graphql.altair.options` group. Since setting (
 large) queries in the properties like this isn't very readable, you can use the properties in
-the `altair.props.resources` group to set the classpath resources that should be loaded.
+the `graphql.altair.resources` group to set the classpath resources that should be loaded.
 
 # Enable GraphQL Playground
 
