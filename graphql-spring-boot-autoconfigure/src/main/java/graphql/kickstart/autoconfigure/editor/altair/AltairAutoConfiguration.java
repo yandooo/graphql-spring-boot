@@ -11,7 +11,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 /** @author Moncef AOUDIA */
 @Configuration
 @ConditionalOnWebApplication
-@EnableConfigurationProperties(AltairProperties.class)
+@EnableConfigurationProperties({AltairProperties.class, AltairOptions.class})
 @ConditionalOnClass(DispatcherServlet.class)
 public class AltairAutoConfiguration {
 
