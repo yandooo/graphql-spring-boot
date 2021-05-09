@@ -26,6 +26,7 @@ graphql:
     enabled: true
     cdn:
       enabled: false
+      version: 4.0.2
   graphiql:
     enabled: true
     cdn:

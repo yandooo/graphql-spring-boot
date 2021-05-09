@@ -1,5 +1,9 @@
 package graphql.kickstart.autoconfigure.editor.altair;
 
+import static java.lang.Integer.parseInt;
+import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.StringUtils.isNumeric;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.kickstart.autoconfigure.editor.PropertyGroupReader;
@@ -13,6 +17,8 @@ import java.util.Properties;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringSubstitutor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +31,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /** @author Moncef AOUDIA */
+@Slf4j
 @Controller
 public class AltairController {
 
-  private static final String CDN_UNPKG = "//unpkg.com/";
+  private static final String CDN_JSDELIVR_NET_NPM = "//cdn.jsdelivr.net/npm/";
   private static final String ALTAIR = "altair-static";
 
   @Autowired private AltairProperties altairProperties;
@@ -95,12 +102,22 @@ public class AltairController {
     replacements.put(
         "altairLogoUrl", getResourceUrl("assets/img/logo_350.svg", "assets/img/logo_350.svg"));
     replacements.put("altairCssUrl", getResourceUrl("styles.css", "styles.css"));
-    replacements.put("altairMainJsUrl", getResourceUrl("main.js", "main.js"));
-    replacements.put("altairPolyfillsJsUrl", getResourceUrl("polyfills.js", "polyfills.js"));
-    replacements.put("altairRuntimeJsUrl", getResourceUrl("runtime.js", "runtime.js"));
+
+    val suffix = isJsSuffixAdded() ? "-es2018.js" : ".js";
+    replacements.put("altairMainJsUrl", getResourceUrl("main-es2018.js", "main" + suffix));
+    replacements.put("altairPolyfillsJsUrl", getResourceUrl("polyfills-es2018.js", "polyfills" + suffix));
+    replacements.put("altairRuntimeJsUrl", getResourceUrl("runtime-es2018.js", "runtime" + suffix));
     replacements.put("props", props);
     replacements.put("headers", headers);
     return replacements;
+  }
+
+  private boolean isJsSuffixAdded() {
+    if (nonNull(altairProperties.getCdn().getVersion())) {
+      String[] versionValues = altairProperties.getCdn().getVersion().split("\\.");
+      return isNumeric(versionValues[0]) && parseInt(versionValues[0]) >= 4;
+    }
+    return false;
   }
 
   private String getResourceUrl(String staticFileName, String cdnUrl) {
@@ -111,7 +128,7 @@ public class AltairController {
   }
 
   private String joinJsUnpkgPath(String library, String cdnVersion, String cdnFileName) {
-    return CDN_UNPKG + library + "@" + cdnVersion + "/" + cdnFileName;
+    return CDN_JSDELIVR_NET_NPM + library + "@" + cdnVersion + "/" + cdnFileName;
   }
 
   private String constructGraphQlEndpoint(
