@@ -32,7 +32,6 @@ graphql:
         theme: dracula
       endpoint-url: /graphql
 
-
   graphiql:
     enabled: true
     cdn:

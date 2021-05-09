@@ -33,17 +33,8 @@
   </div>
 </app-root>
 <script>
-  let properties = JSON.parse(`${props}`)
-  let options = JSON.parse(`${options}`)
-  let altairConfig = Object.assign({
-    endpointURL: `${graphqlEndpoint}`,
-    subscriptionsEndpoint: `${subscriptionsEndpoint}`,
-    initialQuery: properties.defaultQuery || '',
-    initialVariables: properties.variables || '',
-    initialHeaders: JSON.parse(`${headers}`)
-  }, options || {})
   document.addEventListener('DOMContentLoaded', () => {
-    AltairGraphQL.init(altairConfig)
+    AltairGraphQL.init(JSON.parse(`${options}`))
   })
 </script>
 <script src="${altairRuntimeJsUrl}" type="text/javascript"></script>
