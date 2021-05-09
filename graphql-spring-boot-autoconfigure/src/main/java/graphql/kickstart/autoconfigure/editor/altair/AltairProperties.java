@@ -25,6 +25,6 @@ public class AltairProperties {
   static class Cdn {
 
     private boolean enabled = false;
-    private String version = "2.4.11";
+    private String version = "4.0.2";
   }
 }
