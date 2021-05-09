@@ -30,6 +30,7 @@ graphql:
     options:
       initial-settings:
         theme: dracula
+      endpoint-url: /graphql
 
 
   graphiql:
