@@ -28,7 +28,6 @@ import org.springframework.test.web.servlet.ResultActions;
 @ImportAutoConfiguration({JacksonAutoConfiguration.class, GraphQLWebAutoConfiguration.class})
 @SpringBootTest(
     properties = {
-      "debug=true",
       "graphql.servlet.mapping=/graphql",
       "graphql.servlet.cors.allowed-origins=https://trusted.com"
     })

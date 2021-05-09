@@ -21,7 +21,7 @@ public class ServletGraphiQLController extends GraphiQLController {
     super.onceConstructed();
   }
 
-  @GetMapping(value = "${graphiql.mapping:/graphiql}")
+  @GetMapping(value = "${graphql.graphiql.mapping:/graphiql}")
   public void graphiql(
       HttpServletRequest request,
       HttpServletResponse response,

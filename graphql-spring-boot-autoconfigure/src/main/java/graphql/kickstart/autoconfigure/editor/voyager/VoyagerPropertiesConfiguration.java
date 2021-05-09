@@ -9,9 +9,11 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
 
 @Data
-@ConfigurationProperties(prefix = "voyager")
+@ConfigurationProperties(prefix = "graphql.voyager")
 @Validated
 public class VoyagerPropertiesConfiguration {
+
+  private boolean enabled = false;
 
   private String endpoint = "/graphql";
 

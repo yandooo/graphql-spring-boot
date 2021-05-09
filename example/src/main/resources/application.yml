@@ -17,27 +17,27 @@ management:
 graphql:
   servlet:
     actuator-metrics: true
-altair:
-  enabled: true
-  cdn:
-    enabled: false
-graphiql:
-  enabled: true
-  cdn:
-    enabled: false
-    version: 0.17.5
-  headers:
-    Test: TestHeader
-  props:
-    variables:
-      headerEditorEnabled: true
-      headers: '{ "Authorization": "SomeValue" }'
-voyager:
-  enabled: true
-  cdn:
-    enabled: false
-graphql.playground:
-  enabled: true
-  cdn:
-    enabled: false
-    version: latest
+  playground:
+    enabled: true
+    cdn:
+      enabled: false
+      version: latest
+  altair:
+    enabled: true
+    cdn:
+      enabled: false
+  graphiql:
+    enabled: true
+    cdn:
+      enabled: false
+      version: 0.17.5
+    headers:
+      Test: TestHeader
+    props:
+      variables:
+        headerEditorEnabled: true
+        headers: '{ "Authorization": "SomeValue" }'
+  voyager:
+    enabled: true
+    cdn:
+      enabled: false

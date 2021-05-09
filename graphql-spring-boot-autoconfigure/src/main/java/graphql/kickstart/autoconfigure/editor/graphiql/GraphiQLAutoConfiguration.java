@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Ronny Bräunlich
  */
 @Configuration
-@ConditionalOnProperty(value = "graphiql.enabled", havingValue = "true")
+@ConditionalOnProperty(value = "graphql.graphiql.enabled", havingValue = "true")
 @EnableConfigurationProperties(GraphiQLProperties.class)
 public class GraphiQLAutoConfiguration {
 
