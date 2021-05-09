@@ -311,7 +311,10 @@ altair:
     pageTitle: Altair
     cdn:
         enabled: false
-        version: 2.1.7
+        version: 4.0.2
+    options:
+      initial-settings:
+        theme: dracula
     props:
         resources:
             defaultQuery: defaultQuery.graphql
@@ -323,12 +326,9 @@ altair:
 By default Altair is served from within the package. This can be configured to be served from CDN
 instead, by setting the property `altair.cdn.enabled` to `true`.
 
-You are able to set the Altair props as well. The `altair.props.variables` group. Since setting (
+You are able to set the Altair options as well using the `altair.options` group. Since setting (
 large) queries in the properties like this isn't very readable, you can use the properties in
 the `altair.props.resources` group to set the classpath resources that should be loaded.
-
-Headers that are used when sending the Altair queries can be set by defining them in
-the `altair.headers` group.
 
 # Enable GraphQL Playground
 
