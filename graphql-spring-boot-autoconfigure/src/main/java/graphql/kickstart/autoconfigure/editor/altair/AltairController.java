@@ -54,16 +54,16 @@ public class AltairController {
   }
 
   private void loadProps() throws IOException {
-    props = new PropsLoader(environment, "altair.props.resources.", "altair.props.values.").load();
+    props = new PropsLoader(environment, "graphql.altair.props.resources.", "graphql.altair.props.values.").load();
   }
 
   private void loadHeaders() throws JsonProcessingException {
-    PropertyGroupReader propertyReader = new PropertyGroupReader(environment, "altair.headers.");
+    PropertyGroupReader propertyReader = new PropertyGroupReader(environment, "graphql.altair.headers.");
     Properties headerProperties = propertyReader.load();
     this.headers = new ObjectMapper().writeValueAsString(headerProperties);
   }
 
-  @GetMapping(value = "${altair.mapping:/altair}")
+  @GetMapping(value = "${graphql.altair.mapping:/altair}")
   public void altair(
       HttpServletRequest request,
       HttpServletResponse response,

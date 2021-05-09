@@ -16,7 +16,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 public class AltairAutoConfiguration {
 
   @Bean
-  @ConditionalOnProperty(value = "altair.enabled", havingValue = "true")
+  @ConditionalOnProperty(value = "graphql.altair.enabled", havingValue = "true")
   AltairController altairController() {
     return new AltairController();
   }

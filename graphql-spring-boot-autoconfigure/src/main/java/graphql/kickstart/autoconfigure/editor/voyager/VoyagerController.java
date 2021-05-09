@@ -16,7 +16,7 @@ public class VoyagerController {
 
   @Autowired private VoyagerIndexHtmlTemplate indexTemplate;
 
-  @GetMapping(value = "${voyager.mapping:/voyager}")
+  @GetMapping(value = "${graphql.voyager.mapping:/voyager}")
   public ResponseEntity<String> voyager(
       HttpServletRequest request, @PathVariable Map<String, String> params) throws IOException {
     String contextPath = request.getContextPath();

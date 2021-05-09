@@ -4,7 +4,7 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
-@ConfigurationProperties("graphiql")
+@ConfigurationProperties("graphql.graphiql")
 class GraphiQLProperties {
 
   private boolean enabled = false;

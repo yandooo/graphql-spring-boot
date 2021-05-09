@@ -1,3 +1,2 @@
 graphql:
   schema-strategy: annotations
-debug: true

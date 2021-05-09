@@ -26,7 +26,7 @@ public class ReactiveGraphiQLController extends GraphiQLController {
     super.onceConstructed();
   }
 
-  @GetMapping(value = "${graphiql.mapping:/graphiql}")
+  @GetMapping(value = "${graphql.graphiql.mapping:/graphiql}")
   public Mono<Void> graphiql(
       ServerHttpRequest request,
       ServerHttpResponse response,

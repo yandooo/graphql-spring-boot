@@ -4,10 +4,10 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
-@ConfigurationProperties("altair")
+@ConfigurationProperties("graphql.altair")
 public class AltairProperties {
 
-  private boolean enabled = true;
+  private boolean enabled = false;
   private Endpoint endpoint = new Endpoint();
   private Cdn cdn = new Cdn();
   private String pageTitle = "Altair";

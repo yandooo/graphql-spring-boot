@@ -17,7 +17,7 @@ public class ReactiveVoyagerController {
 
   @Autowired private VoyagerIndexHtmlTemplate indexTemplate;
 
-  @GetMapping(path = "${voyager.mapping:/voyager}")
+  @GetMapping(path = "${graphql.voyager.mapping:/voyager}")
   public ResponseEntity<String> voyager(@PathVariable Map<String, String> params)
       throws IOException {
     // no context path in spring-webflux
