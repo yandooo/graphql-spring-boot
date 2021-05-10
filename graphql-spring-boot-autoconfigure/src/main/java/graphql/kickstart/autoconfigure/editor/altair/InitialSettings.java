@@ -12,21 +12,30 @@ public class InitialSettings {
   private Integer addQueryDepthLimit;
   private Integer tabSize;
   private Boolean enableExperimental;
+
   @JsonProperty("theme.fontsize")
   private Integer themeFontSize;
+
   @JsonProperty("theme.editorFontFamily")
   private String themeEditorFontFamily;
+
   @JsonProperty("theme.editorFontSize")
   private Integer themeEditorFontSize;
+
   private Boolean disablePushNotification;
+
   @JsonProperty("plugin.list")
   private List<String> pluginList;
+
   @JsonProperty("request.withCredentials")
   private Boolean requestWithCredentials;
+
   @JsonProperty("schema.reloadOnStart")
   private Boolean schemaReloadOnStart;
+
   @JsonProperty("alert.disableWarnings")
   private Boolean alertDisableWarnings;
+
   @JsonProperty("history.depth")
   private Integer historyDepth;
 
