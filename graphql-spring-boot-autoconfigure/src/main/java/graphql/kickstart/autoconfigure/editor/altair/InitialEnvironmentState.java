@@ -8,6 +8,5 @@ public class InitialEnvironmentState {
 
   private String id;
   private String title;
-  private Map<String,String> variables;
-
+  private Map<String, String> variables;
 }

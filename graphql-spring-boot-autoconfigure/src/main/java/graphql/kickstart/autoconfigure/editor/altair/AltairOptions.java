@@ -12,17 +12,18 @@ public class AltairOptions {
 
   @JsonProperty("endpointURL")
   private String endpointUrl = "/graphql";
+
   private String subscriptionsEndpoint = "/subscriptions";
   private String initialQuery;
   private String initialVariables;
   private String initialPreRequestScript;
   private String initialPostRequestScript;
-  private Map<String,String> initialHeaders;
+  private Map<String, String> initialHeaders;
   @NestedConfigurationProperty InitialEnvironments initialEnvironments;
   private String instanceStorageNamespace;
   @NestedConfigurationProperty InitialSettings initialSettings;
   private String initialSubscriptionsProvider;
-  private Map<String,String> initialSubscriptionsPayload;
+  private Map<String, String> initialSubscriptionsPayload;
   private Boolean preserveState = true;
   private String initialHttpMethod;
 }
