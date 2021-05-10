@@ -52,7 +52,7 @@ SonarLint issues before pushing a PR. We're aware that the current state of the 
 SonarLint issues out of the box, but any help in reducing that is appreciated. More importantly we
 don't increase that technical debt.
 
-###Commit messages
+### Commit messages
 
 This project uses the [Conventional Commits](https://www.conventionalcommits.org) specification for commit messages.
 The CI pipeline validates that commit messages adhere to the specification using 
