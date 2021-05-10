@@ -18,7 +18,7 @@ import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.StandardEnvironment;
 
 @DisplayName("Testing extended scalars configuration")
-public class ExtendedScalarsTest {
+class ExtendedScalarsTest {
 
   @Test
   @DisplayName(

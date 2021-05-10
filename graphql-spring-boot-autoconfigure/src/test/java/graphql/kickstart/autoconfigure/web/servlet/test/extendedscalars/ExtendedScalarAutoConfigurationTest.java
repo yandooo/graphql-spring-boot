@@ -18,7 +18,7 @@ import org.springframework.test.context.TestPropertySource;
     classes = ExtendedScalarAutoConfigurationTest.ExtendedScalarsTestApplication.class)
 @TestPropertySource(properties = "graphql.extended-scalars=BigDecimal")
 @DisplayName("Testing extended scalars auto configuration")
-public class ExtendedScalarAutoConfigurationTest {
+class ExtendedScalarAutoConfigurationTest {
 
   @Autowired private ApplicationContext applicationContext;
 
