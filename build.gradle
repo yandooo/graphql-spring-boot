@@ -25,7 +25,6 @@ plugins {
     id "org.sonarqube" version "$PLUGIN_SONARQUBE_VER"
     id "jacoco"
     id 'io.codearte.nexus-staging' version "$PLUGIN_NEXUS_STAGING_VER"
-    id 'com.github.sherter.google-java-format' version "$PLUGIN_GOOGLE_JAVA_FORMAT_VER" apply false
 }
 
 sonarqube {
@@ -49,7 +48,6 @@ subprojects {
     }
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
-    apply plugin: 'com.github.sherter.google-java-format'
 
     group "$PROJECT_GROUP"
 
@@ -116,8 +114,6 @@ subprojects {
         }
 
         compileJava.dependsOn(processResources)
-
-        compileJava.mustRunAfter verifyGoogleJavaFormat
     }
 
     if (!it.name.startsWith('example')) {
