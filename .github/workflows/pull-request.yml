@@ -70,7 +70,7 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action/composite@v1
         if: always() && matrix.os != 'ubuntu-latest'
         with:
-          files: '**/builds/test-results/**/*.xml'
+          files: '**/build/test-results/**/*.xml'
 
   build:
     name: Sonar analysis
