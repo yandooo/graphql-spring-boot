@@ -32,8 +32,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
-        java: [ 8, 11, 16 ]
+        #        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        #        java: [ 8, 11, 16 ]
+        os: [ macos-latest ]
+        java: [ 8 ]
     needs: [ validation, commitlint ]
     runs-on: ${{ matrix.os }}
     steps:
