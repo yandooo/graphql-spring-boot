@@ -22,7 +22,7 @@ apply plugin: "org.springframework.boot"
 dependencies {
     implementation(project(":graphql-spring-boot-starter"))
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-websocket")
+//    implementation("org.springframework.boot:spring-boot-starter-websocket")
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation(project(":graphql-spring-boot-starter-test"))

@@ -32,7 +32,7 @@ import org.springframework.web.socket.server.standard.ServerEndpointRegistration
 @Configuration
 @RequiredArgsConstructor
 @ConditionalOnWebApplication(type = Type.SERVLET)
-@ConditionalOnClass(DispatcherServlet.class)
+@ConditionalOnClass({DispatcherServlet.class, ServerEndpointRegistration.class})
 @Conditional(OnSchemaOrSchemaProviderBean.class)
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ConditionalOnProperty(

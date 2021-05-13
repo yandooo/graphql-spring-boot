@@ -6,3 +6,5 @@ server:
 
 graphql:
   extended-scalars: BigDecimal
+  graphiql:
+    enabled: true
