@@ -20,14 +20,14 @@ class VoyagerControllerTest extends AbstractAutoConfigurationTest {
   }
 
   @Test
-  void graphiqlLoads() {
+  void voyagerLoads() {
     load(EnabledConfiguration.class);
 
     assertThat(this.getContext().getBean(VoyagerController.class)).isNotNull();
   }
 
   @Test
-  void graphiqlDoesNotLoad() {
+  void voyagerDoesNotLoad() {
     load(DisabledConfiguration.class);
 
     AbstractApplicationContext context = getContext();
