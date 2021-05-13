@@ -39,10 +39,3 @@ include ':graphql-kickstart-spring-webflux'
 include ':graphql-spring-boot-test'
 include ':graphql-spring-boot-test-autoconfigure'
 include ":graphql-spring-boot-starter-test"
-
-include ":example"
-include ":example-spring-common"
-include ':example-graphql-tools'
-include ':example-graphql-subscription'
-include ':example-request-scoped-dataloader'
-include ":example-webflux"

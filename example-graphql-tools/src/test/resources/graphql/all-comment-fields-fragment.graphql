@@ -1,4 +1,0 @@
-fragment AllCommentFields on Comment {
-    id
-    description
-}

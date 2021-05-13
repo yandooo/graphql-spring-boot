@@ -116,89 +116,86 @@ subprojects {
         compileJava.dependsOn(processResources)
     }
 
-    if (!it.name.startsWith('example')) {
+    //disable Gradle Metadata generation as it may cause unwanted side effects
+    tasks.withType(GenerateModuleMetadata) {
+        enabled = false
+    }
 
-        //disable Gradle Metadata generation as it may cause unwanted side effects
-        tasks.withType(GenerateModuleMetadata) {
-            enabled = false
+    if (it.name != bomProjectName) {
+        jar {
+            from "LICENSE.md"
         }
 
-        if (it.name != bomProjectName) {
-            jar {
-                from "LICENSE.md"
-            }
-
-            java {
-                withSourcesJar()
-                withJavadocJar()
-            }
+        java {
+            withSourcesJar()
+            withJavadocJar()
         }
+    }
 
-        if (!version.toString().endsWith('-SNAPSHOT')) {
-            ext["signing.keyId"] = System.env.SIGNING_KEY_ID
-            ext["signing.password"] = System.env.SIGNING_PASSWORD
-            ext["signing.secretKeyRingFile"] = System.env.SIGNING_SECRET_KEY_RING_FILE
+    if (!version.toString().endsWith('-SNAPSHOT')) {
+        ext["signing.keyId"] = System.env.SIGNING_KEY_ID
+        ext["signing.password"] = System.env.SIGNING_PASSWORD
+        ext["signing.secretKeyRingFile"] = System.env.SIGNING_SECRET_KEY_RING_FILE
 
-            signing {
-                sign publishing.publications
-            }
+        signing {
+            sign publishing.publications
         }
+    }
 
-        publishing {
-            publications {
-                mavenJava(MavenPublication) {
-                    if (project.name != bomProjectName) {
-                        from components.java
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                if (project.name != bomProjectName) {
+                    from components.java
+                }
+
+                // to avoid "Publication only contains dependencies and/or constraints without a version" error
+                // see https://docs.gradle.org/6.2.1/userguide/publishing_maven.html#publishing_maven:resolved_dependencies
+                versionMapping {
+                    usage('java-api') {
+                        fromResolutionOf('runtimeClasspath')
                     }
-
-                    // to avoid "Publication only contains dependencies and/or constraints without a version" error
-                    // see https://docs.gradle.org/6.2.1/userguide/publishing_maven.html#publishing_maven:resolved_dependencies
-                    versionMapping {
-                        usage('java-api') {
-                            fromResolutionOf('runtimeClasspath')
-                        }
-                        usage('java-runtime') {
-                            fromResolutionResult()
-                        }
+                    usage('java-runtime') {
+                        fromResolutionResult()
                     }
+                }
 
-                    pom {
-                        name = PROJECT_NAME
-                        description = PROJECT_DESC
+                pom {
+                    name = PROJECT_NAME
+                    description = PROJECT_DESC
+                    url = PROJECT_GIT_REPO_URL
+                    scm {
                         url = PROJECT_GIT_REPO_URL
-                        scm {
-                            url = PROJECT_GIT_REPO_URL
-                            connection = PROJECT_GIT_REPO_URL
-                            developerConnection = PROJECT_GIT_REPO_URL
+                        connection = PROJECT_GIT_REPO_URL
+                        developerConnection = PROJECT_GIT_REPO_URL
+                    }
+                    licenses {
+                        license {
+                            name = PROJECT_LICENSE
+                            url = PROJECT_LICENSE_URL
+                            distribution = 'repo'
                         }
-                        licenses {
-                            license {
-                                name = PROJECT_LICENSE
-                                url = PROJECT_LICENSE_URL
-                                distribution = 'repo'
-                            }
-                        }
-                        developers {
-                            developer {
-                                id = PROJECT_DEV_ID
-                                name = PROJECT_DEV_NAME
-                            }
+                    }
+                    developers {
+                        developer {
+                            id = PROJECT_DEV_ID
+                            name = PROJECT_DEV_NAME
                         }
                     }
                 }
             }
-            repositories {
-                maven {
-                    name 'ossrh'
-                    if (version.toString().endsWith("-SNAPSHOT")) {
-                        url "https://oss.sonatype.org/content/repositories/snapshots/"
-                    } else {
-                        url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-                    }
-                    credentials {
-                        username = System.env.OSS_USER_TOKEN_KEY ?: project.findProperty('OSS_USER_TOKEN_KEY') ?: ''
-                        password = System.env.OSS_USER_TOKEN_PASS ?: project.findProperty('OSS_USER_TOKEN_PASS') ?: ''
-                    }
+        }
+        repositories {
+            maven {
+                name 'ossrh'
+                if (version.toString().endsWith("-SNAPSHOT")) {
+                    url "https://oss.sonatype.org/content/repositories/snapshots/"
+                } else {
+                    url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+                }
+                credentials {
+                    username = System.env.OSS_USER_TOKEN_KEY ?: project.findProperty('OSS_USER_TOKEN_KEY') ?: ''
+                    password = System.env.OSS_USER_TOKEN_PASS ?: project.findProperty('OSS_USER_TOKEN_PASS') ?: ''
                 }
             }
         }
