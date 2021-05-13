@@ -14,12 +14,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @RequiredArgsConstructor
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    properties = {"spring.main.web-application-type=reactive"})
+    properties = {
+      "spring.main.web-application-type=reactive",
+      "graphql.tools.schema-location-pattern=schema.graphqls"
+    })
 class MonoAutoConfigurationTest {
 
   @Autowired private WebTestClient webTestClient;
