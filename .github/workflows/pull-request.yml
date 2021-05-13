@@ -64,6 +64,11 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: cmd
         run: gradlew --info check
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action/composite@v1
+        if: matrix.os != ubuntu-latest
+        with:
+          files: test-results/**/*.xml
 
   build:
     name: Sonar analysis
