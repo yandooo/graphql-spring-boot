@@ -22,7 +22,10 @@ import reactor.core.publisher.Mono;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    properties = "spring.main.web-application-type=reactive")
+    properties = {
+      "spring.main.web-application-type=reactive",
+      "graphql.tools.schema-location-pattern=schema.graphqls"
+    })
 class MonoGenericWrapperAlreadyDefinedTest {
 
   @Autowired private WebTestClient webTestClient;

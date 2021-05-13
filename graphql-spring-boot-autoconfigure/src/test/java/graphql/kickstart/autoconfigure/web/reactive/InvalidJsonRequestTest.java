@@ -15,7 +15,10 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    properties = "spring.main.web-application-type=reactive")
+    properties = {
+      "spring.main.web-application-type=reactive",
+      "graphql.tools.schema-location-pattern=schema.graphqls"
+    })
 class InvalidJsonRequestTest {
 
   @Autowired private WebTestClient webTestClient;
