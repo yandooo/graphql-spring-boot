@@ -6,3 +6,5 @@ server:
 graphql:
   servlet:
     exception-handlers-enabled: true
+  graphiql:
+    enabled: true
