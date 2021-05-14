@@ -42,7 +42,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
-          distribution: 'zulu'
+          distribution: 'adopt'
           java-version: ${{ matrix.java }}
       - name: Cache Gradle
         uses: actions/cache@v2
@@ -85,7 +85,7 @@ jobs:
         if: env.SONAR_TOKEN != null
         uses: actions/setup-java@v2
         with:
-          distribution: 'zulu'
+          distribution: 'adopt'
           java-version: 11
       - name: Cache SonarCloud packages
         if: env.SONAR_TOKEN != null
