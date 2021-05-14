@@ -85,8 +85,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.util.UrlPathHelper;
 
 /** @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a> */
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
@@ -139,7 +141,9 @@ public class GraphQLWebAutoConfiguration {
 
     UrlBasedCorsConfigurationSource configurationSource = new UrlBasedCorsConfigurationSource();
     configurationSource.setCorsConfigurations(corsConfigurations);
-    configurationSource.setAlwaysUseFullPath(true);
+    UrlPathHelper urlPathHelper = new UrlPathHelper();
+    urlPathHelper.setAlwaysUseFullPath(true);
+    configurationSource.setUrlPathHelper(urlPathHelper);
 
     return new CorsFilter(configurationSource);
   }
