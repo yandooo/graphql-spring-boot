@@ -1,4 +1,4 @@
-package graphql.kickstart.autoconfigure.annotations;
+package graphql.kickstart.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,4 +7,4 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface GraphQLMutationResolver {}
+public @interface GraphQLQueryResolver {}

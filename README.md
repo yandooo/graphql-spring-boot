@@ -1,11 +1,11 @@
 # GraphQL and Graph*i*QL Spring Framework Boot Starters
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.graphql-java-kickstart/graphql-spring-boot-starter.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java-kickstart/graphql-spring-boot-starter)
+[![Sonatype Snapshot](https://img.shields.io/nexus/s/com.graphql-java-kickstart/graphql-spring-boot-starter?server=https%3A%2F%2Foss.sonatype.org)](#snapshots)
 [![GitHub CI Workflow](https://github.com/graphql-java-kickstart/graphql-spring-boot/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/graphql-java-kickstart/graphql-spring-boot/actions/workflows/ci.yml?query=workflow%3ACI+branch%3Amaster)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=graphql-java-kickstart_graphql-spring-boot&metric=alert_status)](https://sonarcloud.io/dashboard?id=graphql-java-kickstart_graphql-spring-boot)
 [![GitHub contributors](https://img.shields.io/github/contributors/graphql-java-kickstart/graphql-spring-boot)](https://github.com/graphql-java-kickstart/graphql-spring-boot/graphs/contributors)
 [![Discuss on GitHub](https://img.shields.io/badge/GitHub-discuss-orange)](https://github.com/graphql-java-kickstart/graphql-spring-boot/discussions)
-
 
 #### We are looking for contributors!
 
@@ -19,12 +19,12 @@ and join the team!
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
 
-  - [Quick start](#quick-start)
-    - [Using Gradle](#using-gradle)
-    - [Using Maven](#using-maven)
+- [Quick start](#quick-start)
+  - [Using Gradle](#using-gradle)
+  - [Using Maven](#using-maven)
 - [Documentation](#documentation)
 - [Requirements and Downloads](#requirements-and-downloads)
-    - [Snapshots](#snapshots)
+  - [Snapshots](#snapshots)
 - [Enable GraphQL Servlet](#enable-graphql-servlet)
 - [Enable Graph*i*QL](#enable-graphiql)
 - [Enable Altair](#enable-altair)
@@ -72,6 +72,7 @@ kotlin.version=1.3.70
 Set the Kotlin version in your `<properties>` section
 
 ```xml
+
 <properties>
   <kotlin.version>1.3.70</kotlin.version>
 </properties>
@@ -131,64 +132,65 @@ dependencies {
 Maven:
 
 ```xml
+
 <dependency>
-    <groupId>com.graphql-java-kickstart</groupId>
-    <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>12.0.0</version>
+  <groupId>com.graphql-java-kickstart</groupId>
+  <artifactId>graphql-spring-boot-starter</artifactId>
+  <version>12.0.0</version>
 </dependency>
 
-<!-- to embed Altair tool -->
+        <!-- to embed Altair tool -->
 <dependency>
-    <groupId>com.graphql-java-kickstart</groupId>
-    <artifactId>altair-spring-boot-starter</artifactId>
-    <version>12.0.0</version>
-    <scope>runtime</scope>
+<groupId>com.graphql-java-kickstart</groupId>
+<artifactId>altair-spring-boot-starter</artifactId>
+<version>12.0.0</version>
+<scope>runtime</scope>
 </dependency>
 
-<!-- to embed GraphiQL tool -->
+        <!-- to embed GraphiQL tool -->
 <dependency>
-    <groupId>com.graphql-java-kickstart</groupId>
-    <artifactId>graphiql-spring-boot-starter</artifactId>
-    <version>12.0.0</version>
-    <scope>runtime</scope>
+<groupId>com.graphql-java-kickstart</groupId>
+<artifactId>graphiql-spring-boot-starter</artifactId>
+<version>12.0.0</version>
+<scope>runtime</scope>
 </dependency>
 
-<!-- to embed GraphQL Playground tool -->
+        <!-- to embed GraphQL Playground tool -->
 <dependency>
-    <groupId>com.graphql-java-kickstart</groupId>
-    <artifactId>playground-spring-boot-starter</artifactId>
-    <version>12.0.0</version>
-    <scope>runtime</scope>
+<groupId>com.graphql-java-kickstart</groupId>
+<artifactId>playground-spring-boot-starter</artifactId>
+<version>12.0.0</version>
+<scope>runtime</scope>
 </dependency>
 
-<!-- to embed Voyager tool -->
+        <!-- to embed Voyager tool -->
 <dependency>
-    <groupId>com.graphql-java-kickstart</groupId>
-    <artifactId>voyager-spring-boot-starter</artifactId>
-    <version>12.0.0</version>
-    <scope>runtime</scope>
+<groupId>com.graphql-java-kickstart</groupId>
+<artifactId>voyager-spring-boot-starter</artifactId>
+<version>12.0.0</version>
+<scope>runtime</scope>
 </dependency>
 
-<!-- testing facilities -->
+        <!-- testing facilities -->
 <dependency>
-    <groupId>com.graphql-java-kickstart</groupId>
-    <artifactId>graphql-spring-boot-starter-test</artifactId>
-    <version>12.0.0</version>
-    <scope>test</scope>
+<groupId>com.graphql-java-kickstart</groupId>
+<artifactId>graphql-spring-boot-starter-test</artifactId>
+<version>12.0.0</version>
+<scope>test</scope>
 </dependency>
 
 ```
 
-
 ### Snapshots
 
 ```xml
+
 <repositories>
-    <repository>
-      <id>osshr-snapshots</id>
-      <name>osshr-sonatype-snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-    </repository>
+  <repository>
+    <id>osshr-snapshots</id>
+    <name>osshr-sonatype-snapshots</name>
+    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+  </repository>
 </repositories>
 ```
 
@@ -196,7 +198,7 @@ For gradle:
 
 ```groovy
 repositories {
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+  maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 ```
 
@@ -251,28 +253,28 @@ or `application.properties`):
 
 ```yaml
 graphiql:
-    mapping: /graphiql
-    endpoint:
-      graphql: /graphql
-      subscriptions: /subscriptions
-    subscriptions:
-      timeout: 30
-      reconnect: false
-    basePath: /
-    enabled: true
-    pageTitle: GraphiQL
-    cdn:
-        enabled: false
-        version: latest
-    props:
-        resources:
-            query: query.graphql
-            defaultQuery: defaultQuery.graphql
-            variables: variables.graphql
-        variables:
-            editorTheme: "solarized light"
-    headers:
-        Authorization: "Bearer <your-token>"
+  mapping: /graphiql
+  endpoint:
+    graphql: /graphql
+    subscriptions: /subscriptions
+  subscriptions:
+    timeout: 30
+    reconnect: false
+  basePath: /
+  enabled: true
+  pageTitle: GraphiQL
+  cdn:
+    enabled: false
+    version: latest
+  props:
+    resources:
+      query: query.graphql
+      defaultQuery: defaultQuery.graphql
+      variables: variables.graphql
+    variables:
+      editorTheme: "solarized light"
+  headers:
+    Authorization: "Bearer <your-token>"
 ```
 
 By default GraphiQL is served from within the package. This can be configured to be served from CDN
@@ -326,7 +328,8 @@ altair:
 By default Altair is served from within the package. This can be configured to be served from CDN
 instead, by setting the property `graphql.altair.cdn.enabled` to `true`.
 
-You are able to set the Altair options as well using the `graphql.altair.options` group. Since setting (
+You are able to set the Altair options as well using the `graphql.altair.options` group. Since
+setting (
 large) queries in the properties like this isn't very readable, you can use the properties in
 the `graphql.altair.resources` group to set the classpath resources that should be loaded.
 
@@ -345,42 +348,42 @@ or `application.properties`):
 
 ```yaml
 graphql.playground:
-    mapping: /playground
-    endpoint: /graphql
-    subscriptionEndpoint: /subscriptions
-    staticPath.base: my-playground-resources-folder
-    enabled: true
-    pageTitle: Playground
-    cdn:
-        enabled: false
-        version: latest
-    settings:
-        editor.cursorShape: line
-        editor.fontFamily: "'Source Code Pro', 'Consolas', 'Inconsolata', 'Droid Sans Mono', 'Monaco', monospace"
-        editor.fontSize: 14
-        editor.reuseHeaders: true
-        editor.theme: dark
-        general.betaUpdates: false
-        prettier.printWidth: 80
-        prettier.tabWidth: 2
-        prettier.useTabs: false
-        request.credentials: omit
-        schema.polling.enable: true
-        schema.polling.endpointFilter: "*localhost*"
-        schema.polling.interval: 2000
-        schema.disableComments: true
-        tracing.hideTracingResponse: true
-    headers:
-        headerFor: AllTabs
-    tabs:
-        - name: Example Tab
-          query: classpath:exampleQuery.graphql
-          headers:
-            SomeHeader: Some value
-          variables: classpath:variables.json
-          responses:
-            - classpath:exampleResponse1.json
-            - classpath:exampleResponse2.json
+  mapping: /playground
+  endpoint: /graphql
+  subscriptionEndpoint: /subscriptions
+  staticPath.base: my-playground-resources-folder
+  enabled: true
+  pageTitle: Playground
+  cdn:
+    enabled: false
+    version: latest
+  settings:
+    editor.cursorShape: line
+    editor.fontFamily: "'Source Code Pro', 'Consolas', 'Inconsolata', 'Droid Sans Mono', 'Monaco', monospace"
+    editor.fontSize: 14
+    editor.reuseHeaders: true
+    editor.theme: dark
+    general.betaUpdates: false
+    prettier.printWidth: 80
+    prettier.tabWidth: 2
+    prettier.useTabs: false
+    request.credentials: omit
+    schema.polling.enable: true
+    schema.polling.endpointFilter: "*localhost*"
+    schema.polling.interval: 2000
+    schema.disableComments: true
+    tracing.hideTracingResponse: true
+  headers:
+    headerFor: AllTabs
+  tabs:
+    - name: Example Tab
+      query: classpath:exampleQuery.graphql
+      headers:
+        SomeHeader: Some value
+      variables: classpath:variables.json
+      responses:
+        - classpath:exampleResponse1.json
+        - classpath:exampleResponse2.json
 ```
 
 ## Basic settings
@@ -437,11 +440,9 @@ You can configure the query, variables, headers and even supply sample responses
 , `variables` and `responses` are expected to be resources of the appropriate format (GraphQL
 for `query`, JSON for `variables` and `responses`).
 
-
 # Enable GraphQL Voyager
 
-**GraphQL Voyager** becomes accessible at root `/voyager` (or as configured
-in `voyager.mapping`)
+**GraphQL Voyager** becomes accessible at root `/voyager` (or as configured in `voyager.mapping`)
 if `voyager-spring-boot-starter` is added as a dependency to a boot application.
 
 Available Spring Boot configuration parameters (either `application.yml`
@@ -470,28 +471,30 @@ voyager:
 
 ## GraphQL Voyager Basic settings
 
-`mapping` and `endpoint` will default to `/voyager` and `/graphql`, respectively. Note that these values may not be empty.
+`mapping` and `endpoint` will default to `/voyager` and `/graphql`, respectively. Note that these
+values may not be empty.
 
-`enabled` defaults to `true`, and therefor **GraphQL Voyager** will be available by default if the dependency
-is added to a Spring Boot Web Application project.
+`enabled` defaults to `true`, and therefor **GraphQL Voyager** will be available by default if the
+dependency is added to a Spring Boot Web Application project.
 
 `pageTitle` defaults to `Voyager`.
 
-All other properties default to the same as documented on the official [GraphQL Voyager readme](https://github.com/APIs-guru/graphql-voyager#properties)
+All other properties default to the same as documented on the
+official [GraphQL Voyager readme](https://github.com/APIs-guru/graphql-voyager#properties)
 
 ## GraphQL Voyager CDN
 
 The currently bundled version is `1.0.0-rc31`, which is - as of writing this - the latest release
-of **GraphQL Voyager**. The CDN option uses `jsDelivr` CDN, if enabled. By default, it will
-load the latest available release. Available CDN versions can be found on the project's
-[jsDelivr page](https://www.jsdelivr.com/package/npm/graphql-voyager). The CDN option is
-disabled by default.
+of **GraphQL Voyager**. The CDN option uses `jsDelivr` CDN, if enabled. By default, it will load the
+latest available release. Available CDN versions can be found on the project's
+[jsDelivr page](https://www.jsdelivr.com/package/npm/graphql-voyager). The CDN option is disabled by
+default.
 
 ## Customizing GraphQL Voyager
 
-Further **GraphQL Voyager** `displayOptions`, `hideDocs` and `hideSettings` customizations can be configured, as documented in the official
-[GraphQL Voyager readme](https://github.com/APIs-guru/graphql-voyager#properties). 
-
+Further **GraphQL Voyager** `displayOptions`, `hideDocs` and `hideSettings` customizations can be
+configured, as documented in the official
+[GraphQL Voyager readme](https://github.com/APIs-guru/graphql-voyager#properties).
 
 # Supported GraphQL-Java Libraries
 
@@ -512,11 +515,11 @@ or `application.properties`):
 
 ```yaml
 graphql:
-    tools:
-        schema-location-pattern: "**/*.graphqls"
-        # Enable or disable the introspection query. Disabling it puts your server in contravention of the GraphQL
-        # specification and expectations of most clients, so use this option with caution
-        introspection-enabled: true
+  tools:
+    schema-location-pattern: "**/*.graphqls"
+    # Enable or disable the introspection query. Disabling it puts your server in contravention of the GraphQL
+    # specification and expectations of most clients, so use this option with caution
+    introspection-enabled: true
 ```
 
 By default GraphQL tools uses the location pattern `**/*.graphqls` to scan for GraphQL schemas on
@@ -526,7 +529,8 @@ the classpath. Use the `schemaLocationPattern` property to customize this patter
 
 https://github.com/Enigmatis/graphql-java-annotations
 
-The GraphQL Annotations library is used instead of GraphQL Java Tools if the `graphql-spring-boot-starter` 
+The GraphQL Annotations library is used instead of GraphQL Java Tools if
+the `graphql-spring-boot-starter`
 dependency is replaced by `graphql-kickstart-spring-boot-starter-graphql-annotations`.
 
 The schema will be built using the GraphQL Annotations library in a code-first approach - instead of
@@ -592,7 +596,8 @@ Annotations provides default implementation for these which should be sufficient
 
 ## Extended scalars
 
-[Extended scalars](https://github.com/graphql-java/graphql-java-extended-scalars) can be enabled by using the 
+[Extended scalars](https://github.com/graphql-java/graphql-java-extended-scalars) can be enabled by
+using the
 `graphql.extended-scalars` configuration property, e. g.:
 
 ```yaml
@@ -600,15 +605,17 @@ graphql:
   extended-scalars: BigDecimal, Date
 ```
 
-The available scalars are the following: `BigDecimal`, `BigInteger`, `Byte`, `Char`, `Date`, `DateTime`, `JSON`, 
-`Locale`, `Long`, `NegativeFloat`, `NegativeInt`, `NonNegativeFloat`, `NonNegativeInt`, `NonPositiveFloat`, 
+The available scalars are the following: `BigDecimal`, `BigInteger`, `Byte`, `Char`, `Date`
+, `DateTime`, `JSON`,
+`Locale`, `Long`, `NegativeFloat`, `NegativeInt`, `NonNegativeFloat`, `NonNegativeInt`
+, `NonPositiveFloat`,
 `NonPositiveInt`, `Object`, `PositiveFloat`, `PositiveInt`, `Short`, `Time`, `Url`.
 
 This setting works with both the [GraphQL Java Tools](#graphql-java-tools) and the
 [GraphQL Annotations](#graphql-annotations) integration.
 
-When using the [GraphQL Java Tools](#graphql-java-tools) integration, the scalars must also be declared in the GraphQL 
-Schema:
+When using the [GraphQL Java Tools](#graphql-java-tools) integration, the scalars must also be
+declared in the GraphQL Schema:
 
 ```graphql
 scalar BigDecimal
@@ -623,8 +630,8 @@ implementation, and can be enabled in the application.yml or application.propert
 
 ```yaml
 graphql:
-    servlet:
-        tracing-enabled: true
+  servlet:
+    tracing-enabled: true
 ```
 
 the default value is false, with "metrics-only" being available. Metrics-only does not add the
@@ -637,8 +644,8 @@ application.yml or application.properties to either true or false, with a defaul
 
 ```yaml
 graphql:
-    servlet:
-        actuator-metrics: true
+  servlet:
+    actuator-metrics: true
 ```
 
 ## Usage
@@ -652,8 +659,8 @@ The following metrics are available for exposure:
 * `graphql.websocket.sessions` - number of active websocket sessions for subscriptions
 * `graphql.websocket.subscriptions` - number of active subscriptions
 
-
 ## FAQs
+
 ### WARNING: NoClassDefFoundError when using GraphQL Java Tools > 5.4.x
 
 If you're using `graphql-java-tools` in combination with Spring Boot 2.1.x or below then you need to
@@ -664,9 +671,6 @@ Starter parent of that Spring Boot version overrides it with a 1.2.* version of 
 this version you will run into a `NoClassDefFoundError`.
 
 Spring Boot team has indicated the Kotlin version will be upgraded to 1.3 in Spring Boot 2.2.
-
-
-
 
 # Contributions
 

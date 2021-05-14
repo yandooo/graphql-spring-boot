@@ -2,7 +2,7 @@ package graphql.kickstart.autoconfigure.annotations.test.subscription;
 
 import graphql.annotations.annotationTypes.GraphQLDataFetcher;
 import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.kickstart.autoconfigure.annotations.GraphQLSubscriptionResolver;
+import graphql.kickstart.annotations.GraphQLSubscriptionResolver;
 
 @GraphQLSubscriptionResolver
 public class TestSubscription {

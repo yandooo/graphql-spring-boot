@@ -1,4 +1,4 @@
-package graphql.kickstart.autoconfigure.annotations;
+package graphql.kickstart.annotations;
 
 import graphql.TypeResolutionEnvironment;
 import graphql.annotations.processor.GraphQLAnnotations;

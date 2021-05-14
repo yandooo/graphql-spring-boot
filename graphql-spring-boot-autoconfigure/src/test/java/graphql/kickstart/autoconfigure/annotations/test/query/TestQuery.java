@@ -3,7 +3,7 @@ package graphql.kickstart.autoconfigure.annotations.test.query;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
-import graphql.kickstart.autoconfigure.annotations.GraphQLQueryResolver;
+import graphql.kickstart.annotations.GraphQLQueryResolver;
 import java.util.Optional;
 
 @GraphQLQueryResolver

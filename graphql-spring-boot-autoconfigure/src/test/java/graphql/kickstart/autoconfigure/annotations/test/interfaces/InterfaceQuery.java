@@ -3,7 +3,7 @@ package graphql.kickstart.autoconfigure.annotations.test.interfaces;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
-import graphql.kickstart.autoconfigure.annotations.GraphQLQueryResolver;
+import graphql.kickstart.annotations.GraphQLQueryResolver;
 import java.util.Arrays;
 import java.util.List;
 

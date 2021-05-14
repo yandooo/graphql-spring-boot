@@ -1,7 +1,7 @@
 package graphql.kickstart.autoconfigure.annotations.test.mutation;
 
 import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.kickstart.autoconfigure.annotations.GraphQLMutationResolver;
+import graphql.kickstart.annotations.GraphQLMutationResolver;
 import graphql.kickstart.autoconfigure.annotations.test.mutation.model.TestModel;
 
 @GraphQLMutationResolver

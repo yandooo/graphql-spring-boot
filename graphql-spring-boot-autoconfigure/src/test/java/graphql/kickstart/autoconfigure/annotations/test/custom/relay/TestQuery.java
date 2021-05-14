@@ -4,7 +4,7 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.connection.AbstractPaginatedData;
 import graphql.annotations.connection.GraphQLConnection;
 import graphql.annotations.connection.PaginatedData;
-import graphql.kickstart.autoconfigure.annotations.GraphQLQueryResolver;
+import graphql.kickstart.annotations.GraphQLQueryResolver;
 import java.util.Collections;
 
 @GraphQLQueryResolver
