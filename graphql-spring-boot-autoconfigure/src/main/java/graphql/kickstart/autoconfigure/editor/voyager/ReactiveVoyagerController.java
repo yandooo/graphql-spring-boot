@@ -1,5 +1,7 @@
 package graphql.kickstart.autoconfigure.editor.voyager;
 
+import static graphql.kickstart.autoconfigure.editor.EditorConstants.CSRF_ATTRIBUTE_NAME;
+
 import java.io.IOException;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
 
 /** @author Max David Günther */
 @Controller
@@ -18,10 +21,12 @@ public class ReactiveVoyagerController {
   @Autowired private VoyagerIndexHtmlTemplate indexTemplate;
 
   @GetMapping(path = "${graphql.voyager.mapping:/voyager}")
-  public ResponseEntity<String> voyager(@PathVariable Map<String, String> params)
+  public ResponseEntity<String> voyager(
+      final @RequestAttribute(value = CSRF_ATTRIBUTE_NAME, required = false) Object csrf,
+      @PathVariable Map<String, String> params)
       throws IOException {
     // no context path in spring-webflux
-    String indexHtmlContent = indexTemplate.fillIndexTemplate("", params);
+    String indexHtmlContent = indexTemplate.fillIndexTemplate("", csrf, params);
     return ResponseEntity.ok()
         .contentType(MediaType.valueOf("text/html; charset=UTF-8"))
         .body(indexHtmlContent);

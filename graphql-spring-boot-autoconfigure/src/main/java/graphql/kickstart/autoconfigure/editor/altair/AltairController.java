@@ -13,12 +13,12 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringSubstitutor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
@@ -27,14 +27,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 /** @author Moncef AOUDIA */
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 public class AltairController {
 
   private static final String CDN_JSDELIVR_NET_NPM = "//cdn.jsdelivr.net/npm/";
   private static final String ALTAIR = "altair-static";
   private final ObjectMapper objectMapper = new ObjectMapper();
-  @Autowired private AltairProperties altairProperties;
-  @Autowired private AltairOptions altairOptions;
-  @Autowired private AltairResources altairResources;
+  private final AltairProperties altairProperties;
+  private final AltairOptions altairOptions;
+  private final AltairResources altairResources;
 
   private String template;
 

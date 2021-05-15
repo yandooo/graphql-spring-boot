@@ -17,7 +17,10 @@ public class AltairAutoConfiguration {
 
   @Bean
   @ConditionalOnProperty(value = "graphql.altair.enabled", havingValue = "true")
-  AltairController altairController() {
-    return new AltairController();
+  AltairController altairController(
+      AltairProperties altairProperties,
+      AltairOptions altairOptions,
+      AltairResources altairResources) {
+    return new AltairController(altairProperties, altairOptions, altairResources);
   }
 }
