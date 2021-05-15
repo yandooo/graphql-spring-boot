@@ -18,8 +18,8 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 public class ReactiveVoyagerAutoConfiguration {
 
   @Bean
-  ReactiveVoyagerController voyagerController() {
-    return new ReactiveVoyagerController();
+  ReactiveVoyagerController voyagerController(VoyagerIndexHtmlTemplate voyagerIndexHtmlTemplate) {
+    return new ReactiveVoyagerController(voyagerIndexHtmlTemplate);
   }
 
   @Bean
