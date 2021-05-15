@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.MvcResult;
 @Import(PermitAllWebSecurity.class)
 @SpringBootTest(
     classes = {VoyagerAutoConfiguration.class, SecurityAutoConfiguration.class},
-    properties = {"spring.main.web-application-type=servlet"})
+    properties = {"graphql.voyager.enabled=true", "spring.main.web-application-type=servlet"})
 @AutoConfigureMockMvc
 @ActiveProfiles("voyager")
 class VoyagerWithCsrfTest {

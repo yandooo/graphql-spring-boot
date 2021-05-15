@@ -13,10 +13,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 /** @author Max David Günther */
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
-@ConditionalOnProperty(
-    value = "graphql.voyager.enabled",
-    havingValue = "true",
-    matchIfMissing = true)
+@ConditionalOnProperty(value = "graphql.voyager.enabled", havingValue = "true")
 @EnableConfigurationProperties(VoyagerPropertiesConfiguration.class)
 public class ReactiveVoyagerAutoConfiguration {
 

@@ -9,10 +9,7 @@ import org.springframework.context.annotation.Configuration;
 /** @author Guilherme Blanco */
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-@ConditionalOnProperty(
-    value = "graphql.voyager.enabled",
-    havingValue = "true",
-    matchIfMissing = true)
+@ConditionalOnProperty(value = "graphql.voyager.enabled", havingValue = "true")
 @EnableConfigurationProperties(VoyagerPropertiesConfiguration.class)
 public class VoyagerAutoConfiguration {
 

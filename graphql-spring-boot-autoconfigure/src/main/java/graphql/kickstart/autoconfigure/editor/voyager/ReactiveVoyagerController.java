@@ -1,17 +1,17 @@
 package graphql.kickstart.autoconfigure.editor.voyager;
 
-import static graphql.kickstart.autoconfigure.editor.EditorConstants.CSRF_ATTRIBUTE_NAME;
-
 import java.io.IOException;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
 
 /** @author Max David Günther */
 @Controller
@@ -21,14 +21,23 @@ public class ReactiveVoyagerController {
   @Autowired private VoyagerIndexHtmlTemplate indexTemplate;
 
   @GetMapping(path = "${graphql.voyager.mapping:/voyager}")
-  public ResponseEntity<String> voyager(
-      final @RequestAttribute(value = CSRF_ATTRIBUTE_NAME, required = false) Object csrf,
-      @PathVariable Map<String, String> params)
-      throws IOException {
+  public Mono<ResponseEntity<String>> voyager(
+      ServerWebExchange exchange, @PathVariable Map<String, String> params) {
     // no context path in spring-webflux
-    String indexHtmlContent = indexTemplate.fillIndexTemplate("", csrf, params);
-    return ResponseEntity.ok()
-        .contentType(MediaType.valueOf("text/html; charset=UTF-8"))
-        .body(indexHtmlContent);
+    Mono<CsrfToken> csrfToken = exchange.getAttribute(CsrfToken.class.getName());
+    return csrfToken != null
+        ? csrfToken.map(csrf -> fillTemplate(csrf, params))
+        : Mono.just(fillTemplate(null, params));
+  }
+
+  private ResponseEntity<String> fillTemplate(CsrfToken csrf, Map<String, String> params) {
+    try {
+      String indexHtmlContent = indexTemplate.fillIndexTemplate("", csrf, params);
+      return ResponseEntity.ok()
+          .contentType(MediaType.valueOf("text/html; charset=UTF-8"))
+          .body(indexHtmlContent);
+    } catch (IOException e) {
+      return ResponseEntity.status(500).body(null);
+    }
   }
 }
