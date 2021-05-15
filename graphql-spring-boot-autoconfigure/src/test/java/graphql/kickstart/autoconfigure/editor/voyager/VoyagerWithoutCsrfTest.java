@@ -30,7 +30,7 @@ class VoyagerWithoutCsrfTest {
         mockMvc.perform(get("/voyager")).andExpect(status().isOk()).andReturn();
 
     final Document document = Jsoup.parse(mvcResult.getResponse().getContentAsString());
-    var script = document.body().select("body script").dataNodes().get(0).getWholeData();
+    final String script = document.body().select("body script").dataNodes().get(0).getWholeData();
     assertThat(script).contains("let csrf = null");
   }
 }
