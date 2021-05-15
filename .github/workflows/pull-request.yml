@@ -34,7 +34,7 @@ jobs:
       matrix:
         os: [ ubuntu-latest, macos-latest, windows-latest ]
         java: [ 8, 11, 16 ]
-    needs: [ validation, commitlint, verify-google-java-format ]
+    needs: [ validation, commitlint ]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -42,7 +42,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
-          distribution: 'zulu'
+          distribution: 'adopt'
           java-version: ${{ matrix.java }}
       - name: Cache Gradle
         uses: actions/cache@v2
@@ -64,6 +64,11 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: cmd
         run: gradlew --info check
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action/composite@v1
+        if: always() && matrix.os != 'ubuntu-latest'
+        with:
+          files: '**/build/test-results/**/*.xml'
 
   build:
     name: Sonar analysis
@@ -80,7 +85,7 @@ jobs:
         if: env.SONAR_TOKEN != null
         uses: actions/setup-java@v2
         with:
-          distribution: 'zulu'
+          distribution: 'adopt'
           java-version: 11
       - name: Cache SonarCloud packages
         if: env.SONAR_TOKEN != null

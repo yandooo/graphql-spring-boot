@@ -1,8 +1,0 @@
-spring:
-  application:
-    name: graphql-subscription-example
-server:
-  port: 9001
-
-graphql:
-  extended-scalars: BigDecimal

@@ -18,26 +18,47 @@
  */
 
 dependencies {
-    api(project(":graphql-kickstart-spring-boot-starter-tools"))
+    api "com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
     api(project(":graphql-kickstart-spring-support"))
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    api(project(':graphql-kickstart-spring-webflux'))
     api "com.graphql-java:graphql-java-extended-scalars:$LIB_EXTENDED_SCALARS_VER"
     api "com.graphql-java-kickstart:graphql-java-kickstart:$LIB_GRAPHQL_SERVLET_VER"
     api "com.graphql-java-kickstart:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
     api "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
 
-    api "org.springframework.boot:spring-boot-starter-websocket"
-    api "org.springframework.boot:spring-boot-starter-web"
-    api "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+
+    // annotations
+    api "io.github.graphql-java:graphql-java-annotations:$LIB_GRAPHQL_ANNOTATIONS_VER"
+    implementation "org.reflections:reflections:$LIB_REFLECTIONS_VER"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+
+    // graphiql
+    implementation "org.apache.commons:commons-text:$LIB_APACHE_COMMONS_TEXT"
+    compileOnly "org.springframework.boot:spring-boot-starter-security"
+
+    compileOnly "org.springframework.boot:spring-boot-starter-websocket"
+    compileOnly "org.springframework.boot:spring-boot-starter-web"
+    compileOnly "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework:spring-webflux"
 
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     compileOnly "org.springframework.boot:spring-boot-configuration-processor"
     compileOnly "org.springframework.boot:spring-boot-starter-web"
 
+    testImplementation(project(":graphql-spring-boot-starter-test"))
     testImplementation "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
     testImplementation "org.springframework.boot:spring-boot-starter-web"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
-    testImplementation(project(":graphql-spring-boot-test"))
+    testImplementation "org.springframework.boot:spring-boot-starter-websocket"
+    testImplementation "org.springframework.boot:spring-boot-starter-web"
+    testImplementation "org.springframework.boot:spring-boot-starter-actuator"
+    testImplementation "org.springframework.boot:spring-boot-starter-webflux"
+//    testImplementation "org.springframework.boot:spring-boot-starter-security"
+    testImplementation "org.springframework.security:spring-security-test"
+    testImplementation "io.projectreactor:reactor-core"
+    testImplementation "io.reactivex.rxjava2:rxjava"
+    testImplementation "org.jsoup:jsoup:$LIB_JSOUP_VER"
 }
 
 compileJava.dependsOn(processResources)

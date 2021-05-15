@@ -1,5 +1,0 @@
-mutation CreatePost($text:String){
-    createPost(text:$text){
-        id
-    }
-}

@@ -49,7 +49,7 @@ public abstract class AbstractGraphQLController {
       try {
         request = objectMapper.readGraphQLRequest(body);
       } catch (IOException e) {
-        return handleBodyParsingException(e, serverWebExchange);
+        return handleBodyParsingException(e);
       }
       if (request.getQuery() == null) {
         request.setQuery("");
@@ -106,8 +106,7 @@ public abstract class AbstractGraphQLController {
       Map<String, Object> variables,
       ServerWebExchange serverWebExchange);
 
-  protected Object handleBodyParsingException(
-      Exception exception, ServerWebExchange serverWebExchange) {
+  protected Object handleBodyParsingException(Exception exception) {
     log.error("{} {}", INVALID_REQUEST_BODY_MESSAGE, exception.getMessage());
     return objectMapper.createResultFromExecutionResult(
         new ExecutionResultImpl(new GenericGraphQLError(INVALID_REQUEST_BODY_MESSAGE)));

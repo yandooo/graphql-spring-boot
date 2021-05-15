@@ -27,38 +27,15 @@ buildscript {
 
 rootProject.name = PROJECT_NAME
 
-include ":altair-spring-boot-autoconfigure"
-include ":altair-spring-boot-starter"
 include ":graphql-spring-boot-autoconfigure"
 include ":graphql-spring-boot-starter"
-include ":graphiql-spring-boot-autoconfigure"
-include ":graphiql-spring-boot-starter"
-include ":voyager-spring-boot-autoconfigure"
-include ":voyager-spring-boot-starter"
-include ":playground-spring-boot-autoconfigure"
-include ":playground-spring-boot-starter"
 
 include ':graphql-spring-boot-dependencies'
 
-include ':graphql-kickstart-spring-boot-autoconfigure-graphql-annotations'
-include ':graphql-kickstart-spring-boot-starter-graphql-annotations'
-include ':graphql-kickstart-spring-boot-autoconfigure-tools'
-include ':graphql-kickstart-spring-boot-starter-tools'
 include ':graphql-kickstart-spring-support'
 include ':graphql-kickstart-spring-webflux'
-include ':graphql-kickstart-spring-boot-autoconfigure-webflux'
-include ':graphql-kickstart-spring-boot-starter-webflux'
 
-include ":graphql-spring-boot-starter-test"
-
-include ":example"
-include ":example-spring-common"
-include ':example-graphql-tools'
-include ':example-graphql-subscription'
-include ':example-request-scoped-dataloader'
-include ":example-webflux"
-
+// test library
 include ':graphql-spring-boot-test'
 include ':graphql-spring-boot-test-autoconfigure'
-
-include ':graphql-kickstart-starter-utils'
+include ":graphql-spring-boot-starter-test"

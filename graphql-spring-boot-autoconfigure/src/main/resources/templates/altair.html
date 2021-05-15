@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>${pageTitle}</title>
+  <base href="${altairBaseUrl}">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <link href="${pageFavicon}" rel="icon" type="image/x-icon">
+  <link href="${altairCssUrl}" rel="stylesheet" />
+
+</head>
+
+<body>
+<app-root>
+  <style>
+    .loading-screen {
+      /*Prevents the loading screen from showing until CSS is downloaded*/
+      display: none;
+    }
+  </style>
+  <div class="loading-screen styled">
+    <div class="loading-screen-inner">
+      <div class="loading-screen-logo-container">
+        <img alt="Altair" src="${altairLogoUrl}">
+      </div>
+      <div class="loading-screen-loading-indicator">
+        <span class="loading-indicator-dot"></span>
+        <span class="loading-indicator-dot"></span>
+        <span class="loading-indicator-dot"></span>
+      </div>
+    </div>
+  </div>
+</app-root>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    AltairGraphQL.init(JSON.parse(`${options}`))
+  })
+</script>
+<script src="${altairRuntimeJsUrl}" type="text/javascript"></script>
+<script src="${altairPolyfillsJsUrl}" type="text/javascript"></script>
+<script src="${altairMainJsUrl}" type="text/javascript"></script>
+</body>
+
+</html>

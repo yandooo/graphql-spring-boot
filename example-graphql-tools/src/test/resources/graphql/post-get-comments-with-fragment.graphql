@@ -1,8 +1,0 @@
-query {
-    post(id: "1") {
-        id
-        comments {
-            ...AllCommentFields
-        }
-    }
-}

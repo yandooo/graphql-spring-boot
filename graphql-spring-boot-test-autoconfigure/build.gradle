@@ -22,7 +22,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-test")
     api(project(":graphql-spring-boot-test"))
     implementation(project(":graphql-spring-boot-starter"))
-    implementation(project(":graphql-kickstart-spring-boot-starter-tools"))
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER")

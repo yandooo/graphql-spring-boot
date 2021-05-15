@@ -1,6 +1,18 @@
 org.springframework.context.ApplicationContextInitializer=\
-graphql.kickstart.spring.web.boot.GraphQLExtendedScalarsInitializer
+    graphql.kickstart.autoconfigure.web.servlet.GraphQLExtendedScalarsInitializer
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-graphql.kickstart.spring.web.boot.GraphQLWebAutoConfiguration,\
-graphql.kickstart.spring.web.boot.GraphQLWebsocketAutoConfiguration,\
-graphql.kickstart.spring.web.boot.GraphQLInstrumentationAutoConfiguration
+    graphql.kickstart.autoconfigure.web.servlet.GraphQLWebAutoConfiguration,\
+    graphql.kickstart.autoconfigure.web.servlet.GraphQLWebsocketAutoConfiguration,\
+    graphql.kickstart.autoconfigure.web.servlet.GraphQLInstrumentationAutoConfiguration,\
+    graphql.kickstart.autoconfigure.web.reactive.GraphQLSpringWebfluxAutoConfiguration,\
+    graphql.kickstart.autoconfigure.web.reactive.MonoAutoConfiguration,\
+    graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration,\
+    graphql.kickstart.autoconfigure.annotations.GraphQLAnnotationsAutoConfiguration,\
+    graphql.kickstart.autoconfigure.GraphQLProperties,\
+    graphql.kickstart.autoconfigure.editor.graphiql.GraphiQLAutoConfiguration,\
+    graphql.kickstart.autoconfigure.editor.altair.AltairAutoConfiguration,\
+    graphql.kickstart.autoconfigure.editor.voyager.VoyagerAutoConfiguration,\
+    graphql.kickstart.autoconfigure.editor.voyager.ReactiveVoyagerAutoConfiguration,\
+    graphql.kickstart.autoconfigure.editor.playground.PlaygroundAutoConfiguration,\
+    graphql.kickstart.autoconfigure.editor.playground.PlaygroundWebFluxAutoConfiguration
+
