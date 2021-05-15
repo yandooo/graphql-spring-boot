@@ -1,5 +1,8 @@
 package graphql.kickstart.autoconfigure.editor.voyager;
 
+import static graphql.kickstart.autoconfigure.editor.EditorConstants.CSRF_ATTRIBUTE_NAME;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -21,9 +24,10 @@ public class VoyagerIndexHtmlTemplate {
   private static final String FAVICON_APIS_GURU =
       "//apis.guru/graphql-voyager/icons/favicon-16x16.png";
 
+  private final ObjectMapper objectMapper = new ObjectMapper();
   private final VoyagerPropertiesConfiguration voyagerConfiguration;
 
-  public String fillIndexTemplate(String contextPath, Map<String, String> params)
+  public String fillIndexTemplate(String contextPath, Object csrf, Map<String, String> params)
       throws IOException {
     String template =
         StreamUtils.copyToString(
@@ -34,6 +38,11 @@ public class VoyagerIndexHtmlTemplate {
     String voyagerCdnVersion = voyagerConfiguration.getCdn().getVersion();
 
     Map<String, String> replacements = new HashMap<>();
+    if (csrf != null) {
+      replacements.put(CSRF_ATTRIBUTE_NAME, objectMapper.writeValueAsString(csrf));
+    } else {
+      replacements.put(CSRF_ATTRIBUTE_NAME, "null");
+    }
     replacements.put("graphqlEndpoint", constructGraphQlEndpoint(contextPath, params));
     replacements.put("pageTitle", voyagerConfiguration.getPageTitle());
     replacements.put("pageFavicon", getResourceUrl(basePath, "favicon.ico", FAVICON_APIS_GURU));

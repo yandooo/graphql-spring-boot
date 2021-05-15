@@ -17,8 +17,8 @@ import org.springframework.context.annotation.Configuration;
 public class VoyagerAutoConfiguration {
 
   @Bean
-  VoyagerController voyagerController() {
-    return new VoyagerController();
+  VoyagerController voyagerController(VoyagerIndexHtmlTemplate voyagerIndexHtmlTemplate) {
+    return new VoyagerController(voyagerIndexHtmlTemplate);
   }
 
   @Bean
