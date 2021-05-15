@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import graphql.kickstart.tools.SchemaParserOptions.GenericWrapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,6 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 @RequiredArgsConstructor
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
@@ -41,6 +43,7 @@ class MonoGenericWrapperAlreadyDefinedTest {
             .exchange()
             .returnResult(String.class);
     val response = result.getResponseBody().blockFirst();
+    log.info("Response: {}", response);
     val json = new JSONObject(response);
     assertThat(json.getJSONObject("data").get("hello")).isEqualTo("Hello world");
   }

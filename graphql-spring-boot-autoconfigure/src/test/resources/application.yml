@@ -3,4 +3,8 @@ server:
   forward-headers-strategy: framework
 spring:
   autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+      - org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration
+      - org.springframework.boot.actuate.autoconfigure.security.reactive.ReactiveManagementWebSecurityAutoConfiguration
