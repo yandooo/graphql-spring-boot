@@ -1,6 +1,7 @@
 package graphql.kickstart.autoconfigure.web.servlet;
 
 import graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration;
+import graphql.kickstart.autoconfigure.web.OnSchemaOrSchemaProviderBean;
 import graphql.kickstart.execution.GraphQLInvoker;
 import graphql.kickstart.execution.GraphQLObjectMapper;
 import graphql.kickstart.execution.subscriptions.GraphQLSubscriptionInvocationInputFactory;

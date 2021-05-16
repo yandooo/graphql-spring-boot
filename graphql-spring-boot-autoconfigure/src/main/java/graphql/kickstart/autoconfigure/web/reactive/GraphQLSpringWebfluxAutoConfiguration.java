@@ -3,9 +3,9 @@ package graphql.kickstart.autoconfigure.web.reactive;
 import static graphql.kickstart.execution.GraphQLObjectMapper.newBuilder;
 import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.REACTIVE;
 
-import graphql.execution.instrumentation.dataloader.DataLoaderDispatcherInstrumentationOptions;
 import graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration;
-import graphql.kickstart.execution.BatchedDataLoaderGraphQLBuilder;
+import graphql.kickstart.autoconfigure.web.GraphQLInvokerAutoConfiguration;
+import graphql.kickstart.autoconfigure.web.OnSchemaOrSchemaProviderBean;
 import graphql.kickstart.execution.GraphQLInvoker;
 import graphql.kickstart.execution.GraphQLObjectMapper;
 import graphql.kickstart.execution.config.DefaultGraphQLSchemaProvider;
@@ -32,16 +32,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Supplier;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.reactive.HandlerMapping;
@@ -51,10 +51,14 @@ import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAd
 
 @Slf4j
 @Configuration
-@ConditionalOnBean(GraphQLSchema.class)
+@Import({
+  GraphQLController.class,
+  ReactiveWebSocketSubscriptionsHandler.class,
+  GraphQLInvokerAutoConfiguration.class
+})
 @ConditionalOnWebApplication(type = REACTIVE)
-@AutoConfigureAfter(GraphQLJavaToolsAutoConfiguration.class)
-@Import({GraphQLController.class, ReactiveWebSocketSubscriptionsHandler.class})
+@Conditional(OnSchemaOrSchemaProviderBean.class)
+@AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class, JacksonAutoConfiguration.class})
 public class GraphQLSpringWebfluxAutoConfiguration {
 
   @Bean
@@ -111,22 +115,6 @@ public class GraphQLSpringWebfluxAutoConfiguration {
   @ConditionalOnMissingBean
   public GraphQLBuilder graphQLBuilder() {
     return new GraphQLBuilder();
-  }
-
-  @Bean
-  @ConditionalOnMissingBean
-  public BatchedDataLoaderGraphQLBuilder batchedDataLoaderGraphQLBuilder(
-      @Autowired(required = false)
-          Supplier<DataLoaderDispatcherInstrumentationOptions> optionsSupplier) {
-    return new BatchedDataLoaderGraphQLBuilder(optionsSupplier);
-  }
-
-  @Bean
-  @ConditionalOnMissingBean
-  public GraphQLInvoker graphQLInvoker(
-      GraphQLBuilder graphQLBuilder,
-      BatchedDataLoaderGraphQLBuilder batchedDataLoaderGraphQLBuilder) {
-    return new GraphQLInvoker(graphQLBuilder, batchedDataLoaderGraphQLBuilder);
   }
 
   @Bean

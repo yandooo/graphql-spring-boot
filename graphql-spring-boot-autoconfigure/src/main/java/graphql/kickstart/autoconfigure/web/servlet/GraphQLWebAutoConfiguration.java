@@ -28,11 +28,11 @@ import graphql.execution.ExecutionStrategy;
 import graphql.execution.SubscriptionExecutionStrategy;
 import graphql.execution.instrumentation.ChainedInstrumentation;
 import graphql.execution.instrumentation.Instrumentation;
-import graphql.execution.instrumentation.dataloader.DataLoaderDispatcherInstrumentationOptions;
 import graphql.execution.preparsed.PreparsedDocumentProvider;
 import graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration;
+import graphql.kickstart.autoconfigure.web.GraphQLInvokerAutoConfiguration;
+import graphql.kickstart.autoconfigure.web.OnSchemaOrSchemaProviderBean;
 import graphql.kickstart.autoconfigure.web.servlet.metrics.MetricsInstrumentation;
-import graphql.kickstart.execution.BatchedDataLoaderGraphQLBuilder;
 import graphql.kickstart.execution.GraphQLInvoker;
 import graphql.kickstart.execution.GraphQLObjectMapper;
 import graphql.kickstart.execution.config.DefaultExecutionStrategyProvider;
@@ -61,7 +61,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.Supplier;
 import javax.servlet.MultipartConfigElement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -80,6 +79,7 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -92,6 +92,7 @@ import org.springframework.web.util.UrlPathHelper;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
+@Import(GraphQLInvokerAutoConfiguration.class)
 @ConditionalOnWebApplication(type = Type.SERVLET)
 @ConditionalOnClass(DispatcherServlet.class)
 @Conditional(OnSchemaOrSchemaProviderBean.class)
@@ -251,22 +252,6 @@ public class GraphQLWebAutoConfiguration {
     }
 
     return graphQLBuilder;
-  }
-
-  @Bean
-  @ConditionalOnMissingBean
-  public BatchedDataLoaderGraphQLBuilder batchedDataLoaderGraphQLBuilder(
-      @Autowired(required = false)
-          Supplier<DataLoaderDispatcherInstrumentationOptions> optionsSupplier) {
-    return new BatchedDataLoaderGraphQLBuilder(optionsSupplier);
-  }
-
-  @Bean
-  @ConditionalOnMissingBean
-  public GraphQLInvoker graphQLInvoker(
-      GraphQLBuilder graphQLBuilder,
-      BatchedDataLoaderGraphQLBuilder batchedDataLoaderGraphQLBuilder) {
-    return new GraphQLInvoker(graphQLBuilder, batchedDataLoaderGraphQLBuilder);
   }
 
   @Bean
