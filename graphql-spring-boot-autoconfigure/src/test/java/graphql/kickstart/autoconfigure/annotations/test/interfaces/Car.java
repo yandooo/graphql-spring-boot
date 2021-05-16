@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-// “implements Vehicle” has to be repeated here although already inherited from AbstractVehicle
+// "implements Vehicle" has to be repeated here although already inherited from AbstractVehicle
 // because otherwise GraphQL-Java Annotations would not find this class.
 public class Car extends AbstractVehicle implements Vehicle {
 
