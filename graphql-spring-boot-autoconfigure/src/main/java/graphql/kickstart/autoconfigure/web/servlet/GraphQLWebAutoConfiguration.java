@@ -43,6 +43,7 @@ import graphql.kickstart.execution.config.GraphQLServletObjectMapperConfigurer;
 import graphql.kickstart.execution.config.ObjectMapperProvider;
 import graphql.kickstart.execution.error.GraphQLErrorHandler;
 import graphql.kickstart.servlet.AbstractGraphQLHttpServlet;
+import graphql.kickstart.servlet.AsyncTaskDecorator;
 import graphql.kickstart.servlet.GraphQLConfiguration;
 import graphql.kickstart.servlet.GraphQLHttpServlet;
 import graphql.kickstart.servlet.cache.GraphQLResponseCacheManager;
@@ -61,6 +62,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.Executor;
 import javax.servlet.MultipartConfigElement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -101,7 +103,7 @@ import org.springframework.web.util.UrlPathHelper;
     havingValue = "true",
     matchIfMissing = true)
 @AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class, JacksonAutoConfiguration.class})
-@EnableConfigurationProperties({GraphQLServletProperties.class})
+@EnableConfigurationProperties({GraphQLServletProperties.class, AsyncServletProperties.class})
 public class GraphQLWebAutoConfiguration {
 
   public static final String QUERY_EXECUTION_STRATEGY = "queryExecutionStrategy";
@@ -109,6 +111,7 @@ public class GraphQLWebAutoConfiguration {
   public static final String SUBSCRIPTION_EXECUTION_STRATEGY = "subscriptionExecutionStrategy";
 
   private final GraphQLServletProperties graphQLServletProperties;
+  private final AsyncServletProperties asyncServletProperties;
   private final ErrorHandlerSupplier errorHandlerSupplier = new ErrorHandlerSupplier(null);
 
   @Bean
@@ -293,7 +296,9 @@ public class GraphQLWebAutoConfiguration {
       GraphQLObjectMapper graphQLObjectMapper,
       @Autowired(required = false) List<GraphQLServletListener> listeners,
       @Autowired(required = false) BatchInputPreProcessor batchInputPreProcessor,
-      @Autowired(required = false) GraphQLResponseCacheManager responseCacheManager) {
+      @Autowired(required = false) GraphQLResponseCacheManager responseCacheManager,
+      @Autowired(required = false) AsyncTaskDecorator asyncTaskDecorator,
+      @Autowired(required = false) Executor asyncExecutor) {
     return GraphQLConfiguration.with(invocationInputFactory)
         .with(graphQLInvoker)
         .with(graphQLObjectMapper)
@@ -303,6 +308,10 @@ public class GraphQLWebAutoConfiguration {
         .with(graphQLServletProperties.getContextSetting())
         .with(responseCacheManager)
         .asyncTimeout(graphQLServletProperties.getAsyncTimeout())
+        .with(asyncTaskDecorator)
+        .asyncCorePoolSize(asyncServletProperties.getThreads().getMin())
+        .asyncCorePoolSize(asyncServletProperties.getThreads().getMax())
+        .with(asyncExecutor)
         .build();
   }
 
