@@ -9,6 +9,7 @@ public class AsyncServletProperties {
 
   private boolean enabled = true;
   private long timeout = 30000;
+  private boolean delegateSecurityContext = true;
   private Threads threads = new Threads();
 
   @Data

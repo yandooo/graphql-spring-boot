@@ -28,21 +28,16 @@ import org.springframework.web.servlet.DispatcherServlet;
     matchIfMissing = true)
 @AutoConfigureBefore(GraphQLWebAutoConfiguration.class)
 @ConditionalOnClass({DispatcherServlet.class, DefaultAuthenticationEventPublisher.class})
-@EnableConfigurationProperties({
-  GraphQLServletProperties.class,
-  AsyncServletProperties.class,
-  GraphQLSpringSecurityProperties.class
-})
+@EnableConfigurationProperties({GraphQLServletProperties.class, AsyncServletProperties.class})
 public class GraphQLWebSecurityAutoConfiguration {
 
   private final GraphQLServletProperties graphqlServletProperties;
   private final AsyncServletProperties asyncServletProperties;
-  private final GraphQLSpringSecurityProperties securityProperties;
 
   @Bean("graphqlAsyncTaskExecutor")
   @ConditionalOnMissingBean(name = "graphqlAsyncTaskExecutor")
   public Executor threadPoolTaskExecutor() {
-    if (isAsyncModeEnabled() && securityProperties.isDelegateSecurityContext()) {
+    if (isAsyncModeEnabled() && asyncServletProperties.isDelegateSecurityContext()) {
       ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
       executor.setCorePoolSize(asyncServletProperties.getThreads().getMin());
       executor.setMaxPoolSize(asyncServletProperties.getThreads().getMax());
