@@ -68,6 +68,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -83,6 +84,7 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -298,7 +300,11 @@ public class GraphQLWebAutoConfiguration {
       @Autowired(required = false) BatchInputPreProcessor batchInputPreProcessor,
       @Autowired(required = false) GraphQLResponseCacheManager responseCacheManager,
       @Autowired(required = false) AsyncTaskDecorator asyncTaskDecorator,
-      @Autowired(required = false) Executor asyncExecutor) {
+      @Autowired(required = false) @Qualifier("graphqlAsyncTaskExecutor") Executor asyncExecutor) {
+    long asyncTimeout =
+        graphQLServletProperties.getAsyncTimeout() != null
+            ? graphQLServletProperties.getAsyncTimeout()
+            : asyncServletProperties.getTimeout();
     return GraphQLConfiguration.with(invocationInputFactory)
         .with(graphQLInvoker)
         .with(graphQLObjectMapper)
@@ -307,12 +313,32 @@ public class GraphQLWebAutoConfiguration {
         .with(batchInputPreProcessor)
         .with(graphQLServletProperties.getContextSetting())
         .with(responseCacheManager)
-        .asyncTimeout(graphQLServletProperties.getAsyncTimeout())
+        .asyncTimeout(asyncTimeout)
         .with(asyncTaskDecorator)
         .asyncCorePoolSize(asyncServletProperties.getThreads().getMin())
         .asyncCorePoolSize(asyncServletProperties.getThreads().getMax())
         .with(asyncExecutor)
         .build();
+  }
+
+  @Bean("graphqlAsyncTaskExecutor")
+  @ConditionalOnMissingBean(name = "graphqlAsyncTaskExecutor")
+  public Executor threadPoolTaskExecutor() {
+    if (isAsyncModeEnabled()) {
+      ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+      executor.setCorePoolSize(asyncServletProperties.getThreads().getMin());
+      executor.setMaxPoolSize(asyncServletProperties.getThreads().getMax());
+      executor.setThreadNamePrefix(asyncServletProperties.getThreads().getNamePrefix());
+      executor.initialize();
+      return executor;
+    }
+    return null;
+  }
+
+  private boolean isAsyncModeEnabled() {
+    return graphQLServletProperties.getAsyncModeEnabled() != null
+        ? graphQLServletProperties.getAsyncModeEnabled()
+        : asyncServletProperties.isEnabled();
   }
 
   @Bean
@@ -332,7 +358,11 @@ public class GraphQLWebAutoConfiguration {
     } else {
       registration.setMultipartConfig(new MultipartConfigElement(""));
     }
-    registration.setAsyncSupported(graphQLServletProperties.isAsyncModeEnabled());
+    if (graphQLServletProperties.getAsyncModeEnabled() != null) {
+      registration.setAsyncSupported(graphQLServletProperties.getAsyncModeEnabled());
+    } else {
+      registration.setAsyncSupported(asyncServletProperties.isEnabled());
+    }
     return registration;
   }
 }

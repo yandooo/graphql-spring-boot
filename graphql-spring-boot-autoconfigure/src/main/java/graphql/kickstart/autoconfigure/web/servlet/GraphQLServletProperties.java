@@ -33,8 +33,11 @@ public class GraphQLServletProperties {
   private boolean exceptionHandlersEnabled = false;
   private long subscriptionTimeout = 0;
   private ContextSetting contextSetting = ContextSetting.PER_QUERY_WITH_INSTRUMENTATION;
-  private long asyncTimeout = 30000;
-  private boolean asyncModeEnabled = true;
+  /** @deprecated Use <tt>graphql.servlet.async.timeout</tt> instead */
+  @Deprecated private Long asyncTimeout;
+  /** @deprecated Use <tt>graphql.servlet.async.enabled</tt> instead */
+  @Deprecated private Boolean asyncModeEnabled;
+
   private String tracingEnabled = "false";
   private boolean actuatorMetrics;
   private Integer maxQueryComplexity;
