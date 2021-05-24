@@ -206,7 +206,7 @@ repositories {
 
 The servlet becomes accessible at `/graphql` if `graphql-spring-boot-starter` added as a dependency
 to a boot application and a `GraphQLSchema` bean is present in the application. Check out
-the [simple example](https://github.com/graphql-java-kickstart/graphql-spring-boot/tree/master/example)
+the [simple example](https://github.com/graphql-java-kickstart/samples/tree/master/editors)
 for the bare minimum required.
 
 A GraphQL schema can also be automatically created when
