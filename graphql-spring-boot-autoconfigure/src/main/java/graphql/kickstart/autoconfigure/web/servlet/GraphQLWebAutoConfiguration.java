@@ -316,7 +316,7 @@ public class GraphQLWebAutoConfiguration {
         .asyncTimeout(asyncTimeout)
         .with(asyncTaskDecorator)
         .asyncCorePoolSize(asyncServletProperties.getThreads().getMin())
-        .asyncCorePoolSize(asyncServletProperties.getThreads().getMax())
+        .asyncMaxPoolSize(asyncServletProperties.getThreads().getMax())
         .with(asyncExecutor)
         .build();
   }
