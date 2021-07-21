@@ -71,6 +71,5 @@ To remove the git hook, just delete the `commitlint/.husky` folder.
 
 As for the optional scope part of the commit message:
 - if your commit addresses an issue, please refer the issue number in the scope - e.g. `fix(#123): ...`
-- otherwise, if applicable, please use the modified / affected subproject name, without the repetitive prefix/postfix 
-  parts (like `graphql-kickstart-spring-boot`, `spring-boot-starter` or `autoconfigure`) - e.g. `feat(webflux): ...`  
+- otherwise, if applicable, please refer to the added or modified feature - e.g. `feat(webflux): ...`  
 
