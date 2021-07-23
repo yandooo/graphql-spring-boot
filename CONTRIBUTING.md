@@ -1,3 +1,16 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+# Table of contents
+
+- [How to contribute](#how-to-contribute)
+  - [Answering questions and writing documentation](#answering-questions-and-writing-documentation)
+  - [Submitting changes](#submitting-changes)
+  - [Coding conventions](#coding-conventions)
+    - [SonarLint](#sonarlint)
+    - [Commit messages](#commit-messages)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # How to contribute
 
 We're really glad you're reading this, because we need more volunteer developers to help with this
