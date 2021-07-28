@@ -1,3 +1,16 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+# Table of contents
+
+- [How to contribute](#how-to-contribute)
+  - [Answering questions and writing documentation](#answering-questions-and-writing-documentation)
+  - [Submitting changes](#submitting-changes)
+  - [Coding conventions](#coding-conventions)
+    - [SonarLint](#sonarlint)
+    - [Commit messages](#commit-messages)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # How to contribute
 
 We're really glad you're reading this, because we need more volunteer developers to help with this
@@ -71,6 +84,5 @@ To remove the git hook, just delete the `commitlint/.husky` folder.
 
 As for the optional scope part of the commit message:
 - if your commit addresses an issue, please refer the issue number in the scope - e.g. `fix(#123): ...`
-- otherwise, if applicable, please use the modified / affected subproject name, without the repetitive prefix/postfix 
-  parts (like `graphql-kickstart-spring-boot`, `spring-boot-starter` or `autoconfigure`) - e.g. `feat(webflux): ...`  
+- otherwise, if applicable, please refer to the added or modified feature - e.g. `feat(webflux): ...`  
 
